@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'NewCicleFina';
+    src: url('../fonts/NewCicleFina-webfont.eot');
+    src: url('../fonts/NewCicleFina-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/NewCicleFina-webfont.woff') format('woff'),
+         url('../fonts/NewCicleFina-webfont.ttf') format('truetype'),
+         url('../fonts/NewCicleFina-webfont.svg#NewCicleFina') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

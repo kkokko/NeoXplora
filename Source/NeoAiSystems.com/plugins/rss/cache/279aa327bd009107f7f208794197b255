@@ -1,0 +1,910 @@
+O:9:"MagpieRSS":22:{s:6:"parser";i:0;s:12:"current_item";a:0:{}s:5:"items";a:10:{i:0;a:8:{s:2:"id";s:42:"tag:codecanyon.net,2007-12-31:Item/3538349";s:9:"published";s:25:"2012-11-29T15:51:57+11:00";s:7:"updated";s:25:"2012-11-30T04:35:27+11:00";s:4:"link";s:67:"http://codecanyon.net/item/interativo-premium-cms-pro-theme/3538349";s:5:"title";s:42:"Interativo Premium CMS pro! theme (Custom)";s:12:"atom_content";s:906:"<p>Interativo is Premium Theme for &#8220;CMS Pro&#8221; , Valid  XHTML  Strict and  CSS  <br />
+<br />
+<strong>Theme Features:</strong> <br />
+</p><ul>
+  <li>Clean, Modern Design</li>
+  <li>Valid  XHTML  Strict and  CSS </li>
+  <li>Custom Static Plugins,Widgets</li>
+  <li>Default  CMS  Pro Plugins are Styled</li>
+  <li> CMS  Pro Premium Modules are Styled
+    <ul>
+      <li> Article Manager</li>
+      <li>Portfolio</li>
+      <li>DigiShop</li>
+      <li>Simple Forum</li>
+    </ul>
+  </li>
+  <li>Floating Login Box</li>
+  <li>Useful  Shortcodes</li>
+</ul>
+<br />
+<strong>Note:</strong> This theme, it&#8217;s to be used with <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078"> CMS pro! v.3 +</a> <br />
+<strong>Note:  Theme support related question must be submitted to <a href="http://themeforest.net/user/kitoz/">http://themeforest.net/user/kitoz/</a></strong>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:1;a:8:{s:2:"id";s:42:"tag:codecanyon.net,2007-12-31:Item/3321397";s:9:"published";s:25:"2012-10-31T02:04:43+11:00";s:7:"updated";s:25:"2012-11-30T21:37:29+11:00";s:4:"link";s:62:"http://codecanyon.net/item/batix-premium-cms-pro-theme/3321397";s:5:"title";s:36:"Batix Premium CMS pro! theme (Other)";s:12:"atom_content";s:1576:"<p>Batix is 10 in 1 Premium Theme for &#8220;CMS Pro&#8221; ,  RTL  Full Support.  Clean, Modern Design, Valid  XHTML  Strict and  CSS <br />
+<br />
+10 color options included<br />
+Clear Blue<br />
+Clear Orange<br />
+Clear Green<br />
+Clear Red<br />
+Clear Purple<br />
+Dark Blue<br />
+Dark Orange<br />
+Dark Green<br />
+Dark Red<br />
+Dark Purple<br />
+<br />
+<br />
+<strong>Theme Features:</strong>
+</p><ul>
+  <li> RTL  Full Support</li>
+  <li>Valid  XHTML  Strict and  CSS </li>
+  <li>Custom Static Plugins,Widgets</li>
+  <li>Floating Login Box</li>
+  <li>Useful  Shortcodes</li>
+  <li>No Modification to the core files required</li>
+  <li>Logo and Slider banners  PSD  included</li>
+</ul>
+<h2>Update 09. Nov. 2012. v1.5</h2>
+<ul>
+<li>[Fixed] Small css and javascript issues for better optimization.</li>
+<li>[Fixed] Small tweaks for the Home slider that overlap the search suggestions.</li>
+<li>[Fixed] Login box input field issue.</li>
+<li>[Fixed] &#8220;Update Profile&#8221; button issue in account.tpl.php.</li>
+<li>[Fixed] Theme now use the uploaded logo to  CMS  Pro dynamically.</li>
+<li>[Added] Shortcode documntation ,to easy copy and paste to cms pro post editor.</li>
+<li>[Added] 1 New dark style , (Slategrey).</li>
+</ul>
+<strong>Note:</strong> This theme, it&#8217;s to be used with <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078"> CMS  pro! v.3 +</a><br />
+<strong>Note:  Theme support related question must be submitted to <a href="http://themeforest.net/user/kitoz/">http://themeforest.net/user/kitoz/</a></strong>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:2;a:8:{s:2:"id";s:42:"tag:codecanyon.net,2007-12-31:Item/3218244";s:9:"published";s:25:"2012-10-15T14:34:43+11:00";s:7:"updated";s:25:"2012-11-30T11:52:02+11:00";s:4:"link";s:66:"http://codecanyon.net/item/simple-forum-module-for-cms-pro/3218244";s:5:"title";s:42:"Simple Forum Module for CMS pro! (Add-ons)";s:12:"atom_content";s:772:"<p>Simple Forum is  a  CMS  pro! premium module designed to enable you to create forum/ask a question/knowledge base for your users.<br />
+<br />
+<strong>Features:</strong>
+</p><ul>
+  <li>Forum access: Public, Registered and Membership</li>
+  <li>Users can easily access all the questions that they have asked</li>
+  <li>Local/FB avatar supported</li>
+  <li>Users can follow discussion (new post notification)</li>
+  <li>Built in forum search</li>
+  <li>Powered by jQuery  AJAX </li>
+</ul>
+<strong>Note: </strong>This module it&#8217;s not stand alone, it&#8217;s to be used with   CMS   pro! v.3 + <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078">http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078</a>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:3;a:8:{s:2:"id";s:42:"tag:codecanyon.net,2007-12-31:Item/1225423";s:9:"published";s:25:"2012-01-04T10:58:31+11:00";s:7:"updated";s:25:"2012-12-01T02:31:01+11:00";s:4:"link";s:52:"http://codecanyon.net/item/freelance-manager/1225423";s:5:"title";s:44:"Freelance Manager (Project Management Tools)";s:12:"atom_content";s:9774:"<p>Freelance Manager is powerful, yet simple, project and client management software application.
+It&#8217;s a perfect solution for freelance designers and developers. It also works great for consultants, project managers, and service professionals.<br />
+<br />
+<strong>Features:</strong>
+</p><ul>
+  <li>Responsive Layout &#8211; Both admin and client area are responsive</li>
+  <li>Client Management &#8211; You can easily add, edit, and manipulate client profile information as well as track all related projects, invoices, and work flow approval queues</li>
+  <li>Project Management &#8211; You can manage all aspects of the project, from progress, cost, parameters, completion timeline, project manager, etc.</li>
+  <li>Work flow Approval System &#8211; When a staff member or project manager has completed a task or revision for a client, the &#8220;submission&#8221; is sent to the client for review.</li>
+  <li>File Upload Tool &#8211; You can associate uploads with a project submission. .</li>
+  <li>Project Submissions &#8211; Project Submissions are also known as drafts, concepts, or revisions. .</li>
+  <li>Task (To-Do) Feature &#8211; Project Managers or Staff members can create tasks to complete based on a specific project</li>
+  <li>Time-Billing Tool &#8211; This feature enables your team create records based on a client, a project, or a specific task.</li>
+  <li>Invoicing Feature</li>
+  <li>Payment Gateway Integration &#8211; PayPal,AlertPay(Payza), MoneyBookers, Authorize.net (AIM), Offline</li>
+  <li>Support Ticket System &#8211; The system features full priority management, ticket assignments, and results tracking.</li>
+  <li>Messaging System &#8211; Clients can send messages to staff members, providing the company with a nice way to track communication</li>
+  <li>Staff Management &#8211; You have flexibility over the permissions of each staff member, for added security</li>
+  <li>Powerful Reports &#8211; We have developed a powerful and comprehensive reporting solution</li>
+  <li>Smart Event Calendar &#8211; Event calendar that shows outstanding invoices, projects and tasks based on current/selected month/year</li>
+  <li>Database Backup/Restore &#8211; Built in backup/restore feature for backing up and restoring entire database</li>
+  <li>Visual Form Builder &#8211; Create beautiful forms using easy drag/drop form builder. Forms could be used for providing different quotes to your clients, contact or anything else</li>
+  <li>Visual Estimator Builder &#8211; Create estimate/quote forms in just a few minutes</li>
+  <li>and many more&#8230;</li>
+</ul>
+<em><strong>Please note that some features are disabled in demo mode!</strong></em> <br />
+Admin area <a href="http://www.wojoscripts.com/fm/admin/" rel="nofollow">http://www.wojoscripts.com/fm/admin/</a><br />
+Username: <strong>admin</strong><br />
+Password: <strong>admin</strong><br />
+<br />
+Client area <a href="http://www.wojoscripts.com/fm/" rel="nofollow">http://www.wojoscripts.com/fm/</a><br />
+Username: <strong>mike</strong><br />
+Password: <strong>password</strong>
+<h2>Update 24. Oct. 2012. v1.5</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li>Responsive Layout
+    &#8211; Front end and admin (min 600px) area are fully responsive</li>
+  <li>New front end template
+    &#8211; New clean look and feel</li>
+  <li>Invoice sequence number
+    &#8211; Choose any kind of combinat</li>
+  ion of letters/numbers for invoice numbering
+  <li>User Credits
+    &#8211; You can now add/deduct credits to each client account, which can be used for paying invoices
+  </li><li> New messaging system
+    &#8211; Threaded messaging system with preview support</li>
+  <li> Submission image preview
+    &#8211; You can now quickly preview submitted image files</li>
+  <li> New admin charting system
+    &#8211; View income charts based on day/week/month/year</li>
+  <li> New mailing method
+    &#8211; Besides  PHP  and  SMTP  you can now choose Sandmail as mailing option</li>
+  <li> Decimal/Thousand separators
+    &#8211; Choose your decimal/thousand separators for money formatting</li>
+  <li> Many visual improvements in admin /client area</li>
+</ul>
+<h2>Update 17. Jun. 2012. v1.4</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Ability to add attachments to messages
+    &#8211; Now clients can upload file when sending new message</li>
+  <li> Ability to add attachments to support tickets
+    &#8211; Now clients can upload file when sending new support ticket</li>
+  <li> Invoice Reminders
+    &#8211; System will now send invoice reminders via cron </li>
+  <li> Ability to set invoice status on hold
+    &#8211; On hold invoices are not visible to clients</li>
+  <li> Ability to add invoice notes
+    &#8211; Now you can add legal text to your invoices</li>
+  <li> Ability to add invoice comments
+    &#8211; Comments are for internal use only</li>
+  <li> Ability to show/hide time estimate in estimator
+    &#8211; Now easily show/hide this feature from admin/configuration</li>
+  <li> Ability to set amount of dollars/per day
+    &#8211; Now easily set the amount from admin/ configuration</li>
+  <li> Ability to show/hide time estimate in estimator
+    &#8211; Now easily show/hide this feature from admin/configuration</li>
+  <li> Added Pending Status to support tickets</li>
+  <li> Added easy navigation crumbs in admin section</li>
+  <li> Replaced AlertPay with Payza</li>
+</ul>
+<h2>Update 30. Apr. 2012. v1.3</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Added  Client  VAT  for European users
+    &#8211; Now each of the clients can have their own  VAT </li>
+  <li> Staff Permissions
+    &#8211; Staff is not able to view main index page in admin panel </li>
+</ul>
+<h2>Update 25. Feb. 2012. v1.2</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Recurring Billing
+    &#8211; Now you can create recurring payment (PayPal only).
+    To create recurring payment create new invoice and add new entry. </li>
+  <li> Email Attachments
+    &#8211; You can now add attachments when sending single emails to your staff/clients from System Email manager</li>
+  <li> Staff Permissions
+    &#8211; All staff permissions have been reduced and fixed</li>
+  <li> New Email Template
+    &#8211; New template is available when registering new staff member in /mailer/Staff_Welcome_Message.tpl.php</li>
+</ul>
+<h2>Update 25. Feb. 2012. v1.1</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Client Currency
+    &#8211; Each client can have its own currency, when processing payments.</li>
+  <li> Language Switcher
+    &#8211; You have the ability to use language switcher frontend/admin area and also assign default site language from admin configuration menu</li>
+  <li> Staff Permissions
+    &#8211; Greatly reduced staff access, to sensitive admin areas, such as modifying client records, changing other staff information etc&#8230;</li>
+  <li> Newsletter User Selection
+    &#8211; You can now select multiple users when sending newsletter.</li>
+  <li> Multiple Invoice Entries
+    &#8211; You can now add more than one entry when creating new invoices</li>
+  <li> Task Templates
+    &#8211; Predefined task templates with title and description are now available when creating new task. To add/edit new template, select from System Setup-&gt;Task Templates</li>
+  <li>Visual Estimator
+    &#8211; Now you can build estimates/quotes, the same way as you would do in Visual Forms. New visual estimator is available in Forms-&gt;Visual Estimator menu</li>
+  <li> Emails for Messages
+    &#8211; Emails are now sent both ways, when replying/creating new message</li>
+</ul>
+<h2>Update 04. Feb. 2012. v1.06</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Client Currency
+    &#8211; Each client can have its own currency, when processing payments.</li>
+  <li> Language Switcher
+    &#8211; You have the ability to use language switcher frontend/admin area and also assign default site language from admin configuration menu</li>
+  <li> Staff Permissions
+    &#8211; Greatly reduced staff access, to sensitive admin areas, such as modifying client records, changing other staff information etc&#8230;</li>
+  <li> Newsletter User Selection
+    &#8211; You can now select multiple users when sending newsletter.</li>
+  <li> Multiple Invoice Entries
+    &#8211; You can now add more than one entry when creating new invoices</li>
+  <li> Task Templates
+    &#8211; Predefined task templates with title and description are now available when creating new task. To add/edit new template, select from System Setup-&gt;Task Templates</li>
+  <li>Visual Estimator
+    &#8211; Now you can build estimates/quotes, the same way as you would do in Visual Forms. New visual estimator is available in Forms-&gt;Visual Estimator menu</li>
+  <li> Emails for Messages
+    &#8211; Emails are now sent both ways, when replying/creating new message</li>
+</ul>
+<h2>Update 09. Jan. 2012. v1.01</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Added ability to download client submitted attachments from admin area.
+    &#8211;    You can download files from  directly from File Manager, Projects and Submissions</li>
+  <li> Added ability to notify staff upon project creation.
+    &#8211;    You can now send email to your project manager when creating new project.</li>
+  <li> Added ability to notify staff upon task creation.
+    &#8211;    You can now send email to your project manager when creating new task.</li>
+  <li> Clients submissions statuses are locked
+    &#8211;    Each time client approves/dis-approves new submission, the status will be locked. Client will not be able to change status of locked submission</li>
+</ul>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:4;a:8:{s:2:"id";s:41:"tag:codecanyon.net,2007-12-31:Item/641774";s:9:"published";s:25:"2011-10-09T10:27:41+11:00";s:7:"updated";s:25:"2012-12-01T01:55:51+11:00";s:4:"link";s:61:"http://codecanyon.net/item/digishop-module-for-cms-pro/641774";s:5:"title";s:38:"DigiShop Module for CMS pro! (Add-ons)";s:12:"atom_content";s:1699:"DigiShop  is a  CMS  pro! premium  module designed to enable you sell digital downloads from your site
+<ul>
+  <li>Category support</li>
+  <li>Single image upload</li>
+  <li>Auto thumbnail creation &#8211; no need to reupload  the same image</li>
+  <li>Free, Paid and Membership based downloads</li>
+  <li>Free Downloads
+    <ul>
+      <li>Requires user to be logged in or not &#8211;  configurable from admin area</li>
+    </ul>
+  </li>
+  <li>Paid Downloads
+    <ul>
+      <li>Use existing  CMS  pro! Gateways for payments  (PayPal and MoneyBookers)</li>
+      <li>Auto generated urls with time limit</li>
+      <li>Upon successful payment user will receive an  email with download links</li>
+    </ul>
+  </li>
+  <li>Membership Downloads
+    <ul>
+      <li>Each product can have different membership(single/multiple) assigned to</li>
+      <li>Users with valid memberships will be able to download</li>
+    </ul>
+  </li>
+  <li>2 unique layouts, list and grid mode for  categories and latest items</li>
+  <li>Full checkout shopping cart</li>
+  <li>Detailed transaction record page</li>
+  <li>Ability to resend download links if link has expired</li>
+</ul>
+<strong>Note: </strong>This module it&#8217;s not stand alone, it&#8217;s to be used with  CMS  pro! v.2.7  <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078">http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078</a>
+<h2>Update 22.  OCT . 2011. v1.05</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Assignable themes</li>
+  <li> Meta keywords and meta description for every item</li>
+  <li> Better  SEO , and direct access to module properties</li>
+</ul>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:5;a:8:{s:2:"id";s:41:"tag:codecanyon.net,2007-12-31:Item/591229";s:9:"published";s:25:"2011-09-29T00:35:27+10:00";s:7:"updated";s:25:"2012-12-01T00:24:13+11:00";s:4:"link";s:68:"http://codecanyon.net/item/article-manager-module-for-cms-pro/591229";s:5:"title";s:45:"Article Manager Module for CMS pro! (Add-ons)";s:12:"atom_content";s:3115:"<p>Article Manager is a  CMS  pro! premium module designed to enable you to  create unique Blogs/Articles/News items <br />
+<br />
+<strong>Features:</strong>
+</p><ul>
+  <li>Built in commenting system, assignable to each article</li>
+  <li>Multilevel Category support</li>
+  <li>Single image upload</li>
+  <li>Auto thumbnail creation &#8211; no need to reupload  the same image</li>
+  <li>File attachment</li>
+  <li>Rating, voting and sharing assignable for each  article</li>
+  <li>Show/Hide rating, voting, author and social  sharing for each article</li>
+  <li>Publish article ahead of time/or set expiration  date</li>
+  <li>Unique tag support</li>
+  <li>4 unique layouts, assignable to each article</li>
+  <li>4 unique layouts, assignable to each category</li>
+  <li>4 unique layouts, assignable to latest articles</li>
+  <li>Each layout dependent on image size</li>
+  <li>Different numbers of items per each category</li>
+  <li>Assignable category icons</li>
+  <li>Powerful full page search</li>
+  <li>Tag search</li>
+  <li>Article Archive</li>
+  <li>Dynamic related articles based on a title</li>
+  <li>Built in rss for each category</li>
+  <li>5 Plugins included
+    <ul>
+      <li>Search Plugin</li>
+      <li>Category Menu</li>
+      <li>Latest Comments</li>
+      <li>Archive List</li>
+      <li>Most Popular</li>
+    </ul>
+  </li>
+  <li>The last three are tabbed version</li>
+</ul>
+<strong>Note: </strong>This module it&#8217;s not stand alone, it&#8217;s to be used with  CMS  pro! v.2.7  <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078">http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078</a>
+<h2>Update 18. Sep. 2012. v1.2</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li>Ability to assign membership(s) access to each article</li>
+</ul>
+<h2>Update 5. Apr. 2012. v1.1</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li>Ability to assign article to multiple categories </li>
+  <li>Minor code optimization</li>
+</ul>
+<h2>Update 07. Jan. 2012. v1.07</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li>Support for new date function in  CMS  pro! V.3.0 Dates are now displayed in your own language</li>
+  <li>Added option to set number of comments shown in combo plugin</li>
+  <li>Added option to set number of popular items shown in combo plugin</li>
+</ul>
+<h2>Update 22. Oct. 2011. v1.05</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Assignable themes</li>
+  <li> Meta keywords and meta description for every item</li>
+  <li> Better  SEO , and direct access to module properties</li>
+</ul>
+<h2>Fix 03. Oct. 2011.</h2>
+Prior to this fix follow install instructions.<br />
+Full install has fix included.
+<ul>
+  <li>Fixed not being able to delete categories</li>
+  <li>Fixed displaying article plugins on pages other than main article module</li>
+  <li>As an added bonus <strong>Accordion Premium Plugin</strong> included</li>
+  <li>—<strong><em>Unzip fix into your  CMS  pro! directory and overwrite the existing files</em></strong></li>
+</ul>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:6;a:8:{s:2:"id";s:41:"tag:codecanyon.net,2007-12-31:Item/554541";s:9:"published";s:25:"2011-09-20T11:24:53+10:00";s:7:"updated";s:25:"2012-11-22T04:11:52+11:00";s:4:"link";s:65:"http://codecanyon.net/item/visual-forms-module-for-cms-pro/554541";s:5:"title";s:42:"Visual Forms Module for CMS pro! (Add-ons)";s:12:"atom_content";s:2400:"Visual Forms module, allows to website administrator to easily create web forms with the help of a simple drag-and-drop editor. <br />
+This product gives you a possibility to create professional forms on pages of your  CMS  pro! content without requiring knowledge of  HTML , MySQL and  PHP . <br />
+Form Features:
+<ul>
+  <li>Possibility to create an unlimited amount of forms with unlimited fields and contents</li>
+  <li>All the possible form fields (drop-down, multiple select, textarea, text, checkbox groups, datepicker, file attachment and radio groups</li>
+  <li>Dynamic sorting of data, which were received from a client (in the view of a dynamic table) </li>
+  <li>Validation of input fields (warning message for required fields) </li>
+  <li>Preview function of your created form </li>
+  <li>Built-in captcha system </li>
+  <li>Customizable send template for each form </li>
+  <li>Custom mail subjects </li>
+  <li>Custom submit button text </li>
+  <li>Content of a field is updated dynamically by means of the  AJAX  technology at form creation </li>
+  <li>Show your form inside any content page </li>
+  <li>Change an order of created fields drag and drop</li>
+  <li>Generated forms are accessible and compliant with xHTML standards </li>
+</ul>
+<strong>Note: </strong>This module it&#8217;s not stand alone, it&#8217;s to be used with  CMS  pro! v.3.0 <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078">http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078</a>
+<h2>Update 18. Oct. 2012.</h2>
+Prior to this update follow install instructions.
+<ul>
+  <li>Multiple attachments<br />
+    &#8211; Ability to add multiple file attachments</li>
+</ul>
+<h2>Update 25. Feb. 2011.</h2>
+<ul>
+  <li>Added Form Validation</li>
+  <li>Validate: Email, Url, Phone Number, Numbers, Alpha Numeric and Alpha Characters</li>
+  <li><strong>To update replace /<em>forms</em><a href="/ folder with existing one in" rel="nofollow">/ folder with existing one in </a><em><a href="/admin/modules/forms/" rel="nofollow">/admin/modules/forms/</a></em></strong></li>
+</ul>
+<h2>Update 20. Nov. 2011. v1.05</h2>
+Prior to this update follow install instructions.
+<ul>
+  <li>Added Date picker field</li>
+  <li>Added File attachment field</li>
+  <li>All submitted form data is now stored in database</li>
+  <li>Preview all submitted data for each form</li>
+</ul>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:7;a:8:{s:2:"id";s:41:"tag:codecanyon.net,2007-12-31:Item/554064";s:9:"published";s:25:"2011-09-20T07:25:29+10:00";s:7:"updated";s:25:"2012-11-15T23:16:24+11:00";s:4:"link";s:62:"http://codecanyon.net/item/portfolio-module-for-cms-pro/554064";s:5:"title";s:39:"Portfolio Module for CMS pro! (Add-ons)";s:12:"atom_content";s:1814:"<p>Portfolio is a  CMS  pro! premium module designed to enable you to arrange your projects and present your works for the visitors of your site. Moreover, module may not necessarily be used as a portfolio &#8211; it can as well be referred to as a catalogue for any kind of items. <br />
+Portfolio allows you to create a full portfolio of your works and integrate it with your site as a separate section. All your works will be divided into categories which are, in their turn, are divided into sections. <br />
+Each portfolio item has a brief description which will be displayed in the list of items belonging to one category, and a full description displayed when the user clicks the &#8220;title&#8221; link on the item.</p>
+
+
+Features:
+<ul>
+  <li>Multiple column list 4,3,2 1</li>
+  <li>Category support</li>
+  <li>Single image upload</li>
+  <li>Auto thumbnail creation</li>
+  <li>Five thumbnail sizes &#8211; all auto generated</li>
+  <li>No Page refresh during sorting the category or layout switching</li>
+</ul>
+<strong>Note: </strong>This module it&#8217;s not stand alone, it&#8217;s to be used with  CMS  pro! v.2.7 <a href="http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078">http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078</a>
+<h2>Update 22.  OCT . 2011. v1.05</h2>
+Prior to this update follow install instructions.<br />
+<ul>
+  <li> Assignable themes</li>
+  <li> Meta keywords and meta description for every item</li>
+  <li> Better  SEO , and direct access to module properties</li>
+</ul>
+
+<h3>Fix 01.  OCT . 2011.</h3>
+Fixed not being able to delete project.<br />
+—Replace existing <em><strong><a href="/admin/modules/portfolio/controller.php" rel="nofollow">/admin/modules/portfolio/controller.php</a></strong></em> from  the package.";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:8;a:8:{s:2:"id";s:41:"tag:codecanyon.net,2007-12-31:Item/140078";s:9:"published";s:25:"2010-11-19T14:44:01+11:00";s:7:"updated";s:25:"2012-12-01T02:17:04+11:00";s:4:"link";s:79:"http://codecanyon.net/item/cms-pro-lightweight-content-management-system/140078";s:5:"title";s:75:"CMS pro! - Lightweight Content Management System (Project Management Tools)";s:12:"atom_content";s:20768:"<p> CMS  Pro! is the most intuitive  CMS  (Content Management System) that a web agency can implement for their customers. It&#8217;s perfect for small business websites and is really easy to use and to implement. <br />
+The value of  CMS  Pro! is in its intuitiveness. With  CMS  Pro!, content management becomes as easy as desktop publishing
+  . <br />
+  <br />
+The real value to the customer does not come from hundreds of features that they can&#8217;t or won&#8217;t ever use. Real value comes from making it really simple to use some great power features that get the job done. <br />
+<br />
+That&#8217;s exactly what  CMS  Pro! delivers.  CMS  Pro! allows small business owners manage their entire site, or change their web site design in seconds.<br />
+Some of the features include:</p>
+
+
+<ul>
+  <li>Modular design &#8211; Creating a module(side box) takes only few clicks</li>
+  <li>Dynamic layout &#8211; Easy drag and drop of modules(sidebars) for each individual page</li>
+  <li>Unique page layout &#8211; Each page can have up to 4 module positions top/bottom/left/right</li>
+  <li>Dynamic menu creation &#8211; add as many menu items as you like, unlimited menu levels, easy drag.</li>
+  <li>Multiple posts per page &#8211; you can add multiple posts per page.</li>
+  <li>Dedicated contact and home page.</li>
+  <li>9 professional plugins included jQuery slider, News Slider, Event Manager, jQuery Tabs, Poll, Vertical Menu and Recent Twitts, Rss Feeds</li>
+  <li>Built in gallery module</li>
+  <li>Built in commenting system</li>
+  <li>Powerful file manager</li>
+  <li>Database backup/restore</li>
+  <li> SEO  Optimized</li>
+  <li>Membership management</li>
+  <li>Membership subscription</li>
+  <li>PayPal and Moneybookers and offline payments intergated</li>
+  <li>User permissions</li>
+  <li>Facebook Connect</li>
+  <li>Built in Installation wizard</li>
+  <li>and many more&#8230;</li>
+</ul>
+<em><strong>Please note that some features are disabled in demo mode!</strong></em> <br />
+Admin area <a href="http://wojoscripts.com/cmspro/admin/" rel="nofollow">http://wojoscripts.com/cmspro/admin/</a><br />
+Demo <a href="http://wojoscripts.com/cmspro/" rel="nofollow">http://wojoscripts.com/cmspro/</a><br />
+Username: <strong>admin</strong><br />
+Password: <strong>admin</strong><br />
+<h4>Premium Modules:</h4>
+<ul>
+<li><a href="http://codecanyon.net/item/article-manager-module-for-cms-pro/591229">Article Manager</a></li>
+<li><a href="http://codecanyon.net/item/visual-forms-module-for-cms-pro/554541">Visual Forms</a></li>
+<li><a href="http://codecanyon.net/item/portfolio-module-for-cms-pro/554064">Portfolio</a></li>
+<li><a href="http://codecanyon.net/item/digishop-module-for-cms-pro/641774">DigiShop</a></li>
+<li><a href="http://codecanyon.net/item/simple-forum-module-for-cms-pro/3218244">Simple Forum</a></li>
+</ul>
+<h4>Premium Themes:</h4>
+<ul>
+<li><a href="http://themeforest.net/item/batix-premium-cms-pro-theme/3321397">Batix</a></li>
+</ul>
+<h2>Update 18. Oct. 2012. (v.3.10) &#8211; fix</h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Twitter plugin updated to work with new api<br />
+  Just replace script.js in /plugins/twitts/</li>
+</ul>
+<h2>Update 21. Sep. 2012. (v.3.10)</h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Added Facebook Connect</li>
+  <li>Two new templates.</li>
+  <li>Fixed Pirobox link from  WYSIWYG  editor</li>
+  <li>Few bug fixes and code optimization</li>
+</ul>
+<h2>Update 05. Jul. 2012. (v.3.06)</h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Added two new plugins<br />
+  &#8211; Paypal Donations<br />
+ —Allows you to set up simple paypal donations with built in Target counter<br />
+  &#8211; Upcoming event countdown<br />
+ —Allows you to display digital counter based on chosen event End Date<br />
+  <a href="http://www.wojoscripts.com/cmspro/All-Modules.html" rel="nofollow">Both plugins demo page</a> </li>
+  <li>Fixed pages not being published.</li>
+  <li>Fixed gateway images not displayed.</li>
+  <li>Few bug fixes and code optimization</li>
+</ul>
+<h2>Update 08. Jun. 2012. (v.3.05)</h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Event Manager support custom color bullets for each event<br />
+  &#8211; Now it&#8217;s easier to distinguish between recurring and single occurring events</li>
+  <li>Admins are not able to change level status any more, only Super-admins are allowed</li>
+  <li>Few bug fixes and code optimization</li>
+</ul>
+<h2>Update 25. Apr. 2012. (v.3.02)</h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Added offline payment method</li>
+  <li>Added recurring events to Event Manager Module</li>
+</ul>
+<h2>Fix 24. Jan. 2012.</h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Fixed Content slider, video and smooth slider(delete option)</li>
+  <li>Fixed calendar plugin missing days</li>
+</ul>
+<h2>Unofficial Update 07. Jan. 2012.</h2>
+Added new section Custom Mods. See here for more details: <a href="http://www.wojoscripts.com/cmspro/Mods.html" rel="nofollow">Custom Addons</a>
+<h2>Update 02. Jan. 2012.  (v.3.0) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Added full page search, that includes search for all premium modules(if installed)</li>
+  <li>Dates are now displayed in your own language. </li>
+  <li>Admin menus will not be available if user does not have valid permission to it.</li>
+  <li>Menus have option of assigning custom icons</li>
+  <li>Ability to insert custom javascript code in posts/plugins</li>
+  <li>Added full page Event Calendar Premium module</li>
+  <li>Ability to choose first day of the Week</li>
+  <li>New 404 page, which displays search and menus, instead of generic message</li>
+  <li>Added Free Premium plugin Content Slider</li>
+  <li>Added Free Premium plugin Youtube Slider</li>
+  <li>Added Free Premium plugin Slideout Slider</li>
+</ul>
+<h2>Update 22. Oct. 2011.  (v.2.7) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li>Premium Modules now have their own menus.<br />
+   —Multiple page premium modules such as article manager, portfolio and digishop are assignable directly from menus page. There is no need to create dedicated page and post<br />
+   —Single page modules such as Gallery, Visual forms and comments need to be assigned form page add/edit mode, and still require dedicated page/post </li>
+  <li>Dedicated template for each plugin.<br />
+   —Each plugin can have its own theme, based on default theme. </li>
+  <li>Dedicated theme for each premium module.<br />
+   —Each module can have its own dedicated theme </li>
+  <li>Switching between servers<br />
+   —There is no need to edit urls/paths when transferring database from local to remote server </li>
+  <li>User access permission now supports Premium modules/plugins</li>
+  <li>Premium Modules have their own layout options assignable from layout page</li>
+</ul>
+<h2>Fix 10. Oct. 2011.  (v.2.5) </h2>
+Prior to this fix follow install instructions.<br />
+Update 2.5 has fix included.
+  <ul>
+  <li>Fixed missing captcha image on registration page</li>
+  <li>Fixed incorrect labels when adding paypal button from within editor</li>
+  <li>Fixed adding new plugin</li>
+  <li>Fixed Poll plugin when working in multilingual mode</li>
+  <li>Added additional security check when uploading avatars from front end</li>
+  <li>Added Log Filterning and searching by date</li>
+  <li>Added compatiblitily fix for DigiShop premium module </li>
+  </ul>
+  New premium module:
+  <strong>DigiShop</strong> <br />
+  See demo: <a href="http://www.wojoscripts.com/cmspro/Digital-Shop.html" rel="nofollow">http://www.wojoscripts.com/cmspro/Digital-Shop.html</a>
+<h2>Update 24. Sep. 2011.  (v.2.5) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Module section it&#8217;s now split into two different sections.<br />
+    &#8211; Modules &#8211; You can publish modules from page add/edit menu<br />
+    &#8211; Plugins &#8211; You can publish plugins from layout menu<br />
+  </li>
+  <li><strong><em>New</em></strong>: User page<br />
+    &#8211; Added option to support user avatars 
+    </li>
+  <li><strong><em>New</em></strong>: Configuration page<br />
+    &#8211; Added option to show countdown when site in maintenance mode 
+    </li>
+  <li><strong><em>New</em></strong>: jQuery Slider<br />
+    &#8211; You can now upload images in add/edit mode. No need to delete image first
+    </li>
+  <li><strong><em>New</em></strong>: New captcha code implementation</li>
+  <li><strong><em>New</em></strong>: Added phone number to contact form</li>
+  <li><strong><em>New</em></strong>: Three new templates included</li>
+  <li><strong><em>Fixed</em></strong>:<br />
+    &#8211; Event Calendar<br />
+    &#8211; Paypal ipn<br />
+    &#8211; Newsletter<br />
+    &#8211; Gallery<br />
+    &#8211; Latest twitts &#8211; works now with  IE8 /IE9
+    </li>
+    <li><strong><em>New</em></strong>: Preminum Module Portfolio<br />
+    <a href="http://codecanyon.net/item/portfolio-module-for-cms-pro/554064">http://codecanyon.net/item/portfolio-module-for-cms-pro/554064</a></li>
+    <li><strong><em>New</em></strong>: Preminum Module Visual Forms<br />
+
+    <a href="http://codecanyon.net/item/visual-forms-module-for-cms-pro/554541">http://codecanyon.net/item/visual-forms-module-for-cms-pro/554541</a></li>
+</ul>
+
+  <h2>Fix 07.  SEP . 2011.</h2>
+  Prior to update follow install instructions.
+  <ul>
+  <li>Fixed missing images when uploading logo</li>
+  <li>Fixed slider upload</li>
+  </ul>
+  <h2>Update 06. Aug. 2011. (v.2.10)</h2>
+  Prior to update follow install instructions.
+  <ul>
+  <li>This updtae will fix all the multilingual issues</li>
+  </ul>
+  <h2>Fix 31. Jul. 2011. (v.2.08)</h2>
+  Prior to update follow install instructions.
+  <ul>
+    <li>New: Version check<br />
+      &#8211; Now you&#8217;ll see notification in admin area when new version is available<br />
+    </li>
+    <li>Fix: Wrong url in ajax search</li>
+    <li>Fix: Wrong url in editor link select </li>
+    <li>Fix: When renaming page title, now updates menu and layout skugs</li>
+    <li>Fix: Paypal wrong sandbox url </li>
+    <li>Fix: Front end membership displaying inactive memberships </li>
+    <li>Fix: Front end membership error when  no memberships are available</li>
+    <li>Fix: New language installer</li>
+  </ul>
+  <h2>Update 08. Jul. 2011. (v.2.08)</h2>
+  Prior to update follow install instructions.
+  <ul>
+    <li>New: Better Seo Urls<br />
+      &#8211; Now your urls will be www.yourdomain.com/somepagetitle.html<br />
+    </li>
+    <li>Fix: Assigning layout to home page</li>
+    <li>Fix: Gallery title when switching a language </li>
+    <li>Fix: Filemanager would create double image thumbnails</li>
+    <li>Fix: Maintenance mode for admins only </li>
+  </ul>
+<h2>Update 27. Jun. 2011.  (v.2.05) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Admin Permissions<br />
+    &#8211; You can now assign what parts of  CMS  pro! Each administrator will have access to. You can completely block/allow access to every part in admin area<br />
+  </li>
+  <li><strong><em>New</em></strong>: Private Membership Type<br />
+    &#8211;  Special membership types that are not available to front end users. 
+    </li>
+  <li><strong><em>New</em></strong>: Admin Theme<br />
+    &#8211;  New face lift for admin area. 
+    </li>
+  <li><strong><em>New</em></strong>: Added Turkish Language</li>
+  <li><strong><em>Fix</em></strong>: Missing global.js<br />
+ —Replace <strong><a href="/assets/global.js" rel="nofollow">/assets/global.js</a></strong></li>
+  <li><strong><em>Fix</em></strong>: Empty Logs<br />
+ —Replace <strong><a href="/admin/logs.php" rel="nofollow">/admin/logs.php</a></strong></li>
+</ul>
+<h2>Fix 14. Jun. 2011.  (v.2.0) </h2>
+Prior to fix follow upgrade instructions.
+<ul>
+  <li><strong><em>Fix</em></strong>: Gallery Image Upload<br />
+    &#8211; Replace <strong><a href="/admin/modules/admin.php" rel="nofollow">/admin/modules/admin.php</a></strong><br />
+  </li>
+  <li><strong><em>Fix</em></strong>: Editor Insert Youtube<br />
+    &#8211; Replace <strong><a href="/admin/editor/scripts/youtube_video.htm" rel="nofollow">/admin/editor/scripts/youtube_video.htm</a></strong><br />
+  </li>
+</ul>
+<h2>Update 07. Jun. 2011.  (v.2.0) </h2>
+This is a major upgrade, that adds lot&#8217;s of new features<br />
+Prior to update follow install instructions.
+<ul>
+   <li>Fully Multilingual</li>
+   <li>User Management</li>
+   <li>Membership Management
+     <br />
+     &#8211; Paid/Trial/Free membership.<br />
+
+    &#8211; PayPal/Moneybookers gateways.<br />
+    &#8211; Subscriptions/Single purchase.<br />
+  </li>
+   <li>New  WYSIWYG  Editor (InnovaStudio)</li>
+   <li>Newsletter Manager
+     <br />
+   &#8211; Send mass or single emails to all your users </li>
+   <li>Email templates
+     <br />
+   &#8211; Edit directly from admin area all user email templates </li>
+   <li>Transaction Manager
+     <br />
+   &#8211; View/Export all your transaction records </li>
+   <li> Plus many more. See what&#8217;s new, for a full list of new features</li>
+</ul>
+<h2>Update 26. Apr. 2011.  (v.1.55) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Admin area<br />
+    &#8211; Adding Gallery images without use of flash.<br />
+    &#8211; Added option to assign large image width/height.<br />
+  </li>
+  <li><strong><em>New</em></strong>: Rss Parser Module<br />
+    &#8211;  Ability to show/hide date.<br />
+    &#8211;  Ability to show/hide summary.<br />
+    &#8211;  Ability to choose date format.<br />
+    &#8211;  Ability to limit number of feeds.<br />
+    &#8211;  Compatible with Rss 1.0 2.0 and Atom.<br />
+    </li>
+</ul>
+<h2>Fix 15. Apr. 2011.  (v.1.53) </h2>
+Prior to fix follow install instructions.
+<ul>
+  <li><strong><em>Fix</em></strong>: Gallery Image Upload<br />
+    &#8211; Replace <strong><a href="/admin/assets/imgUpload.swf" rel="nofollow">/admin/assets/imgUpload.swf</a></strong><br />
+  </li>
+</ul>
+<h2>Update 08. Mar. 2011.  (v.1.53) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Admin area<br />
+    &#8211; Menu now fully supports ajax.<br />
+    &#8211; Filemanager now fully supports ajax.<br />
+    &#8211; Viewing stats for each day.<br />
+  </li>
+  <li><strong><em>Fix</em></strong>: Comments Module<br />
+    &#8211;  Deleted comments are now removed.</li>
+</ul>
+<h2>Patch 01. Mar. 2011.  (v.1.50) </h2>
+If you already upgraded to v1.50 follow patch instructions.
+<ul>
+  <li><strong><em>Fix</em></strong>: Admin area<br />
+    &#8211; Saving Posts.<br />
+    &#8211; Saving Module Info.<br />
+  </li>
+  <li><strong><em>Fix</em></strong>: Gallery<br />
+    &#8211;  Added missing database column to support drag and drop</li>
+  <li><strong><em>Fix</em></strong>: Page Copy<br />
+    &#8211;  Added missing translation </li>
+  <li><strong><em>Fix</em></strong>: Module Jtabs<br />
+    &#8211;  Fixed ability to delete tabs </li>
+  <li><strong><em>Fix</em></strong>: Module Poll<br />
+    &#8211;  Fixed ability to reorder poll questions</li>
+  <li><strong><em>Fix</em></strong>:  WYSIWYG <br />
+    &#8211;  While uploading files the file manager would hang on some systems</li>
+</ul>
+<h2>Update 23. Feb. 2011.  (v.1.50) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Admin area<br />
+    &#8211; Admin area has been completely redone, in order to support full ajax features such as saving, modifying and performing other tasks.<br />
+  </li>
+  <li><strong><em>Updated</em></strong>:  WYSIWYG  Editor<br />
+    &#8211;  Replaced old with new faster filemanager<br />
+    &#8211;  Editor new skin to match admin area<br />
+    &#8211;  Added option to assign prettyPhoto from link menu in advanced tab (Relationship page to target (rel). </li>
+  <li><strong><em>New</em></strong>: Page Copy Feature<br />
+    &#8211; Ability to make page copies, including posts and layouts for faster productivity </li>
+  <li><strong><em>Updated</em></strong>: Gallery<br />
+    &#8211;  Added option to sort images using Drag and Drop<br />
+
+    &#8211;  Added option to re size images to exact width/height<br />
+  </li>
+  <li><strong><em>New</em></strong>: Configuration<br />
+    &#8211;  Added option to include Google Analytic<br />
+    &#8211;  Added option to set number of items displayed for pagination<br />
+    &#8211;  Added option to set default time zone<br />
+  </li>
+  <li><strong><em>New</em></strong>: Theme<br />
+    &#8211;  Added new theme </li>
+</ul>
+<h2>Update 31. Jan. 2011.  (v.1.20) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Commenting System<br />
+    &#8211; Fully featured commenting system, that could be enabled on each page.<br />
+    &#8211; Using Gravatar Services<br />
+    &#8211; Auto/Manual approval<br />
+    &#8211; Blacklisted words<br />
+    &#8211; Email Notifications for admin<br />
+    &#8211; Powered by jQuery<br />
+    &#8211; See it in action under About Us Menu<br />
+  </li>
+  <li><strong><em>Added</em></strong>: Custom Slug<br />
+    &#8211; Ability to enter custom page titles </li>
+  <li><strong><em>Fix</em></strong>: Jquery Slider<br />
+    &#8211; Will now work in  IE7  </li>
+</ul>
+<h2>Update 13. Jan. 2011</h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>Update</em></strong>: Poll Module<br />
+    &#8211; Ability to sort poll questions </li>
+  <li><strong><em>Fix</em></strong>: jTabs Module<br />
+    &#8211; Deleting tabs it&#8217;s now possible </li>
+</ul>
+<h2>Update 3. Jan. 2011</h2>
+<ul>
+  <li><strong><em>Fix</em></strong>: Missing rss.php file now available<br />
+    &#8211; Place rss.php in root directory </li>
+  <li><strong><em>Fix</em></strong>: Uploading gallery images up to 2500&#215;2000px<br />
+    &#8211; Replace /admin/assets/imgUpload.swf </li>
+  <li><strong><em>Fix</em></strong>:  PHP  Warning:  images():<br />
+    &#8211; Replace /getimage.php </li>
+</ul>
+<h2>Update 30. Dec. 2010.  (v.1.1.7) </h2>
+Prior to update follow install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Event Manager Module<br />
+    &#8211;  Easily create your company events and display them in calendar mode</li>
+  <li><strong><em>New</em></strong>: Vertical Menu Module<br />
+    &#8211;  Now you have an option to include vertical menu within your pages</li>
+  <li><strong><em>New</em></strong>: Ajax search<br />
+    &#8211;  Ability to search post titles and post body
+  </li><li><strong><em>New</em></strong>: PayPal Buy Now! button<br />
+    &#8211;  You can insert Buy Now button from  WYSIWYG  , for selling single items
+  </li><li><strong><em>New</em></strong>: rss.php. Now you can display latest feeds for your content.</li>
+  <li><strong><em>Enjoy the latest update of  CMS  pro! and to all Happy New Year</em></strong><i>.</i></li>
+</ul>
+<h2>Update 25. Dec. 2010.</h2>
+Prior to update follow module install instructions.
+<ul>
+  <li><strong><em>Update</em></strong>: jQuery Slider<br />
+    &#8211;  Ability to assign different image transitions (fold, fade, sliceDown, sliceUp, random)<br />
+    &#8211;  Ability to set transition speed, transition time, show navigation bullets/arrows<br />
+    &#8211;  Ability to show/hide image captions</li>
+  <li><strong><em>New</em></strong>: jQuery Tabs Module<br />
+    &#8211;  Easy dynamic tabs creation<br />
+    &#8211;  Add any type of content to each tab</li>
+</ul>
+<h2>Update 17. Dec. 2010.  (v.1.1.5) </h2>
+Prior to update follow upgrade instructions.
+<ul>
+  <li>1. <em><strong>New</strong></em>: Fully featured Gallery (replacing the old one) <br />
+    &#8211;  Ability to add Captions to images<br />
+    &#8211;  Ability to add Description to image <br />
+    &#8211;  Watermark Feature <br />
+    &#8211;  Each gallery can have different thumbnail/popup image size <br />
+    &#8211;  Each gallery is stored in dedicated folder (automatic creation) <br />
+    &#8211;  Assignable number of images per row </li>
+  <li>2. You can now easily translate the cms by editing one file language.php</li>
+  <li>3. <em><strong>New</strong></em>: contact email template.<br />
+    &#8211;  You can now edit contact email template in /mailer/contact.tpl.php</li>
+  <li>4. <strong><em>Update</em></strong>: Ability to delete logo from Admin/Configuration <br />
+    &#8211;  If no logo exists, company name will be used instead </li>
+  <li>5.  Few cosmetics changes</li>
+  <li>6. Optimization (up to 5% faster)</li>
+
+</ul>
+<h2>Update 02. Dec. 2010.</h2>
+Prior to update follow module and filemanager install instructions.
+<ul>
+  <li><strong><em>New</em></strong>: Ajax Poll Module</li>
+  <li><strong><em>New</em></strong>: File Manager</li>
+</ul>";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}i:9;a:8:{s:2:"id";s:41:"tag:codecanyon.net,2007-12-31:Item/102118";s:9:"published";s:25:"2010-05-06T08:49:54+10:00";s:7:"updated";s:25:"2012-11-30T17:05:46+11:00";s:4:"link";s:57:"http://codecanyon.net/item/banner-exchange-manager/102118";s:5:"title";s:39:"Banner Exchange Manager (Miscellaneous)";s:12:"atom_content";s:3350:"Banner Exchange Manager enables you to run extensive banner exchange network site. Visitors can exchange banner displays with each other and you can earn by selling banner impressions that web site automatically generates.
+<h3>Key Features</h3>
+<ul>
+  <li>Support for multiple campaigns for each member.</li>
+  <li>Support for multiple banners for each campaign.</li>
+  <li>Multiple size banner support.</li>
+  <li>Save and transfer credits between campaigns.</li>
+  <li>Real time statistics, detailed statistic for each campaign.</li>
+  <li>Unlimited number of admin controlled categories.</li>
+  <li>Members can get bonus impressions for clicks on their pages.</li>
+  <li>Members can stop showing their banners to save impressions for more intensive campaign.</li>
+  <li>Extensive stats.</li>
+  <li>Member signup bonus scheme.</li>
+  <li>Secure server integration for payment (Paypal) -PayPal Business Account Required.</li>
+  <li>Members can add Multiple Banners.</li>
+</ul>
+
+<h3>Front End Features:</h3>
+<ul>
+  <li>Quick signup.</li>
+  <li>Password Retrieval.</li>
+  <li>Remember Me Feature.</li>
+  <li>Captcha Enabled.</li>
+  <li>Option to maintain member profile.</li>
+  <li>Manage Campaigns.<br />
+  -Add new campaigns<br />
+  -Edit campaigns<br />
+  -Remove Campaigns </li>
+  <li>Manage Banners.<br />
+  -Add new banners<br />
+  -Change banners<br />
+  -Set relative weight </li>
+  <li>Buy paid impressions.</li>
+  <li>Cut, Copy, Paste code to display banners web site.</li>
+  <li>Transfer credits between different campaigns.</li>
+  <li>Option to earn credits from one campaign and spend it on another campaign.</li>
+  <li>Extensive stats like<br />
+  -Impressions received <br />
+  -Clicks received<br />
+  -Click Ratio<br />
+  -Day by day stats over a month<br />
+  -Month by month stats<br />
+  -Similar stats available for traffic generate </li>
+  <li>All stats are real time.</li>
+  <li>Banner sizes are admin defined.</li>
+  <li>Purchase of banner impressions through PayPal.</li>
+  <li>Total record of purchased impression.</li>
+  <li>Very easy to integrate in any running site.</li>
+  <li>Secure Contact form.</li>
+  <li>Global Meta Keywords and Meta Description.</li>
+</ul>
+
+  <h3>Back End Features (Admin Panel):</h3>
+<ul>
+  <li>Password protected admin area.</li>
+  <li>Add/Edit/Delete member profile.</li>
+  <li>Add/Edit/Delete campaigns.</li>
+  <li>Configure signup bonus scheme for members.</li>
+  <li>Configure various site parameters.</li>
+  <li>Enable/Disable automatic approvals<strong> </strong>of campaigns / banners. </li>
+  <li>Set which type of domains are allowed to participate in banner exchange.</li>
+  <li>Ban certain sites.</li>
+  <li>View campaigns that are waiting for admin approval.</li>
+  <li>Admin can add free impressions to any account. </li>
+  <li>Admin can take impressions from any account. </li>
+  <li>Admin set up banner dimensions.</li>
+  <li>Admin set up exchange ratio.</li>
+  <li>Admin can add/edit/delete different packages. </li>
+  <li>Extensive stats.</li>
+  <li>Color Chart with total earnings.</li> 
+  <li>Configurable auto generated  emails with email templates.</li>
+  <li>Configure different banner sizes allowed.</li>
+  <li>Option to email all users(Mass Mail) or a particular user.</li>
+</ul>
+<h2>Update 21. Dec. 2010.</h2>
+&#8212;Fix: Uploading banner will now create unique filenames";s:6:"author";s:12:"
+      
+    ";s:11:"author_name";s:6:"gewa13";}}s:7:"channel";a:5:{s:2:"id";s:49:"tag:codecanyon.net,2007-12-31:/feeds/users/gewa13";s:4:"link";s:21:"http://codecanyon.net";s:9:"link_self";s:1:"/";s:5:"title";s:27:"CodeCanyon items for gewa13";s:7:"updated";s:25:"2012-11-29T18:29:46+11:00";}s:9:"textinput";a:0:{}s:5:"image";a:0:{}s:9:"feed_type";s:4:"Atom";s:12:"feed_version";N;s:8:"encoding";s:5:"UTF-8";s:16:"_source_encoding";s:0:"";s:5:"ERROR";s:0:"";s:7:"WARNING";s:0:"";s:19:"_CONTENT_CONSTRUCTS";a:6:{i:0;s:7:"content";i:1;s:7:"summary";i:2;s:4:"info";i:3;s:5:"title";i:4;s:7:"tagline";i:5;s:9:"copyright";}s:16:"_KNOWN_ENCODINGS";a:3:{i:0;s:5:"UTF-8";i:1;s:8:"US-ASCII";i:2;s:10:"ISO-8859-1";}s:5:"stack";a:0:{}s:9:"inchannel";b:0;s:6:"initem";b:0;s:9:"incontent";b:0;s:11:"intextinput";b:0;s:7:"inimage";b:0;s:17:"current_namespace";b:0;s:13:"last_modified";s:31:"Fri, 30 Nov 2012 15:32:04 GMT
+";}

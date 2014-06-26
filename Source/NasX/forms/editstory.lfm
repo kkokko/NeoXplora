@@ -1,0 +1,152 @@
+object EditStoryForm: TEditStoryForm
+  Left = 1541
+  Height = 526
+  Top = 128
+  Width = 802
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Add Story'
+  ClientHeight = 526
+  ClientWidth = 802
+  OnShow = FormShow
+  Position = poMainFormCenter
+  LCLVersion = '1.2.0.3'
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 487
+    Top = 0
+    Width = 802
+    ActivePage = tabSentences
+    Align = alClient
+    TabIndex = 1
+    TabOrder = 0
+    OnChanging = PageControl1Changing
+    object tabStory: TTabSheet
+      Caption = 'Story'
+      ClientHeight = 459
+      ClientWidth = 794
+      object memoStory: TMemo
+        Left = 0
+        Height = 411
+        Top = 48
+        Width = 794
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object edtStoryTitle: TEdit
+        Left = 101
+        Height = 23
+        Top = 14
+        Width = 487
+        TabOrder = 1
+      end
+      object Label1: TLabel
+        Left = 20
+        Height = 30
+        Top = 9
+        Width = 63
+        Caption = 'STORY'
+        Font.Height = -21
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+    object tabSentences: TTabSheet
+      Caption = 'Sentences'
+      ClientHeight = 459
+      ClientWidth = 794
+      object ScrollBox1: TScrollBox
+        Left = 0
+        Height = 411
+        Top = 48
+        Width = 691
+        HorzScrollBar.Page = 687
+        VertScrollBar.Page = 407
+        Align = alClient
+        TabOrder = 0
+      end
+      object Panel2: TPanel
+        Left = 0
+        Height = 48
+        Top = 0
+        Width = 794
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 48
+        ClientWidth = 794
+        TabOrder = 1
+        object edtStoryTitleRO: TEdit
+          Left = 101
+          Height = 23
+          Top = 14
+          Width = 583
+          Color = clBtnFace
+          ReadOnly = True
+          TabOrder = 0
+        end
+        object Label2: TLabel
+          Left = 20
+          Height = 30
+          Top = 9
+          Width = 63
+          Caption = 'STORY'
+          Font.Height = -21
+          ParentColor = False
+          ParentFont = False
+        end
+      end
+      object Panel3: TPanel
+        Left = 691
+        Height = 411
+        Top = 48
+        Width = 103
+        Align = alRight
+        BevelOuter = bvNone
+        ClientHeight = 411
+        ClientWidth = 103
+        TabOrder = 2
+        object btnSplitAll: TButton
+          Left = 13
+          Height = 25
+          Top = 8
+          Width = 75
+          Caption = 'SPLIT ALL'
+          OnClick = btnSplitAllClick
+          TabOrder = 0
+        end
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 39
+    Top = 487
+    Width = 802
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 39
+    ClientWidth = 802
+    TabOrder = 1
+    object btnSave: TButton
+      Left = 584
+      Height = 25
+      Top = 7
+      Width = 96
+      Anchors = [akRight, akBottom]
+      Caption = 'SAVE'
+      OnClick = btnSaveClick
+      TabOrder = 0
+    end
+    object btnCancel: TButton
+      Left = 693
+      Height = 25
+      Top = 7
+      Width = 96
+      Anchors = [akRight, akBottom]
+      Caption = 'Cancel'
+      OnClick = btnCancelClick
+      TabOrder = 1
+    end
+  end
+end

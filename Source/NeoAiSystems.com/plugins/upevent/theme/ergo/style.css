@@ -1,0 +1,11 @@
+#upcommingevent h5{margin-bottom:15px}
+#ecounter > div{font-size:30px;font-weight:100;text-align:left;box-shadow:0 0 1px rgba(255,255,255,0.2)}
+#ecounter > div > div{background-color:rgba(0,0,0,0.1);padding:5px}
+#ecounter > div span{display:block;border-top:1px solid rgba(255,255,255,0.8);font-size:11px;margin-top:5px;font-weight:400;text-transform:uppercase;text-align:left}
+#upcommingevent .edate{background-image:url(images/date.png);background-repeat:no-repeat;background-position:left center;padding-left:25px;margin-top:5px}
+#upcommingevent .evenue{background-image:url(images/venue.png);background-repeat:no-repeat;background-position:left center;padding-left:25px}
+
+
+@media only screen and (max-width: 767px) {
+#ecounter > div{margin-bottom:5px}
+}	

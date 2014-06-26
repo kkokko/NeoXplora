@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="9"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <Title Value="project1"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <Icon Value="0"/>
+    </General>
+    <i18n>
+      <EnableI18N LFM="False"/>
+    </i18n>
+    <VersionInfo>
+      <StringTable ProductVersion=""/>
+    </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="5">
+      <Item1>
+        <PackageName Value="TAChartLazarusPkg"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="EditPanel"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="SQLDBLaz"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
+    </RequiredPackages>
+    <Units Count="53">
+      <Unit0>
+        <Filename Value="project1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="project1"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="forms/main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Main"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="nastypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="NASTypes"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="classes/repcalculator.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RepCalculator"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="classes/sentencealgorithm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceAlgorithm"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="classes/postagger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PosTagger"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="classes/sentencelist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceList"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="classes/sentencelistelement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceListElement"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="classes/crep.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CRep"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="classes/qaalgorithm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="QAAlgorithm"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="classes/crepdecoder.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CRepDecoder"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="classes/hypernym.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Hypernym"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="forms/mysqlexport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MySQLExportForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MySQLExport"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="classes/coreunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CoreUnit"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="classes/sentencesplitter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceSplitter"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="communication/requestgetimportinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RequestGetImportInfo"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="communication/serverinterface.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ServerInterface"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="communication/superobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="superobject"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="communication/requestgetstoriesforimport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RequestGetStoriesForImport"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="forms/mysqlimport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MySQLImportForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MySQLImport"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="communication/requestsetstoriesfromexport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RequestSetStoriesFromExport"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="entity/storyobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StoryObject"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="forms/editstory.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="EditStoryForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="EditStory"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="fw/entity/entity.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Entity"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="fw/typesconsts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TypesConsts"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="fw/datatypes/stringarray.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StringArray"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="fw/datatypes/fieldinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FieldInfo"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="fw/entity/entitymanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityManager"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="fw/skylists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SkyLists"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="fw/typesfunctions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TypesFunctions"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="fw/entitylist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityList"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="fw/entity/streaming/entityjsonwriter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityJsonWriter"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="fw/entity/streaming/entitywriter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityWriter"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="fw/skyidlist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SkyIdList"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="fw/entity/streaming/entityjsonreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityJSonReader"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="fw/entity/streaming/entityreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityReader"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="fw/entity/genericentity.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GenericEntity"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="entity/protoobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ProtoObject"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="forms/editstorycomponents/protocontainer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ProtoContainer"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="forms/editstorycomponents/panelproto.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PanelProto"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="forms/editstorycomponents/panelsentence.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PanelSentence"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="classes/upgrade.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Upgrade"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="fw/errors/skyexception.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SkyException"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="fw/logger/messageinfodata.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MessageInfoData"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="fw/errors/exceptionmanagerunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExceptionManagerUnit"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="fw/translations/fwtranslations.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FWTranslations"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="fw/errors/exceptionclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExceptionClasses"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="fw/datatypes/keyvalue.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="KeyValue"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="fw/datatypes/keystringvalue.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="KeyStringValue"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="fw/datatypes/entityfieldnamestoken.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityFieldNamesToken"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="fw/entity/entitytokens.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityTokens"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="fw/entity/entitymapping.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityMapping"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="fw/entity/entitymappingmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityMappingManager"/>
+      </Unit52>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <Target>
+      <Filename Value="project1"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="classes;forms;communication;fw;fw/datatypes;fw/entity;fw/entity/streaming;entity;forms/editstorycomponents;fw/errors;fw/logger;fw/translations"/>
+      <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <Optimizations>
+        <OptimizationLevel Value="0"/>
+      </Optimizations>
+    </CodeGeneration>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <CompilerMessages>
+        <MsgFileName Value=""/>
+      </CompilerMessages>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

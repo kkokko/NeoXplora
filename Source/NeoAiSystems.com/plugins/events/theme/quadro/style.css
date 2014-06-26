@@ -1,0 +1,22 @@
+/* == Calendar == */
+#cal-wrap-small .month-small thead tr td{background:#383838;color:#fff;font-size:12px;text-align:center;text-shadow:0 -1px 0 #000;-webkit-box-shadow:inset 0 1px 0 #484848, 0 -1px 5px rgba(0,0,0,0.3);-moz-box-shadow:inset 0 1px 0 #484848, 0 -1px 5px rgba(0,0,0,0.3);box-shadow:inset 0 1px 0 #484848, 0 -1px 5px rgba(0,0,0,0.3);border:1px solid #373737;font-weight:600;padding:5px 0}
+#cal-wrap-small .month-small thead tr td a{text-decoration:none;color:#FFF;display:block}
+#cal-wrap-small .month-small thead tr td span{display:inline-block;margin: 0 2px}
+#cal-wrap-small .month-small thead tr td a.prev{background-image:url(images/prev.png);background-repeat:no-repeat;background-position:center center;height:13px}
+#cal-wrap-small .month-small thead tr td a.next{background-image:url(images/next.png);background-repeat:no-repeat;background-position:center center;height:13px}
+#cal-wrap-small .month-small thead th {font-size:10px; padding:5px 0; color:#666; text-transform:uppercase; text-shadow:0 1px 0 rgba(255,255,255,0.5); border-bottom:1px solid #bbbbbb; background:#f7f7f7; background:-moz-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #f1f1f1)); background:-webkit-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:-o-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:-ms-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f1f1f1', GradientType=0)}
+#cal-wrap-small .month-small tbody tr td {color:#666; text-shadow:1px 1px 0 #fff; padding:5px 0;text-align:center; font-weight:bold; border:1px solid; font-size:11px; border-color:#fff #bbbbbb #bbbbbb #fff; background:#ededed; background:-moz-linear-gradient(top, #ededed 0%, #dedede 100%); background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #ededed), color-stop(100%, #dedede)); background:-webkit-linear-gradient(top, #ededed 0%, #dedede 100%); background:-o-linear-gradient(top, #ededed 0%, #dedede 100%); background:-ms-linear-gradient(top, #ededed 0%, #dedede 100%); background:linear-gradient(top, #ededed 0%, #dedede 100%); filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#dedede', GradientType=0);}
+#cal-wrap-small .month-small tr td.today{text-align:center;font-weight:700;font-size:11px;border:solid 1px #ddd;background:#fff;-webkit-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;-moz-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee}
+#cal-wrap-small .month-small tr td.events{background: rgb(255,175,75);background: -moz-radial-gradient(center, ellipse cover,  rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%);background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(255,175,75,1)), color-stop(100%,rgba(255,146,10,1)));background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%);
+background: -o-radial-gradient(center, ellipse cover,  rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%);background: -ms-radial-gradient(center, ellipse cover,  rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%);background: radial-gradient(center, ellipse cover,  rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=1 );}
+#cal-wrap-small .month-small tr td.events a{color:#fff;text-shadow:1px 1px 0 #ff7400;display:block;line-height:18px}
+#cal-wrap-small .month-small{color:#666;font-size:11px;-webkit-box-shadow:0 1px 2px rgba(0,0,0,0.3);-moz-box-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 1px 2px rgba(0,0,0,0.3);width:100%}
+#cal-wrap-small .month-small tr td.empty{border:1px solid #ddd;color:#555;background-color:#f1f2f3}
+
+/* == Event Viewer == */
+.event-wrapper{background-color:#F9F9F9;padding:10px}
+.event-list h3.event-title span{font-size:16px;float:right;color:#888;text-shadow:none}
+.event-list h6.event-venue{font-size:14px;font-weight:600;color:#888;text-shadow:1px 1px 0 #fff;margin:0 0 5px;padding:0}
+.event-list div.event-desc{clear:both}
+.event-list .contact-info-toggle{display:block;text-align:right;color:#335C91;font-size:11px;text-transform:uppercase;font-weight:600;margin-top:5px;margin-bottom:10px}
+.event-list .event-contact{ text-align:right}

@@ -1,0 +1,62 @@
+.searchResultContainer{
+	
+	margin:5px;
+	margin-bottom:50px;
+	padding:10px;
+}
+.searchResultContainer p{
+	font-size:12px;
+	color:#BBB;
+}
+.searchResultContainer a{
+	font-size:18px;
+	text-weight:bold;
+	color:rgb(64,122,169);
+}
+
+.searchResultContainer p.body{
+	font-size:14px;
+	color:#000;
+}
+.searchResultContainer a.link{
+	font-size:12px;
+	color:#417BAA;
+}
+.searchResultItem{
+	margin-bottom:10px;
+	padding:10px;
+}
+
+.searchResultItem a span{
+	font-weight: bold;
+	font-size: medium;
+}
+.pagination{
+	background-color:#6C6C6C;
+	padding:5px;
+	color:#FFF;
+	font-size:12px;
+}
+
+.pagination a{
+	margin:0 5px 0 0;
+	color:#FFF;
+	font-size:12px;
+	padding:4px;
+}
+
+input.showSpinner{
+	background-image:url('../images/spinner.gif');
+	background-repeat:no-repeat;
+	background-position:98% 50%;
+}
+
+.pagination a.currentPage{
+	background-color:#BBB;
+}
+
+.pagination a:hover{
+	background-color:#CCC;
+}
+
+

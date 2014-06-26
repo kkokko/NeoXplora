@@ -1,0 +1,30 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+a {
+	outline: none!important;
+}
+#left {
+	width: 49%;
+	float: left;
+	margin-top: 15px;
+}
+#right {
+	width: 49%;
+	float: right;
+	margin-top: 15px;
+}
+.row {
+	padding: 4px 0;
+}
+.sentencetxt {
+	width: 30%;
+}
+.representationtxt {
+	width: 62%;
+}
+input[type="text"] {
+	font-size: 14px;
+	padding: 2px;
+}

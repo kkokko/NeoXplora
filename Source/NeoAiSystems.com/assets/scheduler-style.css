@@ -1,0 +1,289 @@
+#container {
+  width: 97%;
+  margin: 30px auto;
+}
+
+input, textarea {
+  padding: 1px;
+  background-color: white;
+  border: 1px solid #aaa;
+  font-size: 100%;  
+}
+
+textarea {
+  padding: 5px;
+}
+
+.description {
+  width: 600px;
+  font: normal 14px Verdana;
+}
+  
+.top {
+  padding: 10px;
+  padding-bottom: 0px;
+  color: #888888;
+  background: #e6e6e6;
+  margin-top: 20px;
+}
+
+.story-title {
+  float: left;
+  font-size: 18px;
+}
+
+.story-controls {
+  font-size: 14px;
+  float: right;
+}
+
+.story-controls ul {
+  list-style-type: none;
+}
+
+.story-controls ul li {
+  float: left; 
+  margin-left: 10px;
+}
+
+.content-wrapper {
+  background: #e6e6e6;
+  padding: 10px;
+}
+
+.content {
+  background-color: #fff;
+  padding: 10px;
+}
+
+.content table {
+  width: 100%;
+}
+
+.content table th {
+  vertical-align: top;
+  text-align: left;
+  width: 33%;
+}
+
+.content table td {
+  padding: 5px;
+  vertical-align: top;
+  text-align: left;
+  width: 33%;
+  font-size: 13px;
+  padding-right: 10px;
+}
+
+.content table td:first-child {
+  color: #000;
+}
+
+tr.active td {
+  font-size: 18px;
+}
+
+.active td input {
+  width: 80%;
+  padding: 5px 4px;
+}
+
+.approveCRep {
+  cursor: pointer;
+}
+
+#container .pagination {
+  position: static;
+  top: auto;
+  right: auto;
+  margin-top: 10px;
+}
+
+#container .pagination span {
+  cursor: pointer;
+  color: #3399ff;
+}
+
+#container .pagination span.currentPage {
+  cursor: pointer;
+  color: #666;
+  font-weight: bold;
+}
+
+.button-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.button-list li {
+  margin: 0;
+  padding: 0;
+  float: left;
+  padding: 10px;
+  width: 170px;
+  background-color: #aaa;
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  margin-right: 20px;
+  cursor: pointer;
+  font-family: Verdana;
+}
+
+.button-list li:hover {
+  background-color: #444;
+}
+
+.button-list li.active {
+  background-color: #444;
+}
+
+.content table.sentencestbl input {
+  padding: 5px;
+}
+
+.content table.sentencestbl {
+  width: 70%;
+}
+
+.content table.sentencestbl tr td {
+  width: auto;
+  vertical-align: middle;
+  font-size: 15px;
+}
+
+.content table.sentencestbl tr td:first-child {
+  width: 100px;
+}
+
+.content table.sentencestbl tr td:last-child {
+  width: 200px;
+  padding-left: 10px;
+}
+
+.content table.sentencestbl a {
+  text-align: center;
+  background-color: #aaa;
+  border: 1px solid #666;
+  padding: 4px;
+  font-size: 14px;
+  font-family: Verdana;
+  color: #fff;
+  width: 80px;
+  display: inline-block;
+}
+
+.content table.sentencestbl a:hover {
+  background-color: #444;
+}
+
+.content table.addqa {
+  width: 100%;
+}
+
+.content table.addqa tr td:first-child {
+  vertical-align: top;
+  width: 100px;
+}
+
+.content table.addqa tr td.story-body {
+  font-size: 13px;
+}
+
+.content table.addqa tr td input{
+  width: 60%;
+}
+
+.content table.about {
+  width: 100%;
+}
+
+.content table.about a {
+  width: auto;
+}
+
+.content table.about tr td:first-child {
+  vertical-align: top;
+  width: 100px;
+}
+
+.content table.about tr td.story-body {
+  font-size: 13px;
+}
+
+.admin-buttons {
+  clear:both;
+  margin-top: 20px;
+}
+
+.admin-buttons li:hover {
+  background-color: red;
+}
+
+.content table.reviewrep th {
+  width: auto;
+}
+
+.content table.reviewrep tr td:first-child {
+  width: auto;
+}
+
+.content table.reviewrep tr td {
+  vertical-align: top;
+}
+
+.content table.reviewrep tr td input {
+  width: 95%; 
+}
+
+.content table.reviewrep tr td textarea {
+  width: 95%;
+  height: 150px; 
+}
+
+.content table.split-sentences tr td:first-child {
+  width: 80px;
+}
+
+.content table.split-sentences tr td:last-child {
+  width: 300px;
+}
+
+.content table.split-sentences tr td a {
+  width: auto;
+}  
+
+.content table.reviewsplit {
+  width: 100%;
+}
+
+.content table.reviewsplit tr td:first-child {
+  width: auto;
+}
+
+.content table.reviewsplit tr td:last-child {
+  width: 300px;
+}
+
+.content table.reviewsplit tr th {
+  width: auto;
+}
+
+.content table.reviewsplit tr td input {
+  width: 95%; 
+}
+
+.content table.reviewsplit tr.aproto td {
+  background-color: #ccc;
+}
+
+.content table.reviewsplit tr.row1 td {
+  background-color: #eee;
+}
+
+.content table.reviewsplit tr.row2 td {
+  background-color: #ddd;
+}

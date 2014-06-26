@@ -1,0 +1,52 @@
+.alt{background-color:#000}
+.dp-highlighter{font-family:Consolas, "Courier New", Courier, mono;font-size:12px;border:1px solid #222;background-color:rgba(0,0,0,0.2);width:99.9%;overflow:auto;line-height:100%!important;border-radius:4px;color:#FFF;text-shadow:none;margin:0}
+.dp-highlighter .bar{padding-left:45px}
+.dp-highlighter ol{color:#2B91AF;margin:0 0 0 45px;padding:0}
+.dp-highlighter ol li,.dp-highlighter .columns div{border-left:3px solid #6CE26C;background-color:rgba(0,0,0,0.2);padding-left:10px;line-height:14px}
+.dp-highlighter .columns{color:gray;overflow:hidden;width:100%}
+.dp-highlighter .columns div{padding-bottom:5px}
+.dp-highlighter ol li.alt{background-color:rgba(0,0,0,0.3)}
+.dp-highlighter ol li span{color:#fff}
+.dp-highlighter.collapsed ol{margin:0}
+.dp-highlighter.collapsed ol li{display:none}
+.dp-highlighter.collapsed .tools{border-bottom:none}
+.dp-highlighter.printing{border:none}
+.dp-highlighter.printing .tools{display:none!important;border:5px solid #000}
+.dp-highlighter.printing li{display:list-item!important}
+.dp-highlighter .tools{border-bottom:1px solid #2B91AF;font:9px Verdana, Geneva, Arial, Helvetica, sans-serif;color:silver;padding:3px 8px 3px 10px}
+.dp-highlighter .tools a{font-size:9px;color:gray;text-decoration:none;margin-right:10px}
+.dp-highlighter .tools a:hover{color:red;text-decoration:underline}
+.dp-about{background-color:#fff;margin:0}
+.dp-about table{width:100%;height:100%;font-size:11px;font-family:Tahoma, Verdana, Arial, sans-serif!important}
+.dp-about td{vertical-align:top;padding:10px}
+.dp-about .copy{border-bottom:1px solid #ACA899;height:95%}
+.dp-about .title{color:red;font-weight:700}
+.dp-about .para{margin-bottom:4px}
+.dp-about .footer{background-color:#ECEADB;border-top:1px solid #fff;text-align:right}
+.dp-about .close{font-size:11px;font-family:Tahoma, Verdana, Arial, sans-serif!important;background-color:#ECEADB;width:60px;height:22px}
+.dp-xml .tag{font-weight:700;color:#2B91AF}
+.dp-xml .tag-name{color:#2B91AF;font-weight:700}
+.dp-xml .attribute{color:teal}
+.dp-xml .attribute-value{color:#FC9}
+.dp-delphi .comment{color:#008200;font-style:italic}
+.dp-delphi .number{color:navy}
+.dp-delphi .directive{color:#008284}
+.dp-delphi .keyword{font-weight:700;color:blue}
+.dp-delphi .vars{color:#000}
+.dp-py .exceptions{color:#A52A2A}
+.dp-py .types{color:#A52A2A;font-style:italic}
+.dp-py .commonlibs{color:#8A2BE2;font-style:italic}
+.dp-rb .builtin{color:#008}
+.dp-css .colors{color:#8B0000}
+.dp-j .annotation{color:#646464}
+.dp-j .number{color:#C00000}
+.gridbox{line-height:25px;text-align:center;min-height:25px;border-radius:3px;margin-bottom:1px;box-shadow:0 0 1px rgba(255,255,255,0.2);color:#fff;background-color:rgba(0,0,0,0.2)}
+.split{height:2px;margin-top:20px;margin-bottom:20px;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#EEE}
+.dp-c .comment,.dp-cpp .comment,.dp-vb .comment,.dp-sql .comment,.dp-xml .comments,.dp-py .comment,.dp-py .docstring,.dp-rb .comment,.dp-css .comment,.dp-j .comment{color:#090}
+.dp-c .string,.dp-cpp .string,.dp-vb .string,.dp-sql .string,.dp-delphi .string,.dp-py .string,.dp-rb .string,.dp-css .string,.dp-j .string{color:#900}
+.dp-c .preprocessor,.dp-cpp .preprocessor,.dp-vb .preprocessor,.dp-sql .op,.dp-py .magicmethods{color:gray}
+.dp-c .keyword,.dp-cpp .keyword,.dp-vb .keyword,.dp-sql .keyword,.dp-rb .keyword,.dp-css .keyword{color:blue}
+.dp-c .vars,.dp-cpp .vars,.dp-css .vars{color:#d00}
+.dp-sql .func,.dp-xml .cdata,.dp-py .builtins{color:#ff1493}
+.dp-py .keyword,.dp-j .keyword{color:blue;font-weight:700}
+.dp-rb .symbol,.dp-rb .variable{color:#069}

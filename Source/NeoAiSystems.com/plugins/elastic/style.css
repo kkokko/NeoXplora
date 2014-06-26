@@ -1,0 +1,18 @@
+.ei-slider{position:relative;width:100%;max-width:1920px;margin:0 auto}
+.ei-slider-loading{width:100%;height:100%;position:absolute;top:0;left:0;z-index:999;background:url(images/loading.gif) center no-repeat #e4e4e4;color:#878787;text-align:center}
+.ei-slider-large{height:100%;width:100%;position:relative;overflow:hidden}
+.ei-slider-large li{position:absolute;top:0;left:0;overflow:hidden;height:100%;}
+.ei-slider-large li img{max-width:100%;height:auto;display:block}
+.ei-title{position:absolute;right:50%;margin-right:15%;top:30%}
+.ei-title h2,.ei-title h3{text-align:right;text-shadow:none;background-image:none;}
+.ei-title h2{font-size:50px;line-height:50px;color:#fff;text-transform:uppercase}
+.ei-title h3{font-size:40px;text-transform:uppercase;color:#49aff4;line-height:50px}
+.ei-slider-thumbs{height:13px;position:relative;margin:0 auto}
+.ei-slider-thumbs li{position:relative;float:left;height:100%;list-style-type:none;margin:0;padding:0}
+.ei-slider-thumbs li.ei-slider-element{top:0;left:0;position:absolute;height:100%;z-index:10;text-indent:-9000px;background:rgba(0,0,0,0.9)}
+.ei-slider-thumbs li a{display: block; text-indent:-9000px;background:url(images/bg-ei-thumbs.png) repeat-x; width:100%;height: 100%;cursor:pointer;-webkit-transition:background 0.2s ease;-moz-transition: background 0.2s ease;-o-transition:background 0.2s ease;-ms-transition:background 0.2s ease;transition:background 0.2s ease}
+.ei-slider-thumbs li a:hover{background-color:#f0f0f0}
+.ei-slider-thumbs li img{position:absolute;bottom: 50px;opacity:0;z-index:20;max-width: 100%;-webkit-transition:all 0.4s ease;-moz-transition: all 0.4s ease;-o-transition: all 0.4s ease;-ms-transition:all 0.4s ease transition: all 0.4s ease;-webkit-box-reflect:below 0px -webkit-gradient( linear, left top, left bottom, from(transparent),color-stop(50%, transparent),  to(rgba(255,255,255,0.3))); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";}
+.ei-slider-thumbs li:hover img{opacity:1;bottom:13px;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=100)}
+
+.shadowSlider{background-image:url(images/sliderShadow.png);background-repeat:no-repeat;background-position:center top;height:40px;margin:13px auto 0}

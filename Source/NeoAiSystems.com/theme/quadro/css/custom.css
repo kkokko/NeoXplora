@@ -1,0 +1,35 @@
+@import url("base.css");
+@import url("fonts.css");
+html,body{height:100%;margin:0;padding:0}
+body{font:13px/1.4em "Segoe UI", Arial, Helvetica, sans-serif;color:#666;background-color:#F8F8F8;}
+a{color:#CC413E;text-decoration:none;-webkit-transition:all .35s ease;-moz-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease;outline:none}
+a:hover,a:focus{color:rgba(0,0,0,1);-webkit-transition:all .55s ease;-moz-transition:all .55s ease;-o-transition:all .35s ease;transition:all .55s ease;outline:none}
+hr,.hr2{border:0;height:5px;margin-top:10px;margin-bottom:15px;background:none repeat scroll 0 0 #F7F7F7;box-shadow:0 1px 2px #DDD inset}
+.hr2{margin-top:30px;margin-bottom:30px}
+
+.colred{color:#BA433F}
+.colblue{color:#3F95AE}
+.colyellow{color:#D38E2C}
+.colgreen{color:#4D9B4D}
+
+/* == Lists, Progress Bars, Labels== */
+ul.bullets li,ul.check li,ul.star li{background-image: url(../images/bullet.png); background-repeat: no-repeat; background-position: left center; padding-left:20px; }
+ul.check li{background-image: url(../images/check.png)}
+ul.star li{background-image: url(../images/star.png)}
+ol.numbers li{margin-left:15px}
+
+.label{border-radius:3px 3px 3px 3px;padding:1px 4px 2px}
+.label,.badge{background-color:#999;color:#FFF;font-size:12px;font-weight:700;line-height:14px;vertical-align:baseline;white-space:nowrap}
+.label-ok,.badge-ok{background-color:#4D9B4D}
+.label-info,.badge-info{background-color:#3F95AE}
+.label-alert,.badge-alert{background-color:#D38E2C}
+.label-error,.badge-error{background-color:#BA433F}
+
+/* == Headers == */
+h1,h2,h3,h4,h5,h6{color:#666;font-family:Dosis, Arial, Helvetica, sans-serif;font-weight:600;margin:0 0 10px;padding:0;text-rendering: optimizelegibility;}
+h1{font-size:32px;line-height:32px}
+h2{font-size:28px;line-height:28px}
+h3{font-size:24px;line-height:24px;text-indent:1px;}
+h4{ font-size: 16px; line-height: 16px; text-transform: uppercase; }
+h5{font-size:16px;line-height:16px}
+h6{font-size:14px;line-height:14px}

@@ -1,0 +1,12 @@
+#twitt{background-color: rgba(0,0,0,0.2); border-radius:2px; box-shadow:0px 0px 1px rgba(255,255,255,0.2); padding:10px}
+#twitt .loading{text-align:center;display:block;margin-right:auto;margin-left:auto}
+#twitt .time{display:block}
+#twitt .avatar{margin-right:5px;display:inline-block;border:2px solid #888;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;padding:3px}
+#twitt-nav{background:url(images/twitter.png) no-repeat 10px 5px;height:40px}
+#twitt-nav .prev,#twitt-nav .next{background-image:url(images/nav.png);background-repeat:no-repeat;display:block;font-size:0;float:right;margin-top:10px;cursor:pointer}
+#twitt-nav .prev{background-position:left top;height:20px;width:15px}
+#twitt-nav .next{background-position:-15px top;height:20px;width:15px}
+#twitt-nav .prev:hover{background-position:left -20px}
+#twitt-nav .next:hover{background-position:-15px -20px}
+
+

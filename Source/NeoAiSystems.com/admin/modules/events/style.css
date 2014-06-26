@@ -1,0 +1,24 @@
+/* == Calendar == */
+#cal-wrap .month thead tr td{ background: #383838; color: #fff; font-size: 16px; text-align: center; text-shadow: 0 -1px 0 #000; -webkit-box-shadow: inset 0 1px 0 #484848, 0 -1px 5px rgba(0,0,0,0.3); -moz-box-shadow: inset 0 1px 0 #484848, 0 -1px 5px rgba(0,0,0,0.3); box-shadow: inset 0 1px 0 #484848, 0 -1px 5px rgba(0,0,0,0.3); border: 1px solid #373737; font-weight: 600; ; padding-top: 10px; padding-right: 0; padding-bottom: 10px; padding-left: 0; }
+#cal-wrap .month thead tr td a{text-decoration:none;color:#FFF;display:block}
+#cal-wrap .month thead tr td a.prev{background-image:url(images/prev.png);background-repeat:no-repeat;background-position:center center;height:22px}
+#cal-wrap .month thead tr td a.next{background-image:url(images/next.png);background-repeat:no-repeat;background-position:center center;height:22px}
+#cal-wrap .month thead th {font-size:10px; padding:5px 0; color:#666; text-transform:uppercase; text-shadow:0 1px 0 rgba(255,255,255,0.5); border-bottom:1px solid #bbbbbb; background:#f7f7f7; background:-moz-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #f1f1f1)); background:-webkit-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:-o-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:-ms-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); background:linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%); filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f1f1f1', GradientType=0);width: 14%}
+#cal-wrap .month tbody tr td {color:#666; text-shadow:1px 1px 0 #fff; height:100px; text-align:center; font-weight:bold; border:1px solid; font-size:24px; border-color:#fff #bbbbbb #bbbbbb #fff; background:#ededed; background:-moz-linear-gradient(top, #ededed 0%, #dedede 100%); background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #ededed), color-stop(100%, #dedede)); background:-webkit-linear-gradient(top, #ededed 0%, #dedede 100%); background:-o-linear-gradient(top, #ededed 0%, #dedede 100%); background:-ms-linear-gradient(top, #ededed 0%, #dedede 100%); background:linear-gradient(top, #ededed 0%, #dedede 100%); filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#dedede', GradientType=0);}
+#cal-wrap .month{color:#666;font-size:12px;-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.3);-moz-box-shadow:0 1px 5px rgba(0,0,0,0.3);box-shadow:0 1px 5px rgba(0,0,0,0.3);width:100%}
+#cal-wrap .month tr td.empty{border:1px solid #ddd;color:#555;background-color:#f1f2f3}
+#cal-wrap .month tr td.today{text-align:center;font-weight:700;font-size:24px;border:solid 1px #ddd;background:#fff;-webkit-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 15px 0 #eee;-moz-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 15px 0 #eee;box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 15px 0 #eee}
+#cal-wrap .month tr td.events{text-align:right;font-weight:700;color:#555;text-shadow:0 1px 0 rgba(0,0,0,0.3)}
+#cal-wrap .month tr td.events span{display:inline-block;font-size:14px;text-shadow:1px 1px 0 #fff;border-bottom-width:1px;border-left-width:1px;border-bottom-style:solid;border-left-style:solid;border-bottom-color:#ccc;border-left-color:#ddd;padding:3px;background:#fff;-webkit-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;-moz-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee}
+#cal-wrap .month tr td.events small{display:block;line-height:12px;font-size:10px;text-shadow:none;font-weight:400;text-align:left;padding-left:5px}
+#cal-wrap .month tr td.events small a{color:#111;text-shadow:1px 1px 0 #fff}
+#cal-wrap .month tr td.events small a:hover{color:#555}
+#cal-wrap .month tr td.events small span{ margin-right:4px}
+
+/* == Event Viewer == */
+.event-wrapper{background-color:#F9F9F9;padding:10px}
+.event-list h3.event-title span{font-size:16px;float:right;color:#888;text-shadow:none}
+.event-list h6.event-venue{font-size:14px;font-weight:600;color:#888;text-shadow:1px 1px 0 #fff;margin:0 0 5px;padding:0}
+.event-list div.event-desc{clear:both}
+.event-list .contact-info-toggle{display:block;text-align:right;color:#335C91;font-size:11px;text-transform:uppercase;font-weight:600;margin-top:5px;margin-bottom:10px}
+.event-list .event-contact{ text-align:right}

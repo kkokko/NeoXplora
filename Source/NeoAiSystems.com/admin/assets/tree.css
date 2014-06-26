@@ -1,0 +1,11 @@
+.placeholder{border:1px dashed #CCC}
+.sortable ol{margin:0;padding:0 0 0 10px}
+.sortable ul,.sortable ul ul{list-style-type:none;margin:0 0 0 10px;padding:0}
+.sortable li{margin:1px 0 0;padding:0}
+.sortable li div{cursor:move;margin:0;padding:0 5px}
+.sortable li div:hover{background-color:#F3F3F3}
+.sortable li div a.delete{float:right}
+.sortable li div a.parent{background-image:url(../images/tree-parent.png);background-repeat:no-repeat;background-position:left center;padding-left:20px}
+.sortable li div a:hover{text-decoration:none}
+.sortable li div a.child{background-image:url(../images/tree-child.png);background-repeat:no-repeat;background-position:left center;padding-left:20px}
+img#serialize{margin-top:10px;display:inline-block;float:right;cursor:pointer;}

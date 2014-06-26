@@ -1,0 +1,3832 @@
+object MainForm: TMainForm
+  Left = 258
+  Height = 573
+  Top = 257
+  Width = 964
+  Caption = 'NEO 1.0 | General purpose AI'
+  ClientHeight = 573
+  ClientWidth = 964
+  OnClose = FormClose
+  OnCreate = FormCreate
+  LCLVersion = '1.2.0.3'
+  WindowState = wsMaximized
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 403
+    Top = 170
+    Width = 964
+    ActivePage = TabSheet2
+    Align = alClient
+    MultiLine = True
+    TabIndex = 12
+    TabOrder = 0
+    Options = [nboMultiLine]
+    object tabChat: TTabSheet
+      Caption = 'Chat'
+      ClientHeight = 445
+      ClientWidth = 956
+      object memoChat: TMemo
+        Left = 4
+        Height = 364
+        Top = 30
+        Width = 656
+        Anchors = [akTop, akLeft, akBottom]
+        Lines.Strings = (
+          'NEO'
+          'Do you have any questions?'
+          ''
+        )
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object btnPost: TBitBtn
+        Left = 585
+        Height = 30
+        Top = 402
+        Width = 75
+        Anchors = [akLeft, akBottom]
+        Caption = 'Post'
+        OnClick = btnPostClick
+        TabOrder = 1
+      end
+      object edtChatMsg: TEdit
+        Left = 4
+        Height = 23
+        Top = 409
+        Width = 568
+        Anchors = [akLeft, akBottom]
+        OnExit = edtTestWs1Exit
+        OnKeyUp = edtChatMsgKeyUp
+        TabOrder = 2
+      end
+      object btnPost1: TBitBtn
+        Left = 668
+        Height = 30
+        Top = 30
+        Width = 75
+        Caption = 'Clear'
+        OnClick = btnPost1Click
+        TabOrder = 3
+      end
+      object chkChatUseQARules: TCheckBox
+        Left = 4
+        Height = 19
+        Top = 6
+        Width = 87
+        Caption = 'Use QA rules'
+        TabOrder = 4
+      end
+    end
+    object tabSummary: TTabSheet
+      Caption = 'Summary'
+      ClientHeight = 445
+      ClientWidth = 956
+      object memoSummary: TMemo
+        Left = 3
+        Height = 394
+        Top = 46
+        Width = 656
+        Anchors = [akTop, akLeft, akBottom]
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object Panel6: TPanel
+        Left = 0
+        Height = 40
+        Top = 0
+        Width = 956
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 956
+        Color = clSilver
+        ParentColor = False
+        TabOrder = 1
+        object btnLess: TButton
+          Left = 4
+          Height = 30
+          Top = 5
+          Width = 72
+          Caption = 'Less'
+          Font.Style = [fsBold]
+          OnClick = btnLessClick
+          ParentFont = False
+          TabOrder = 0
+        end
+        object btnDefault: TButton
+          Left = 84
+          Height = 30
+          Top = 5
+          Width = 72
+          Caption = 'Default'
+          Font.Style = [fsBold]
+          OnClick = btnDefaultClick
+          ParentFont = False
+          TabOrder = 1
+        end
+        object btnMore: TButton
+          Left = 164
+          Height = 30
+          Top = 6
+          Width = 72
+          Caption = 'More'
+          Font.Style = [fsBold]
+          OnClick = btnMoreClick
+          ParentFont = False
+          TabOrder = 2
+        end
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'Search'
+    end
+    object TabSheet7: TTabSheet
+      Caption = 'Laws'
+    end
+    object TabSheet8: TTabSheet
+      Caption = 'Exec'
+    end
+    object TabSheet9: TTabSheet
+      Caption = 'Goals'
+    end
+    object TabSheet10: TTabSheet
+      Caption = 'Scheduler'
+    end
+    object TabSheet11: TTabSheet
+      Caption = 'Tasks'
+    end
+    object TabSheet12: TTabSheet
+      Caption = 'Skills'
+    end
+    object TabSheet13: TTabSheet
+      Caption = 'Info'
+    end
+    object TabSheet14: TTabSheet
+      Caption = 'Hierarchy'
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'WORKING mem'
+      ClientHeight = 445
+      ClientWidth = 956
+      object memoCrepDecoded: TMemo
+        Left = 4
+        Height = 438
+        Top = 30
+        Width = 656
+        Anchors = [akTop, akLeft, akBottom]
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+        WordWrap = False
+      end
+      object Label24: TLabel
+        Left = 16
+        Height = 15
+        Top = 10
+        Width = 40
+        Caption = 'Results:'
+        ParentColor = False
+      end
+      object edtTestQaRep: TEdit
+        Left = 677
+        Height = 23
+        Top = 375
+        Width = 528
+        TabOrder = 1
+        Text = 'p1.ref = She, p1.name = Julie, p1.likes = p2(.how much = a lot), p1.is = good(.at = math(.kind = advanced)), p2.name = Jessica Roberts'
+      end
+      object edtTestQaQuestion: TEdit
+        Left = 676
+        Height = 23
+        Top = 422
+        Width = 528
+        TabOrder = 2
+        Text = 'How good is she'
+      end
+      object Label26: TLabel
+        Left = 677
+        Height = 15
+        Top = 358
+        Width = 28
+        Caption = 'CRep'
+        ParentColor = False
+      end
+      object Label27: TLabel
+        Left = 677
+        Height = 15
+        Top = 406
+        Width = 48
+        Caption = 'Question'
+        ParentColor = False
+      end
+      object btnTestQA: TButton
+        Left = 1132
+        Height = 25
+        Top = 454
+        Width = 75
+        Caption = 'Test QA'
+        OnClick = btnTestQAClick
+        TabOrder = 3
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'EPISODIC mem'
+      ClientHeight = 355
+      ClientWidth = 956
+      object ScrollBox1: TScrollBox
+        Left = 0
+        Height = 315
+        Top = 40
+        Width = 837
+        HorzScrollBar.Page = 837
+        VertScrollBar.Page = 315
+        Align = alClient
+        BorderStyle = bsNone
+        TabOrder = 0
+        OnClick = ScrollBox1Click
+      end
+      object Panel2: TPanel
+        Left = 0
+        Height = 40
+        Top = 0
+        Width = 956
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 956
+        Color = clSilver
+        ParentColor = False
+        TabOrder = 1
+        object lblSentenceRep: TLabel
+          Left = 270
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'REPS'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblSentenceInd: TLabel
+          Left = 11
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'SENTENCES'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblSentenceCRep: TLabel
+          Left = 621
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'CONTEXT REPS'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblSentenceSRep: TLabel
+          Left = 871
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'SEMANTIC REPS'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object btnBack: TButton
+          Left = 780
+          Height = 30
+          Top = 5
+          Width = 72
+          Anchors = [akTop, akRight]
+          Caption = 'Back'
+          Font.Style = [fsBold]
+          OnClick = btnBackClick
+          ParentFont = False
+          TabOrder = 0
+        end
+        object btnForward: TButton
+          Left = 872
+          Height = 30
+          Top = 5
+          Width = 72
+          Anchors = [akTop, akRight]
+          Caption = 'Forward'
+          Font.Style = [fsBold]
+          OnClick = btnForwardClick
+          ParentFont = False
+          TabOrder = 1
+        end
+      end
+      object Panel3: TPanel
+        Left = 837
+        Height = 315
+        Top = 40
+        Width = 119
+        Align = alRight
+        BevelOuter = bvNone
+        ClientHeight = 315
+        ClientWidth = 119
+        TabOrder = 2
+        object btnPredictReps: TButton
+          Left = 11
+          Height = 41
+          Top = 14
+          Width = 96
+          Caption = 'Predict Reps'
+          Font.Style = [fsBold]
+          OnClick = btnPredictRepsClick
+          ParentFont = False
+          TabOrder = 0
+        end
+        object btnCopyReps: TButton
+          Left = 11
+          Height = 41
+          Top = 206
+          Width = 96
+          Caption = 'Copy Reps'
+          OnClick = btnCopyRepsClick
+          TabOrder = 1
+        end
+        object btnPredictCReps: TButton
+          Left = 11
+          Height = 41
+          Top = 262
+          Width = 96
+          Caption = 'Predict C Reps'
+          Font.Style = [fsBold]
+          OnClick = btnPredictCRepsClick
+          ParentFont = False
+          TabOrder = 2
+        end
+        object btnCopyGCReps: TButton
+          Left = 11
+          Height = 41
+          Top = 318
+          Width = 96
+          Caption = 'Copy GC Reps'
+          OnClick = btnCopyGCRepsClick
+          TabOrder = 3
+        end
+        object btnCopyGReps: TButton
+          Left = 11
+          Height = 41
+          Top = 94
+          Width = 96
+          Caption = 'Copy G Reps'
+          OnClick = btnCopyGRepsClick
+          TabOrder = 4
+        end
+        object chkPredictRepTurbo: TCheckBox
+          Left = 34
+          Height = 19
+          Top = 57
+          Width = 52
+          BidiMode = bdRightToLeftNoAlign
+          Caption = 'Turbo'
+          ParentBidiMode = False
+          TabOrder = 5
+        end
+        object btnCopyGSReps: TButton
+          Left = 11
+          Height = 41
+          Top = 150
+          Width = 96
+          Caption = 'Copy GS Reps'
+          OnClick = btnCopyGSRepsClick
+          TabOrder = 6
+        end
+      end
+    end
+    object tabSemanticMemory: TTabSheet
+      Caption = 'SEMANTIC mem'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object memoSrepDecoded: TMemo
+        Left = 4
+        Height = 441
+        Top = 30
+        Width = 656
+        Anchors = [akTop, akLeft, akBottom]
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+        WordWrap = False
+      end
+      object Label25: TLabel
+        Left = 16
+        Height = 15
+        Top = 10
+        Width = 40
+        Caption = 'Results:'
+        ParentColor = False
+      end
+    end
+    object tabQA: TTabSheet
+      Caption = 'QA'
+      ClientHeight = 445
+      ClientWidth = 956
+      object Panel4: TPanel
+        Left = 0
+        Height = 40
+        Top = 0
+        Width = 956
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 956
+        Color = clSilver
+        ParentColor = False
+        TabOrder = 0
+        object lblQAAnswer: TLabel
+          Left = 270
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'ANSWERS'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblQAQuestion: TLabel
+          Left = 11
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'QUESTIONS'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        object lblQARule: TLabel
+          Left = 730
+          Height = 19
+          Top = 16
+          Width = 169
+          AutoSize = False
+          Caption = 'RULE'
+          Font.Height = -15
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+      end
+      object ScrollBoxQA: TScrollBox
+        Left = 0
+        Height = 405
+        Top = 40
+        Width = 837
+        HorzScrollBar.Page = 820
+        VertScrollBar.Page = 388
+        Align = alClient
+        BorderStyle = bsNone
+        TabOrder = 1
+      end
+      object Panel5: TPanel
+        Left = 837
+        Height = 405
+        Top = 40
+        Width = 119
+        Align = alRight
+        BevelOuter = bvNone
+        ClientHeight = 405
+        ClientWidth = 119
+        TabOrder = 2
+        object btnPredictAnsw: TButton
+          Left = 11
+          Height = 41
+          Top = 14
+          Width = 96
+          Caption = 'Predict Answer'
+          OnClick = btnPredictAnswClick
+          TabOrder = 0
+        end
+      end
+    end
+    object tabAlign: TTabSheet
+      Caption = 'Alignment'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object edtTestWs1: TEdit
+        Left = 8
+        Height = 23
+        Top = 38
+        Width = 268
+        OnExit = edtTestWs1Exit
+        TabOrder = 0
+        Text = 'She has blue cold eyes'
+      end
+      object Label3: TLabel
+        Left = 4
+        Height = 15
+        Top = 14
+        Width = 53
+        Caption = 'Sentences'
+        ParentColor = False
+      end
+      object edtTestWs2: TEdit
+        Left = 8
+        Height = 23
+        Top = 70
+        Width = 268
+        OnExit = edtTestWs2Exit
+        TabOrder = 1
+        Text = 'He has green eyes'
+      end
+      object Label5: TLabel
+        Left = 4
+        Height = 15
+        Top = 107
+        Width = 32
+        Caption = 'Result'
+        ParentColor = False
+      end
+      object memoTestWs: TMemo
+        Left = 6
+        Height = 322
+        Top = 127
+        Width = 656
+        Anchors = [akTop, akLeft, akBottom]
+        ScrollBars = ssVertical
+        TabOrder = 2
+      end
+      object btnTestText: TButton
+        Left = 688
+        Height = 25
+        Top = 127
+        Width = 131
+        Caption = 'Text match'
+        OnClick = btnTestTextClick
+        TabOrder = 3
+      end
+      object edtTestPos1: TEdit
+        Left = 288
+        Height = 23
+        Top = 38
+        Width = 268
+        TabOrder = 4
+        Text = 'PRP VBZ JJ JJ NNS'
+      end
+      object edtTestPos2: TEdit
+        Left = 288
+        Height = 23
+        Top = 70
+        Width = 268
+        TabOrder = 5
+        Text = 'PRP VBZ JJ NNS'
+      end
+      object Label4: TLabel
+        Left = 288
+        Height = 15
+        Top = 14
+        Width = 19
+        Caption = 'Pos'
+        ParentColor = False
+      end
+      object edtTestRep2: TEdit
+        Left = 568
+        Height = 23
+        Top = 70
+        Width = 268
+        TabOrder = 6
+        Text = 'p1.ref = He, p1.eyes.color = green'
+      end
+      object Label6: TLabel
+        Left = 568
+        Height = 15
+        Top = 14
+        Width = 20
+        Caption = 'Rep'
+        ParentColor = False
+      end
+      object btnTestPos: TButton
+        Left = 688
+        Height = 25
+        Top = 158
+        Width = 131
+        Caption = 'Pos match'
+        OnClick = btnTestTextClick
+        TabOrder = 7
+      end
+      object btnTestHPos: TButton
+        Left = 688
+        Height = 25
+        Top = 190
+        Width = 131
+        Caption = 'Hybryd Pos Match'
+        OnClick = btnTestTextClick
+        TabOrder = 8
+      end
+      object btnTestHSem: TButton
+        Left = 688
+        Height = 25
+        Top = 222
+        Width = 131
+        Caption = 'Hybryd Sem Match'
+        OnClick = btnTestTextClick
+        TabOrder = 9
+      end
+      object chkTestClearResults: TCheckBox
+        Left = 8
+        Height = 19
+        Top = 454
+        Width = 167
+        Anchors = [akLeft, akBottom]
+        Caption = 'Clear the results on next run'
+        Checked = True
+        State = cbChecked
+        TabOrder = 10
+      end
+      object edtTestRep1: TEdit
+        Left = 568
+        Height = 23
+        Top = 38
+        Width = 268
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 11
+      end
+    end
+    object tabPOS: TTabSheet
+      Caption = 'POS'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object edtTabPOSSentence: TEdit
+        Left = 6
+        Height = 23
+        Top = 40
+        Width = 326
+        TabOrder = 0
+        Text = 'My name is Julie'
+      end
+      object Label15: TLabel
+        Left = 10
+        Height = 15
+        Top = 14
+        Width = 48
+        Caption = 'Sentence'
+        ParentColor = False
+      end
+      object edtTabPOSpos: TEdit
+        Left = 8
+        Height = 23
+        Top = 94
+        Width = 324
+        ReadOnly = True
+        TabOrder = 1
+      end
+      object lblPOS1: TLabel
+        Left = 10
+        Height = 15
+        Top = 70
+        Width = 22
+        Caption = 'POS'
+        ParentColor = False
+      end
+      object btnTestGenerateGRep1: TButton
+        Left = 356
+        Height = 25
+        Top = 38
+        Width = 88
+        Caption = 'POS'
+        OnClick = btnTestGenerateGRep1Click
+        TabOrder = 2
+      end
+    end
+    object tabRep: TTabSheet
+      Caption = 'Reps'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object Label14: TLabel
+        Left = 10
+        Height = 15
+        Top = 14
+        Width = 48
+        Caption = 'Sentence'
+        ParentColor = False
+      end
+      object edtTestRepSentence: TEdit
+        Left = 6
+        Height = 23
+        Top = 40
+        Width = 326
+        OnExit = edtTestRepSentenceExit
+        TabOrder = 0
+        Text = 'My name is Julie'
+      end
+      object btnTestGenerateGRep: TButton
+        Left = 1316
+        Height = 25
+        Top = 38
+        Width = 128
+        Caption = 'Predict Reps'
+        OnClick = btnTestGenerateGRepClick
+        TabOrder = 1
+      end
+      object edtGuess1: TEdit
+        Left = 6
+        Height = 23
+        Top = 94
+        Width = 324
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 2
+      end
+      object edtRepGuess1: TEdit
+        Left = 348
+        Height = 23
+        Top = 94
+        Width = 616
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 3
+      end
+      object edtGuess2: TEdit
+        Left = 6
+        Height = 23
+        Top = 134
+        Width = 324
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 4
+      end
+      object edtRepGuess2: TEdit
+        Left = 348
+        Height = 23
+        Top = 134
+        Width = 616
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 5
+      end
+      object edtGuess3: TEdit
+        Left = 6
+        Height = 23
+        Top = 174
+        Width = 324
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 6
+      end
+      object edtRepGuess3: TEdit
+        Left = 348
+        Height = 23
+        Top = 174
+        Width = 616
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 7
+      end
+      object edtGuess4: TEdit
+        Left = 6
+        Height = 23
+        Top = 214
+        Width = 324
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 8
+      end
+      object edtRepGuess4: TEdit
+        Left = 348
+        Height = 23
+        Top = 214
+        Width = 616
+        Color = clBtnFace
+        ReadOnly = True
+        TabOrder = 9
+      end
+      object Label16: TLabel
+        Left = 348
+        Height = 15
+        Top = 70
+        Width = 54
+        Caption = 'Rep Guess'
+        ParentColor = False
+      end
+      object Label17: TLabel
+        Left = 10
+        Height = 15
+        Top = 70
+        Width = 102
+        Caption = 'Matching Sentence'
+        ParentColor = False
+      end
+      object edtTestRepRepresentation: TEdit
+        Left = 348
+        Height = 23
+        Top = 40
+        Width = 616
+        TabOrder = 10
+        Text = 'p1.ref = I, p1.name = Julie'
+      end
+      object lblRepresentation: TLabel
+        Left = 348
+        Height = 15
+        Top = 16
+        Width = 79
+        Caption = 'Representation'
+        ParentColor = False
+      end
+      object lblPOS: TLabel
+        Left = 980
+        Height = 15
+        Top = 16
+        Width = 22
+        Caption = 'POS'
+        ParentColor = False
+      end
+      object edtTestRepPOS: TEdit
+        Left = 980
+        Height = 23
+        Top = 40
+        Width = 324
+        TabOrder = 11
+        Text = 'PRP$ NN VBZ NNP'
+      end
+      object lblPOS2: TLabel
+        Left = 979
+        Height = 15
+        Top = 100
+        Width = 59
+        Caption = 'Text Match'
+        ParentColor = False
+      end
+      object lblPOS3: TLabel
+        Left = 979
+        Height = 15
+        Top = 140
+        Width = 59
+        Caption = 'POS Match'
+        ParentColor = False
+      end
+      object lblPOS4: TLabel
+        Left = 979
+        Height = 15
+        Top = 180
+        Width = 98
+        Caption = 'Hybryd Pos Match'
+        ParentColor = False
+      end
+      object lblPOS5: TLabel
+        Left = 979
+        Height = 15
+        Top = 220
+        Width = 102
+        Caption = 'Hybryd Sem Match'
+        ParentColor = False
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'C Reps'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object Label7: TLabel
+        Left = 4
+        Height = 15
+        Top = 70
+        Width = 32
+        Caption = 'Result'
+        ParentColor = False
+      end
+      object memoCRepDestination: TMemo
+        Left = 6
+        Height = 371
+        Top = 94
+        Width = 656
+        Anchors = [akTop, akLeft, akBottom]
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object btnTestAddCrep: TButton
+        Left = 292
+        Height = 25
+        Top = 36
+        Width = 75
+        Caption = 'Add'
+        OnClick = btnTestAddCrepClick
+        TabOrder = 1
+      end
+      object Label10: TLabel
+        Left = 10
+        Height = 15
+        Top = 14
+        Width = 20
+        Caption = 'Rep'
+        ParentColor = False
+      end
+      object edtTestCrepRep: TEdit
+        Left = 6
+        Height = 23
+        Top = 38
+        Width = 268
+        TabOrder = 2
+        Text = 'p1.ref = I, p1.like = p2, p2.name = Peter'
+      end
+      object btnTestResetCrep: TButton
+        Left = 388
+        Height = 25
+        Top = 36
+        Width = 75
+        Caption = 'Reset'
+        OnClick = btnTestResetCrepClick
+        TabOrder = 3
+      end
+    end
+    object TabSearch: TTabSheet
+      Caption = 'Find'
+      ClientHeight = 445
+      ClientWidth = 956
+      OnShow = TabSearchShow
+      object btnSearch: TButton
+        Left = 294
+        Height = 25
+        Top = 24
+        Width = 75
+        Caption = 'Search'
+        OnClick = btnSearchClick
+        TabOrder = 0
+      end
+      object edtSearch: TEdit
+        Left = 8
+        Height = 23
+        Top = 26
+        Width = 268
+        OnKeyUp = edtSearchKeyUp
+        TabOrder = 1
+      end
+      object DBGrid4: TDBGrid
+        Left = 0
+        Height = 370
+        Top = 72
+        Width = 951
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        Color = clWindow
+        Columns = <        
+          item
+            MaxSize = 100
+            Title.Caption = 'Story Name'
+            Width = 100
+            FieldName = 'Title'
+          end        
+          item
+            Title.Caption = 'sentenceID'
+            Width = 80
+            FieldName = 'sentenceID'
+          end        
+          item
+            Title.Caption = 'POS'
+            Width = 200
+            FieldName = 'POS'
+          end        
+          item
+            Title.Caption = 'sentence'
+            Width = 350
+            FieldName = 'sentence'
+          end        
+          item
+            Title.Caption = 'representation'
+            Width = 400
+            FieldName = 'representation'
+          end        
+          item
+            Title.Caption = 'c_representation'
+            Width = 300
+            FieldName = 'context_rep'
+          end>
+        DataSource = SearchSentenceDS
+        TabOrder = 2
+      end
+    end
+    object TabSheet1: TTabSheet
+      Caption = 'DB'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object Button1: TButton
+        Left = 344
+        Height = 25
+        Top = 160
+        Width = 75
+        Caption = 'COMMIT'
+        OnClick = Button1Click
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 437
+        Height = 25
+        Top = 160
+        Width = 75
+        Caption = 'CANCEL'
+        OnClick = Button2Click
+        TabOrder = 1
+      end
+      object DBNavigator1: TDBNavigator
+        Left = 0
+        Height = 25
+        Top = 160
+        Width = 337
+        BevelOuter = bvNone
+        ChildSizing.EnlargeHorizontal = crsScaleChilds
+        ChildSizing.EnlargeVertical = crsScaleChilds
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 100
+        ClientHeight = 25
+        ClientWidth = 337
+        DataSource = Datasource1
+        Options = []
+        TabOrder = 2
+      end
+      object DBGrid1: TDBGrid
+        Left = 4
+        Height = 144
+        Top = 8
+        Width = 496
+        Color = clWindow
+        Columns = <        
+          item
+            Title.Caption = 'storyID'
+            FieldName = 'storyID'
+          end        
+          item
+            Title.Caption = 'title'
+            Width = 380
+            FieldName = 'title'
+          end>
+        DataSource = Datasource1
+        TabOrder = 3
+      end
+      object DBGrid2: TDBGrid
+        Left = 8
+        Height = 328
+        Top = 216
+        Width = 1424
+        Color = clWindow
+        Columns = <        
+          item
+            Title.Caption = 'sentenceID'
+            Width = 40
+            FieldName = 'sentenceID'
+          end        
+          item
+            Title.Caption = 'POS'
+            Width = 200
+            FieldName = 'POS'
+          end        
+          item
+            Title.Caption = 'sentence'
+            Width = 350
+            FieldName = 'sentence'
+          end        
+          item
+            Title.Caption = 'representation'
+            Width = 400
+            FieldName = 'representation'
+          end        
+          item
+            Title.Caption = 'c_representation'
+            Width = 300
+            FieldName = 'context_rep'
+          end        
+          item
+            Title.Caption = 'POS'
+            Width = 100
+            FieldName = 'POS'
+          end>
+        DataSource = Datasource2
+        TabOrder = 4
+      end
+      object DBNavigator2: TDBNavigator
+        Left = 8
+        Height = 25
+        Top = 552
+        Width = 329
+        BevelOuter = bvNone
+        ChildSizing.EnlargeHorizontal = crsScaleChilds
+        ChildSizing.EnlargeVertical = crsScaleChilds
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 100
+        ClientHeight = 25
+        ClientWidth = 329
+        DataSource = Datasource2
+        Options = []
+        TabOrder = 5
+      end
+      object Button3: TButton
+        Left = 344
+        Height = 25
+        Top = 552
+        Width = 75
+        Caption = 'COMMIT'
+        OnClick = Button3Click
+        TabOrder = 6
+      end
+      object Button4: TButton
+        Left = 437
+        Height = 25
+        Top = 552
+        Width = 75
+        Caption = 'CANCEL'
+        OnClick = Button4Click
+        TabOrder = 7
+      end
+      object Memo1: TMemo
+        Left = 888
+        Height = 179
+        Top = 6
+        Width = 310
+        Lines.Strings = (
+          'DEBUG LOG'
+        )
+        TabOrder = 8
+      end
+      object btnImportMySQL: TButton
+        Left = 516
+        Height = 25
+        Top = 14
+        Width = 184
+        Caption = 'Import from MySQL'
+        OnClick = btnImportMySQLClick
+        TabOrder = 9
+      end
+      object btnUpdateAllPOS: TButton
+        Left = 1212
+        Height = 25
+        Top = 8
+        Width = 208
+        Caption = 'Update ALL POS in DB'
+        OnClick = btnUpdateAllPOSClick
+        TabOrder = 10
+      end
+      object btnExportToMySQL: TButton
+        Left = 516
+        Height = 25
+        Top = 54
+        Width = 184
+        Caption = 'Export to MySQL'
+        OnClick = btnExportToMySQLClick
+        TabOrder = 11
+      end
+    end
+    object tabStats: TTabSheet
+      Caption = 'Stats'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object DBGrid3: TDBGrid
+        Left = 4
+        Height = 405
+        Top = 64
+        Width = 1418
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        Color = clWindow
+        Columns = <        
+          item
+            Title.Caption = 'Id'
+            FieldName = 'storyID'
+          end        
+          item
+            Title.Caption = 'Title'
+            Width = 400
+            FieldName = 'title'
+          end        
+          item
+            Title.Caption = 'WRD'
+            FieldName = 'RepAcc1_100'
+          end        
+          item
+            Title.Caption = 'POS'
+            FieldName = 'RepAcc2_100'
+          end        
+          item
+            Title.Caption = 'WP'
+            FieldName = 'RepAcc3_100'
+          end        
+          item
+            Title.Caption = 'WSEMP'
+            FieldName = 'RepAcc4_100'
+          end>
+        DataSource = Datasource1
+        DefaultDrawing = False
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        TabOrder = 0
+        OnDrawColumnCell = DBGrid3DrawColumnCell
+      end
+      object Label18: TLabel
+        Left = 12
+        Height = 15
+        Top = 26
+        Width = 74
+        Caption = 'Story average:'
+        ParentColor = False
+      end
+      object edtStoryAccuracy1: TEdit
+        Left = 116
+        Height = 23
+        Top = 34
+        Width = 36
+        Color = clBtnFace
+        TabOrder = 1
+      end
+      object edtStoryAccuracy2: TEdit
+        Left = 164
+        Height = 23
+        Top = 34
+        Width = 36
+        Color = clBtnFace
+        TabOrder = 2
+      end
+      object edtStoryAccuracy3: TEdit
+        Left = 212
+        Height = 23
+        Top = 34
+        Width = 36
+        Color = clBtnFace
+        TabOrder = 3
+      end
+      object edtStoryAccuracy4: TEdit
+        Left = 260
+        Height = 23
+        Top = 34
+        Width = 36
+        Color = clBtnFace
+        TabOrder = 4
+      end
+      object Label19: TLabel
+        Left = 258
+        Height = 15
+        Top = 14
+        Width = 41
+        Caption = 'WSEMP'
+        ParentColor = False
+      end
+      object Label20: TLabel
+        Left = 220
+        Height = 15
+        Top = 14
+        Width = 18
+        Caption = 'WP'
+        ParentColor = False
+      end
+      object Label21: TLabel
+        Left = 170
+        Height = 15
+        Top = 14
+        Width = 22
+        Caption = 'POS'
+        ParentColor = False
+      end
+      object Label22: TLabel
+        Left = 120
+        Height = 15
+        Top = 14
+        Width = 26
+        Caption = 'WRD'
+        ParentColor = False
+      end
+      object Button5: TButton
+        Left = 324
+        Height = 21
+        Top = 14
+        Width = 75
+        Caption = 'Refresh'
+        OnClick = Button5Click
+        TabOrder = 5
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'Chart'
+      ClientHeight = 448
+      ClientWidth = 1098
+      object Chart1: TChart
+        Left = 4
+        Height = 440
+        Top = 30
+        Width = 800
+        AxisList = <        
+          item
+            Grid.Visible = False
+            Minors = <>
+            Range.Max = 100
+            Range.UseMax = True
+            Range.UseMin = True
+            Title.LabelFont.Orientation = 900
+            Title.Visible = True
+            Title.Caption = 'Accuracy (%)'
+          end        
+          item
+            Grid.Visible = False
+            Intervals.Count = 10
+            Intervals.MaxLength = 100
+            Intervals.MinLength = 0
+            Intervals.NiceSteps = '010'
+            Alignment = calBottom
+            Minors = <>
+            Range.Max = 100
+            Range.UseMax = True
+            Range.UseMin = True
+            Title.Visible = True
+            Title.Caption = '% of sentences used'
+          end>
+        BackColor = clWhite
+        Foot.Brush.Color = clBtnFace
+        Foot.Font.Color = clBlue
+        Legend.Alignment = laBottomCenter
+        Legend.SymbolWidth = 100
+        Legend.Visible = True
+        Title.Brush.Color = clBtnFace
+        Title.Font.Color = clBlue
+        Title.Text.Strings = (
+          'TAChart'
+        )
+        Color = clWhite
+        ParentColor = False
+        object Chart1LineSeries1: TLineSeries
+          Title = 'WRD'
+          LinePen.Color = clRed
+          LinePen.Width = 2
+          Source = ChartSrcWrd
+        end
+        object Chart1LineSeries2: TLineSeries
+          Title = 'POS'
+          LinePen.Color = clGreen
+          LinePen.Width = 2
+          Source = ChartSrcPos
+        end
+        object Chart1LineSeries3: TLineSeries
+          Title = 'WP'
+          LinePen.Color = clFuchsia
+          LinePen.Width = 2
+          Source = ChartSrcWP
+        end
+        object Chart1LineSeries4: TLineSeries
+          Title = 'WSEMP'
+          LinePen.Color = clBlue
+          LinePen.Width = 2
+          Source = ChartSrcWSEMP
+        end
+      end
+      object Label23: TLabel
+        Left = 284
+        Height = 15
+        Top = 14
+        Width = 256
+        Caption = 'Representation accuracy vs Prediction DB size'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+    object tabLog: TTabSheet
+      Caption = 'Log'
+      ClientHeight = 445
+      ClientWidth = 956
+      object DBGridLog: TDBGrid
+        Left = 4
+        Height = 438
+        Top = 6
+        Width = 955
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        Color = clWindow
+        Columns = <        
+          item
+            Title.Caption = 'Time stamp'
+            Width = 80
+            FieldName = 'TimeStamp'
+          end        
+          item
+            Title.Caption = 'Selected'
+            Width = 80
+            FieldName = 'StorySelectedCount'
+          end        
+          item
+            Title.Caption = 'Selected %'
+            Width = 80
+            FieldName = 'StorySelectedPrc'
+          end        
+          item
+            Title.Caption = 'Total stories'
+            Width = 80
+            FieldName = 'StoryCount'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WRD 25'
+            Width = 80
+            FieldName = 'AvgAcc1_25'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'POS 25'
+            Width = 80
+            FieldName = 'AvgAcc2_25'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WP 25'
+            Width = 80
+            FieldName = 'AvgAcc3_25'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WSEMP 25'
+            Width = 80
+            FieldName = 'AvgAcc4_25'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WRD 50'
+            Width = 80
+            FieldName = 'AvgAcc1_50'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'POS 50'
+            Width = 80
+            FieldName = 'AvgAcc2_50'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WP 50'
+            Width = 80
+            FieldName = 'AvgAcc3_50'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WSEMP 50'
+            Width = 80
+            FieldName = 'AvgAcc4_50'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WRD 100'
+            Width = 80
+            FieldName = 'AvgAcc1_100'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'POS 100'
+            Width = 80
+            FieldName = 'AvgAcc2_100'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WP 100'
+            Width = 80
+            FieldName = 'AvgAcc3_100'
+          end        
+          item
+            Title.Alignment = taCenter
+            Title.Caption = 'WSEMP 100'
+            Width = 80
+            FieldName = 'AvgAcc4_100'
+          end>
+        DataSource = DatasourceLog
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        TabOrder = 0
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 170
+    Top = 0
+    Width = 964
+    Align = alTop
+    Anchors = [akTop, akRight]
+    ClientHeight = 170
+    ClientWidth = 964
+    TabOrder = 1
+    object edtStoryNumber: TEdit
+      Left = 12
+      Height = 26
+      Top = 20
+      Width = 32
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      Color = clBtnFace
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -15
+      Font.Name = 'Arial'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      OnEnter = edtStoryNumberEnter
+      OnExit = edtStoryNumberExit
+      OnKeyUp = edtStoryNumberKeyUp
+      ParentFont = False
+      TabOrder = 18
+      Text = '0'
+    end
+    object DBNavigator3: TDBNavigator
+      Left = 114
+      Height = 30
+      Top = 23
+      Width = 209
+      Anchors = [akTop, akRight]
+      BevelOuter = bvNone
+      ChildSizing.EnlargeHorizontal = crsScaleChilds
+      ChildSizing.EnlargeVertical = crsScaleChilds
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 100
+      ClientHeight = 30
+      ClientWidth = 209
+      DataSource = Datasource1
+      Options = []
+      TabOrder = 0
+      VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+    end
+    object Label1: TLabel
+      Left = 16
+      Height = 30
+      Top = 16
+      Width = 63
+      Caption = 'STORY'
+      Font.Height = -21
+      ParentColor = False
+      ParentFont = False
+    end
+    object lbRecIndicator: TLabel
+      Left = 31
+      Height = 19
+      Top = 23
+      Width = 57
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = ' of {YY}'
+      Font.Height = -15
+      ParentColor = False
+      ParentFont = False
+    end
+    object btnEdit: TButton
+      Left = 736
+      Height = 21
+      Top = 94
+      Width = 56
+      Caption = 'Edit'
+      OnClick = btnEditClick
+      TabOrder = 1
+    end
+    object btAddStory: TButton
+      Left = 737
+      Height = 24
+      Top = 64
+      Width = 55
+      Caption = 'Add'
+      Color = clForm
+      Font.Color = clRed
+      Font.Height = -12
+      OnClick = btAddStoryClick
+      ParentFont = False
+      TabOrder = 2
+    end
+    object btDelStory: TButton
+      Left = 737
+      Height = 24
+      Top = 120
+      Width = 55
+      Caption = 'Delete'
+      Color = clForm
+      Font.Color = clRed
+      Font.Height = -12
+      OnClick = btDelStoryClick
+      ParentFont = False
+      TabOrder = 3
+    end
+    object memoStory: TDBMemo
+      Left = 8
+      Height = 106
+      Top = 56
+      Width = 720
+      DataField = 'body'
+      DataSource = Datasource1
+      ReadOnly = True
+      ScrollBars = ssVertical
+      TabOrder = 4
+    end
+    object edtStoryTitle: TDBEdit
+      Left = 96
+      Height = 23
+      Top = 23
+      Width = 232
+      DataField = 'title'
+      DataSource = Datasource1
+      ReadOnly = True
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 5
+    end
+    object Label2: TLabel
+      Left = 618
+      Height = 15
+      Top = 90
+      Width = 91
+      Anchors = [akTop, akRight]
+      Caption = 'Rep accuracy (%)'
+      ParentColor = False
+    end
+    object edtAccuracy1: TDBEdit
+      Left = 774
+      Height = 23
+      Top = 84
+      Width = 36
+      DataField = 'RepAcc1_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 6
+    end
+    object edtAccuracy2: TDBEdit
+      Left = 822
+      Height = 23
+      Top = 84
+      Width = 36
+      DataField = 'RepAcc2_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 7
+    end
+    object edtAccuracy3: TDBEdit
+      Left = 870
+      Height = 23
+      Top = 84
+      Width = 35
+      DataField = 'RepAcc3_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 8
+    end
+    object Label8: TLabel
+      Left = 618
+      Height = 15
+      Top = 118
+      Width = 135
+      Anchors = [akTop, akRight]
+      Caption = 'Context Rep accuracy (%)'
+      ParentColor = False
+    end
+    object Label9: TLabel
+      Left = 778
+      Height = 15
+      Top = 64
+      Width = 26
+      Anchors = [akTop, akRight]
+      Caption = 'WRD'
+      ParentColor = False
+    end
+    object Label11: TLabel
+      Left = 828
+      Height = 15
+      Top = 64
+      Width = 22
+      Anchors = [akTop, akRight]
+      Caption = 'POS'
+      ParentColor = False
+    end
+    object Label12: TLabel
+      Left = 878
+      Height = 15
+      Top = 64
+      Width = 18
+      Anchors = [akTop, akRight]
+      Caption = 'WP'
+      ParentColor = False
+    end
+    object Label13: TLabel
+      Left = 916
+      Height = 15
+      Top = 64
+      Width = 41
+      Anchors = [akTop, akRight]
+      Caption = 'WSEMP'
+      ParentColor = False
+    end
+    object edtAccuracy5: TDBEdit
+      Left = 774
+      Height = 23
+      Top = 112
+      Width = 36
+      DataField = 'CRepAcc_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 9
+    end
+    object btnPredictAllReps: TButton
+      Left = 773
+      Height = 30
+      Top = 8
+      Width = 72
+      Anchors = [akTop, akRight]
+      Caption = 'Predict All'
+      Font.Style = [fsBold]
+      OnClick = btnPredictAllRepsClick
+      ParentFont = False
+      TabOrder = 10
+    end
+    object scrollPredictAll: TProgressBar
+      Left = 853
+      Height = 20
+      Top = 12
+      Width = 104
+      Anchors = [akTop, akRight]
+      TabOrder = 11
+    end
+    object chkPredictAllRepsTurbo: TCheckBox
+      Left = 785
+      Height = 19
+      Top = 40
+      Width = 52
+      Anchors = [akTop, akRight]
+      BidiMode = bdRightToLeftNoAlign
+      Caption = 'Turbo'
+      ParentBidiMode = False
+      TabOrder = 12
+    end
+    object Label28: TLabel
+      Left = 618
+      Height = 15
+      Top = 146
+      Width = 143
+      Anchors = [akTop, akRight]
+      Caption = 'Semantic Rep accuracy (%)'
+      ParentColor = False
+    end
+    object edtSAccuracy1: TDBEdit
+      Left = 775
+      Height = 23
+      Top = 140
+      Width = 36
+      DataField = 'SRepAcc1_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 13
+    end
+    object edtSAccuracy2: TDBEdit
+      Left = 823
+      Height = 23
+      Top = 140
+      Width = 36
+      DataField = 'SRepAcc2_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 14
+    end
+    object edtSAccuracy3: TDBEdit
+      Left = 871
+      Height = 23
+      Top = 140
+      Width = 35
+      DataField = 'SRepAcc3_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 15
+    end
+    object edtAccuracy4: TDBEdit
+      Left = 919
+      Height = 23
+      Top = 84
+      Width = 35
+      DataField = 'RepAcc4_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 16
+    end
+    object edtSAccuracy4: TDBEdit
+      Left = 919
+      Height = 23
+      Top = 140
+      Width = 35
+      DataField = 'SRepAcc4_100'
+      DataSource = Datasource1
+      ReadOnly = True
+      Anchors = [akTop, akRight]
+      CharCase = ecNormal
+      Color = clBtnFace
+      MaxLength = 0
+      TabOrder = 17
+    end
+    object lbRecIndicator1: TLabel
+      Left = -54
+      Height = 19
+      Top = 25
+      Width = 57
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = 'STORY'
+      Font.Height = -15
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+  object SQLite3Connection1: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = 'D:\work\PaulKp\NASX\NASX\DBdemo.sqlite'
+    KeepConnection = False
+    Transaction = SQLTransaction1
+    LogEvents = []
+    Options = []
+    left = 1232
+    top = 552
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'storyID'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'title'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'body'
+        DataType = ftString
+        Precision = -1
+        Size = 5000
+      end    
+      item
+        Name = 'categoryID'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'RepAcc1_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc2_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc3_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc4_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc1_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc2_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc3_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc4_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc1_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc2_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc3_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'RepAcc4_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'persnt'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'CRepAcc_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc1_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc2_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc3_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc4_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc1_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc2_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc3_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc4_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc1_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc2_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc3_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'SRepAcc4_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end>
+    AfterScroll = SQLQuery1AfterScroll
+    BeforeDelete = SQLQuery1BeforeDelete
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select *'
+      'from'
+      'storyTBL'
+    )
+    Params = <>
+    left = 1160
+    top = 424
+    object SQLQuery1storyID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'storyID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object SQLQuery1title: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'title'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery1body: TStringField
+      DisplayWidth = 5000
+      FieldKind = fkData
+      FieldName = 'body'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 5000
+    end
+    object SQLQuery1RepAcc1_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'RepAcc1_100'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1RepAcc2_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'RepAcc2_100'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1RepAcc3_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'RepAcc3_100'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1RepAcc4_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'RepAcc4_100'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1CRepAcc_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'CRepAcc_100'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1SRepAcc1_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'SRepAcc1_100'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1SRepAcc2_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'SRepAcc2_100'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1SRepAcc3_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'SRepAcc3_100'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+    object SQLQuery1SRepAcc4_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'SRepAcc4_100'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayFormat = '###'
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 0
+    end
+  end
+  object Datasource1: TDatasource
+    DataSet = SQLQuery1
+    left = 1232
+    top = 408
+  end
+  object SQLQuery2: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'sentenceID'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'sentence'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'storyID'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'representation'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'repguess1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'repguess2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'repguess3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'repguess4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'rep_baseguess'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guesses1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guesses2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guesses3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guesses4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'context_rep'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'POS'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'CRcomment'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'tick1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'tick2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'tick3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'tick4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'sntid1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'sntid2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'sntid3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'sntid4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'crepguess1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'crepguess2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'crepguess3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'crepguess4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end>
+    AfterInsert = SQLQuery2AfterInsert
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select *'
+      'from sentenceTBL'
+      'where sentenceTBL.storyID = :storyID'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'storyID'
+        ParamType = ptInput
+        Size = 4
+      end>
+    DataSource = Datasource1
+    left = 1136
+    top = 512
+    object SQLQuery2sentenceID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'sentenceID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object SQLQuery2sentence: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sentence'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2storyID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'storyID'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object SQLQuery2representation: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'representation'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2repguess1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess1'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2repguess2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess2'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2repguess3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess3'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2repguess4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess4'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2rep_baseguess: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'rep_baseguess'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2guesses1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses1'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2guesses2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses2'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2guesses3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses3'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2guesses4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses4'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2context_rep: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'context_rep'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2POS: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'POS'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2CRcomment: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'CRcomment'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2tick1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick1'
+      Index = 16
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2tick2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick2'
+      Index = 17
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2tick3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick3'
+      Index = 18
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2tick4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick4'
+      Index = 19
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2sntid1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid1'
+      Index = 20
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2sntid2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid2'
+      Index = 21
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2sntid3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid3'
+      Index = 22
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object SQLQuery2sntid4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid4'
+      Index = 23
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+  end
+  object Datasource2: TDatasource
+    DataSet = SQLQuery2
+    left = 1240
+    top = 488
+  end
+  object RepTabQuery: TSQLQuery
+    FieldDefs = <>
+    AfterInsert = SQLQuery2AfterInsert
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select *'
+      'from sentenceTBL'
+      'where sentenceTBL.storyID = :storyID'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'storyID'
+        ParamType = ptInput
+        Size = 4
+      end>
+    DataSource = Datasource1
+    left = 1096
+    top = 696
+    object RepTabQuerysentenceID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'sentenceID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object RepTabQuerysentence: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sentence'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerystoryID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'storyID'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object RepTabQueryrepresentation: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'representation'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryrepguess1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess1'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryrepguess2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess2'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryrepguess3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess3'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryrepguess4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'repguess4'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryrep_baseguess: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'rep_baseguess'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryguesses1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses1'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryguesses2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses2'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryguesses3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses3'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryguesses4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guesses4'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerycontext_rep: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'context_rep'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryPOS: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'POS'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQueryCRcomment: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'CRcomment'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerytick1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick1'
+      Index = 16
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerytick2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick2'
+      Index = 17
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerytick3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick3'
+      Index = 18
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerytick4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'tick4'
+      Index = 19
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysntid1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid1'
+      Index = 20
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysntid2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid2'
+      Index = 21
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysntid3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid3'
+      Index = 22
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysntid4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'sntid4'
+      Index = 23
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerycrepguess1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'crepguess1'
+      Index = 24
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerycrepguess2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'crepguess2'
+      Index = 25
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerycrepguess3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'crepguess3'
+      Index = 26
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerycrepguess4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'crepguess4'
+      Index = 27
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysemantic_rep: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'semantic_rep'
+      Index = 28
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysrepguess1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'srepguess1'
+      Index = 29
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysrepguess2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'srepguess2'
+      Index = 30
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysrepguess3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'srepguess3'
+      Index = 31
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object RepTabQuerysrepguess4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'srepguess4'
+      Index = 32
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+  end
+  object UpdateRepQuery: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'update sentenceTBL'
+      'set representation = :representation'
+      'where sentenceID = :sentenceID'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'representation'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'sentenceID'
+        ParamType = ptInput
+      end>
+    left = 1080
+    top = 568
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = False
+    Action = caNone
+    Database = SQLite3Connection1
+    left = 1152
+    top = 568
+  end
+  object DeleteSentenceQuery: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'delete from sentenceTBL'
+      'where storyID = :storyID'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'storyID'
+        ParamType = ptInput
+      end>
+    DataSource = Datasource1
+    left = 1224
+    top = 624
+  end
+  object InsertSentenceQuery: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'insert into sentenceTBL (sentence, storyID, POS)'
+      'values (:sentence, :storyID, :POS)'
+      ''
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'sentence'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'storyID'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'POS'
+        ParamType = ptInput
+      end>
+    left = 1232
+    top = 712
+  end
+  object QATabQuery: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'questionID'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'question'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'storyID'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'answer'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'qarule'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessans1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessans2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessans3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessans4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessrule1'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessrule2'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessrule3'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'guessrule4'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select *'
+      'from qaTBL'
+      'where qaTBL.storyID = :storyID'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'storyID'
+        ParamType = ptInput
+        Size = 4
+      end>
+    DataSource = Datasource1
+    left = 1096
+    top = 624
+    object QATabQueryquestionID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'questionID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object QATabQueryquestion: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'question'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQuerystoryID: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'storyID'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object QATabQueryanswer: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'answer'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryqarule: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'qarule'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessans1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessans1'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessans2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessans2'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessans3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessans3'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessans4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessans4'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessrule1: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessrule1'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessrule2: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessrule2'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessrule3: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessrule3'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object QATabQueryguessrule4: TStringField
+      DisplayWidth = 255
+      FieldKind = fkData
+      FieldName = 'guessrule4'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+  end
+  object ChartSrcWrd: TListChartSource
+    DataPoints.Strings = (
+      '0|0|?|'
+      '25|20|?|'
+      '50|30|?|'
+      '100|40|?|'
+    )
+    Sorted = True
+    left = 832
+    top = 256
+  end
+  object ChartSrcPos: TListChartSource
+    DataPoints.Strings = (
+      '0|0|?|'
+      '25|28|?|'
+      '50|44|?|'
+      '100|60|?|'
+    )
+    Sorted = True
+    left = 840
+    top = 312
+  end
+  object ChartSrcWP: TListChartSource
+    DataPoints.Strings = (
+      '0|0|?|'
+      '25|33|?|'
+      '50|60|?|'
+      '100|80|?|'
+    )
+    Sorted = True
+    left = 840
+    top = 384
+  end
+  object ChartSrcWSEMP: TListChartSource
+    DataPoints.Strings = (
+      '0|0|?|'
+      '25|33|?|'
+      '50|76|?|'
+      '100|95|?|'
+    )
+    Sorted = True
+    left = 832
+    top = 448
+  end
+  object SQLQueryLog: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'LogId'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'TimeStamp'
+        DataType = ftDateTime
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'StoryCount'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'StorySelectedPrc'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'StorySelectedCount'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'AvgAcc1_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc2_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc3_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc4_25'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc1_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc2_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc3_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc4_50'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc1_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc2_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc3_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end    
+      item
+        Name = 'AvgAcc4_100'
+        DataType = ftBCD
+        Precision = -1
+        Size = 2
+      end>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select *'
+      'from'
+      'logTBL'
+      'order by logId desc'
+    )
+    Params = <>
+    left = 1152
+    top = 360
+    object SQLQueryLogTimeStamp: TDateTimeField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'TimeStamp'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object SQLQueryLogStoryCount: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'StoryCount'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object SQLQueryLogStorySelectedPrc: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'StorySelectedPrc'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogStorySelectedCount: TLongintField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'StorySelectedCount'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object SQLQueryLogAvgAcc1_25: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc1_25'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc2_25: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc2_25'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc3_25: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc3_25'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc4_25: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc4_25'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc1_50: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc1_50'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc2_50: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc2_50'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc3_50: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc3_50'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc4_50: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc4_50'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc1_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc1_100'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc2_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc2_100'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc3_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc3_100'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+    object SQLQueryLogAvgAcc4_100: TBCDField
+      DisplayWidth = 10
+      FieldKind = fkData
+      FieldName = 'AvgAcc4_100'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = -1
+      Currency = False
+      MaxValue = 0
+      MinValue = 0
+      Size = 2
+    end
+  end
+  object DatasourceLog: TDatasource
+    DataSet = SQLQueryLog
+    left = 1248
+    top = 344
+  end
+  object SearchSentenceQuery: TSQLQuery
+    FieldDefs = <>
+    AfterScroll = SearchSentenceQueryAfterScroll
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'Select SentenceTbl.*, StoryTBL.Title'
+      ' From SentenceTbl'
+      ' LEFT JOIN StoryTBL on SentenceTBL.StoryID = StoryTBL.StoryID;'
+    )
+    Params = <>
+    left = 976
+    top = 568
+  end
+  object SearchSentenceDS: TDatasource
+    DataSet = SearchSentenceQuery
+    left = 976
+    top = 624
+  end
+  object TimerRefreshStory: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = TimerRefreshStoryTimer
+    left = 1002
+    top = 380
+  end
+end

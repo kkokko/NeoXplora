@@ -1,0 +1,10 @@
+#ecounter{margin:5px 0 0 7px}
+.cntSeparator{font-size:14px;color:#000;margin:10px 6px}
+.countersec ul{float:left;list-style:none;padding:5px 0 10px}
+.countersec ul li{float:left;background-image:none;list-style-type:none;margin:0;padding:0}
+.countersec ul li.days{padding:0 0 0 8px}
+.countersec ul li.hours{padding:0 0 0 30px}
+.countersec ul li.mints{padding:0 0 0 23px}
+.countersec ul li.secnds{padding:0 0 0 15px}
+.edate{background-image:url(images/date.png);background-repeat:no-repeat;background-position:left center;padding-left:25px}
+.evenue{background-image:url(images/venue.png);background-repeat:no-repeat;background-position:left center;padding-left:25px}

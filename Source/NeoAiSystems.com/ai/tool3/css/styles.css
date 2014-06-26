@@ -1,0 +1,70 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+a {
+	outline: none!important;
+}
+#left {
+	width: 49%;
+	float: left;
+	margin-top: 12px;
+}
+#right {
+	width: 49%;
+	float: right;
+	margin-top: 12px;
+}
+.row {
+	padding: 4px 0;
+}
+.qarow {
+	padding: 4px 0;
+}
+.sentencetxt {
+	width: 30%;
+}
+.representationtxt {
+	width: 64%;
+}
+.contextreptxt {
+	width: 64%;
+}
+.CRcommenttxt {
+	width: 98%;
+}
+.POStxt {
+	width: 62%;
+}
+.questiontxt {
+	width: 40%;
+}
+.answertxt {
+	width: 18%;
+}
+.qaruletxt {
+	width: 40%;
+}
+
+.countCOL {
+	width: 5%;
+}
+.sentenceCOL {
+	width: 25%;
+}
+.storyCOL {
+	width: 10%;
+}
+.representationCOL {
+	width: 25%;
+}
+.guessrepCOL {
+	width: 25%;
+}
+
+
+
+input[type="text"] {
+	font-size: 10px;
+	padding: 2px;
+}

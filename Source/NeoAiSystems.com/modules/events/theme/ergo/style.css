@@ -1,0 +1,51 @@
+/* == Event Viewer == */
+.event-wrapper{background:rgba(255,255,255,0.1);color:#fff;line-height:1.3em;border-radius:3px;padding:10px;max-width:500px}
+.event-list h3.event-title span{font-size:12px;float:right;font-family:Arial, sans-serif}
+.event-list h6.event-venue{margin:0 0 5px;padding:0}
+.event-list div.event-desc{clear:both;font-size:12px}
+.event-list .contact-info-toggle{display:block;text-align:right;font-size:11px;text-transform:uppercase;margin-top:5px;margin-bottom:10px}
+.event-list .event-contact{text-align:right}
+
+/* == Calendar == */
+#calendar{position:relative}
+#calendar .header{color:#fff;background:rgba(0,0,0,0.2);box-shadow:inset 0 1px 0 rgba(0,0,0,0.1);height:40px;line-height:40px}
+#calendar .header > div{font-size:16px;font-family:Oswald;text-align:center}
+#calendar .body{position:relative;background:rgba(0,0,0,0.1)}
+#calendar .section{box-shadow:inset 0 -1px 0 rgba(255,255,255,0.5)}
+#calendar .section:last-child{box-shadow:none;border-bottom:none}
+#calendar .section > div:first-child{box-shadow:none}
+#calendar .section > div,#calendar .header > div{float:left;width:14.28%}
+#calendar .section > div{height:100px;box-shadow:-1px 0 0 rgba(255,255,255,0.5)}
+#calendar .section > div > span.date{display:block;color:#777;text-shadow:1px 1px 0 rgba(255,255,255,0.5);font-size:26px;text-align:left;padding:10px}
+#calendar .section > div > div{padding:0}
+#calendar .section > div > span.weekday{padding-left:5px;display:none}
+#calendar .section > div.today{background:rgba(0,0,0,0.1)}
+#calendar .section > div:last-child,#calendar .header > div:last-child{border-right:none}
+#calendar .section > div > div a,#calendar .section > div > div span{color:rgba(255,255,255,0.7);font-size:10px;text-transform:uppercase;display:inline-block;border-radius:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;margin-bottom:1px;background:rgba(255,255,255,0.5);padding:0 5px}
+#calendar .section > div > div a:hover,#calendar .section > div > div span:hover{opacity:0.7}
+#calendar .nav{height:50px;position:relative;padding:20px 20px 10px 30px}
+#calendar .nav h3{float:right;font-weight:300;text-transform:uppercase;letter-spacing:4px;text-shadow:1px 1px 0 rgba(0,0,0,0.1);line-height:30px;margin-right:100px}
+#calendar .nav h3 span.month{margin-right:10px}
+#calendar .nav nav{position:absolute;right:0}
+#calendar .nav nav a{float:left;width:30px;height:30px;position:relative;border-radius:0 3px 3px 0;box-shadow:inset 0 1px rgba(0,0,0,0.1);background-color:rgba(0,0,0,0.1);margin:0 1px}
+#calendar .nav nav a.prev{border-radius:3px 0 0 3px;background-image:url(images/nav.png);background-repeat:no-repeat;background-position:0 -30px}
+#calendar .nav nav a.next{background-image:url(images/nav.png);background-repeat:no-repeat;background-position:0 0}
+#calendar .nav nav a.next:hover{background-position:-30px 0}
+#calendar .nav nav a.prev:hover{background-position:-30px -30px}
+
+@media screen and (max-width: 880px) , screen and (max-height: 450px) {
+  #calendar .nav{padding:0}
+  #calendar .nav nav{top:0}
+  #calendar .nav nav
+  #calendar-container,#calendar,#calendar .header,#calendar .section > div > span.date{position:relative;top:auto;left:auto;bottom:auto;right:auto;height:auto;width:auto}
+  #calendar .nav h3{float:none;width:auto;text-align:left;margin:0}
+  #calendar .section,.ie9 #calendar .section > div,#calendar .section > div{height:auto;width:100%;border:none}
+  #calendar .section > div{float:none;min-height:50px;box-shadow:inset 0 -1px rgba(255,255,255,0.2)!important;border-radius:0!important}
+  #calendar .section > div.empty{min-height:0;height:0;box-shadow:none!important;padding:0}
+  #calendar .section{box-shadow:none}
+  #calendar .section > div > div{margin-top:0;padding-left:0;margin-left:20px;max-width:70%;display:inline-block}
+  #calendar .section > div.today{background:rgba(255,255,255,0.2)}
+  #calendar .section > div > span.date{width:30px;display:inline-block;text-align:right}
+  #calendar .section > div > span.weekday{display:inline-block;width:40px;color:rgba(0,0,0,0.7);font-size:10px;text-transform:uppercase}
+  #calendar .header,#calendar .section > div.today:after{display:none}
+}

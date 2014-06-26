@@ -1,0 +1,35 @@
+.istoolbar{border:#E2E2E2 1px solid;border-left:#DADADA 2px solid}
+.context_istoolbar{border:#fff 1px solid;background-color:#EBEEF4}
+.main_istoolbar table{min-height:1px}
+.isdd_over,.isdd_norm,.isdd_sel,.isdd_disb{font-family:tahoma;font-size:11px;text-align:left;padding:1px 5px 2px 2px}
+.isdd_norm{color:#000;background-color:#fff}
+.isdd_disb{background-color:#fff;color:#999}
+.isgroup{ border:1px solid #ccc; }
+.isgroupcontent{padding-bottom:0;padding-top:0}
+.isgrouptitle{font-family:tahoma;font-size:7pt;font-weight:700;height:10px;color:#506070;padding:3px 3px 1px}
+.bdrgrpleft{background-image:url(silver/left.gif);background-repeat:repeat-y;width:4px;height:100%}
+.bdrgrpright{background-image:url(silver/right.gif);background-repeat:repeat-y;width:4px;height:100%}
+.bdrgrptop{background-image:url(silver/top.gif);background-repeat:repeat-x;width:100%;height:3px;background-position:bottom}
+.bdrgrpbottom{background-image:url(silver/bottom.gif);background-repeat:repeat-x;width:100%;height:3px}
+.bdrgrptopleft{line-height:3px;background-image:url(silver/topleft.gif);background-repeat:no-repeat;width:4px;height:3px;background-position:left bottom}
+.bdrgrptopright{line-height:3px;background-image:url(silver/topright.gif);background-repeat:no-repeat;width:4px;height:3px;background-position:right bottom}
+.bdrgrpbottomleft{line-height:3px;background-image:url(silver/bottomleft.gif);background-repeat:no-repeat;width:4px;height:3px}
+.bdrgrpbottomright{line-height:3px;background-image:url(silver/bottomright.gif);background-repeat:no-repeat;width:4px;height:3px;background-position:right top}
+.bdrtableft{background-image:url(silver/tab_left.gif);background-repeat:repeat-y;width:4px;height:100%}
+.bdrtabright{background-image:url(silver/tab_right.gif);background-position:right;background-repeat:repeat-y;width:4px;height:100%}
+.bdrtabtop{background-image:url(silver/tab_top.gif);background-position:bottom;background-repeat:repeat-x;height:3px}
+.bdrtabbottom{background-image:url(silver/tab_bottom.gif);background-position:bottom;background-repeat:repeat-x;width:100%;height:3px}
+.bdrtabtopleft{line-height:3px;background-image:url(silver/tab_topleft.gif);background-position:left bottom;background-repeat:no-repeat;width:4px;height:3px}
+.bdrtabtopright{line-height:3px;background-image:url(silver/tab_topright.gif);background-position:right bottom;background-repeat:no-repeat;width:4px;height:3px}
+.bdrtabbottomleft{line-height:3px;background-image:url(silver/tab_bottomleft.gif);background-repeat:no-repeat;width:4px;height:3px;background-position:left top}
+.bdrtabbottomright{line-height:3px;background-image:url(silver/tab_bottomright.gif);background-repeat:no-repeat;width:4px;height:3px;background-position:right top}
+.istabctl{background-color:#ccc;width:100%;padding:0}
+.istab{height:32px}
+.tabcontent{background-color:#EBEEF4;background-image:url(silver/tab_contentbg.gif)}
+.tabtitle{cursor:pointer;font-family:tahoma;font-size:10px;font-weight:700;color:#333;padding:5px 7px}
+.tableftsel{background-image:url(silver/tab_tableft.gif);background-repeat:no-repeat;background-position:bottom;width:5px}
+.tabrightsel{background-image:url(silver/tab_tabright.gif);background-repeat:no-repeat;background-position:bottom;width:5px}
+.tabtitlesel{background-image:url(silver/tab_tabcenter.gif);background-repeat:repeat-x;background-position:bottom;font-family:tahoma;font-size:10px;font-weight:700;color:#333;padding:5px 7px}
+.resize_bar{cursor:n-resize;background-color:#f0f0f0;height:6px;border:#cfcfcf 1px solid;border-bottom:none;background-image:url(resize.png);background-position:center center;background-repeat:no-repeat}
+.isdd_over,.isdd_sel{background-color:#eee;color:#444}
+.tableft,.tabright{width:5px}

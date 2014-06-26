@@ -1,0 +1,11 @@
+#pollcontainer .option{margin:5px 0}
+#pollcontainer .option div{line-height:1.5em;font-size:.85em}
+#pollcontainer .option div em{font-weight:500;color:#F60}
+#pollcontainer .optionbar{line-height:20px;background-image:url(images/bar-bg.png);background-repeat:repeat-x;background-position:left top;-moz-border-radius:3px;border-radius:3px;-webkit-border-radius:3px;border:1px solid #6B6B6B;color:#FFF;text-align:center;padding-right:1%;padding-left:1%;text-shadow:#6B6B6B 1px 1px 0}
+#pollcontainer .option-bar-out{background-image:url(images/bar-bg-out.png);background-repeat:repeat-x;background-position:top;border:1px solid #CCC;-moz-border-radius:3px;border-radius:3px;-webkit-border-radius:3px;padding:1px}
+#pollcontainer .question{margin-bottom:3px;font-weight:700}
+#pollcontainer .totalvote{font-weight:600;color:#1C6082}
+#pollcontainer .votenow{ background-image:url(images/buttons.png); background-repeat:repeat-x; background-position:top; border:1px solid #D6D6D6; font-size:11px; -moz-border-radius:3px; border-radius:3px; -webkit-border-radius:3px; color:#555; cursor:pointer; height: 20px!important; padding-top: 2px; padding-right: 5px; padding-bottom: 2px; padding-left: 5px; line-height: 20px; font-family: Arial, Helvetica, sans-serif; }
+#pollcontainer .option-bar{display:block;margin-bottom:2px;padding:5px;border-radius:2px;-webkit-border-radius:2px;-moz-border-radius:2px;border:solid 1px #fff;background:#fff;-webkit-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 15px 0 #eee;-moz-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 15px 0 #eee;box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 15px 0 #eee;}
+#pollcontainer .votenow:hover{color:#2E81AA;text-decoration:none}
+#pollcontainer .voteok{color:#1C6082;font-weight:600;margin:5px 0 3px}

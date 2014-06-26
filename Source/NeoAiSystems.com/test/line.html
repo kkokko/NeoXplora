@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <title>Line Charts and Options</title>
+
+    <link class="include" rel="stylesheet" type="text/css" href="assets/jquery.jqplot.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/examples.min.css" />
+    <link type="text/css" rel="stylesheet" href="assets/syntaxhighlighter/styles/shCoreDefault.min.css" />
+    <link type="text/css" rel="stylesheet" href="assets/syntaxhighlighter/styles/shThemejqPlot.min.css" />
+  
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+    <script class="include" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+   
+</head>
+<body>
+
+        <div class="col1" id="example-content">
+
+  
+
+
+<p>There are numerous line style options to control how the lines and markers are displayed.</p>
+
+<div id="chart3" style="height:300px; width:500px;"></div>
+
+<pre class="code prettyprint brush: js"></pre>
+ 
+<script class="code" type="text/javascript">
+$(document).ready(function(){
+  // Some simple loops to build up data arrays.
+  var cosPoints = [];
+  for (var i=0; i<2*Math.PI; i+=1){ 
+    cosPoints.push([i, Math.cos(i)]); 
+  }
+   
+  var sinPoints = []; 
+  for (var i=0; i<2*Math.PI; i+=0.4){ 
+     sinPoints.push([i, 2*Math.sin(i-.8)]); 
+  }
+   
+  var powPoints1 = []; 
+  for (var i=0; i<2*Math.PI; i+=1) { 
+      powPoints1.push([i, 2.5 + Math.pow(i/4, 2)]); 
+  }
+   
+  var powPoints2 = []; 
+  for (var i=0; i<2*Math.PI; i+=1) { 
+      powPoints2.push([i, -2.5 - Math.pow(i/4, 2)]); 
+  } 
+
+  var plot3 = $.jqplot('chart3', [cosPoints, sinPoints, powPoints1, powPoints2], 
+    { 
+      title:'Line Style Options', 
+      // Set default options on all series, turn on smoothing.
+      seriesDefaults: {
+          rendererOptions: {
+              smooth: true
+          }
+      },
+      // Series options are specified as an array of objects, one object
+      // for each series.
+      series:[ 
+          {
+            // Change our line width and use a diamond shaped marker.
+            lineWidth:2, 
+            markerOptions: { style:'dimaond' }
+          }, 
+          {
+            // Don't show a line, just show markers.
+            // Make the markers 7 pixels with an 'x' style
+            showLine:false, 
+            markerOptions: { size: 7, style:"x" }
+          },
+          { 
+            // Use (open) circlular markers.
+            markerOptions: { style:"circle" }
+          }, 
+          {
+            // Use a thicker, 5 pixel line and 10 pixel
+            // filled square markers.
+            lineWidth:5, 
+            markerOptions: { style:"filledSquare", size:10 }
+          }
+      ]
+    }
+  );
+   
+});
+</script>
+
+
+<!-- End example scripts -->
+
+<!-- Don't touch this! -->
+
+
+    <script class="include" type="text/javascript" src="assets/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="assets/syntaxhighlighter/scripts/shCore.min.js"></script>
+    <script type="text/javascript" src="assets/syntaxhighlighter/scripts/shBrushJScript.min.js"></script>
+    <script type="text/javascript" src="assets/syntaxhighlighter/scripts/shBrushXml.min.js"></script>
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+
+  <script class="include" type="text/javascript" src="assets/plugins/jqplot.canvasTextRenderer.min.js"></script>
+  <script class="include" type="text/javascript" src="assets/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+
+<!-- End additional plugins -->
+
+        </div>
+ 
+    <script type="text/javascript" src="example.min.js"></script>
+
+</body>
+
+
+</html>

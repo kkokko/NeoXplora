@@ -1,0 +1,44 @@
+# Options:
+# -MultiViews: Turns off multiviews so it doesn't interfer with our rewrite rules
+# -Indexes: Stop directory listings
+# +FollowSymlinks: Let out rewrite rules work
+
+Options -MultiViews -Indexes +FollowSymlinks
+
+<IfModule mod_security.c>
+	# Turn off mod_security filtering.
+	# SecFilterEngine Off
+
+	# The below probably isn't needed, but better safe than sorry.
+	SecFilterScanPOST Off
+</IfModule>
+
+ErrorDocument 404 /404.php
+
+<IfModule mod_php5.c>
+	php_value register_globals 0
+	php_value magic_quotes_gpc 0
+	php_value session.auto_start 0
+	php_value safe_mode 0
+</IfModule>
+
+<IfModule sapi_apache2.c>
+	php_value register_globals 0
+	php_value magic_quotes_gpc 0
+	php_value session.auto_start 0
+	php_value safe_mode 0
+</IfModule>
+
+<IfModule mod_rewrite.c>
+
+	RewriteEngine On
+        RewriteBase /
+
+RewriteRule uploads/(.*)$ uploads/$1
+RewriteRule ^([^/]*)\.html$ content.php?pagename=$1 [L]
+RewriteRule content/([^/]*)/$ modules.php?module=$1 [L]
+
+</IfModule>
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE application/x-javascript text/css text/html text/xml
+</IfModule>

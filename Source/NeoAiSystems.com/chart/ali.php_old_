@@ -1,0 +1,13 @@
+<?php 
+error_reporting(0);
+  mysql_connect('127.0.0.1', 'root', 'login141');
+  mysql_select_db('db179668_ai2');
+
+    $qtmp1 = 'Select * from page WHERE storyID='.$_REQUEST['id'];
+    $chk1 = mysql_query($qtmp1);
+    if($rows= mysql_fetch_array($chk1)) {
+echo "25,".round($rows['text25'],0).','.round($rows['pos25'],0).','.round($rows['hybrid25'],0)."\n";
+echo "50,".round($rows['text50'],0).','.round($rows['pos50'],0).','.round($rows['hybrid50'],0)."\n";
+echo "100,".round($rows['text100'],0).','.round($rows['pos100'],0).','.round($rows['hybrid100'],0)."\n";
+    }
+?>

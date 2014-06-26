@@ -1,0 +1,12 @@
+#twitt{border-radius:3px;border:5px solid #eee;background:#fff;-webkit-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;-moz-box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;box-shadow:0 0 0 1px rgba(0,0,0,0.1), inset 0 0 5px 0 #eee;padding:5px}
+#twitt .loading{text-align:center;display:block;margin-right:auto;margin-left:auto}
+#twitt ul li{background-image:url(images/pixel.gif);background-repeat:no-repeat;margin:0;padding:0}
+#twitt .time{display:block}
+#twitt .avatar{margin-right:5px;display:inline-block;border:2px solid #666;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;padding:3px}
+#twitt-nav{background:url(images/twitter.png) no-repeat 10px 5px;height:40px}
+#twitt-nav .prev,#twitt-nav .next{background-image:url(images/nav.png);background-repeat:no-repeat;display:block;font-size:0;float:right;margin-top:10px;cursor:pointer}
+#twitt-nav .prev{background-position:left top;height:24px;width:24px}
+#twitt-nav .next{background-position:-24px top;height:24px;width:25px}
+
+
+

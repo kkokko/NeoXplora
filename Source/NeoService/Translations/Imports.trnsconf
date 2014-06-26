@@ -1,0 +1,9 @@
+[Config]
+GeneratedFilePath=D:\work\PaulKp\NasServer\App\AppTranslations.pas
+
+[Imports]
+Count=1
+
+[Import1]
+Name=FrameWork
+Path=%SkyFrameworkPath%\Translations\

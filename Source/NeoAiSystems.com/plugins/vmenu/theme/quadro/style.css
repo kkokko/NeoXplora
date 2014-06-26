@@ -1,0 +1,11 @@
+#vmenu li{border-bottom:1px solid rgba(0,0,0,0.1);display:block!important;position:relative}
+#vmenu li a{display:block;position:relative;padding:8px 0px}
+#vmenu li a img.menuicon{padding-right:5px;top:3px;position:relative}
+#vmenu .menu-submenu{display:none;top:0}
+#vmenu .menu-submenu li{border-bottom:0;border-top:1px solid rgba(0,0,0,0.2);position:relative;background-color:rgba(0,0,0,0.1)}
+#vmenu .menu-submenu li a{padding:8px 25px}
+#vmenu .menu-submenu li ul li{background-color:rgba(0,0,0,0.2)}
+#vmenu .menu-submenu li ul li a{padding:8px 45px}
+#vmenu .menu-submenu li ul li ul li{background-color:rgba(0,0,0,0.3)}
+#vmenu .menu-submenu li ul li ul li a{padding:8px 65px}
+#vmenu .li-sub-arrow{position:absolute;right:0;}

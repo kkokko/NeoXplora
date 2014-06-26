@@ -1,0 +1,49 @@
+@import url("fonts.css");
+@import url("base.css");
+body{ color: #777; antialiased;-webkit-text-size-adjust: 100%; background-color: #fff; font:normal 14px/20px Arial, Helvetica, sans-serif;color }
+a{color:#CC413E;text-decoration:none;outline:0;-webkit-transition:all .35s ease;-moz-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease;outline:none}
+a:hover,a:focus{color:rgba(0,0,0,1);-webkit-transition:all .55s ease;-moz-transition:all .55s ease;-o-transition:all .35s ease;transition:all .55s ease;outline:none}
+hr,.hr2 {border: 0;height:5px;margin-top: 10px;margin-bottom:15px;box-shadow: 0 1px 2px #DDDDDD inset;background: none repeat scroll 0 0 #F7F7F7; box-shadow: 0 1px 2px #DDDDDD inset;}
+.hr2{margin-top:30px;margin-bottom:30px}
+
+.colred{color:#BA433F}
+.colblue{color:#3F95AE}
+.colyellow{color:#D38E2C}
+.colgreen{color:#4D9B4D}
+.relative{position:relative} 
+
+/* == Lists, Progress Bars, Labels== */
+ul.bullets li,ul.check li,ul.star li{background-image: url(../images/bullet.png); background-repeat: no-repeat; background-position: left center; padding-left:20px; }
+ul.check li{background-image: url(../images/check.png)}
+ul.star li{background-image: url(../images/star.png)}
+ol.numbers li{margin-left:15px}
+
+.label{border-radius:3px 3px 3px 3px;padding:1px 4px 2px}
+.label,.badge{background-color:#999;color:#FFF;font-size:12px;font-weight:700;line-height:14px;vertical-align:baseline;white-space:nowrap}
+.label-ok,.badge-ok{background-color:#4D9B4D}
+.label-info,.badge-info{background-color:#3F95AE}
+.label-alert,.badge-alert{background-color:#D38E2C}
+.label-error,.badge-error{background-color:#BA433F}
+
+img{max-width:100%;height:auto}
+.ie8 img{max-width:none!important}
+.flright{float:right}
+.flleft{float:left}
+.img-left{float:left; margin:0 20px 20px 0;}
+.img-right{float:right; margin:0 0 20px 20px;}
+img::selection,img::-moz-selection{background:transparent}
+.zoomOverlay{position:absolute;top:0;left:0;bottom:0;right:0;display:none;background-image:url(../images/zoom.png);background-repeat:no-repeat;background-position:center}
+.zoom{width:auto;height:auto;display:block;position:relative;overflow:hidden}
+.thumb{position:relative;float:left;max-width:33%;height:auto;box-shadow:0 0 1px rgba(255,255,255,0.2);-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;margin:0 20px 10px 0}
+.thumb img{position:relative;z-index:1;vertical-align:top;-webkit-transition:all .2s ease-out;-moz-transition:all .2s ease-out;transition:all .2s ease-out}
+.thumb a:hover img{opacity:.5}
+.thumb.max-width{max-width:100%;margin:0 0 20px}
+
+/* == Headers == */
+h1,h2,h3,h4,h5,h6{font-family:Oswald, "Segoe UI", Arial, Helvetica, sans-serif;font-weight:lighter;margin:0 0 10px;padding:0;text-rendering: optimizelegibility;}
+h1{font-size:32px;line-height:32px}
+h2{font-size:28px;line-height:28px}
+h3{font-size:24px;line-height:24px;text-indent:1px;}
+h4{ font-size: 16px; line-height: 16px; text-transform: uppercase; }
+h5{font-size:16px;line-height:16px}
+h6{font-size:14px;line-height:14px}

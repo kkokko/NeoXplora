@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="55">
+      <Unit0>
+        <Filename Value="project1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="project1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="27"/>
+        <UsageCount Value="205"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="forms/main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Main"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2097"/>
+        <CursorPos X="3" Y="2087"/>
+        <UsageCount Value="205"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="nastypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="NASTypes"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="16" Y="8"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="classes/repcalculator.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RepCalculator"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="12"/>
+        <CursorPos X="15" Y="30"/>
+        <UsageCount Value="200"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="classes/sentencealgorithm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceAlgorithm"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="98"/>
+        <CursorPos X="37" Y="116"/>
+        <UsageCount Value="200"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="classes/postagger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PosTagger"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="67"/>
+        <CursorPos X="3" Y="76"/>
+        <UsageCount Value="200"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="classes/sentencelist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceList"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="23"/>
+        <CursorPos X="38" Y="46"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="classes/sentencelistelement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceListElement"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="37"/>
+        <CursorPos X="32" Y="49"/>
+        <UsageCount Value="200"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="classes/crep.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CRep"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="22"/>
+        <CursorPos X="1" Y="38"/>
+        <UsageCount Value="204"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="classes/qaalgorithm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="QAAlgorithm"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="231"/>
+        <CursorPos X="63" Y="249"/>
+        <UsageCount Value="202"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="classes/crepdecoder.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CRepDecoder"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="34" Y="22"/>
+        <UsageCount Value="202"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="classes/hypernym.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Hypernym"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="33"/>
+        <CursorPos X="67" Y="84"/>
+        <UsageCount Value="200"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="forms/mysqlexport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MySQLExportForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MySQLExport"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="120"/>
+        <CursorPos X="1" Y="145"/>
+        <UsageCount Value="201"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="classes/coreunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CoreUnit"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="427"/>
+        <CursorPos X="1" Y="440"/>
+        <UsageCount Value="205"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="classes/sentencesplitter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SentenceSplitter"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="100"/>
+        <CursorPos X="24" Y="139"/>
+        <UsageCount Value="205"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="communication/requestgetimportinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RequestGetImportInfo"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="12"/>
+        <CursorPos X="14" Y="33"/>
+        <UsageCount Value="201"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="communication/serverinterface.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ServerInterface"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="43"/>
+        <CursorPos X="1" Y="65"/>
+        <UsageCount Value="201"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="communication/superobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="superobject"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="796"/>
+        <CursorPos X="3" Y="814"/>
+        <UsageCount Value="200"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="communication/requestgetstoriesforimport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RequestGetStoriesForImport"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="3" Y="41"/>
+        <UsageCount Value="200"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="forms/mysqlimport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MySQLImportForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MySQLImport"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="87"/>
+        <CursorPos X="28" Y="104"/>
+        <UsageCount Value="460"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="communication/requestsetstoriesfromexport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RequestSetStoriesFromExport"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="31" Y="40"/>
+        <UsageCount Value="460"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="entity/storyobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StoryObject"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="107"/>
+        <CursorPos X="1" Y="125"/>
+        <UsageCount Value="449"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="forms/editstory.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="EditStoryForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="EditStory"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="78"/>
+        <CursorPos X="1" Y="122"/>
+        <UsageCount Value="456"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="fw/entity/entity.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Entity"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="576"/>
+        <CursorPos X="1" Y="591"/>
+        <UsageCount Value="454"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="fw/typesconsts.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TypesConsts"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="55"/>
+        <CursorPos X="10" Y="72"/>
+        <UsageCount Value="454"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="fw/datatypes/stringarray.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StringArray"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="12"/>
+        <UsageCount Value="454"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="fw/datatypes/fieldinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FieldInfo"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="29" Y="18"/>
+        <UsageCount Value="454"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="fw/entity/entitymanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityManager"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="182"/>
+        <CursorPos X="3" Y="203"/>
+        <UsageCount Value="454"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="fw/skylists.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SkyLists"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1154"/>
+        <CursorPos X="36" Y="1174"/>
+        <UsageCount Value="454"/>
+        <Loaded Value="True"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="fw/typesfunctions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TypesFunctions"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="467"/>
+        <CursorPos X="42" Y="490"/>
+        <UsageCount Value="453"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="fw/entitylist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityList"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="126"/>
+        <CursorPos X="1" Y="150"/>
+        <UsageCount Value="451"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="fw/entity/streaming/entityjsonwriter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityJsonWriter"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="196"/>
+        <CursorPos X="45" Y="211"/>
+        <UsageCount Value="451"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="fw/entity/streaming/entitywriter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityWriter"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3"/>
+        <CursorPos X="21" Y="15"/>
+        <UsageCount Value="451"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="fw/skyidlist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SkyIdList"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="13" Y="8"/>
+        <UsageCount Value="451"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="fw/entity/streaming/entityjsonreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityJSonReader"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="137"/>
+        <CursorPos X="75" Y="151"/>
+        <UsageCount Value="448"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="fw/entity/streaming/entityreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityReader"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="32" Y="12"/>
+        <UsageCount Value="448"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="fw/entity/genericentity.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GenericEntity"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="168"/>
+        <CursorPos X="16" Y="186"/>
+        <UsageCount Value="448"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="entity/protoobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ProtoObject"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="23"/>
+        <CursorPos X="28" Y="40"/>
+        <UsageCount Value="444"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="forms/editstorycomponents/protocontainer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ProtoContainer"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="109"/>
+        <CursorPos X="29" Y="148"/>
+        <UsageCount Value="404"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="forms/editstorycomponents/panelproto.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PanelProto"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="87"/>
+        <CursorPos X="3" Y="90"/>
+        <UsageCount Value="402"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="forms/editstorycomponents/panelsentence.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PanelSentence"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="54"/>
+        <CursorPos X="22" Y="72"/>
+        <UsageCount Value="396"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="classes/upgrade.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Upgrade"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="25"/>
+        <CursorPos X="100" Y="38"/>
+        <UsageCount Value="387"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="fw/errors/skyexception.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SkyException"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="5"/>
+        <CursorPos X="55" Y="19"/>
+        <UsageCount Value="357"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="fw/logger/messageinfodata.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MessageInfoData"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="6"/>
+        <CursorPos X="5" Y="42"/>
+        <UsageCount Value="357"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="fw/errors/exceptionmanagerunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExceptionManagerUnit"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="357"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="fw/translations/fwtranslations.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FWTranslations"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="45" Y="12"/>
+        <UsageCount Value="356"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="fw/errors/exceptionclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExceptionClasses"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="388"/>
+        <CursorPos X="42" Y="406"/>
+        <FoldState Value=" TJD3C316X"/>
+        <UsageCount Value="356"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="fw/datatypes/keyvalue.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="KeyValue"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="19"/>
+        <UsageCount Value="356"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="fw/datatypes/keystringvalue.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="KeyStringValue"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="17"/>
+        <UsageCount Value="356"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="fw/datatypes/entityfieldnamestoken.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityFieldNamesToken"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="13"/>
+        <UsageCount Value="356"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="fw/entity/entitytokens.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityTokens"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="80"/>
+        <CursorPos X="81" Y="107"/>
+        <UsageCount Value="355"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="fw/entity/entitymapping.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityMapping"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="12" Y="35"/>
+        <UsageCount Value="354"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="fw/entity/entitymappingmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EntityMappingManager"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="58"/>
+        <CursorPos X="38" Y="88"/>
+        <UsageCount Value="354"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="communication/requestbaseclass.pas"/>
+        <UnitName Value="RequestBaseClass"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="28" Y="6"/>
+        <UsageCount Value="29"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="entity/sentenceobject.pas"/>
+        <UnitName Value="SentenceObject"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="18"/>
+        <CursorPos X="24" Y="40"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+      </Unit54>
+    </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="0"/>
+    </General>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1913" Column="1" TopLine="1898"/>
+      </Position1>
+      <Position2>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1914" Column="1" TopLine="1899"/>
+      </Position2>
+      <Position3>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1915" Column="1" TopLine="1900"/>
+      </Position3>
+      <Position4>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1916" Column="1" TopLine="1901"/>
+      </Position4>
+      <Position5>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1917" Column="1" TopLine="1902"/>
+      </Position5>
+      <Position6>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1911" Column="85" TopLine="1903"/>
+      </Position6>
+      <Position7>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2159" Column="43" TopLine="2136"/>
+      </Position7>
+      <Position8>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="18" Column="15" TopLine="1"/>
+      </Position8>
+      <Position9>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="92" Column="13" TopLine="59"/>
+      </Position9>
+      <Position10>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="93" Column="13" TopLine="60"/>
+      </Position10>
+      <Position11>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="99" Column="13" TopLine="66"/>
+      </Position11>
+      <Position12>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="105" Column="13" TopLine="72"/>
+      </Position12>
+      <Position13>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="123" Column="29" TopLine="90"/>
+      </Position13>
+      <Position14>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="126" Column="50" TopLine="93"/>
+      </Position14>
+      <Position15>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position15>
+      <Position16>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="18" Column="15" TopLine="1"/>
+      </Position16>
+      <Position17>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="92" Column="13" TopLine="59"/>
+      </Position17>
+      <Position18>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="93" Column="13" TopLine="60"/>
+      </Position18>
+      <Position19>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="99" Column="13" TopLine="66"/>
+      </Position19>
+      <Position20>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="105" Column="13" TopLine="72"/>
+      </Position20>
+      <Position21>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="123" Column="29" TopLine="90"/>
+      </Position21>
+      <Position22>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="62" Column="1" TopLine="50"/>
+      </Position22>
+      <Position23>
+        <Filename Value="classes/sentencelist.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position23>
+      <Position24>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2110" Column="74" TopLine="2095"/>
+      </Position24>
+      <Position25>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2115" Column="40" TopLine="2097"/>
+      </Position25>
+      <Position26>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2107" Column="16" TopLine="2097"/>
+      </Position26>
+      <Position27>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2143" Column="45" TopLine="2137"/>
+      </Position27>
+      <Position28>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2160" Column="32" TopLine="2143"/>
+      </Position28>
+      <Position29>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="2087" Column="3" TopLine="2092"/>
+      </Position29>
+      <Position30>
+        <Filename Value="forms/main.pas"/>
+        <Caret Line="1686" Column="3" TopLine="1689"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <Watches Count="2">
+      <Item1>
+        <Expression Value="FGuessRepTotalPrc1"/>
+      </Item1>
+      <Item2>
+        <Expression Value="P[0]"/>
+      </Item2>
+    </Watches>
+  </Debugging>
+  <EditorMacros Count="0"/>
+</CONFIG>

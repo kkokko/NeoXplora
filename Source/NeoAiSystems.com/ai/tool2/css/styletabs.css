@@ -1,0 +1,53 @@
+.usualskm ul a.selected {
+margin-bottom: 0;
+color: #FFF;
+background: #444;
+border-bottom: 1px solid #444;
+cursor: default;
+}
+
+.usualskm ul a {
+display: block;
+padding: 6px 10px;
+text-decoration: none!important;
+margin: 1px;
+margin-left: 0;
+color: #000;
+background: snow;
+border: 1px solid #444;
+}
+
+#contextrep , #qanda ,#representation  {
+padding: 10px 10px 8px 10px;
+background: snow;
+border: 2px solid #444;
+float:left;
+}
+#representation  {
+clear: left;
+}
+
+.usualskm li,.usualskm ul {
+width: auto;
+margin: 0;
+padding: 0;
+}
+
+.usualskm li {
+width: auto;
+text-align: left;
+margin: 0 auto;
+list-style: none;
+float: left;
+}
+
+.skmtble1 { width:auto; float:left;}
+.usualskm { width: auto; float:left;}
+#contextrep , #qanda { width:630px !important;}
+#representation { width:750px !important;}
+#form1,#form3 { width: 400px !important; float:left;}
+.mainformsdiv { width: 820px !important;}
+.skmsubmit { float:left; margin-top:10px; width:900px;}
+.skmadminl {float:left; width:900px;}
+#form2 { float:left; width: 1440px !important;}
+.skmfloatlf { float:left; margin-left:5px;}

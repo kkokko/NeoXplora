@@ -1,0 +1,15 @@
+#pollcontainer .option{margin:5px 0}
+#pollcontainer .option div{line-height:20px;font-size:.85em;color:#fff;}
+#pollcontainer .option div em{font-weight:400;color:#000}
+#pollcontainer .optionbar{border-radius:1px;height:20px;line-height:24px;font-size:11px;text-align:center;height:100%;background:#999;background-size:16px 16px;background-color:#ac0;background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);background-image:-moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);background-image:-ms-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);background-image:-o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);background-image:linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,transparent 75%, transparent);box-shadow:inset 0px 2px 8px rgba(255, 255, 255, .5), inset -1px -1px 0px rgba(0, 0, 0, .2)}
+#pollcontainer .option-bar-out{height:20px;border-radius:2px;overflow:hidden;background-color:#444;border:1px solid #333;background-image:url(images/trans.png);background-repeat:repeat-x;background-possition:left top;padding:1px}
+#pollcontainer .question{margin-bottom:3px;font-weight:100}
+#pollcontainer .totalvote{ margin-top:10px}
+#pollcontainer .poll-buttons{padding-top:10px}
+
+#pollcontainer .option-bar{display:block;margin-bottom:5px;padding:5px; box-shadow:0 0 1px rgba(255, 255, 255, 0.2);background-color:rgba(0,0,0,0.1);}
+#pollcontainer .voteok{margin:5px 0 3px}
+#pollcontainer .optionbar{ background-color:#34c2e3}
+#pollcontainer .votenow,#pollcontainer .totalvote,#pollcontainer .view-poll{ box-shadow:0 0 1px rgba(255, 255, 255, 0.2);color:#fff;background-attachment:scroll;background-image:url(images/trans.png);background-repeat:repeat;padding-top:4px;padding-right:10px;padding-bottom:4px;padding-left:10px;border:0px;background-color:transparent;font-size:11px;display:inline-block;text-indent:0;-webkit-transition:all .35s ease;-moz-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease;text-transform:uppercase;font-weight:700;}
+#pollcontainer .view-poll{background-color:#CC413E}
+#pollcontainer .votenow:hover,#pollcontainer .votenow:focus,#pollcontainer .view-poll:hover,#pollcontainer .view-poll:focus{background-color:rgba(0, 0, 0, 0.5);-webkit-transition:all .35s ease;-moz-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease}
