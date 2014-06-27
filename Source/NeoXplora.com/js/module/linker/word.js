@@ -1,5 +1,4 @@
-
-Sky.Class.Define("MWordControl", {
+var MWordControl_Implementation = {
   extend: "TBaseObject",
   type: "module",
   
@@ -59,4 +58,6 @@ Sky.Class.Define("MWordControl", {
     
   }
   
-});
+};
+
+Sky.Class.Define("MWordControl", MWordControl_Implementation);

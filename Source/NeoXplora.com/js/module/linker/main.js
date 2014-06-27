@@ -1,5 +1,4 @@
-
-Sky.Class.Define("MMainControl", {
+var MMainControl_Implementation = {
   extend: "TBaseObject",
   type: "module",
   
@@ -33,7 +32,7 @@ Sky.Class.Define("MMainControl", {
     },
     
     hookEvents: function() {
-    	MMainControl.hookEvent("mouseenter", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseEnter);
+      MMainControl.hookEvent("mouseenter", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseEnter);
       MMainControl.hookEvent("mouseleave", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseLeave);
       $.each(MMainControl.getConfig().buttons, function(index, item) {
         MMainControl.hookEvent("click", item, MEntityControl.addEntity);
@@ -57,4 +56,6 @@ Sky.Class.Define("MMainControl", {
     
   }
   
-});
+};
+
+Sky.Class.Define("MMainControl", MMainControl_Implementation);

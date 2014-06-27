@@ -1,5 +1,4 @@
-
-Sky.Class.Define("MEntityControl", {
+var MEntityControl_Implementation = {
   extend: "TBaseObject",
   type: "module",
   
@@ -81,4 +80,6 @@ Sky.Class.Define("MEntityControl", {
     
   }
   
-});
+};
+
+Sky.Class.Define("MEntityControl", MEntityControl_Implementation);
