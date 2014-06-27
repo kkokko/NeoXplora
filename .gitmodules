@@ -1,6 +1,6 @@
 [submodule "Source/NeoAiSystems.com/NeoShared"]
 	path = Source/NeoAiSystems.com/NeoShared
-	url = git@github.com:NeoAISystems/third-party.git
+	url = https://github.com/NeoAISystems/third-party.git
 [submodule "Source/NeoXplora.com/NeoShared"]
 	path = Source/NeoXplora.com/NeoShared
-	url = git@github.com:NeoAISystems/third-party.git
+	url = https://github.com/NeoAISystems/third-party.git
