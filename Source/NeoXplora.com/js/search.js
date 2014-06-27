@@ -104,8 +104,7 @@
 			logoIMG.addClass('transitedLogo');
 			$('.search_bar').css('padding-top','15px');
 			$('.search_bar input[type=text]').addClass('transited');
-			$('.search_bar input[type=text]').css('border','1px solid #EEE');
-			$('.searchPageContainer').css('background-color','#FFF');
+			$('#searchResults').css('background-color','#FFF');
 			
 			$('#search_box').css('width','96%');
 			$('#search_box').prepend(logoIMG);

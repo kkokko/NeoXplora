@@ -4,7 +4,7 @@
 		<div class="logo"><img src="images/NeoXploraLOGO.png" alt="" border="0" /></div>
 	</div>
 	<div class="search_bar row">
-		<input id="searchInput" type="text" value="Coming July 2014" ></input>
+		<input id="searchInput" type="text"></input>
 		<input id="submitSearch" type="submit" value="" />
 	</div>
 </div>
