@@ -1,75 +1,84 @@
-//var TRepEntityComponent
-var TEntity = function () {
-	var obj = new TObject(); 
-	
-  obj.config = {
-    "selector": '.entity',
-    "portraitSelector": '.portrait',
-    "containerSelector": ".boxRight",
-    "activeSelector": ".activeEntity",
-  }
+
+Sky.Class.Define("MEntityControl", {
+  extend: "TBaseObject",
+  type: "module",
   
-  obj.init = function(settings) {
-  	$.extend(this.config, settings);
-    obj.hookEvents();
-    obj.setup();
-  }
+  construct: function(settings) {
+    this.setConfig($.extend(this.getConfig(), settings));
+  },
   
-  obj.setup = function () {
-    $(this.config.selector).droppable({
-      drop: obj.switchEntity
-    });
-  }
+  properties: {
+    Config: {
+      "selector": '.entity',
+      "portraitSelector": '.portrait',
+      "containerSelector": ".boxRight",
+      "activeSelector": ".activeEntity"
+    }
+  },
   
-  obj.hookEvents = function() {
-  	obj.hookEvent("click", obj.config.selector, obj.select);
-  }
-  
-  obj.select = function() {
-  	var element = $(this);
-    $(obj.config.activeSelector).each(function() {
-      if(!$(this).is(element)) {
-        $(this).removeClass(obj.config.activeSelector.substring(1));
-      }
-    });
-    element.toggleClass(obj.config.activeSelector.substring(1));
-  }
-  
-  obj.switchEntity = function(event, ui) {
-    var word = ui.draggable;
-    var entity = $(this).find(obj.config.portraitSelector);
+  members: {
     
-    TWord.changeHookedEntity(word, entity);
-  }
-  
-  obj.addEntity = function() {
-    var colorID = 0;
-    $.each(obj.getClassList($(obj.config.selector).last().find(obj.config.portraitSelector)), function(index, item) {
-      if(item.indexOf('color') != -1) {
-         colorID = parseInt(item.replace('color', ''), 10);
-      }
-    });
-    colorID++;
+    init: function() {
+      MEntityControl.hookEvents();
+      MEntityControl.setup();
+    },
     
-    var newEntity = obj.newEntityHTML(colorID);
-    $(obj.config.containerSelector).append(newEntity);
-    $(obj.config.containerSelector).find('.clear').remove();
-    $(obj.config.containerSelector).append("<div class='clear'></div>");
-    obj.setup();
-  }
-  
-  obj.newEntityHTML = function(id) {
-  	var entityHTML = " " + 
-      "<div class='" + obj.config.selector.substring(1) + "'>" +
-      "<div class='" + obj.config.portraitSelector.substring(1) + " color" + id + "'>" +
-      "</div>" +
-      "<div class='info'>" +
-      "<div class='label'>Name</div><div class='value'>undefined</div>" +
-      "</div>" +
-      "</div>";
+    setup: function() {
+      $(MEntityControl.getConfig().selector).droppable({
+        drop: MEntityControl.switchEntity
+      });
+    },
+    
+    hookEvents: function() {
+      MEntityControl.hookEvent("click", MEntityControl.getConfig().selector, this.select);
+    },
+    
+    select: function() {
+      var element = $(this);
+      $(MEntityControl.getConfig().activeSelector).each(function() {
+        if(!$(this).is(element)) {
+          $(this).removeClass(MEntityControl.getConfig().activeSelector.substring(1));
+        }
+      });
+      element.toggleClass(MEntityControl.getConfig().activeSelector.substring(1));
+    },
+    
+    switchEntity: function(event, ui) {
+      var word = ui.draggable;
+      var entity = $(this).find(MEntityControl.getConfig().portraitSelector);
       
-    return entityHTML;
+      MWordControl.changeHookedEntity(word, entity);
+    },
+    
+    addEntity: function() {
+      var colorID = 0;
+      $.each(MEntityControl.getClassList($(MEntityControl.getConfig().selector).last().find(MEntityControl.getConfig().portraitSelector)), function(index, item) {
+        if(item.indexOf('color') != -1) {
+           colorID = parseInt(item.replace('color', ''), 10);
+        }
+      });
+      colorID++;
+      
+      var newEntity = MEntityControl.newEntityHTML(colorID);
+      $(MEntityControl.getConfig().containerSelector).append(newEntity);
+      $(MEntityControl.getConfig().containerSelector).find('.clear').remove();
+      $(MEntityControl.getConfig().containerSelector).append("<div class='clear'></div>");
+      MEntityControl.setup();
+    },
+    
+    newEntityHTML: function(id) {
+      var entityHTML = " " + 
+        "<div class='" + MEntityControl.getConfig().selector.substring(1) + "'>" +
+        "<div class='" + MEntityControl.getConfig().portraitSelector.substring(1) + " color" + id + "'>" +
+        "</div>" +
+        "<div class='info'>" +
+        "<div class='label'>Name</div><div class='value'>undefined</div>" +
+        "</div>" +
+        "</div>";
+        
+      return entityHTML;
+    }
+    
   }
   
-  return obj;
-}();
+});

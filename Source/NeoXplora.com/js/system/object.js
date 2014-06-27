@@ -1,13 +1,17 @@
-var TObject = function() {
-	var obj = {};
-	
-  obj.hookEvent = function(event, selector, func) {
-  	$(document).on(event, selector, func);
+var TBaseObject_Implementation = {
+  construct: function() {
+    this.base(this);
+  },
+  members: {
+    hookEvent: function(event, selector, func) {
+      $(document).ready(function() {
+        $(document).on(event, selector, func);
+      });
+    },
+    getClassList: function(element) {
+      return element.attr('class').split(/\s+/);
+    }
   }
-  
-  obj.getClassList = function(element) {
-    return element.attr('class').split(/\s+/);
-  }
-  
-  return obj;
-}
+};
+
+Sky.Class.Define("TBaseObject", TBaseObject_Implementation);

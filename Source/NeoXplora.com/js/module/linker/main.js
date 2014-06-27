@@ -1,43 +1,60 @@
-var TMain = function () {
-  var obj = new TObject(); 
+
+Sky.Class.Define("MMainControl", {
+  extend: "TBaseObject",
+  type: "module",
   
-  obj.config = {
-    "buttonSelector": '.button',
-    "buttonDropdownSelector": '.button-dropdown',
-    "buttons": [
-      '#add-person',
-      '#add-object'
-    ],
-    "hidden": true
+  construct: function(settings) {
+    this.setConfig($.extend(this.getConfig(), settings));
+  },
+  
+  properties: {
+    Config: {
+      "buttonSelector": '.button',
+      "buttonDropdownSelector": '.button-dropdown',
+      "buttons": [
+        '#add-person',
+        '#add-object'
+      ],
+      "hidden": true
+    }
+  },
+  
+  members: {
+    
+    init: function() {
+      MMainControl.hookEvents();
+      MMainControl.setup();
+    },
+    
+    setup: function () {
+      $(MMainControl.getConfig().selector).droppable({
+        drop: MMainControl.switchEntity
+      });
+    },
+    
+    hookEvents: function() {
+    	MMainControl.hookEvent("mouseenter", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseEnter);
+      MMainControl.hookEvent("mouseleave", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseLeave);
+      $.each(MMainControl.getConfig().buttons, function(index, item) {
+        MMainControl.hookEvent("click", item, MEntityControl.addEntity);
+      });
+    },
+    
+    buttonMouseEnter: function() {
+      $(this).find(MMainControl.getConfig().buttonDropdownSelector).show();
+      MMainControl.getConfig().hidden = false;
+    },
+    
+    buttonMouseLeave: function() {
+      var button = $(this); 
+      MMainControl.getConfig().hidden = true;
+      setTimeout(function () {
+        if(MMainControl.getConfig().hidden) {
+          button.find(MMainControl.getConfig().buttonDropdownSelector).hide();
+        }
+      }, 200);
+    }
+    
   }
   
-  obj.init = function(settings) {
-    $.extend(this.config, settings);
-    obj.hookEvents();
-  }
-  
-  obj.hookEvents = function() {
-  	obj.hookEvent("mouseenter", obj.config.buttonSelector, obj.buttonMouseEnter);
-  	obj.hookEvent("mouseleave", obj.config.buttonSelector, obj.buttonMouseLeave);
-    $.each(obj.config.buttons, function(index, item) {
-    	obj.hookEvent("click", item, TEntity.addEntity);
-    });
-  }
-  
-  obj.buttonMouseEnter = function() {
-  	$(this).find(obj.config.buttonDropdownSelector).show();
-    obj.config.hidden = false;
-  }
-  
-  obj.buttonMouseLeave = function() {
-  	var button = $(this); 
-    obj.config.hidden = true;
-    setTimeout(function () {
-      if(obj.config.hidden) {
-        button.find(obj.config.buttonDropdownSelector).hide();
-      }
-    }, 200);
-  }
-  
-  return obj;
-}();
+});

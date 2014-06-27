@@ -1,52 +1,62 @@
-var TWord = function () {
-  var obj = new TObject(); 
+
+Sky.Class.Define("MWordControl", {
+  extend: "TBaseObject",
+  type: "module",
   
-  obj.config = {
-    "selector": '.word'
-  }
+  construct: function(settings) {
+    this.setConfig($.extend(this.getConfig(), settings));
+  },
   
-  obj.init = function(settings) {
-    $.extend(Object.config, settings);
-    obj.hookEvents();
-    obj.setup();
-  }
-  
-  obj.setup = function () {
-    $(obj.config.selector).draggable({ helper: "clone" });
-  
-    $(obj.config.selector).parent(obj.config.selector).each(function() {
-      $(this).css('padding', 0);
-    });
-  }
-  
-  obj.hookEvents = function() {
-    obj.hookEvent("click", obj.config.selector, obj.switchColors);
-  }
-  
-  obj.switchColors = function() {
-    if($(TEntity.config.activeSelector).length) {
-      var word = $(this);
-      var entity = $(TEntity.config.activeSelector).find(TEntity.config.portraitSelector);
-      
-      obj.changeHookedEntity(word, entity);
-    } else {
-      alert("Please select an entity by clicking a box from the right side");
+  properties: {
+    Config: {
+      "selector": '.word'
     }
-  }
+  },
   
-  obj.changeHookedEntity = function (word, entity) {
-    $.each(obj.getClassList(word), function(index, item) {
-      if(item.indexOf('color') != -1) {
-        word.removeClass(item);
-      }
-    });
+  members: {
     
-    $.each(obj.getClassList(entity), function(index, item) {
-      if(item.indexOf('color') != -1) {
-        word.addClass(item);
+    init: function() {
+      MWordControl.hookEvents();
+      MWordControl.setup();
+    },
+    
+    setup: function () {
+      $(MWordControl.getConfig().selector).draggable({ helper: "clone" });
+    
+      $(MWordControl.getConfig().selector).parent(MWordControl.getConfig().selector).each(function() {
+        $(this).css('padding', 0);
+      });
+    },
+    
+    hookEvents: function() {
+      MWordControl.hookEvent("click", MWordControl.getConfig().selector, MWordControl.switchColors);
+    },
+    
+    switchColors: function() {
+      if($(MEntityControl.getConfig().activeSelector).length) {
+        var word = $(this);
+        var entity = $(MEntityControl.getConfig().activeSelector).find(MEntityControl.getConfig().portraitSelector);
+        
+        MWordControl.changeHookedEntity(word, entity);
+      } else {
+        alert("Please select an entity by clicking a box from the right side");
       }
-    });
+    },
+    
+    changeHookedEntity: function (word, entity) {
+      $.each(MWordControl.getClassList(word), function(index, item) {
+        if(item.indexOf('color') != -1) {
+          word.removeClass(item);
+        }
+      });
+      
+      $.each(MWordControl.getClassList(entity), function(index, item) {
+        if(item.indexOf('color') != -1) {
+          word.addClass(item);
+        }
+      });
+    }
+    
   }
   
-  return obj;
-}();
+});
