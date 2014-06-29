@@ -32,10 +32,10 @@
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
 			<DCC_DcuOutput>dcu</DCC_DcuOutput>
-			<DCC_ExeOutput>..\Build</DCC_ExeOutput>
+			<DCC_ExeOutput>Build</DCC_ExeOutput>
 			<DCC_UnitSearchPath>$(SkyFrameworkPath)\Includes;$(SkyFrameworkPath)\Includes\Errors;$(SkyFrameworkPath)\Includes\Entity;$(SkyFrameworkPath)\Includes\Logger;$(SkyFrameworkPath)\Includes\Translations;$(SkyFrameworkPath)\Includes\Db;$(SkyFrameworkPath)\Includes\Communication;$(SkyFrameworkPath)\Includes\Compatibility;$(SkyFrameworkPath)\Includes\Communication\HttpCommands;$(SkyFrameworkPath)\Includes\Communication\Async;$(SkyFrameworkPath)\Includes\Entity\Streaming;$(SkyFrameworkPath)\Includes\Communication\Requests;$(SkyFrameworkPath)\Includes\Windows;$(SkyFrameworkPath)\Includes\DataTypes;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_UsePackage>vcl;rtl;vclx;vclimg;vclactnband;dbrtl;vcldb;vcldbx;bdertl;vcltouch;xmlrtl;dsnap;dsnapcon;TeeUI;TeeDB;Tee;vclib;ibxpress;adortl;IndyCore;IndySystem;IndyProtocols;inet;intrawebdb_100_140;Intraweb_100_140;VclSmp;vclie;websnap;webdsnap;inetdb;inetdbbde;inetdbxpress;soaprtl;vclribbon;dbexpress;DbxCommonDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;DbxClientDriver;DataSnapServer;DBXInterBaseDriver;DBXMySQLDriver;dbxcds;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;dxCoreD14;cxLibraryD14;cxEditorsD14;cxExtEditorsD14;dxBarD14;dxBarDBNavD14;dxBarExtDBItemsD14;dxBarExtItemsD14;dxRibbonD14;cxBarEditItemD14;dxdbtrD14;dxtrmdD14;dxmdsD14;dxDockingD14;dxFlowChartD14;cxPageControlD14;dxLayoutControlD14;dxNavBarD14;dxorgcD14;dxdborD14;cxGridD14;cxPivotGridD14;cxPivotGridChartD14;cxPivotGridOLAPD14;cxTreeListD14;cxTreeListdxBarPopupMenuD14;cxSchedulerD14;cxSchedulerGridD14;dxComnD14;dxsbD14;dcldxSkinsCoreD14;dxSkinsCoreD14;dxSkinscxPCPainterD14;dxSkinscxScheduler3PainterD14;dxSkinsdxDLPainterD14;dxSkinsdxBarPainterD14;dxSkinsdxNavBar2PainterD14;dxSpellCheckerD14;cxSpreadSheetD14;cxVerticalGridD14;dxPSCoreD14;dxPSLnksD14;dxPScxCommonD14;dxPScxExtCommonD14;dxPScxGrid6LnkD14;dxPScxPivotGrid2LnkD14;dxPScxScheduler3LnkD14;dxPScxSSLnkD14;dxPScxTL5LnkD14;dxPScxVGridLnkD14;dxPSTeeChartD14;dxPSDBTeeChartD14;dxPSdxOCLnkD14;dxPSdxDBOCLnkD14;dxPSdxDBTVLnkD14;dxPSdxFCLnkD14;dxPSdxLC2LnkD14;dxPScxPCProdD14;dxPsPrVwAdvD14;dxPSPrVwRibbonD14;dxSkinsdxRibbonPainterD14;dxSkinXmas2008BlueD14;dxSkinBlackD14;dxSkinBlueD14;dxSkinCaramelD14;dxSkinCoffeeD14;dxSkinDarkRoomD14;dxSkinDarkSideD14;dxSkinFoggyD14;dxSkinGlassOceansD14;dxSkiniMaginaryD14;dxSkinLilianD14;dxSkinLiquidSkyD14;dxSkinLondonLiquidSkyD14;dxSkinMcSkinD14;dxSkinMoneyTwinsD14;dxSkinOffice2007BlackD14;dxSkinOffice2007BlueD14;dxSkinOffice2007GreenD14;dxSkinOffice2007PinkD14;dxSkinOffice2007SilverD14;dxSkinOffice2010BlackD14;dxSkinOffice2010BlueD14;dxSkinOffice2010SilverD14;dxSkinPumpkinD14;dxSkinSevenD14;dxSkinSharpD14;dxSkinSilverD14;dxSkinSpringTimeD14;dxSkinStardustD14;dxSkinSummer2008D14;dxSkinValentineD14;JclDeveloperTools;Jcl;JclVcl;JclContainers;JvCore;JvSystem;JvStdCtrls;JvAppFrm;JvBands;JvDB;JvDlgs;JvBDE;JvControls;JvCmp;JvCrypt;JvCustom;JvDocking;JvDotNetCtrls;JvGlobus;JvHMI;JvJans;JvManagedThreads;JvMM;JvNet;JvPageComps;JvPascalInterpreter;JvPluginSystem;JvPrintPreview;JvRuntimeDesign;JvTimeFramework;JvWizards;JvXPCtrls;crcontrols140;dacvcl140;dac140;unidacvcl140;unidac140;AbbreviaVCL;DCEF_2010;OmniThreadLibraryRuntime2010;TSVNWizardProj;SkyClientPackage;$(DCC_UsePackage)</DCC_UsePackage>
-			<DCC_DependencyCheckOutputName>..\Build\NasServer.exe</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>Build\NasServer.exe</DCC_DependencyCheckOutputName>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_Platform>x86</DCC_Platform>
 			<DCC_E>false</DCC_E>
@@ -75,39 +75,40 @@
 			<DCCReference Include="Communication\AppHttpCommandRequestJson.pas"/>
 			<DCCReference Include="Communication\WebInterfaceHandler.pas"/>
 			<DCCReference Include="App\AppTranslations.pas"/>
-			<DCCReference Include="App\AppExceptionClasses.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas"/>
 			<DCCReference Include="Requests\ClientCommands.pas"/>
 			<DCCReference Include="Requests\ClientRequest.pas"/>
-			<DCCReference Include="App\AppSQLServerQuery.pas"/>
-			<DCCReference Include="Classes\SentenceList.pas"/>
-			<DCCReference Include="Classes\NasTypes.pas"/>
-			<DCCReference Include="Classes\SentenceAlgorithm.pas"/>
-			<DCCReference Include="Classes\SentenceListElement.pas"/>
-			<DCCReference Include="Classes\Hypernym.pas"/>
-			<DCCReference Include="Entity\SentenceBase.pas"/>
-			<DCCReference Include="Classes\SentenceSplitter.pas"/>
-			<DCCReference Include="Entity\GuessObject.pas"/>
-			<DCCReference Include="Entity\StoryBase.pas"/>
-			<DCCReference Include="Classes\CRep.pas"/>
-			<DCCReference Include="Classes\CRepDecoder.pas"/>
-			<DCCReference Include="Entity\SentenceWithGuesses.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppSQLServerQuery.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceList.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\NasTypes.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceAlgorithm.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceListElement.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\Hypernym.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\StoryBase.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\CRepDecoder.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas"/>
 			<DCCReference Include="App\CacheReloadThread.pas"/>
-			<DCCReference Include="Classes\PosTagger.pas"/>
-			<DCCReference Include="Entity\LexiconLine.pas"/>
-			<DCCReference Include="Classes\RepDecoder.pas"/>
-			<DCCReference Include="Entity\RepRecord.pas"/>
-			<DCCReference Include="Classes\StringExpression.pas"/>
-			<DCCReference Include="Entity\SearchPage.pas"/>
-			<DCCReference Include="Entity\RepEntity.pas"/>
-			<DCCReference Include="Entity\RepPropertyKey.pas"/>
-			<DCCReference Include="Entity\RepObjectBase.pas"/>
-			<DCCReference Include="Entity\RepGroup.pas"/>
-			<DCCReference Include="Entity\RepPropertyValue.pas"/>
-			<DCCReference Include="Entity\RepPerson.pas"/>
-			<DCCReference Include="Entity\RepObject.pas">
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\PosTagger.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\LexiconLine.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\RepDecoder.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepRecord.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\StringExpression.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SearchPage.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepEntity.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyKey.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObjectBase.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepGroup.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyValue.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas">
 				<Form>/  , LoggerUnit
 </Form>
 			</DCCReference>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

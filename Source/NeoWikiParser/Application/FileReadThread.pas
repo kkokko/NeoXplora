@@ -49,7 +49,7 @@ type
 implementation
 
 uses
-  Math, SysUtils, AppSettings, Scheduler, AppUtils, SyncObjs;
+  Math, SysUtils, AppSettings, Scheduler, AppUtils, LoggerUnit;
 
 { TFileReadThread }
 
@@ -172,7 +172,8 @@ begin
         DoParse
       else
         FTimedLock.WaitForLock;
-    except // eat all exceptions
+    except on E: Exception do // eat all exceptions
+      TLogger.Error(Self, E);
     end;
   until Terminated;
 end;

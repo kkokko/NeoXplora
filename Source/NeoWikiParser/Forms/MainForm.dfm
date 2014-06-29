@@ -105,12 +105,26 @@ object frmMain: TfrmMain
   end
   object Label8: TLabel
     Left = 128
-    Top = 96
+    Top = 120
     Width = 77
     Height = 13
     Caption = 'Inserted pages:'
   end
   object lblInsertedPages: TLabel
+    Left = 216
+    Top = 120
+    Width = 6
+    Height = 13
+    Caption = '0'
+  end
+  object Label6: TLabel
+    Left = 128
+    Top = 96
+    Width = 66
+    Height = 13
+    Caption = 'Insert queue:'
+  end
+  object lblInserteQueuePages: TLabel
     Left = 216
     Top = 96
     Width = 6

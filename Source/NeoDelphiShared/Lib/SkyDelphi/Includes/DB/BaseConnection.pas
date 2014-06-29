@@ -201,9 +201,9 @@ begin
   TheFieldTypes := GetDBFieldTypes(SomeEntityClasses);
   TheFieldCount := TheFieldTypes.Count - 1;
   for I := 0 to TheFieldCount do
-    if not (IgnoreId and AnsiSameText(TheFieldTypes[I].Key, QuoteObject(SomeEntityClasses[0].EntityToken_Id.PropertyName))) then
+    if not (IgnoreId and AnsiSameText(TheFieldTypes[I].Key, SomeEntityClasses[0].EntityToken_Id.PropertyName)) then
     begin
-      Result := Result + TheFieldTypes[I].Key;
+      Result := Result + QuoteObject(TheFieldTypes[I].Key);
       Result := Result + ', ';
     end;
   if Length(Result) > 1 then
@@ -419,7 +419,7 @@ begin
   if TEntityManager.GetFieldInfoClassForEntityClass(AnEntityClass).FindFieldByName('Id', TheFieldInfo) then
   begin
     Result.Count := AnEntityMapping.GetFieldNameCount + 1;
-    Result.Keys[0] := QuoteObject(AnEntityMapping.GetValueForField('Id'));
+    Result.Keys[0] := AnEntityMapping.GetValueForField('Id');
     if (not AnEntityClass.GetFieldTypeFromTokens(AnEntityClass, 'Id', TheValue)) and
       not AnEntityClass.GetDBFieldType('Id', 'SQLDB', TheValue) then
       TheValue := EstimateSQLDataType(TEntityManager.GetEntityFieldInfo(AnEntityClass, 'Id'));
@@ -467,7 +467,6 @@ begin
         if TheFieldList.IndexOf(TheDBFieldTypes[J].Key) = -1 then
           TheFieldList.Add(TheDBFieldTypes[J].Key, TheDBFieldTypes[J].Value);
     end;
-    TheFieldList.Sorted := True;
     Result.Count := TheFieldList.Count;
     for I := 0 to TheFieldList.Count - 1 do
     begin

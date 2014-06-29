@@ -530,7 +530,7 @@ var
 begin
   for I := 0 to High(SomeFieldInfos) do
   begin
-    TheParam := Params.FindParam(AnEntity.MappedFieldName(SomeFieldInfos[I].FieldName));
+    TheParam := Params.FindParam(SomeFieldInfos[I].FieldName);
     if TheParam = nil then
       Continue;
     TheValue := AnEntity.GetValueForField(SomeFieldInfos[I].FieldName);

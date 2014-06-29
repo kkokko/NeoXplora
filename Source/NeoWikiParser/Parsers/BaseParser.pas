@@ -3,7 +3,7 @@ unit BaseParser;
 interface
 
 uses
-  ParseResults;
+  ParseResult;
 
 type
   TBaseParser = class
@@ -13,15 +13,15 @@ type
     FStart: PAnsiChar;
     FLastCursor: PAnsiChar;
     FEnd: PAnsiChar;
-    FResultsObject: TParseResults;
+    FResultsObject: TParseResult;
     procedure AdjustBoundaries; virtual;
     function DoExecute: AnsiString; virtual; abstract;
     function ReadContentWord(const ASeparator: AnsiString): AnsiString; overload;
     function ReadContentWord(var ASource: AnsiString; const ASeparator: AnsiString): AnsiString; overload;
   public
-    constructor Create(const AString: AnsiString; AResultsObject: TParseResults); overload;
-    class function Execute(const AString: AnsiString; AResultsObject: TParseResults): AnsiString; overload; virtual;
-    class function Execute(ACursor: PPAnsiChar; AnEnd: PAnsiChar; AResultsObject: TParseResults): AnsiString; overload; virtual;
+    constructor Create(const AString: AnsiString; AResultsObject: TParseResult); overload;
+    class function Execute(const AString: AnsiString; AResultsObject: TParseResult): AnsiString; overload; virtual;
+    class function Execute(ACursor: PPAnsiChar; AnEnd: PAnsiChar; AResultsObject: TParseResult): AnsiString; overload; virtual;
   end;
 
   TBaseParserClass = class of TBaseParser;
@@ -38,7 +38,7 @@ begin
   // override in inherited
 end;
 
-constructor TBaseParser.Create(const AString: AnsiString; AResultsObject: TParseResults);
+constructor TBaseParser.Create(const AString: AnsiString; AResultsObject: TParseResult);
 begin
   FContent := AString;
   FCursor := PAnsiChar(FContent);
@@ -48,7 +48,7 @@ begin
   FResultsObject := AResultsObject;
 end;
 
-class function TBaseParser.Execute(const AString: AnsiString; AResultsObject: TParseResults): AnsiString;
+class function TBaseParser.Execute(const AString: AnsiString; AResultsObject: TParseResult): AnsiString;
 var
   TheObject: TBaseParser;
 begin
@@ -60,7 +60,7 @@ begin
   end;
 end;
 
-class function TBaseParser.Execute(ACursor: PPAnsiChar; AnEnd: PAnsiChar; AResultsObject: TParseResults): AnsiString;
+class function TBaseParser.Execute(ACursor: PPAnsiChar; AnEnd: PAnsiChar; AResultsObject: TParseResult): AnsiString;
 var
   TheObject: TBaseParser;
 begin

@@ -38,6 +38,7 @@ type
   public
     procedure Add(const AWord, AParent: string);
     procedure Clear;
+    procedure LoadRepsFromString(const AString: string);
 
     function GetSimilarityScore(const AWord1, AWord2: string): Double;
 
@@ -46,6 +47,9 @@ type
   end;
 
 implementation
+
+uses
+  Math, SysUtils, AppConsts;
 
 { THyperNym }
 
@@ -285,6 +289,54 @@ begin
   if TheNodeDistance = 0 then
     Exit;
   Result := TheNodeDistance;
+end;
+
+procedure THyperNym.LoadRepsFromString(const AString: string);
+var
+  TheIndex: Integer;
+  TheIndex1: Integer;
+  TheIndex2: Integer;
+  TheIndex3: Integer;
+  TheKey, TheValue: string;
+  TheString: string;
+begin
+  TheString := AString;
+  TheIndex := 1;
+  while TheIndex <= Length(TheString) do
+  begin
+    TheIndex1 := Pos('eg(', AString) + 3;
+    TheIndex2 := Pos('part(', AString) + 5;
+    TheIndex3 := Pos('property(', AString) + 9;
+
+    if (TheIndex1 = 3) and (TheIndex2 = 5) and (TheIndex3 = 9) then
+      Exit;
+
+    TheIndex := Length(TheString);
+    if (TheIndex1 <> 3) then
+      TheIndex := Min(TheIndex, TheIndex1);
+    if (TheIndex2 <> 5) then
+      TheIndex := Min(TheIndex, TheIndex2);
+    if (TheIndex3 <> 9) then
+      TheIndex := Min(TheIndex, TheIndex3);
+
+    TheValue := '';
+    while TheString[TheIndex] <> ')'  do
+    begin
+      TheValue := TheValue + TheString[TheIndex];
+      Inc(TheIndex);
+      if TheIndex > Length(TheString) then
+        Exit;
+    end;
+    TheIndex := TheIndex + 4;
+    TheKey := '';
+    while (TheIndex <= Length(TheString)) and not CharInSet(TheString[TheIndex], ConstSplitChars) do
+    begin
+      TheKey := TheKey + TheString[TheIndex];
+      Inc(TheIndex);
+    end;
+    self.Add(TheKey, TheValue);
+    Delete(TheString, 1, TheIndex);
+  end;
 end;
 
 procedure THyperNym.ReleaseLevelNode(ANode: PLevelNode);

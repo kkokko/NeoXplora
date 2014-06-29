@@ -20,7 +20,7 @@ type
 implementation
 
 uses
-  SysUtils, LoggerUnit, ElementParseTagRef, ElementParseBlockQuote;
+  SysUtils, LoggerUnit, ElementParseBlockQuote;
 
 { TLevel2ParseTags }
 
@@ -37,7 +37,11 @@ begin
       Result := Result + FLastCursor^;
       Inc(FLastCursor);
     end;
-    Result := Result + ReadTag(TheTagName);
+    if TheTagName <> '' then
+      Result := Result + ReadTag(TheTagName)
+    else
+      FLastCursor := FCursor;
+
     FLastCursor := FCursor;
   end;
 end;
@@ -80,10 +84,8 @@ begin
     Result := TElementParseBlockQuote.Execute(AParamsString, AValue, FResultsObject)
   else if AName = 'br' then
     Result := #13#10
-  else begin
+  else
     Result := AValue;
-    FResultsObject.AddUnknownTag(string(AName));
-  end;
 end;
 
 function TLevel2ParseTags.FindTagEnd: AnsiString;

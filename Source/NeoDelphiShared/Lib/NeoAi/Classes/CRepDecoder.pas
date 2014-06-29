@@ -3,7 +3,7 @@ unit CRepDecoder;
 interface
 
 uses
-  Classes, SkyLists;
+  SkyLists;
 
 type
   TPRecord = class;

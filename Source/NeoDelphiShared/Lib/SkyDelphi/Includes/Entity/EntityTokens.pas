@@ -39,7 +39,9 @@ begin
   inherited Create;
   FCurrentId := 0;
   FFieldNamesList := TSkyStringList.Create;
+  FFieldNamesList.Sorted := True;
   FFieldDefs := TSkyStringStringList.Create;
+  FFieldDefs.Sorted := True;
 end;
 
 destructor TEntityTokens.Destroy;
@@ -61,7 +63,6 @@ begin
     Inc(GetInstance.FCurrentId);
     TheIndex := GetInstance.FFieldNamesList.AddObject(TheNewValue, Pointer(GetInstance.FCurrentId));
   end;
-  Result.TokenId := Integer(GetInstance.FFieldNamesList.Objects[TheIndex]);
   Result.TokenString := GetInstance.FFieldNamesList.Items[TheIndex];
   if AFieldDef = '' then
     GetInstance.FFieldDefs.Delete(Result.TokenString)

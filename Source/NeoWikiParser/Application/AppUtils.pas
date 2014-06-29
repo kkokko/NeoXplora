@@ -3,7 +3,7 @@ unit AppUtils;
 interface
 
 uses
-  Windows, SysUtils, StrUtils;
+  Windows, SysUtils;
 
 function ComparePAnsiChars(AString1, AString2: PAnsiChar): Boolean; inline;
 function ComparePChars(AString1, AString2: PChar): Boolean; inline;

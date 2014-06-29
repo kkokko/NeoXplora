@@ -3,7 +3,7 @@ unit ElementParseTagRef;
 interface
 
 uses
-  BaseParser, ParseResults;
+  BaseParser, ParseResult;
 
 { <ref params>value</ref>}
 type
@@ -11,7 +11,7 @@ type
   protected
     function DoExecute: AnsiString; override;
   public
-    class function Execute(const AParamsString, AValue: AnsiString; AResultsObject: TParseResults): AnsiString; overload;
+    class function Execute(const AParamsString, AValue: AnsiString; AResultsObject: TParseResult): AnsiString; overload;
   end;
 
 implementation
@@ -27,7 +27,7 @@ begin
 end;
 
 class function TElementParseTagRef.Execute(const AParamsString, AValue: AnsiString;
-  AResultsObject: TParseResults): AnsiString;
+  AResultsObject: TParseResult): AnsiString;
 var
   TheValue: AnsiString;
 begin

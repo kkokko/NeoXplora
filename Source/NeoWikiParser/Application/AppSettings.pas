@@ -44,7 +44,7 @@ function Settings: TAppSettings;
 implementation
 
 uses
-  TypesFunctions, SysUtils, Forms, Languages;
+  TypesFunctions, SysUtils, Forms;
 
 const
   APP_SECTION_SETTINGS = 'Settings';
@@ -89,7 +89,7 @@ procedure TAppSettings.ReadDBConnectionSettings;
 begin
   FDBConnectionSettings.ServerName := FIniFile.ReadString(APP_SECTION_DATABASE, 'ServerName', '127.0.0.1');
   FDBConnectionSettings.UserName := FIniFile.ReadString(APP_SECTION_DATABASE, 'UserName', 'root');
-  FDBConnectionSettings.Password := 'login141';
+  FDBConnectionSettings.Password:= FIniFile.ReadString(APP_SECTION_DATABASE, 'Password', 'pw');
   FDBConnectionSettings.Database := FIniFile.ReadString(APP_SECTION_DATABASE, 'Database', 'db179668_ai2_dev');
 end;
 
@@ -108,6 +108,7 @@ begin
   FIniFile.WriteString(APP_SECTION_DATABASE, 'ServerName', FDBConnectionSettings.ServerName);
   FIniFile.WriteString(APP_SECTION_DATABASE, 'UserName', FDBConnectionSettings.UserName);
   FIniFile.WriteString(APP_SECTION_DATABASE, 'Database', FDBConnectionSettings.Database);
+  FIniFile.WriteString(APP_SECTION_DATABASE, 'Password', FDBConnectionSettings.Password);
 end;
 
 constructor TAppSettings.Create;

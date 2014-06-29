@@ -5,10 +5,8 @@ interface
 type
   TEntityFieldNamesToken = record
     var
-      TokenId: Integer;
       TokenString: string;
       FieldDef: string; // containst field definition ex: [varchar](50)
-
     function ClassName: string;
     function PropertyName: string;
     function SQLToken: string;

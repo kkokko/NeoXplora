@@ -35,14 +35,14 @@ type
 implementation
 
 uses
-  AppTranslations, SysUtils;
+  SysUtils, Translations;
 
 { ESkyCatastrophicFailure }
 
 constructor ESkyCatastrophicFailure.Create(ARaisedBy: TObject;
   const ALocation: string);
 begin
-  inherited Create(ARaisedBy, ALocation, tlUncaughtException);
+  inherited Create(ARaisedBy, ALocation, 'tlUncaughtException');
 end;
 
 { EAppRepDecoderException }

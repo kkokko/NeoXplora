@@ -4,7 +4,7 @@ interface
 
 uses
   Classes, Windows, EntityList, Entity, TypesConsts, VersionableEntity, SentenceList, GuessObject, DBAccess, Uni,
-  SentenceWithGuesses, TimedLock, PosTagger;
+  SentenceWithGuesses, TimedLock, PosTagger, Hypernym;
 
 type
   TServerCore = class(TObject)
@@ -12,6 +12,7 @@ type
     type
       TLockType = (ltRead, ltWrite);
   private
+    FHypernym: THypernym;
     FLock: TRTLCriticalSection;
     FLockCount: Integer;
     FTimedLock: TTimedLock;
@@ -86,16 +87,17 @@ var
   TheSplitter: TSentenceSplitter;
   I: Integer;
 begin
-  TheSentences := nil;
   TheSplitter := nil;
+  TheSentences := nil;
   TheHyperNyms := TAppSQLServerQuery.GetHypernyms;
   try
     TheSentences := TAppSQLServerQuery.GetSplitSentences;
     TheSplitter := TSentenceSplitter.Create;
-
-    SentenceLockAquire(ltRead);
+    SentenceLockAquire(ltWrite);
     try
-      FSentenceList.SetHypernyms(TheHyperNyms);
+      FHypernym.Clear;
+      for I := 0 to High(TheHyperNyms) do
+        FHypernym.LoadRepsFromString(TheHyperNyms[I].Name);
       for I := 0 to High(TheSentences) do
       begin
         TheSentenceBase := TheSentences[I] as TSentenceBase;
@@ -104,12 +106,12 @@ begin
           TheSentenceBase.Rep, TheSentenceBase.SRep, TheSentenceBase.Pos);
       end;
     finally
-      SentenceLockRelease(ltRead);
+      SentenceLockRelease(ltWrite);
     end;
   finally
     TheSplitter.Free;
-    TEntity.FreeEntities(TheHyperNyms);
     TEntity.FreeEntities(TheSentences);
+    TEntity.FreeEntities(TheHyperNyms);
   end;
 end;
 
@@ -118,6 +120,8 @@ begin
   inherited;
   App.CreateDefaultDatabaseConnection;
   FSentenceList := TSentenceList.Create;
+  FHypernym := THypernym.Create;
+  FSentenceList.Hypernym := FHypernym;
   FPosTagger := TPosTagger.Create;
   FStartDate := Now();
   FTimedLock := TTimedLock.Create('NasServerSentenceUpdate');
@@ -130,6 +134,7 @@ destructor TServerCore.Destroy;
 begin
   DeleteCriticalSection(FLock);
   FTimedLock.Free;
+  FHypernym.Free;
   FSentenceList.Free;
   FPosTagger.Free;
   App.RemoveDefaultDatabaseConnection;

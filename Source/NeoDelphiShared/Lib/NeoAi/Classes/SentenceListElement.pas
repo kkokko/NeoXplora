@@ -3,7 +3,7 @@ unit SentenceListElement;
 interface
 
 uses
-  Classes, SkyLists, TypesConsts;
+  SkyLists, TypesConsts;
 
 type
   { TSentenceListElement }

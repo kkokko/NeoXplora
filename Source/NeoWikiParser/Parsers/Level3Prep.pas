@@ -3,12 +3,12 @@ unit Level3Prep;
 interface
 
 uses
-  BaseParser, ParseResults;
+  BaseParser, ParseResult;
 
 type
   TLevel3Prep = class(TBaseParser)
   public
-    class function Execute(const AString: AnsiString; AResultsObject: TParseResults): AnsiString; override;
+    class function Execute(const AString: AnsiString; AResultsObject: TParseResult): AnsiString; override;
   end;
 
 implementation
@@ -18,7 +18,7 @@ uses
 
 { TLevel3Prep }
 
-class function TLevel3Prep.Execute(const AString: AnsiString; AResultsObject: TParseResults): AnsiString;
+class function TLevel3Prep.Execute(const AString: AnsiString; AResultsObject: TParseResult): AnsiString;
 begin
   Result := FastStringReplace(AString, '&nbsp;...', '$^&%$#!@#', [rfReplaceAll]);
   Result := FastStringReplace(Result, '}.', '}', [rfReplaceAll]);

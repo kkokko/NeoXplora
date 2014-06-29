@@ -3,7 +3,7 @@
 interface
 
 uses
-  Classes, SkyLists, SysUtils;
+  SkyLists, SysUtils;
 
 type
   TSentenceSplitter = class
@@ -203,8 +203,6 @@ var
   TheChar: Char;
 begin
   FWordList.Clear;
-  if AStoryBody[55] = #226 then
-    TheBody := AStoryBody;
   TheBody := Trim(ReplaceInvalidStoryChars(AStoryBody));
 
   TheBody := StringReplace(TheBody, 'Mr.', 'Mr%&^', [rfReplaceAll, rfIgnoreCase]);

@@ -43,8 +43,8 @@ var
 begin
   TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetFinishedStoriesCount);
   try
-    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedRep));
-    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedCRep));
+    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedRep));
+    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedCRep));
     TheQuery.Open;
     Result := TheQuery.ReadCountData;
   finally
@@ -63,9 +63,9 @@ var
 begin
   TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetHypernyms);
   try
-    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedRep));
-    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedCRep));
-//    TheQuery.ParamByName('APageStatus').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedCRep));
+    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedRep));
+    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedCRep));
+//    TheQuery.ParamByName('APageStatus').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedCRep));
     TheQuery.Open;
     Result := TheQuery.ReadMappedEntities([TEntityWithName]);
   finally
@@ -98,8 +98,8 @@ var
 begin
   TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetSplitSentences);
   try
-    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedRep));
-    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TStoryBase.TPageStatus), Integer(psReviewedCRep));
+    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedRep));
+    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TStoryBase.TStatus), Integer(psReviewedCRep));
     TheQuery.Open;
     Result := TheQuery.ReadMappedEntities([TSentenceBase]);
   finally
@@ -152,7 +152,7 @@ begin
     TEntityWithName.EntityToken_Name.SQLToken,'` from `', TSentenceBase.SQLToken,
     '` se inner join `', TStoryBase.SQLToken, '` st on se.`',
     TSentenceBase.Tok_StoryId.SQLToken, '` = st.`', TStoryBase.EntityToken_Id.SQLToken,
-    '` where st.`', TStoryBase.Tok_PageStatus.SQLToken, '` in (:APageStatus1, :APageStatus2) and (se.`',
+    '` where st.`', TStoryBase.Tok_Status.SQLToken, '` in (:APageStatus1, :APageStatus2) and (se.`',
     TSentenceBase.Tok_SRep.SQLToken,'` like ''%eg(%'' or',
     ' se.`', TSentenceBase.Tok_SRep.SQLToken,'` like ''%part(%'' or se.`',
     TSentenceBase.Tok_SRep.SQLToken,'` like ''%property(%'');'
@@ -189,7 +189,7 @@ begin
     '`, se.`', TSentenceBase.Tok_Pos.SQLToken, '`',
     ' from `', TSentenceBase.SQLToken, '` se inner join `', TStoryBase.SQLToken, '` st on se.`',
     TSentenceBase.Tok_StoryId.SQLToken, '` = st.`', TStoryBase.EntityToken_Id.SQLToken,
-    '` where st.`', TStoryBase.Tok_PageStatus.SQLToken, '` in (:APageStatus1, :APageStatus2) and trim(se.`',
+    '` where st.`', TStoryBase.Tok_Status.SQLToken, '` in (:APageStatus1, :APageStatus2) and trim(se.`',
     TSentenceBase.Tok_Rep.SQLToken, '`) <> '''''
   ]);
 end;

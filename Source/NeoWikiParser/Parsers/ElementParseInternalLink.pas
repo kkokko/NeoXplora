@@ -17,7 +17,7 @@ type
 implementation
 
 uses
-  SysUtils, Level4ParseLanguage, LoggerUnit;
+  SysUtils, Level4ParseLanguage;
 
 { TElementParseInternalLink }
 

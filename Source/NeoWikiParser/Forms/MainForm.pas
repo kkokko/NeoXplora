@@ -3,7 +3,7 @@ unit MainForm;
 interface
 
 uses
-  Classes, Controls, Forms, StdCtrls, ComCtrls, Buttons, ExtCtrls;
+  Classes, Controls, Forms, StdCtrls, ExtCtrls;
 
 type
   TfrmMain = class(TForm)
@@ -23,6 +23,8 @@ type
     lblParsedPages: TLabel;
     Label8: TLabel;
     lblInsertedPages: TLabel;
+    Label6: TLabel;
+    lblInserteQueuePages: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -41,29 +43,35 @@ var
 implementation
 
 uses
-  TypesFunctions, SysUtils, AppSettings, Graphics, Scheduler;
+  TypesFunctions, SysUtils, AppSettings, Graphics, Scheduler, Dialogs;
 
 {$R *.dfm}
 
 procedure TfrmMain.btnStartStopClick(Sender: TObject);
 begin
-  btnStartStop.Enabled := False;
   try
-    if btnStartStop.Caption = 'Start' then
-    begin
-      FCount := 0;
-      btnStartStop.Caption := 'Stop';
-      TScheduler.GetInstance;
-      Timer1.Enabled := True;
-    end
-    else
-    begin
-      btnStartStop.Caption := 'Start';
-      TScheduler.EndInstance;
-      Timer1.Enabled := False;
+    btnStartStop.Enabled := False;
+    try
+      if btnStartStop.Caption = 'Start' then
+      begin
+        ShowMessage('STOP');
+        FCount := 0;
+        btnStartStop.Caption := 'Stop';
+        TScheduler.GetInstance;
+        Timer1.Enabled := True;
+      end
+      else
+      begin
+        ShowMessage('START');
+        btnStartStop.Caption := 'Start';
+        TScheduler.EndInstance;
+        Timer1.Enabled := False;
+      end;
+    finally
+      btnStartStop.Enabled := True;
     end;
-  finally
-    btnStartStop.Enabled := True;
+  except on e: Exception do
+    ShowMessage(E.Message);
   end;
 end;
 
@@ -104,6 +112,7 @@ begin
   lblParsedMb.Caption := FloatToStr(RoundDouble(TheInfo.BytesParsed / ConstGigabyte, 2));
   lblReadPages.Caption := FloatToStr(TheInfo.PagesRead);
   lblParsedPages.Caption := FloatToStr(TheInfo.PagesParsed);
+  lblInserteQueuePages.Caption := FloatToStr(TheInfo.PagesInsertQueue);
   lblInsertedPages.Caption := FloatToStr(TheInfo.PagesInserted);
   Inc(FCount);
   lblParsedSeconds.Caption := FloatToStr(FCount div 5);

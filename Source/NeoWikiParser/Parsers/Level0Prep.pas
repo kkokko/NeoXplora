@@ -3,14 +3,14 @@ unit Level0Prep;
 interface
 
 uses
-  BaseParser, ParseResults;
+  BaseParser, ParseResult;
 
 type
   TLevel0Prep = class(TBaseParser)
   protected
     function DoExecute: AnsiString; override;
   public
-    class function Execute(const AString: AnsiString; AResultsObject: TParseResults): AnsiString; override;
+    class function Execute(const AString: AnsiString; AResultsObject: TParseResult): AnsiString; override;
   end;
 
 implementation
@@ -25,7 +25,7 @@ begin
   Result := '';
 end;
 
-class function TLevel0Prep.Execute(const AString: AnsiString; AResultsObject: TParseResults): AnsiString;
+class function TLevel0Prep.Execute(const AString: AnsiString; AResultsObject: TParseResult): AnsiString;
 begin
   Result := FastStringReplace(AString, '&lt;', '<', [rfReplaceAll]);
   Result := FastStringReplace(Result, '&gt;', '>', [rfReplaceAll]);

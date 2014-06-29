@@ -3,7 +3,7 @@ unit ElementParseBlockQuote;
 interface
 
 uses
-  BaseParser, ParseResults;
+  BaseParser, ParseResult;
 
 { <blockquote>value</blockquote>}
 type
@@ -11,7 +11,7 @@ type
   protected
     function DoExecute: AnsiString; override;
   public
-    class function Execute(const AParamsString, AValue: AnsiString; AResultsObject: TParseResults): AnsiString; overload;
+    class function Execute(const AParamsString, AValue: AnsiString; AResultsObject: TParseResult): AnsiString; overload;
   end;
 
 implementation
@@ -27,7 +27,7 @@ begin
 end;
 
 class function TElementParseBlockQuote.Execute(const AParamsString,
-  AValue: AnsiString; AResultsObject: TParseResults): AnsiString;
+  AValue: AnsiString; AResultsObject: TParseResult): AnsiString;
 begin
   if AParamsString <> '' then
     TLogger.Warn(nil, [AResultsObject.Name, 'blockquote', 'Warning: blockquote with tag params', string(AParamsString)]);

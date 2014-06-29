@@ -3,7 +3,7 @@ unit SentenceAlgorithm;
 interface
 
 uses
-  Classes, SysUtils, SentenceListElement, HyperNym, Entity, TypesConsts;
+  Classes, SysUtils, SentenceListElement, HyperNym, TypesConsts;
 
 type
   TSentenceAlgorithm = class
@@ -14,8 +14,6 @@ type
       ConstWeightMatchMax = 2;
       ConstWeightMisMatch = -1;
       ConstWeightGap = -1;
-      ConstSplitChars = [' ', '/', '\', '[', ']', '{', '}', '(', ')', ',', '?', '!', '_', '=', '+', '"', ':', ';', '$',
-        '%', '^', '&', '*', '#', '.'];
   private
     FElement1: TSentenceListElement;
     FElement2: TSentenceListElement;
@@ -31,9 +29,8 @@ type
     function CheckPosMatch(AnIndex1, AnIndex2: Integer): Double;
     function CheckHybridPosMatch(AnIndex1, AnIndex2: Integer): Double;
     function CheckHybridSemMatch(AnIndex1, AnIndex2: Integer): Double;
-
-    procedure LoadRepsFromString(const AString: string);
-  public // for testing purposes, these should be private
+  public
+    // for testing purposes, these should be private
     function GetAdjustedRep(const ARep: string): string;
     function RunSmithWaterman: Double;
 
@@ -55,8 +52,6 @@ type
     procedure RunHybridSemMatch(var ACurrentBestScore: Double; var AnId: TId; var ARepGuess, ASemRepGuess, AMatchSentence: string);
     procedure RunCurrentMatch(var ACurrentBestScore: Double; var AnId: TId; var ARepGuess, ASemRepGuess, AMatchSentence: string);
 
-    procedure SetHypernyms(SomeHypernymStrings: TEntities);
-
     property Element1: TSentenceListElement read FElement1 write FElement1;
     property Element2: TSentenceListElement read FElement2 write FElement2;
   end;
@@ -64,7 +59,7 @@ type
 implementation
 
 uses
-  Math;
+  Math, AppConsts;
 
 { TSentenceAlgorithm }
 
@@ -332,54 +327,6 @@ begin
   end;
 end;
 
-procedure TSentenceAlgorithm.LoadRepsFromString(const AString: string);
-var
-  TheIndex: Integer;
-  TheIndex1: Integer;
-  TheIndex2: Integer;
-  TheIndex3: Integer;
-  TheKey, TheValue: string;
-  TheString: string;
-begin
-  TheString := AString;
-  TheIndex := 1;
-  while TheIndex <= Length(TheString) do
-  begin
-    TheIndex1 := Pos('eg(', AString) + 3;
-    TheIndex2 := Pos('part(', AString) + 5;
-    TheIndex3 := Pos('property(', AString) + 9;
-
-    if (TheIndex1 = 3) and (TheIndex2 = 5) and (TheIndex3 = 9) then
-      Exit;
-
-    TheIndex := Length(TheString);
-    if (TheIndex1 <> 3) then
-      TheIndex := Min(TheIndex, TheIndex1);
-    if (TheIndex2 <> 5) then
-      TheIndex := Min(TheIndex, TheIndex2);
-    if (TheIndex3 <> 9) then
-      TheIndex := Min(TheIndex, TheIndex3);
-
-    TheValue := '';
-    while TheString[TheIndex] <> ')'  do
-    begin
-      TheValue := TheValue + TheString[TheIndex];
-      Inc(TheIndex);
-      if TheIndex > Length(TheString) then
-        Exit;
-    end;
-    TheIndex := TheIndex + 4;
-    TheKey := '';
-    while (TheIndex <= Length(TheString)) and not CharInSet(TheString[TheIndex], ConstSplitChars) do
-    begin
-      TheKey := TheKey + TheString[TheIndex];
-      Inc(TheIndex);
-    end;
-    FHypernym.Add(TheKey, TheValue);
-    Delete(TheString, 1, TheIndex);
-  end;
-end;
-
 constructor TSentenceAlgorithm.Create;
 begin
   FAlignOutList := TStringList.Create;
@@ -419,15 +366,6 @@ procedure TSentenceAlgorithm.RunTextMatch(var ACurrentBestScore: Double; var AnI
 begin
   FAlignMatchFunction := CheckTextMatch;
   RunCurrentMatch(ACurrentBestScore, AnId, ARepGuess, ASemRepGuess, AMatchSentence);
-end;
-
-procedure TSentenceAlgorithm.SetHypernyms(SomeHypernymStrings: TEntities);
-var
-  I: Integer;
-begin
-  FHypernym.Clear;
-  for I := 0 to High(SomeHypernymStrings) do
-    LoadRepsFromString(SomeHypernymStrings[I].Name);
 end;
 
 procedure TSentenceAlgorithm.RunPosMatch(var ACurrentBestScore: Double; var AnId: TId; var ARepGuess,

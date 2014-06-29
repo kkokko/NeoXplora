@@ -14,38 +14,37 @@ uses
   AppHttpCommandRequestJson in 'Communication\AppHttpCommandRequestJson.pas',
   WebInterfaceHandler in 'Communication\WebInterfaceHandler.pas',
   AppTranslations in 'App\AppTranslations.pas',
-  AppExceptionClasses in 'App\AppExceptionClasses.pas',
+  AppExceptionClasses in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas',
   ClientCommands in 'Requests\ClientCommands.pas',
   ClientRequest in 'Requests\ClientRequest.pas',
-  AppSQLServerQuery in 'App\AppSQLServerQuery.pas',
-  SentenceList in 'Classes\SentenceList.pas',
-  NasTypes in 'Classes\NasTypes.pas',
-  SentenceAlgorithm in 'Classes\SentenceAlgorithm.pas',
-  SentenceListElement in 'Classes\SentenceListElement.pas',
-  Hypernym in 'Classes\Hypernym.pas',
-  SentenceBase in 'Entity\SentenceBase.pas',
-  SentenceSplitter in 'Classes\SentenceSplitter.pas',
-  GuessObject in 'Entity\GuessObject.pas',
-  StoryBase in 'Entity\StoryBase.pas',
-  CRep in 'Classes\CRep.pas',
-  CRepDecoder in 'Classes\CRepDecoder.pas',
-  SentenceWithGuesses in 'Entity\SentenceWithGuesses.pas',
+  AppSQLServerQuery in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppSQLServerQuery.pas',
+  SentenceList in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceList.pas',
+  NasTypes in '..\NeoDelphiShared\Lib\NeoAi\Classes\NasTypes.pas',
+  SentenceAlgorithm in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceAlgorithm.pas',
+  SentenceListElement in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceListElement.pas',
+  Hypernym in '..\NeoDelphiShared\Lib\NeoAi\Classes\Hypernym.pas',
+  SentenceBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas',
+  SentenceSplitter in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas',
+  GuessObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas',
+  StoryBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\StoryBase.pas',
+  CRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas',
+  CRepDecoder in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRepDecoder.pas',
+  SentenceWithGuesses in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas',
   CacheReloadThread in 'App\CacheReloadThread.pas',
-  PosTagger in 'Classes\PosTagger.pas',
-  LexiconLine in 'Entity\LexiconLine.pas',
-  RepDecoder in 'Classes\RepDecoder.pas',
-  RepRecord in 'Entity\RepRecord.pas',
-  StringExpression in 'Classes\StringExpression.pas',
-  SearchPage in 'Entity\SearchPage.pas',
-  RepEntity in 'Entity\RepEntity.pas',
-  RepPropertyKey in 'Entity\RepPropertyKey.pas',
-  RepObjectBase in 'Entity\RepObjectBase.pas',
-  RepGroup in 'Entity\RepGroup.pas',
-  RepPropertyValue in 'Entity\RepPropertyValue.pas',
-  RepPerson in 'Entity\RepPerson.pas',
-  RepObject in 'Entity\RepObject.pas'
-//  , LoggerUnit
-  ;
+  PosTagger in '..\NeoDelphiShared\Lib\NeoAi\Classes\PosTagger.pas',
+  LexiconLine in '..\NeoDelphiShared\Lib\NeoAi\Entity\LexiconLine.pas',
+  RepDecoder in '..\NeoDelphiShared\Lib\NeoAi\Classes\RepDecoder.pas',
+  RepRecord in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepRecord.pas',
+  StringExpression in '..\NeoDelphiShared\Lib\NeoAi\Classes\StringExpression.pas',
+  SearchPage in '..\NeoDelphiShared\Lib\NeoAi\Entity\SearchPage.pas',
+  RepEntity in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepEntity.pas',
+  RepPropertyKey in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyKey.pas',
+  RepObjectBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObjectBase.pas',
+  RepGroup in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepGroup.pas',
+  RepPropertyValue in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyValue.pas',
+  RepPerson in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas',
+  RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas' {/  , LoggerUnit},
+  AppConsts in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas';
 
 //var
 //  TheRec: TRepRecord;
@@ -60,7 +59,7 @@ begin
   begin
     Forms.Application.Initialize;
     Forms.Application.CreateForm(TfrmDebug, frmDebug);
-    Forms.Application.Run;
+  Forms.Application.Run;
   end
   else
   begin

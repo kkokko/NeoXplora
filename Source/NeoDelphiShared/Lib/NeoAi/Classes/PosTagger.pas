@@ -22,7 +22,7 @@ type
 implementation
 
 uses
-  Classes, SysUtils, LexiconLine, AppUnit, Entity;
+  SysUtils, LexiconLine, AppUnit, Entity;
 
 { TPosTagger }
 
