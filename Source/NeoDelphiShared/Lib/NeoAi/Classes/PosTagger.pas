@@ -33,7 +33,7 @@ var
   I: Integer;
 begin
   FWords := TSkyStringStringList.Create;
-
+  FWords.CaseSensitive := True;
   FWords.Sorted := False;
   TheLexicons := App.SQLConnection.SelectAll(TLexiconLine);
   try
@@ -61,7 +61,7 @@ begin
   TheSentenceSplitter := TSentenceSplitter.Create;
   try
     TheSentenceSplitter.SentenceSplitWords(AString);
-    GetTagsForWords(TheSentenceSplitter, AnUseModifiedPos);
+    Result := GetTagsForWords(TheSentenceSplitter, AnUseModifiedPos);
   finally
     TheSentenceSplitter.Free;
   end;

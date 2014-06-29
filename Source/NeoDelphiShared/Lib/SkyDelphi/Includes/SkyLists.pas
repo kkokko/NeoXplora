@@ -62,6 +62,8 @@ type
   end;
   PStringVariantItemList = ^TStringVariantItemList;
   TStringVariantItemList = array[0 .. MaxVariantListSize] of TStringVariantListItem;
+
+  TSkyCompareStringsMethod = function(const S1, S2: string): Integer;
 {$EndRegion}
 {$Region ' TSkyList'}
   TSkyList = class(TObject)
@@ -309,10 +311,12 @@ type
   private
     FLineBreak: TSkyString;
     FList: PStringStringItemList;
+    FCompareStringsMethod: TSkyCompareStringsMethod;
     function LinearIndexOf(const AString: TSkyString): Integer;
+    function GetCaseSensitive: Boolean;
+    procedure SetCaseSensitive(const Value: Boolean);
   protected
     function CompareItemsFromIndex(Index1, Index2: Integer): Integer; override;
-    function CompareStrings(const AString1, AString2: TSkyString): Integer; inline;
     procedure ExchangeItems(Index1, Index2: Integer); override;
     function GetItem(Index: Integer): TSkyString; reintroduce; virtual;
     function GetLink(Index: Integer): TSkyString; reintroduce; virtual;
@@ -348,6 +352,7 @@ type
     procedure LoadFromStream(Stream: TStream);
     procedure SaveToFile(const FileName: TSkyString);
     procedure SaveToStream(Stream: TStream);
+    property CaseSensitive: Boolean read GetCaseSensitive write SetCaseSensitive;
     property Items[Index: Integer]: TSkyString read GetItem write PutItem; default;
     property LineBreak: TSkyString read FLineBreak write FLineBreak;
     property Text: TSkyString read GetTextStr write SetTextStr;
@@ -2046,13 +2051,7 @@ end;
 
 function TSkyStringStringList.CompareItemsFromIndex(Index1, Index2: Integer): Integer;
 begin
-  Result := CompareStrings(Items[Index1], Items[Index2]);
-end;
-
-function TSkyStringStringList.CompareStrings(const AString1,
-  AString2: TSkyString): Integer;
-begin
-  Result := AnsiCompareText(AString1, AString2);
+  Result := FCompareStringsMethod(Items[Index1], Items[Index2]);
 end;
 
 procedure TSkyStringStringList.CopyFrom(AList: TSkyStringStringList);
@@ -2070,6 +2069,7 @@ constructor TSkyStringStringList.Create;
 begin
   inherited Create(False);
   FLineBreak := sLineBreak;
+  CaseSensitive := False;
 end;
 
 function TSkyStringStringList.CreateACopy: TSkyStringStringList;
@@ -2144,7 +2144,7 @@ begin
   while L <= H do
   begin
     I := (L + H) shr 1;
-    C := CompareStrings(FList^[I].FData, AString);
+    C := FCompareStringsMethod(FList^[I].FData, AString);
     if C < 0 then L := I + 1 else
     begin
       H := I - 1;
@@ -2165,6 +2165,11 @@ begin
   Result.Count := Count;
   for I := 0 to Count - 1 do
     Result[I] := Items[I];
+end;
+
+function TSkyStringStringList.GetCaseSensitive: Boolean;
+begin
+  Result := @FCompareStringsMethod = @AnsiCompareStr;
 end;
 
 function TSkyStringStringList.GetItem(Index: Integer): TSkyString;
@@ -2261,7 +2266,7 @@ end;
 function TSkyStringStringList.LinearIndexOf(const AString: TSkyString): Integer;
 begin
   for Result := 0 to Count - 1 do
-    if CompareStrings(Items[Result], AString) = 0 then
+    if FCompareStringsMethod(Items[Result], AString) = 0 then
       Exit;
   Result := -1;
 end;
@@ -2386,6 +2391,14 @@ begin
     ReallocMem(FList, NewCapacity * SizeOf(TStringStringListItem));
     FCapacity := NewCapacity;
   end;
+end;
+
+procedure TSkyStringStringList.SetCaseSensitive(const Value: Boolean);
+begin
+  if Value then
+    FCompareStringsMethod := AnsiCompareStr
+  else
+    FCompareStringsMethod := AnsiCompareText;
 end;
 
 procedure TSkyStringStringList.SetObjectOfValue(const AValue, Value: TSkyString);
