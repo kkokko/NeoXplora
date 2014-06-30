@@ -22,6 +22,6 @@
   </Target>
   
   <Target Name="CreatePackage">
-    <Message Text="Deploying [$(BUILD_NUMBER)]" />
+    <Message Text="Packaging [$(BUILD_NUMBER)]" />
   </Target>    
 </Project>
