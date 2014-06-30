@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    ToolsVersion="4.0"
+    DefaultTargets="BuildAndTest">
+
+  <PropertyGroup>
+    <BUILD_NUMBER>0.0.0.0</BUILD_NUMBER>
+  </PropertyGroup>
+  
+  <Target Name="BuildAndTest">
+    <CallTarget Targets="Build"/>
+	<CallTarget Targets="RunTests"/>
+  </Target>
+  
+  <Target Name="Build">
+    <Message Text="Building [$(BUILD_NUMBER)]" />
+  </Target>
+  
+  <Target Name="RunTests">
+    <Message Text="Running tests for [$(BUILD_NUMBER)]" />
+  </Target>
+  
+  <Target Name="Deploy">
+    <Message Text="Deploying [$(BUILD_NUMBER)]" />
+  </Target>    
+</Project>
