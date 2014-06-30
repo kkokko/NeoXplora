@@ -214,7 +214,7 @@ class TTrainSplit extends TActionRequest {
           $newSentencesCount++;
           $data .= '<tr>';
           $data .= '<td>Sentence ' . (((int) $level)+2) . '</td>';
-          $data .= '<td><input type="hidden" class="originalValue" value="' . htmlspecialchars($sentence_data['sentence']) . '" />
+          $data .= '<td><input type="hidden" class="originalValue" value="' . htmlspecialchars($sentences['0']['sentence']) . '" />
                         <input type="text" style="width:100%" class="newSplitValue" value="' . htmlspecialchars($newValue) . '" />
                         <input type="hidden" class="level" value="' . (((int) $level)+1) . '" />
                         <input type="hidden" class="sentenceID" value="' . $sentenceID . '" /></td>';

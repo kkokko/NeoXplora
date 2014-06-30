@@ -210,13 +210,17 @@ class TReviewSplit extends TActionRequest {
       $this->update_status(0, $protoID);
 
     $SentenceIDs = array();
-    $query = $this->query("SELECT `sentenceID` FROM `sentence` WHERE '" . $wherein . "'") or die($this->db->error);
+    $query = $this->query("SELECT `sentenceID` FROM `sentence` WHERE " . $wherein . "") or die($this->db->error);
     while($sentence_data = $query->fetch_array()) {
       $SentenceIDs[] = $sentence_data['sentenceID']; 
     }
     
-    require_once __DIR__ . "/../../NeoService/App/Global.php";
-    $server->PredictAfterSplit($SentenceIDs);
+    require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
+    try {
+      $server->PredictAfterSplit($SentenceIDs);
+    } catch(\Exception $e) {
+      var_dump($e);
+    }
   }
 
   public function dismissMultiple() {
@@ -231,7 +235,7 @@ class TReviewSplit extends TActionRequest {
     }
     $wherein .= ") ";
       
-    $this->query("UPDATE `sentence` SET `sentenceStatus` = 'ssFinishedGenerate' WHERE '" . $wherein . "'") or die($this->db->error);
+    $this->query("UPDATE `sentence` SET `sentenceStatus` = 'ssFinishedGenerate' WHERE " . $wherein . "") or die($this->db->error);
     
     foreach($protoIDs as $protoID)
       $this->update_status(0, $protoID);

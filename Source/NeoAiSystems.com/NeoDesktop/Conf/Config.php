@@ -9,7 +9,7 @@
     public static function Initialize(){     
       TConfig::$FAppFolder = str_replace('\\', '/', __DIR__)."/../";
       TConfig::$LogFilePath = TConfig::$FAppFolder . "Log/";
-      $GLOBALS["SkyFrameworkPath"] = self::$FAppFolder . "../SkpFW/";
+      $GLOBALS["SkyFrameworkPath"] = self::$FAppFolder . "../NeoShared/SkyPhp/";
       
       // register application entity classes
       $TheSkyEntityPath = $GLOBALS["SkyFrameworkPath"]."Entity";

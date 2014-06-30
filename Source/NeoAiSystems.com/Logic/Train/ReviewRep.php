@@ -89,7 +89,7 @@ class TReviewRep extends TActionRequest {
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
     $sentenceID = $_POST['sentenceID'];
     
-    require_once __DIR__ . "/../../NeoService/App/Global.php";
+    require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
     $validator = $server->ValidateRep($newValue);
     if($validator === true) {
       $this->query("UPDATE `sentence` SET `sentenceStatus` = 'ssReviewedRep', `representation` = '" . $this->db->escape_string($newValue) . "' WHERE `sentenceID` = '" . $sentenceID . "'") or die($this->db->error);

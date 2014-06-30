@@ -312,7 +312,7 @@ require_once ("init.php");
       $('#matchsentc1' + sentenceID).html('<img src="uploads/loading.gif">');
       $.ajax({
         type : "POST",
-        url : "NeoService/PredictSingle.php",
+        url : "NeoShared/Server/PredictSingle.php",
         dataType: "json",
         data : {
           'sentenceID': sentenceID

@@ -4,7 +4,7 @@ function generate_sentences($AString) {
   $splitSentences = splitIntoSentences($AString);
   
   try {
-    require_once "NeoService/App/Global.php";
+    require_once "NeoShared/Server/App/Global.php";
     $ThePOSs = $server->GetPosForSentences($splitSentences);
   } catch(Exception $e) {
     return array(array("sentence" => trim($AString), "pos" => ""));

@@ -4,7 +4,7 @@ header("content-type: text/html; charset=utf-8");
 
 define("_VALID_PHP", true);
 require_once ("init.php");
-require_once "NeoService/App/Global.php";
+require_once "NeoShared/Server/App/Global.php";
 
 include 'finediff.php';
 if (isset($_POST['page'])) {
