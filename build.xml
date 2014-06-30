@@ -21,7 +21,7 @@
     <Message Text="Running tests for [$(BUILD_NUMBER)]" />
   </Target>
   
-  <Target Name="Deploy">
+  <Target Name="CreatePackage">
     <Message Text="Deploying [$(BUILD_NUMBER)]" />
   </Target>    
 </Project>
