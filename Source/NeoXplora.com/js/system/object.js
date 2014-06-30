@@ -1,8 +1,10 @@
 var TBaseObject_Implementation = {
+	
   construct: function() {
     this.base(this);
   },
-  members: {
+  
+  methods: {
     hookEvent: function(event, selector, func) {
       $(document).ready(function() {
         $(document).on(event, selector, func);
@@ -12,6 +14,7 @@ var TBaseObject_Implementation = {
       return element.attr('class').split(/\s+/);
     }
   }
+  
 };
 
-Sky.Class.Define("TBaseObject", TBaseObject_Implementation);
+Sky.Class.Define("NeoX.TBaseObject", TBaseObject_Implementation);

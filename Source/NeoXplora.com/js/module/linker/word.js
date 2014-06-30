@@ -1,5 +1,5 @@
 var MWordControl_Implementation = {
-  extend: "TBaseObject",
+  extend: "NeoX.TBaseObject",
   type: "module",
   
   construct: function(settings) {
@@ -12,44 +12,44 @@ var MWordControl_Implementation = {
     }
   },
   
-  members: {
+  methods: {
     
     init: function() {
-      MWordControl.hookEvents();
-      MWordControl.setup();
+      NeoX.Modules.WordControl.hookEvents();
+      NeoX.Modules.WordControl.setup();
     },
     
     setup: function () {
-      $(MWordControl.getConfig().selector).draggable({ helper: "clone" });
+      $(NeoX.Modules.WordControl.getConfig().selector).draggable({ helper: "clone" });
     
-      $(MWordControl.getConfig().selector).parent(MWordControl.getConfig().selector).each(function() {
+      $(NeoX.Modules.WordControl.getConfig().selector).parent(NeoX.Modules.WordControl.getConfig().selector).each(function() {
         $(this).css('padding', 0);
       });
     },
     
     hookEvents: function() {
-      MWordControl.hookEvent("click", MWordControl.getConfig().selector, MWordControl.switchColors);
+      NeoX.Modules.WordControl.hookEvent("click", NeoX.Modules.WordControl.getConfig().selector, NeoX.Modules.WordControl.switchColors);
     },
     
     switchColors: function() {
-      if($(MEntityControl.getConfig().activeSelector).length) {
+      if($(NeoX.Modules.EntityControl.getConfig().activeSelector).length) {
         var word = $(this);
-        var entity = $(MEntityControl.getConfig().activeSelector).find(MEntityControl.getConfig().portraitSelector);
+        var entity = $(NeoX.Modules.EntityControl.getConfig().activeSelector).find(NeoX.Modules.EntityControl.getConfig().portraitSelector);
         
-        MWordControl.changeHookedEntity(word, entity);
+        NeoX.Modules.WordControl.changeHookedEntity(word, entity);
       } else {
         alert("Please select an entity by clicking a box from the right side");
       }
     },
     
     changeHookedEntity: function (word, entity) {
-      $.each(MWordControl.getClassList(word), function(index, item) {
+      $.each(NeoX.Modules.WordControl.getClassList(word), function(index, item) {
         if(item.indexOf('color') != -1) {
           word.removeClass(item);
         }
       });
       
-      $.each(MWordControl.getClassList(entity), function(index, item) {
+      $.each(NeoX.Modules.WordControl.getClassList(entity), function(index, item) {
         if(item.indexOf('color') != -1) {
           word.addClass(item);
         }
@@ -60,4 +60,4 @@ var MWordControl_Implementation = {
   
 };
 
-Sky.Class.Define("MWordControl", MWordControl_Implementation);
+Sky.Class.Define("NeoX.Modules.WordControl", MWordControl_Implementation);

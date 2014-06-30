@@ -1,5 +1,5 @@
 var MMainControl_Implementation = {
-  extend: "TBaseObject",
+  extend: "NeoX.TBaseObject",
   type: "module",
   
   construct: function(settings) {
@@ -18,38 +18,38 @@ var MMainControl_Implementation = {
     }
   },
   
-  members: {
+  methods: {
     
     init: function() {
-      MMainControl.hookEvents();
-      MMainControl.setup();
+      NeoX.Modules.MainControl.hookEvents();
+      NeoX.Modules.MainControl.setup();
     },
     
     setup: function () {
-      $(MMainControl.getConfig().selector).droppable({
-        drop: MMainControl.switchEntity
+      $(NeoX.Modules.MainControl.getConfig().selector).droppable({
+        drop: NeoX.Modules.MainControl.switchEntity
       });
     },
     
     hookEvents: function() {
-      MMainControl.hookEvent("mouseenter", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseEnter);
-      MMainControl.hookEvent("mouseleave", MMainControl.getConfig().buttonSelector, MMainControl.buttonMouseLeave);
-      $.each(MMainControl.getConfig().buttons, function(index, item) {
-        MMainControl.hookEvent("click", item, MEntityControl.addEntity);
+      NeoX.Modules.MainControl.hookEvent("mouseenter", NeoX.Modules.MainControl.getConfig().buttonSelector, NeoX.Modules.MainControl.buttonMouseEnter);
+      NeoX.Modules.MainControl.hookEvent("mouseleave", NeoX.Modules.MainControl.getConfig().buttonSelector, NeoX.Modules.MainControl.buttonMouseLeave);
+      $.each(NeoX.Modules.MainControl.getConfig().buttons, function(index, item) {
+        NeoX.Modules.MainControl.hookEvent("click", item, NeoX.Modules.EntityControl.addEntity);
       });
     },
     
     buttonMouseEnter: function() {
-      $(this).find(MMainControl.getConfig().buttonDropdownSelector).show();
-      MMainControl.getConfig().hidden = false;
+      $(this).find(NeoX.Modules.MainControl.getConfig().buttonDropdownSelector).show();
+      NeoX.Modules.MainControl.getConfig().hidden = false;
     },
     
     buttonMouseLeave: function() {
       var button = $(this); 
-      MMainControl.getConfig().hidden = true;
+      NeoX.Modules.MainControl.getConfig().hidden = true;
       setTimeout(function () {
-        if(MMainControl.getConfig().hidden) {
-          button.find(MMainControl.getConfig().buttonDropdownSelector).hide();
+        if(NeoX.Modules.MainControl.getConfig().hidden) {
+          button.find(NeoX.Modules.MainControl.getConfig().buttonDropdownSelector).hide();
         }
       }, 200);
     }
@@ -58,4 +58,4 @@ var MMainControl_Implementation = {
   
 };
 
-Sky.Class.Define("MMainControl", MMainControl_Implementation);
+Sky.Class.Define("NeoX.Modules.MainControl", MMainControl_Implementation);

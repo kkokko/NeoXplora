@@ -14,8 +14,8 @@ class ControllerPanel extends TAppEntity {
   }
   
   public function stats() {
-    $pageCounts = self::$instance->model("page")->count();
-    $sentenceCounts = self::$instance->model("sentence")->count();
+    $pageCounts = $this->core->model("page")->count();
+    $sentenceCounts = $this->core->model("sentence")->count();
     
     $this->template->pageCounts = $pageCounts;
     $this->template->sentenceCounts = $sentenceCounts;

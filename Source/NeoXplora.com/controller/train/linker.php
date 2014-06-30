@@ -22,6 +22,7 @@ class ControllerTrainLinker extends TTrainEntity {
     $this->template->sentences = $sentences;
     $this->template->entities = $entities;
     
+    $this->template->addScript("NeoShared/SkyJS/skyjs.js");
     $this->template->addScript("js/system/object.js");
     $this->template->addScript("js/module/linker/main.js");
     $this->template->addScript("js/module/linker/entity.js");
