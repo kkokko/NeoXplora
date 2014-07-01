@@ -229,7 +229,9 @@ begin
     else
     begin
       TheDBName := TheEntityMapping.GetValueForField(SomeFieldInfos[I].FieldName);
-      TheDBValue := ':' + TheDBName;
+      if TheDBName = '' then
+        Continue;
+      TheDBValue := ':' + SomeFieldInfos[I].FieldName;
       if SomeFieldInfos[I].FieldType = 'TPasswordString' then
         TheDBValue := PwdEncryptMethod(TheDBValue);
       case SomeFieldInfos[I].FieldKind of
@@ -439,7 +441,7 @@ begin
     TheDBName := AnEntityMapping.GetValueForField(TheFieldInfos[I].FieldName);
     if TheDBName <> '' then
     begin
-      Result.Keys[TheIndex] := QuoteValue(TheDBName);
+      Result.Keys[TheIndex] := TheDBName;
       if (not AnEntityClass.GetFieldTypeFromTokens(AnEntityClass, TheFieldInfos[I].FieldName, TheValue)) and
         not AnEntityClass.GetDBFieldType(TheFieldInfos[I].FieldName, 'SQLDB', TheValue) then
         TheValue := EstimateSQLDataType(TheFieldInfos[I]);

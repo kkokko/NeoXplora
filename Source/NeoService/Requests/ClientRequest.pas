@@ -116,6 +116,10 @@ type
   end;
 
 {$EndRegion}
+{$Region 'TRequestValidateAllReps'}
+  TRequestValidateAllReps = class(TRequest);
+
+{$EndRegion}
 {$Region 'TRequestValidateRep'}
   TRequestValidateRep = class(TRequest)
   private
@@ -186,6 +190,7 @@ initialization
     TRequestPredictAfterSplit,
     TRequestSearch,
     TRequestTrainUntrainedStories,
+    TRequestValidateAllReps,
     TRequestValidateRep,
 
     TResponseGetFullSentencesForStoryId,

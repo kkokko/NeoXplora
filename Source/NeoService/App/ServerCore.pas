@@ -36,10 +36,11 @@ type
     function GetFullSentencesForStoryId(AStoryId: TId): TEntities;
     function GetPosForPage(const APage: string; AnUseModifiedPos: Boolean): TObjects;
     function GetPosForSentences(SomeSentences: TEntities; AnUseModifiedPos: Boolean): TEntities;
-    procedure TrainUntrainedStories;
     function GuessRepsForSentenceId(ASentenceId: TId; AGuessCRep: Boolean = False): TGuessObject;
     procedure PredictAfterSplit(SomeSentences: TEntities);
     procedure Search(const ASearchString: string; var AnOffset: Integer; out SomePages: TEntities; out APageCount: Integer);
+    procedure TrainUntrainedStories;
+    procedure ValidateAllReps;
     procedure ValidateRep(const ARep: string);
 
     // methods called from threads
@@ -233,6 +234,29 @@ begin
     PredictAfterSplit(TheEntities);
   finally
     TEntity.FreeEntities(TheEntities);
+  end;
+end;
+
+procedure TServerCore.ValidateAllReps;
+var
+  TheSentenceBase: TSentenceBase;
+  TheSentences: TEntities;
+  I: Integer;
+begin
+  TheSentences := TAppSQLServerQuery.GetSplitSentences;
+  try
+    for I := 0 to High(TheSentences) do
+    begin
+      TheSentenceBase := TheSentences[I] as TSentenceBase;
+      try
+        ValidateRep(TheSentenceBase.Rep);
+      except
+        TheSentenceBase.Status := ssTrainedRep;
+        App.SQLConnection.UpdateEntity(TheSentenceBase);
+      end;
+    end;
+  finally
+    TEntity.FreeEntities(TheSentences);
   end;
 end;
 

@@ -53,6 +53,11 @@ type
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
 
+  TCommandValidateAllReps = class(TClientCommand)
+  protected
+    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
+  end;
+
 implementation
 
 uses
@@ -173,6 +178,14 @@ begin
   Result := TResponseGetPosForPage.Create(TheSentences);
 end;
 
+{ TCommandValidateAllReps }
+
+class function TCommandValidateAllReps.DoExecute(ARequest: TRequest): TGenericResponse;
+begin
+  Core.ValidateAllReps;
+  Result := nil;
+end;
+
 initialization
   // please keep these sorted
   TCommandGuessRepsForSentenceId.RegisterClass(TRequestGuessRepsForSentenceId);
@@ -182,6 +195,7 @@ initialization
   TCommandPredictAfterSplit.RegisterClass(TRequestPredictAfterSplit);
   TCommandSearch.RegisterClass(TRequestSearch);
   TCommandTrainUntrainedStories.RegisterClass(TRequestTrainUntrainedStories);
+  TCommandValidateAllReps.RegisterClass(TRequestValidateAllReps);
   TCommandValidateRep.RegisterClass(TRequestValidateRep);
 
 end.

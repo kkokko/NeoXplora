@@ -202,9 +202,9 @@ begin
   TheFieldCount := TheDBFieldTypes.Count - 1;
   for I := 0 to TheFieldCount do
   begin
-    TheString := TheString + '    ' + TheDBFieldTypes[I].Key;
+    TheString := TheString + '    ' + QuoteObject(TheDBFieldTypes[I].Key);
     TheString := TheString + ' ' + TheDBFieldTypes[I].Value;
-    if AnsiSameText(TheDBFieldTypes[I].Key, '[Id]') then
+    if AnsiSameText(TheDBFieldTypes[I].Key, 'Id') then
       TheString := TheString + ' identity(1,1) primary key not null';
     if I <> TheFieldCount then
       TheString := TheString + ',' + ReturnLF;
