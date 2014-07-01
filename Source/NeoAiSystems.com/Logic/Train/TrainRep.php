@@ -117,7 +117,7 @@ class TTrainRep extends TActionRequest {
       return;
     }
     
-    require_once __DIR__ . "/../../NeoService/App/Global.php";
+    require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
     $validator = $server->ValidateRep($newValue);
     if($validator === true) {
       $this->query("UPDATE `sentence` SET `representation` = '" . $this->db->escape_string($newValue) . "', `sentenceStatus` = 'ssTrainedRep' WHERE `sentenceID` = '" . $sentenceID . "'");  
@@ -133,9 +133,22 @@ class TTrainRep extends TActionRequest {
   
   public function approveGuess() {
     if(!isset($_POST['sentenceID'])) return;
+    $sentenceID = (int) $_POST['sentenceID'];
     
-    $sentenceID = $_POST['sentenceID'];
-    $this->query("UPDATE `sentence` SET `representation` = `repguess1`, `sentenceStatus` = 'ssTrainedRep' WHERE `sentenceID` = '" . $sentenceID . "'") or die($this->db->error);
+    require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
+    $repguess = $server->GuessRepsForSentenceId($sentenceID)->GetProperty("RepGuessA");
+    
+    $validator = $server->ValidateRep($repguess);
+    if($validator === true) {
+      $this->query("UPDATE `sentence` SET `representation` = '" . $repguess . "', `sentenceStatus` = 'ssTrainedRep' WHERE `sentenceID` = '" . $sentenceID . "'") or die($this->db->error);
+      $this->update_status($sentenceID);
+    } else {
+      $response = array(
+        "ErrorString" => $validator['ErrorString'],
+        "StrIndex" => $validator['StrIndex']
+      ); 
+      echo json_encode($response);
+    }
     
     $this->update_status($sentenceID);
   }
@@ -150,7 +163,7 @@ class TTrainRep extends TActionRequest {
       return;
     }
     
-    require_once __DIR__ . "/../../NeoService/App/Global.php";
+    require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
     $validator = $server->ValidateRep($newValue);
     if($validator === true) {
       $this->query("UPDATE `sentence` SET `representation` = '" . $this->db->escape_string($newValue) . "', `sentenceStatus` = 'ssReviewedRep' WHERE `sentenceID` = '" . $sentenceID . "'");  

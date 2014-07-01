@@ -87,7 +87,7 @@ class TReviewRep extends TActionRequest {
   public function approve() {
     if(!isset($_POST['newValue']) || !isset($_POST['sentenceID'])) return;
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
-    $sentenceID = $_POST['sentenceID'];
+    $sentenceID = (int) $_POST['sentenceID'];
     
     require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
     $validator = $server->ValidateRep($newValue);

@@ -673,7 +673,14 @@ function approveRepGuess() {
       'sentenceID': sentenceID
     },
     success: function(json) {
-      loadUnderstandSentence();
+    	if(json && json['ErrorString'] && json['StrIndex']) {
+    		var newValue = $('.repguess').html();
+        var near = newValue.substr(json['StrIndex'], newValue.length);
+        $('.rep-error').remove();
+        $('.understand-sentences').after("<div class='rep-error' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
+      } else {
+        loadUnderstandSentence();
+      }
     }
   });
 }

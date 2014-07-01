@@ -179,7 +179,7 @@ class TReviewSplit extends TActionRequest {
       $SentenceIDs[] = $sentence_data['sentenceID']; 
     }
     
-    require_once __DIR__ . "/../../NeoService/App/Global.php";
+    require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
     $server->PredictAfterSplit($SentenceIDs);
   }
     
