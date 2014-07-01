@@ -1124,6 +1124,7 @@
 				
 				  if ($row['parent_id'] == $parent_id) {
 					  if($row['name' . $core->dblang] == 'Train' && !$user->logged_in) continue;
+            if($row['name' . $core->dblang] == 'Demo' && !$user->logged_in) continue;
 					  
 					  if ($submenu === false) {
 						  $submenu = true;	
