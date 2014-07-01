@@ -128,7 +128,7 @@ initialization
   TSentenceBase.RegisterToken(TSentenceBase.Tok_GuessIdC, 'sntid3');
   TSentenceBase.RegisterToken(TSentenceBase.Tok_GuessIdD, 'sntid4');
   TSentenceBase.RegisterToken(TSentenceBase.Tok_Status, 'sentenceStatus');
-  TSentenceBase.RegisterToken(TSentenceBase.Tok_ProtoId, 'prID');
+  TSentenceBase.RegisterToken(TSentenceBase.Tok_ProtoId, 'pr2ID');
   TSentenceBase.RegisterFieldMappings;
 
 end.

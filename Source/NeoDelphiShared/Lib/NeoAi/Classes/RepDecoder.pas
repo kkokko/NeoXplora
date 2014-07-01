@@ -252,7 +252,7 @@ begin
       end;
     end;
     else
-      raise EAppRepDecoderException.Create(Self, 'ReadOperatorType', 'Invalid Operator', FRepString.Index);
+      Result := otNone;
   end;
   ParseSpaces;
 end;
@@ -320,6 +320,8 @@ begin
       Inc(FRepString^.Position);
       TheAttribute := ReadPropertyName(AParent, ptAttribute); // .color(.type=asd)
       TheOperator := ReadOperatorType;
+      if TheOperator = otNone then
+        Exit;
       repeat
         // check if the attribute has an Operator + value
         // and add them
@@ -338,6 +340,8 @@ begin
       Inc(FRepString^.Position);
       TheEvent := ReadPropertyName(AParent, ptEvent); // :runs(.to=home)
       TheOperator := ReadOperatorType;
+      if TheOperator = otNone then
+        Exit;
       repeat
         // check if the Event has an Operator + value
         // and add them

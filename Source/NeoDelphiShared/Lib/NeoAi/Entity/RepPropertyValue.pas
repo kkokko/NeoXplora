@@ -10,7 +10,7 @@ type
   public
     type
       TLinkType = (ltNone, ltEntity, ltAttrKey, ltEventKey);
-      TOperatorType = (otEquals, otSmaller, otSmallerOrEqual, otGreater, otGreaterOrEqual, otDiffers);
+      TOperatorType = (otNone, otEquals, otSmaller, otSmallerOrEqual, otGreater, otGreaterOrEqual, otDiffers);
   private
     FLinkObject: TEntity;
     FLinkType: TLinkType;

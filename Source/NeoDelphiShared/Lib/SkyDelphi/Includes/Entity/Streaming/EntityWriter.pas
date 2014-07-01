@@ -89,6 +89,7 @@ end;
 class function TEntityWriter.CheckObjectEmpty(AnObject: TObject): Boolean;
 begin
   Result := (AnObject <> nil) and (
+    (AnObject is ESkyException) or
     (AnObject is TEntity) or
     (AnObject is TEntityList) or
     ((AnObject is TSkyIdList) and ((AnObject as TSkyIdList).Count > 0)) or
