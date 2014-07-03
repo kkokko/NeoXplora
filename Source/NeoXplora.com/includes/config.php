@@ -10,7 +10,7 @@ define("DB", "zadmin_neo123");
 
 $link = mysql_connect(HOST, DBU, DBPASS);
 $db = mysql_select_db(DB, $link);
-mysql_select_db(DB);
+
 
 define('MAILER_NAME', 'NeoXplora');
 define('MAILER_EMAIL', 'support@neoxplora.com');
