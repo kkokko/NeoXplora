@@ -83,7 +83,10 @@ $title = isset($pagetitle) ? $pagetitle : "";
                     <div class="help">
                         <a href="<?php echo FULLBASE; ?>blog/">Blog</a><br />
                         <a href="<?php echo FULLBASE; ?>blog/?p=8">Welcome message</a><br />
-                        <a href="<?php echo FULLBASE; ?>train.php">Help us train Neo</a>
+                        <a href="<?php echo FULLBASE; ?>train.php">Help us train Neo</a><br />
+                        <?php if (UserSessionManager::LoggedIn()) { ?> 	 	
+	                        <a href="<?php echo FULLBASE; ?>admin/newsParser.php">News parsers</a> 	 	
+	                        <?php } ?> 
                     </div>
                 <?php } ?>
             </div>
