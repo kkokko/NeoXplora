@@ -9,6 +9,7 @@ define("DBPASS", "edu3uvy4e");
 define("DB", "zadmin_neo123");
 
 $link = mysql_connect(HOST, DBU, DBPASS);
+$db = mysql_select_db(DB, $link);
 mysql_select_db(DB);
 
 define('MAILER_NAME', 'NeoXplora');
@@ -20,6 +21,7 @@ $reqFile = '/' . end($requestedFile);
 
 
 $base = substr($_SERVER['PHP_SELF'], 0, -strlen($reqFile));
+$base = str_replace("/admin","",$base);
 $fullbase = 'http://' . $_SERVER['HTTP_HOST'] . $base;
 
 $root = $_SERVER['DOCUMENT_ROOT'] . $base . '/';
@@ -33,7 +35,8 @@ define('RIGHT_BOX', true);
 include ROOT . 'classes/UserSessionManager.php';
 include ROOT . 'classes/EmailAddressValidator.php';
 include ROOT . 'classes/UserUtils.php';
-require_once( 'blog/wp-load.php' );
+include(ROOT .'includes/db/dbSQLFunctions.php');
+require_once( ROOT . 'blog/wp-load.php' );
 UserSessionManager::StartSession();
 
 /*if (!UserSessionManager::LoggedIn() && isset($_COOKIE['UserPassword']) && isset($_COOKIE['UserEmail'])) {
