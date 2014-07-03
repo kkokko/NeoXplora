@@ -10,6 +10,7 @@
   $db_host2 = "127.0.0.1";
   $db_username2 = "userneoai";
   $db_password2 = "login141";
-  $db_name2 = "db179668_ai2";
-
+  $db_name2 = "zadmin_neoxplora";
+  $db_collation2 = "utf8";
+  
 ?>

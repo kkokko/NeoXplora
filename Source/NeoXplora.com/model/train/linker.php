@@ -23,7 +23,7 @@
         ORDER BY a.`trainedCount` ASC
         LIMIT 1;
       ") or die($this->db->error);
-      
+
       return $query->fetch_array();  
     }
     

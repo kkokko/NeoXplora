@@ -20,11 +20,12 @@ var MWordControl_Implementation = {
     },
     
     setup: function () {
-      $(NeoX.Modules.WordControl.getConfig().selector).draggable({ helper: "clone" });
-    
-      $(NeoX.Modules.WordControl.getConfig().selector).parent(NeoX.Modules.WordControl.getConfig().selector).each(function() {
-        $(this).css('padding', 0);
-      });
+    	$(document).ready(function() {
+    		$(NeoX.Modules.WordControl.getConfig().selector).draggable({ helper: "clone" });
+    		$(NeoX.Modules.WordControl.getConfig().selector).parent(NeoX.Modules.WordControl.getConfig().selector).each(function() {
+          $(this).css('padding', 0);
+        });
+    	});      
     },
     
     hookEvents: function() {

@@ -219,3 +219,111 @@ label{color: #6C6C6C; font-size: 15px;}
   font-weight: bold;
   float: left;  
 }
+
+.boxContainer {
+  width: 900px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.boxLeft {
+  padding-right: 10px;
+  width: 290px;
+  float: left;
+}
+
+.boxRight {
+  padding-left: 20px;
+  width: 580px;
+  float: left;
+}
+
+.clear {
+  clear: both;
+}
+
+.button {
+  color: #fff;
+  background-color: #aaa;
+  border-radius: 5px;
+  padding: 5px 10px;
+  float: left;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.button:hover {
+  background-color: #888;
+}
+
+.button-dropdown {
+  display: none;
+  position: absolute;
+  list-style-type: none;
+  margin: 10px 0px 0px -10px;
+  padding: 0px;
+  background-color: #aaa;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.button-dropdown li {
+  margin: 0;
+  padding: 5px 10px;
+}
+
+.button-dropdown li:hover {
+  background-color: #888;
+}
+
+.button-dropdown li:first-child:hover {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #888;
+}
+
+.button-dropdown li:last-child:hover {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #888;
+}
+
+.buttons {
+  overflow: auto;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.buttons > div {
+  color: #fff;
+  background-color: #bbb;
+  padding: 10px 15px;
+  float: left;
+  cursor: pointer;
+}
+
+.buttons > div:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.buttons > div:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.buttons > div:hover {
+  background-color: #999;
+}
+
+.buttons > div.active {
+  background-color: #377EB8;
+}
+
+.splitter {
+  width: 100%;
+}
+
+.splitter {
+  
+}

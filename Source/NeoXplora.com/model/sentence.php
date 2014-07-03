@@ -1,22 +1,63 @@
 <?php
-  require_once APP_DIR . "/app/system/appentity.php";
-	class ModelSentence extends TAppEntity {
+  require_once APP_DIR . "/app/system/model.php";
+	class ModelSentence extends Model {
+	  
+    //Table Name in the DB
+    public static $tablename = "sentence";
+    
+    //Table Fields in the DB
+    public static $tok_id = "Id";
+    public static $tok_name = "Name";
+    public static $tok_rep = "Rep";
+    public static $tok_crep = "CRep";
+    public static $tok_srep = "SRep";
+    public static $tok_pageid = "PageId";
+    public static $tok_prid = "ProtoId";
+    public static $tok_pos = "Pos";
+    public static $tok_guessaid = "GuessAId";
+    public static $tok_guessbid = "GuessBId";
+    public static $tok_guesscid = "GuessCId";
+    public static $tok_guessdid = "GuessDId";
+    public static $tok_status = "Status";
+    public static $tok_assigneddate = "AssignedDate";
+    
+    public function getById($Id) {
+      $query = $this->query("SELECT * FROM [[sentence]] WHERE [[sentence.id]] = :1", $Id);
+      
+      return $this->result($query);
+    }
     
     public function count() {
-      $query = $this->db->query("
+      $query = $this->query("
         SELECT 
-          COUNT(s1.`sentenceID`) AS totalSentences, 
-          COUNT(s2.`sentenceID`) AS totalSentencesSplitTrained, 
-          COUNT(s3.`sentenceID`) AS totalSentencesRepTrained, 
-          COUNT(s4.`sentenceID`) AS totalSentencesCRepTrained
-        FROM `sentence` s1
-        LEFT JOIN sentence s2 ON s1.`sentenceID` = s2.`sentenceID` AND s2.`sentenceStatus` IN ('ssTrainedSplit', 'ssReviewedSplit')
-        LEFT JOIN sentence s3 ON s1.`sentenceID` = s3.`sentenceID` AND s3.`sentenceStatus` IN ('ssTrainedRep', 'ssReviewedRep')
-        LEFT JOIN sentence s4 ON s1.`sentenceID` = s4.`sentenceID` AND s4.`sentenceStatus` IN ('ssTrainedCRep', 'ssReviewedCRep')
-      ") or die($this->db->error);
-      $count_data = $query->fetch_array();
+          COUNT(s.[[sentence.id]]) AS total
+        FROM [[sentence]] s
+      ");
+      $result = $query->fetch_array();
       
-      return $count_data;
+      return $result['total'];
+    }
+
+    public function advancedCount() {
+      $query = $this->query("
+        SELECT 
+          COUNT(s1.[[sentence.id]]) AS totalSentences, 
+          COUNT(s2.[[sentence.id]]) AS totalSentencesSplitTrained, 
+          COUNT(s3.[[sentence.id]]) AS totalSentencesRepTrained, 
+          COUNT(s4.[[sentence.id]]) AS totalSentencesCRepTrained
+        FROM [[sentence]] s1
+        LEFT JOIN [[sentence]] s2 ON s1.[[sentence.id]] = s2.[[sentence.id]] AND s2.[[sentence.status]] IN (:1, :2)
+        LEFT JOIN [[sentence]] s3 ON s1.[[sentence.id]] = s3.[[sentence.id]] AND s3.[[sentence.status]] IN (:3, :4)
+        LEFT JOIN [[sentence]] s4 ON s1.[[sentence.id]] = s4.[[sentence.id]] AND s4.[[sentence.status]] IN (:5, :6)
+      ", 'ssTrainedSplit', 'ssReviewedSplit', 'ssTrainedRep', 'ssReviewedRep', 'ssTrainedCRep', 'ssReviewedCRep');
+      
+      return $this->result($query);
+    }
+    
+    public function setAssignedDate($assignedDate, $sentenceID) {
+      $query = $this->query("UPDATE [[sentence]] SET [[sentence.assigneddate]] = :1 WHERE [[sentence.id]] = :2", $assignedDate, $sentenceID);
+      
+      return $this->check($query);
     }
     
 	}

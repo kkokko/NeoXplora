@@ -1,6 +1,7 @@
 <?php 
   define('APP_DIR', str_replace("\\", "/", __DIR__) . "/../");
   require_once "system/appentity.php";
+  require_once "system/model.php";
   
   class TCore extends TAppEntity {
     
@@ -13,6 +14,7 @@
       require_once APP_DIR . "/app/system/sessionmanager.php";
       
       $this->db = new mysqli($db_host2, $db_username2, $db_password2, $db_name2) or die("error");
+      $this->db->set_charset($db_collation2);
       $this->userdb = new mysqli($db_host, $db_username, $db_password, $db_name) or die("error");
       $this->template = new \sky\Template();
       $this->session = new SessionManager($this->userdb);

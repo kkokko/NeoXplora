@@ -92,6 +92,21 @@
       $this->headerinclude .= "<script src=\"" . $script_path . "\"></script>\n";
     }
     
+    public function addScripts($scripts) {
+      foreach($scripts as $script) {
+        $this->addScript($script);
+      }
+    }
+    
+    public function addJSModules($modules) {
+      $initScript = "";
+      foreach($modules as $moduleName => $modulePath) {
+        $this->addScript($modulePath);
+        $initScript .= $moduleName . ".init();\n";
+      }
+      $this->headerinclude .= "<script type='text/javascript'>" . $initScript . "</script>\n";
+    }
+    
     public function addStyle($path, $external = false) {
       $style_path = $path;
       if(!$external) {

@@ -497,7 +497,7 @@ function loadSplitSentence() {
     url: "train.php",
     dataType: 'json',
     data: {
-      'type': 'split',
+      'type': 'splitter',
       'action': 'load'
     },
     success: function(json) { 

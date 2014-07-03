@@ -12,7 +12,7 @@ class ControllerTrainLinker extends TTrainEntity {
   );
   
   public function index() {
-    $data = $this->Delphi()->GetLinkerDataForStoryId(0);
+    $data = $this->Delphi()->GetLinkerDataForPageId(0);
     $this->entityList = $data->GetProperty('Entities');
     $this->sentenceList = $data->GetProperty('Sentences');
     
@@ -22,13 +22,16 @@ class ControllerTrainLinker extends TTrainEntity {
     $this->template->sentences = $sentences;
     $this->template->entities = $entities;
     
-    $this->template->addScript("NeoShared/SkyJS/skyjs.js");
-    $this->template->addScript("js/system/object.js");
-    $this->template->addScript("js/module/linker/main.js");
-    $this->template->addScript("js/module/linker/entity.js");
-    $this->template->addScript("js/module/linker/word.js");
-    $this->template->addScript("js/train2.js");
-    $this->template->addStyle("style/train2.css");
+    $this->template->addScripts(array(
+      "js/system/object.js"
+    ));
+    $this->template->addJSModules(array(
+      "NeoX.Modules.LinkerIndex" => "js/module/linker/index.js",
+      "NeoX.Modules.EntityControl" => "js/module/linker/entity.js",
+      "NeoX.Modules.WordControl" => "js/module/linker/word.js",
+      "NeoX.Modules.ButtonComponent" => "js/module/button.js"
+    ));
+    $this->template->addStyle("style/train/linker.css");
     $this->template->load("index", "train/linker");
     $this->template->pageTitle = "Train CRep";
     $this->template->page = "traincrep";
@@ -85,15 +88,15 @@ class ControllerTrainLinker extends TTrainEntity {
     
   }
   
-  public function loadStory() {
+  public function loadPage() {
     $pageData = null;
-    if(!isset($_SESSION['storyID'])) {
+    if(!isset($_SESSION['pageID'])) {
       $ignore = '';
-      if(isset($_SESSION['ignoredStoryIDs']) && is_array($_SESSION['ignoredStoryIDs'])) {
+      if(isset($_SESSION['ignoredPageIDs']) && is_array($_SESSION['ignoredPageIDs'])) {
         $ignore .= " AND st.`pageID` NOT IN (";
-        for($i = 0; $i < count($_SESSION['ignoredStoryIDs']); $i++) {
-          $ignore .= "'" . $_SESSION['ignoredStoryIDs'][$i] . "'";
-          if($i != count($_SESSION['ignoredStoryIDs']) - 1) $ignore .= ', ';
+        for($i = 0; $i < count($_SESSION['ignoredPageIDs']); $i++) {
+          $ignore .= "'" . $_SESSION['ignoredPageIDs'][$i] . "'";
+          if($i != count($_SESSION['ignoredPageIDs']) - 1) $ignore .= ', ';
         }
         $ignore .= ") ";
       }
@@ -108,17 +111,17 @@ class ControllerTrainLinker extends TTrainEntity {
       
       $pageData = $linkerModel->getPageByCategoryID($categoryID, $offset);
     } else {
-      $pageData = $this->core->model("page")->getPageById($_SESSION['storyID']); $this->query("SELECT * FROM `page` WHERE `pageID` = '" . $_SESSION['storyID'] . "'") or die($this->db->error);
+      $pageData = $this->core->model("page")->getPageById($_SESSION['pageID']); $this->query("SELECT * FROM `page` WHERE `pageID` = '" . $_SESSION['pageID'] . "'") or die($this->db->error);
     }
     
     if($pageData) {
-      $story_data = $pageData;
-      $_SESSION['storyID'] = $story_data['pageID'];
-      $storytitle = $story_data['title'];
+      $page_data = $pageData;
+      $_SESSION['pageID'] = $page_data['pageID'];
+      $pagetitle = $page_data['title'];
       $trainername = isset($_COOKIE['trainername'])?$_COOKIE['trainername']:"";
-      $this->query("UPDATE `page` SET `is_assigned` = '1', `assigned_date` = '" . date("Y-m-d H:i:s") . "', `reps_added_by` = '" . $trainername . "' WHERE `pageID` = '" . $story_data['pageID'] . "'");
+      $this->query("UPDATE `page` SET `is_assigned` = '1', `assigned_date` = '" . date("Y-m-d H:i:s") . "', `reps_added_by` = '" . $trainername . "' WHERE `pageID` = '" . $page_data['pageID'] . "'");
       
-      $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $story_data['pageID'] .  "' ORDER BY `sentenceID` ASC");
+      $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $page_data['pageID'] .  "' ORDER BY `sentenceID` ASC");
       
       $data = "";
       $data .= '<tr>';
@@ -139,12 +142,12 @@ class ControllerTrainLinker extends TTrainEntity {
         $data .= "</tr>";
       }
     } else {
-      $storytitle = ' - ';
+      $pagetitle = ' - ';
       $data = '<tr><td>There are no stories available at the moment.</td></tr>';
     }
     
     $response = array(
-      'title' => $storytitle,
+      'title' => $pagetitle,
       'data' => $data
     );
       
@@ -152,20 +155,20 @@ class ControllerTrainLinker extends TTrainEntity {
   }
   
   public function nextSentence() {
-    if(!isset($_SESSION['storyID'])) { 
+    if(!isset($_SESSION['pageID'])) { 
       $sentenceID = -2;
     } else {
-      $storyID = isset($_SESSION['storyID'])?$_SESSION['storyID']:0;
+      $pageID = isset($_SESSION['pageID'])?$_SESSION['pageID']:0;
       
-      $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $storyID .  "' AND `sentenceStatus` = 'ssReviewedRep' ORDER BY `sentenceID` ASC LIMIT 1");
+      $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $pageID .  "' AND `sentenceStatus` = 'ssReviewedRep' ORDER BY `sentenceID` ASC LIMIT 1");
       
       if($query->num_rows) {
         $sentence_data = $query->fetch_array();
         $sentenceID = $sentence_data['sentenceID'];
       } else {
         $sentenceID = -1;
-        //$this->query("UPDATE `page` SET `is_checked` = '1' WHERE `pageID` = '" . $storyID . "'");
-        unset($_SESSION['storyID']);
+        //$this->query("UPDATE `page` SET `is_checked` = '1' WHERE `pageID` = '" . $pageID . "'");
+        unset($_SESSION['pageID']);
       }
        
     }
@@ -178,23 +181,23 @@ class ControllerTrainLinker extends TTrainEntity {
   }
 
   public function skip() {
-    if(!isset($_SESSION['storyID'])) return;
-    $storyID = $_SESSION['storyID'];
-    if(!isset($_SESSION['ignoredStoryIDs']) || !is_array($_SESSION['ignoredStoryIDs'])) $_SESSION['ignoredStoryIDs'] = array();
-    $_SESSION['ignoredStoryIDs'][] = $storyID;
+    if(!isset($_SESSION['pageID'])) return;
+    $pageID = $_SESSION['pageID'];
+    if(!isset($_SESSION['ignoredPageIDs']) || !is_array($_SESSION['ignoredPageIDs'])) $_SESSION['ignoredPageIDs'] = array();
+    $_SESSION['ignoredPageIDs'][] = $pageID;
     
-    $this->query("UPDATE `page` SET `is_assigned` = '0', `assigned_date` = NULL WHERE `pageID` = '" . $storyID . "'");
-    unset($_SESSION['storyID']);    
+    $this->query("UPDATE `page` SET `is_assigned` = '0', `assigned_date` = NULL WHERE `pageID` = '" . $pageID . "'");
+    unset($_SESSION['pageID']);    
   }
 
   public function save() {
-    if(!isset($_SESSION['storyID']) || !isset($_POST['sentenceID']) || !isset($_POST['newValue'])) return;
+    if(!isset($_SESSION['pageID']) || !isset($_POST['sentenceID']) || !isset($_POST['newValue'])) return;
           
     $sentenceID = $_POST['sentenceID']; 
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
 
-    $storyID = $_SESSION['storyID'];
-    $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $storyID .  "' AND `sentenceID` = '" . $this->db->escape_string($sentenceID) . "' AND `sentenceStatus` = 'ssReviewedRep' LIMIT 1");
+    $pageID = $_SESSION['pageID'];
+    $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $pageID .  "' AND `sentenceID` = '" . $this->db->escape_string($sentenceID) . "' AND `sentenceStatus` = 'ssReviewedRep' LIMIT 1");
     if(!$query->num_rows) return;
     $this->query("UPDATE `sentence` SET `context_rep` = '" . $this->db->escape_string($newValue) . "', `sentenceStatus` = 'ssTrainedCRep' WHERE `sentenceID` = '" . $sentenceID . "'");
     
@@ -202,11 +205,11 @@ class ControllerTrainLinker extends TTrainEntity {
   }
 
   public function approve() {
-    if(!isset($_SESSION['storyID']) || !isset($_POST['sentenceID'])) return;
+    if(!isset($_SESSION['pageID']) || !isset($_POST['sentenceID'])) return;
     
-    $storyID = $_SESSION['storyID'];
+    $pageID = $_SESSION['pageID'];
     $sentenceID = $_POST['sentenceID'];
-    $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $storyID .  "' AND `sentenceID` = '" . $this->db->escape_string($sentenceID) . "' AND `is_incorporate_trained` = '0' LIMIT 1") or die($this->db->error);
+    $query = $this->query("SELECT * FROM `sentence` WHERE `pageID` = '" . $pageID .  "' AND `sentenceID` = '" . $this->db->escape_string($sentenceID) . "' AND `is_incorporate_trained` = '0' LIMIT 1") or die($this->db->error);
     if(!$query->num_rows) return;
     
     $this->query("UPDATE `sentence` SET `context_rep` = `representation`, `sentenceStatus` = 'ssTrainedCRep' WHERE `sentenceID` = '" . $sentenceID . "'") or die($this->db->error);

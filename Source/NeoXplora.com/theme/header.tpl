@@ -11,6 +11,7 @@
     <link href="<?php echo $this->site_url; ?>favicon.ico" rel="SHORTCUT ICON" />
     <script src="<?php echo $this->site_url; ?>js/jquery-1.9.1.min.js"></script>
     <script src="<?php echo $this->site_url; ?>js/jquery-ui-1.10.4.min.js"></script>
+    <script src="<?php echo $this->site_url; ?>NeoShared/SkyJs/skyjs.js"></script>
     <script src="<?php echo $this->site_url; ?>js/toastr.min.js"></script>
     <script src="<?php echo $this->site_url; ?>js/main.js"></script>
     <?php echo $this->headerinclude; ?>

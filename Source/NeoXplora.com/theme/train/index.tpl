@@ -3,7 +3,7 @@
         <span class="boxTrainSpan">How would you like to train Neo ?</span>
         <div class="trainIcons">
           <div class="btnTrain" >
-            <a href=#>
+            <a href="<?php echo $this->site_url; ?>train.php?type=splitter">
                 <img src="images/btnSplitter.png" width="100" height="100"   alt="Train Splitter"/>
                 <span class="spanTrain"> Split sentences into parts</span>
             </a>

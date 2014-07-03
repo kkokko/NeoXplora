@@ -11,21 +11,6 @@ function class1() {
 	return obj;
 }
 
-function class2() {
-	var obj = {};
-	obj = class1();
-	
-	obj.m2 = function(){
-	  this.test = '55';
-	};
-
-	return obj;
-}
-
-var newObj = class2();
-
-console.log(newObj);
-
-newObj.m1();
+var newObj = class1.apply(this);
 
 console.log(newObj);

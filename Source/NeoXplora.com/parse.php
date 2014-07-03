@@ -44,14 +44,14 @@ echo "</b>"	   ;
     $feeds[$i]['link'] = (string) $item->link;
 echo     $feeds[$i]['image'] = $match[1];
     $feeds[$i]['site_title'] = strip_tags($parts[1]);
-    $feeds[$i]['story'] = strip_tags($parts[2]);
+    $feeds[$i]['page'] = strip_tags($parts[2]);
     $feeds[$i]['pubDate'] =  (string) $item->pubDate;	
     $feeds[$i]['category'] =  (string) $item->category;		
 
 
 
 
-	$query2 = "insert into `PageTBL` (title,url,body,source,image,dated,Section) values ('".$feeds[$i]['title']."','".$feeds[$i]['link']."','".$feeds[$i]['story']."','".$feeds[$i]['site_title']."','".$feeds[$i]['image']."','".$feeds[$i]['pubDate']."','".$feeds[$i]['category']."')";
+	$query2 = "insert into `PageTBL` (title,url,body,source,image,dated,Section) values ('".$feeds[$i]['title']."','".$feeds[$i]['link']."','".$feeds[$i]['page']."','".$feeds[$i]['site_title']."','".$feeds[$i]['image']."','".$feeds[$i]['pubDate']."','".$feeds[$i]['category']."')";
 	$result2 = $db->query($query2);
 	$ParentID=$db->insert_id;
 

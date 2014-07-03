@@ -1,5 +1,5 @@
 <?php echo $this->fetch("header"); ?>
-      <div class="boxCRep">
+      <div class="boxContainer">
         <div class="buttons">
           <div class='active'>Train</div>
           <div>Examples</div>

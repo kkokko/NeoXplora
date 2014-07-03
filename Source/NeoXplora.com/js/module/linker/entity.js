@@ -23,9 +23,11 @@ var MEntityControl_Implementation = {
     },
     
     setup: function() {
-      $(NeoX.Modules.EntityControl.getConfig().selector).droppable({
-        drop: NeoX.Modules.EntityControl.switchEntity
-      });
+    	$(document).ready(function() {
+        $(NeoX.Modules.EntityControl.getConfig().selector).droppable({
+          drop: NeoX.Modules.EntityControl.switchEntity
+        });
+    	});
     },
     
     hookEvents: function() {
