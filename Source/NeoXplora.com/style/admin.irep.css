@@ -1,0 +1,24 @@
+.panel h3 {
+	color:white;
+	font-family: Verdana,Geneva,sans-serif;
+	font-weight:bold;
+	text-shadow:2px 3px 3px #EEE;
+}
+
+.rulesContainer{
+	margin-top:15px;
+	background:#FFF;
+	padding:10px;
+}
+
+#rulesSortable { list-style-type: none; margin: 0; padding: 0; width: 60%; margin: 0 auto 0 auto;}
+#rulesSortable li { 
+	font-size:16px;
+	margin: 0 5px 5px 5px; padding: 5px; height: 1.5em; 
+	box-shadow:2px 3px 3px #EEE;
+	background-color:#EEE;
+	border:2px solid #9CF;
+	cursor:move;
+}
+html>body #rulesSortable li { height: 1.5em; }
+.ui-state-highlight { height: 1.5em;  }

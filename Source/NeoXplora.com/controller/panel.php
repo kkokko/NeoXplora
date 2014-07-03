@@ -1,5 +1,6 @@
 <?php
 require_once APP_DIR . "/app/system/appentity.php";
+
 class ControllerPanel extends TAppEntity {
 
   public $accessLevel = 'admin';
@@ -13,10 +14,57 @@ class ControllerPanel extends TAppEntity {
     $this->template->render();
   }
   
+  public function ireprules(){
+	$this->template->addStyle("style/admin.css");
+	$this->template->addStyle("style/admin.irep.css");
+	$this->template->addScript("js/panel.irep.js");
+    $this->template->load("ireprules", "panel");
+    $this->template->pageTitle = "IRep rules | Admin Panel";
+    $this->template->page = "ireprules_panel";
+	
+	$IRepRulesList = $this->core->model("ireprule")->getRulesList();
+	$this->template->rulesList = $IRepRulesList;
+	
+    $this->template->hide_right_box = true;
+    $this->template->render();
+  }
+  
+  public function ireprules_add(){
+	$this->template->addStyle("style/admin.css");
+	$this->template->addStyle("style/admin.irep.css");
+	$this->template->addScript("js/classes/IRepConditionParser.js");
+	$this->template->addScript("js/classes/TBaseRule.js");
+	$this->template->addScript("js/classes/TRuleGroup.js");
+	$this->template->addScript("js/classes/TRuleValue.js");
+	$this->template->addScript("js/panel.irep.add.js");
+    $this->template->load("ireprules_add", "panel");
+    $this->template->pageTitle = "IRep rules - Add | Admin Panel";
+    $this->template->page = "ireprules_panel";
+	
+	$IRepRulesList = $this->core->model("ireprule")->getRulesList();
+	$this->template->rulesList = $IRepRulesList;
+	
+    $this->template->hide_right_box = true;
+    $this->template->render();
+  }
+  
+  public function ireprules_UpdateRulePriority(){
+	
+	if(isset($_REQUEST['priorityData'])){
+		$pdata = $_REQUEST['priorityData'];
+		$result = $this->core->model("ireprule")->updatePriority($pdata);
+		if($result) {
+			print "success";
+			exit;
+		}
+	}
+	print "error";
+  }
+  
   public function stats() {
-    $pageCounts = $this->core->model("page")->advancedCount();
-    $sentenceCounts = $this->core->model("sentence")->advancedCount();
-    
+    $pageCounts = $this->core->model("page")->count();
+    $sentenceCounts = $this->core->model("sentence")->count();
+	
     $this->template->pageCounts = $pageCounts;
     $this->template->sentenceCounts = $sentenceCounts;
     
@@ -27,6 +75,5 @@ class ControllerPanel extends TAppEntity {
     $this->template->hide_right_box = true;
     $this->template->render();
   }
-
 }
 ?>
