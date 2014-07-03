@@ -1,0 +1,87 @@
+/* <style> */
+
+/*
+
+Copyright (C) 2005 Ilya S. Lyubinskiy. All rights reserved.
+Technical support: http://www.php-development.ru/
+
+YOU MAY NOT
+(1) Remove or modify this copyright notice.
+(2) Distribute this code, any part or any modified version of it.
+    Instead, you can link to the homepage of this code:
+    http://www.php-development.ru/javascripts/tabview.php.
+
+YOU MAY
+(1) Use this code on your website.
+(2) Use this code as a part of another product.
+
+NO WARRANTY
+This code is provided "as is" without warranty of any kind, either
+expressed or implied, including, but not limited to, the implied warranties
+of merchantability and fitness for a particular purpose. You expressly
+acknowledge and agree that use of this code is at your own risk.
+
+
+If you find my script useful, you can support my site in the following ways:
+1. Vote for the script at HotScripts.com (you can do it on my site)
+2. Link to the homepage of this script or to the homepage of my site:
+   http://www.php-development.ru/javascripts/tabview.php
+   http://www.php-development.ru/
+   You will get 50% commission on all orders made by your referrals.
+   More information can be found here:
+   http://www.php-development.ru/affiliates.php
+
+*/
+
+
+div.TabView div.Tabs
+{
+  height: 24px;
+  overflow: hidden;
+}
+
+div.TabView div.Tabs a
+{
+  float: left;
+  display: block;
+
+  min-width:  90px;
+  text-align: center;
+  
+  padding-left:3px;
+  padding-right:3px;
+  height:      24px;
+  padding-top: 3px;
+  vertical-align: middle;
+	border: 1px solid black;
+	border-bottom-width: 0;
+
+  text-decoration: none;
+  font-family: "Times New Roman", Serif;
+  font-weight: 900;
+  color: #000080;
+}
+
+div.TabView div.Tabs a:hover, div.TabView div.Tabs a.Active
+{
+background-color: lightyellow;
+}
+
+div.TabView div.Pages
+{
+  clear: both;
+  border: 1px solid #404040;
+  overflow: hidden;
+}
+
+div.TabView div.Pages div.Page
+{
+  height: 100%;
+  padding: 0px;
+  overflow: hidden;
+}
+
+div.TabView div.Pages div.Page div.Pad
+{
+  padding: 3px 5px;
+}
