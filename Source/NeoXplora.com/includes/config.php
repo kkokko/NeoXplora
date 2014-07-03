@@ -35,7 +35,11 @@ define('RIGHT_BOX', true);
 include ROOT . 'classes/UserSessionManager.php';
 include ROOT . 'classes/EmailAddressValidator.php';
 include ROOT . 'classes/UserUtils.php';
+<<<<<<< HEAD
 include(ROOT .'includes/db/dbSQLFunctions.php');
+=======
+include(ROOT .'includes/db/dbSQLFunctions.php'); 
+>>>>>>> origin/master
 require_once( ROOT . 'blog/wp-load.php' );
 UserSessionManager::StartSession();
 
