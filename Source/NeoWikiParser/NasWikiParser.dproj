@@ -107,7 +107,7 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SearchPage.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\StoryBase.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas"/>
 			<DCCReference Include="Application\AppUnit.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas"/>

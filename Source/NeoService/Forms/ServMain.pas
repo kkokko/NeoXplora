@@ -3,17 +3,20 @@ unit ServMain;
 interface
 
 uses
-  Windows, Classes, SvcMgr, ServiceThread, SyncObjs;
+  Windows, Classes, SvcMgr, SyncObjs;
 
 type
   TNasService = class(TService)
+    procedure ServiceStart(Sender: TService; var Started: Boolean);
     procedure ServiceStop(Sender: TService; var Stopped: Boolean);
     procedure ServiceShutdown(Sender: TService);
-    procedure ServiceStart(Sender: TService; var Started: Boolean);
+    procedure ServiceBeforeInstall(Sender: TService);
+    procedure ServiceCreate(Sender: TObject);
+    procedure ServiceAfterInstall(Sender: TService);
   private
     FServiceThread: TServiceThread;
     FServerStartOk: Boolean;
-    FTerminateEvent: TEvent;
+    procedure ServiceLoadInfo(Sender: TObject);
   public
     destructor Destroy; override;
     function GetServiceController: TServiceController; override;
@@ -30,7 +33,14 @@ implementation
 {$R *.DFM}
 
 uses
-  SysUtils;
+  ServiceThread, ActiveX, WinSvc, SysUtils;
+
+type
+  SERVICE_DESCRIPTION = packed record
+    lpDescription: PChar;
+  end;
+
+  PSERVICE_DESCRIPTION = ^SERVICE_DESCRIPTION;
 
 procedure ServiceController(CtrlCode: DWord); stdcall;
 begin
@@ -40,7 +50,6 @@ end;
 destructor TNasService.Destroy;
 begin
   FreeAndNil(FServiceThread);
-  FreeAndNil(FTerminateEvent);
   inherited;
 end;
 
@@ -49,13 +58,68 @@ begin
   Result := ServiceController;
 end;
 
+procedure TNasService.ServiceAfterInstall(Sender: TService);
+var
+  SvcMgr, Svc: SC_HANDLE;
+  desc: SERVICE_DESCRIPTION;
+begin
+  SvcMgr := OpenSCManager(nil, nil, SC_MANAGER_ALL_ACCESS);
+  if SvcMgr = 0 then
+    Exit;
+  try
+    Svc := OpenService(SvcMgr, PChar(Name), SERVICE_ALL_ACCESS);
+    if Svc = 0 then
+      RaiseLastOSError;
+    try
+      desc.lpDescription := PWideChar(System.ParamStr(0) + ' ' + Name + ' "' + DisplayName + '"');
+      ChangeServiceConfig( Svc, SERVICE_NO_CHANGE, SERVICE_NO_CHANGE,SERVICE_NO_CHANGE, desc.lpDescription, nil, nil, nil, nil, nil, nil);
+    finally
+      CloseServiceHandle(Svc);
+    end;
+  finally
+    CloseServiceHandle(SvcMgr);
+  end;
+end;
+
+procedure TNasService.ServiceBeforeInstall(Sender: TService);
+begin
+  ServiceLoadInfo(Sender);
+end;
+
+procedure TNasService.ServiceCreate(Sender: TObject);
+begin
+  ServiceLoadInfo(Sender);
+end;
+
+procedure TNasService.ServiceLoadInfo(Sender : TObject);// new method, not an override
+var
+  TheFirstParam: Integer;
+begin
+  if System.ParamCount > 1 then
+    if SameText(System.ParamStr(1), '/install') then
+      TheFirstParam := 2
+    else
+      TheFirstParam := 1
+  else
+    TheFirstParam := 2;
+  if System.ParamCount >= TheFirstParam then
+    Name := System.ParamStr(TheFirstParam);
+  if System.ParamCount = TheFirstParam + 1 then
+    DisplayName := System.ParamStr(TheFirstParam + 1)
+  else
+    DisplayName := Name + ' software by Sky Project';
+end;
+
 procedure TNasService.ServiceStart(Sender: TService; var Started: Boolean);
 begin
-  FServerStartOk := False;
-  FTerminateEvent := TEvent.Create(nil, True, False, 'InfoServer3LoadedMessage');
-  TServiceThread.GetInstance.Suspended := False;
-  FTerminateEvent.WaitFor(INFINITE);
-  Started := FServerStartOk;
+  CoInitialize(nil);
+  try
+    FServerStartOk := False;
+    TServiceThread.GetInstance.Suspended := False;
+    Started := FServerStartOk;
+  finally
+    CoUnInitialize;
+  end;
 end;
 
 procedure TNasService.ServiceStop(Sender: TService;
@@ -68,7 +132,6 @@ end;
 procedure TNasService.StartFinished(SuccessFull: Boolean);
 begin
   FServerStartOk := SuccessFull;
-  FTerminateEvent.SetEvent;
 end;
 
 procedure TNasService.ServiceShutdown(Sender: TService);

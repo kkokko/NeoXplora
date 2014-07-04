@@ -33,12 +33,13 @@ type
     property MainThreadHandle: HWND read FMainThreadHandle write FMainThreadHandle;
 
     // user commands - please keep sorted
-    function GetFullSentencesForStoryId(AStoryId: TId): TEntities;
+    function GetFullSentencesForPageId(APageId: TId): TEntities;
     function GetPosForPage(const APage: string; AnUseModifiedPos: Boolean): TObjects;
     function GetPosForSentences(SomeSentences: TEntities; AnUseModifiedPos: Boolean): TEntities;
     function GuessRepsForSentenceId(ASentenceId: TId; AGuessCRep: Boolean = False): TGuessObject;
     procedure PredictAfterSplit(SomeSentences: TEntities);
     procedure Search(const ASearchString: string; var AnOffset: Integer; out SomePages: TEntities; out APageCount: Integer);
+    function SplitSentence(ASentenceId: TId; const ANewText: string): TEntities;
     procedure TrainUntrainedStories;
     procedure ValidateAllReps;
     procedure ValidateRep(const ARep: string);
@@ -147,13 +148,13 @@ begin
   FreeAndNil(_Core);
 end;
 
-function TServerCore.GetFullSentencesForStoryId(AStoryId: TId): TEntities;
+function TServerCore.GetFullSentencesForPageId(APageId: TId): TEntities;
 var
   TheSentence: TSentenceWithGuesses;
   TheSplitter: TSentenceSplitter;
   I: Integer;
 begin
-  Result := TAppSQLServerQuery.GetFullSentencesForStoryId(AStoryId);
+  Result := TAppSQLServerQuery.GetFullSentencesForPageId(APageId);
   try
     TheSplitter := nil;
     SentenceLockAquire(ltRead);
@@ -188,7 +189,7 @@ begin
   TheSentenceSplitter := TSentenceSplitter.Create;
   try
     TheWordsSplitter := TSentenceSplitter.Create;
-    TheSentenceSplitter.StorySplitProtos(APage);
+    TheSentenceSplitter.PageSplitProtos(APage);
     TheCount := TheSentenceSplitter.WordList.Count;
     SetLength(Result, TheCount);
     FillMemory(Result, TheCount * SizeOf(TObject), 0);
@@ -299,7 +300,7 @@ begin
       if (AGuessCRep) and (Trim(TheSentence.Rep) <> '') then
       begin
         TheTCRep := nil;
-        TheEntities := TAppSQLServerQuery.GetStoryReps(TheSentence.StoryId, TheSentence.Id);
+        TheEntities := TAppSQLServerQuery.GetPageReps(TheSentence.PageId, TheSentence.Id);
         try
           TheTCRep := TCRep.Create;
           for I := 0 to High(TheEntities) do
@@ -386,6 +387,68 @@ begin
   if FLockCount = 0 then
     FTimedLock.BreakLock;
   LeaveCriticalSection(FLock);
+end;
+
+function TServerCore.SplitSentence(ASentenceId: TId; const ANewText: string): TEntities;
+var
+  TheNewSentence: TSentenceBase;
+  TheSentence: TSentenceBase;
+  TheSplitter: TSentenceSplitter;
+  TheResults: TEntityList;
+  TheWordsSplitter: TSentenceSplitter;
+  I: Integer;
+begin
+  TheSplitter := nil;
+  TheSentence := App.SQLConnection.SelectById(TSentenceBase, ASentenceId) as TSentenceBase;
+  try
+    TheSplitter := TSentenceSplitter.Create;
+    TheSplitter.PageSplitProtos(ANewText);
+    case TheSplitter.WordList.Count of
+      0: begin
+        App.SQLConnection.DeleteEntity(TheSentence);
+        Result := nil;
+      end;
+      1: begin
+        TheSentence.Name := TheSplitter.WordList[0];
+        TheSentence.Status := ssTrainedSplit;
+        App.SQLConnection.UpdateEntity(TheSentence);
+        Result := TEntityWithName.Create(TheSentence.Id, TheSentence.Name).GetAsArray;
+      end;
+      else begin
+        TAppSQLServerQuery.UpdateSentenceOrderForPage(TheSentence.PageId, TheSentence.Order, TheSplitter.WordList.Count - 1);
+        App.SQLConnection.DeleteEntity(TheSentence);
+        TheResults := nil;
+        TheWordsSplitter := TSentenceSplitter.Create;
+        try
+          TheResults := TEntityList.Create;
+          for I := 0 to TheSplitter.WordList.Count - 1 do
+          begin
+            TheNewSentence := TheSentence.CreateACopy as TSentenceBase;
+            try
+              TheNewSentence.Name := TheSplitter.WordList[I];
+              TheWordsSplitter.SentenceSplitWords(TheNewSentence.Name);
+              TheNewSentence.Pos := FPosTagger.GetTagsForWords(TheWordsSplitter, True);
+              TheNewSentence.Status := ssTrainedSplit;
+              TheNewSentence.Id := App.SQLConnection.InsertEntity(TheNewSentence);
+              TheResults.Add(TEntityWithName.Create(TheNewSentence.Id, TheNewSentence.Name));
+            finally
+              TheNewSentence.Free;
+            end;
+            Result := TheResults.GetAllEntities;
+            // if there was an exception before this points the results
+            // would be freed also which is correct
+            TheResults.OwnsItems := False;
+          end;
+        finally
+          TheResults.Free;
+          TheWordsSplitter.Free;
+        end;
+      end;
+    end;
+  finally
+    TheSentence.Free;
+    TheSplitter.Free;
+  end;
 end;
 
 end.

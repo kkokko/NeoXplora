@@ -18,17 +18,18 @@ type
     property CRep;
     property SRep;
     property Pos;
-    property StoryId;
-    property GuessIdA;
-    property GuessIdB;
-    property GuessIdC;
-    property GuessIdD;
+    property PageId;
+    property GuessAId;
+    property GuessBId;
+    property GuessCId;
+    property GuessDId;
     property Guesses: TGuessObject read FGuesses write FGuesses;
   end;
 
 implementation
 
-
+uses
+  AppConsts;
 
 { TSentenceWithGuesses }
 
@@ -39,7 +40,6 @@ begin
 end;
 
 initialization
-  TSentenceWithGuesses.RegisterEntityClassWithMappingToTable('sentence');
-  TSentenceWithGuesses.RegisterFieldMappings;
+  TSentenceWithGuesses.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'sentence');
 
 end.

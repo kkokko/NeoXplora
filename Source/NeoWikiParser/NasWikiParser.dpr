@@ -50,7 +50,7 @@ uses
   SearchPage in '..\NeoDelphiShared\Lib\NeoAi\Entity\SearchPage.pas',
   SentenceBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas',
   SentenceWithGuesses in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas',
-  StoryBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\StoryBase.pas',
+  PageBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas',
   AppUnit in 'Application\AppUnit.pas',
   AppExceptionClasses in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas',
   AppConsts in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas',

@@ -3,14 +3,14 @@ unit ParseResult;
 interface
 
 uses
-  Entity, EntityList, StoryBase;
+  Entity, EntityList, PageBase;
 
 type
   TParseResult = class(TEntity)
   private
     FName: string;
     FSentences: TEntityList;
-    FStory: TStoryBase;
+    FPage: TPageBase;
   public
     procedure AddInternalLink(const ALink, ALabel: string);
     procedure AddExternalLink(const ALink, ALabel: string);
@@ -22,7 +22,7 @@ type
 
 //    property Links: TEntityList read FLinks write FLinks;
 //    property Refs: TEntityList read FRefs write FRefs;
-    property Story: TStoryBase read FStory write FStory;
+    property Page: TPageBase read FPage write FPage;
     property Sentences: TEntityList read FSentences write FSentences;
   end;
 
@@ -52,19 +52,20 @@ procedure TParseResult.SaveToDatabase;
 var
   TheProto: TProto;
   TheSentence: TSentenceBase;
-  TheStoryId: TId;
+  ThePageId: TId;
   I: Integer;
 begin
-  TheStoryId := App.SQLConnection.InsertEntity(Story);
+  ThePageId := App.SQLConnection.InsertEntity(Page);
   TheProto := TProto.Create;
   try
     TheProto.Level := 1;
-    TheProto.StoryId := TheStoryId;
+    TheProto.PageId := ThePageId;
     for I := 0 to Sentences.Count - 1 do
     begin
       TheSentence := Sentences[I] as TSentenceBase;
       TheProto.Name := TheSentence.Name;
-      TheSentence.StoryId := TheStoryId;
+      TheProto.Order := TheSentence.Order;
+      TheSentence.PageId := ThePageId;
       TheSentence.ProtoId := App.SQLConnection.InsertEntity(TheProto);
       App.SQLConnection.InsertEntity(TheSentence);
     end;

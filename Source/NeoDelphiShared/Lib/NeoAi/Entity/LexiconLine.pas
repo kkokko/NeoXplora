@@ -18,7 +18,10 @@ type
 
 implementation
 
+uses
+  AppConsts;
+
 initialization
-  TLexiconLine.RegisterEntityClassWithMappingToTable('lexicon');
+  TLexiconLine.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'lexicon');
 
 end.

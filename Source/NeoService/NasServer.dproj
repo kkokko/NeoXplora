@@ -87,7 +87,7 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\StoryBase.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\CRepDecoder.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas"/>
@@ -106,7 +106,9 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas">
 				<Form>/  , LoggerUnit
-</Form>
+  AppConsts in &apos;..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas&apos;;
+
+{$R *.res</Form>
 			</DCCReference>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas"/>
 			<BuildConfiguration Include="Base">

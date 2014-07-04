@@ -106,11 +106,11 @@ begin
           Continue;
         if not ACalculateOnlyD then
         begin
-          TheSentenceAlgorithm.RunTextMatch(TheBestScoreA, AResult.FGuessIdA, AResult.FRepGuessA, AResult.FSRepGuessA, AResult.FMatchSentenceA);
-          TheSentenceAlgorithm.RunPosMatch(TheBestScoreB, AResult.FGuessIdB, AResult.FRepGuessB, AResult.FSRepGuessB, AResult.FMatchSentenceB);
-          TheSentenceAlgorithm.RunHybridPosMatch(TheBestScoreC, AResult.FGuessIdC, AResult.FRepGuessC, AResult.FSRepGuessC, AResult.FMatchSentenceC);
+          TheSentenceAlgorithm.RunTextMatch(TheBestScoreA, AResult.FGuessAId, AResult.FRepGuessA, AResult.FSRepGuessA, AResult.FMatchSentenceA);
+          TheSentenceAlgorithm.RunPosMatch(TheBestScoreB, AResult.FGuessBId, AResult.FRepGuessB, AResult.FSRepGuessB, AResult.FMatchSentenceB);
+          TheSentenceAlgorithm.RunHybridPosMatch(TheBestScoreC, AResult.FGuessCId, AResult.FRepGuessC, AResult.FSRepGuessC, AResult.FMatchSentenceC);
         end;
-        TheSentenceAlgorithm.RunHybridSemMatch(TheBestScoreD, AResult.FGuessIdD, AResult.FRepGuessD, AResult.FSRepGuessD, AResult.FMatchSentenceD);
+        TheSentenceAlgorithm.RunHybridSemMatch(TheBestScoreD, AResult.FGuessDId, AResult.FRepGuessD, AResult.FSRepGuessD, AResult.FMatchSentenceD);
       end;
   finally
     TheCurrentSentence.Free;
@@ -138,20 +138,20 @@ begin
   try
     TheSentenceAlgorithm := TSentenceAlgorithm.Create;
     TheSentenceAlgorithm.Element1 := TheCurrentSentence;
-    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessIdA, nil] as TSentenceListElement;
-    TheSentenceAlgorithm.RunTextMatch(TheBestScoreA, ASentence.Guesses.FGuessIdA, ASentence.Guesses.FRepGuessA,
+    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessAId, nil] as TSentenceListElement;
+    TheSentenceAlgorithm.RunTextMatch(TheBestScoreA, ASentence.Guesses.FGuessAId, ASentence.Guesses.FRepGuessA,
       ASentence.Guesses.FSRepGuessA, ASentence.Guesses.FMatchSentenceA);
 
-    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessIdB, nil] as TSentenceListElement;
-    TheSentenceAlgorithm.RunPosMatch(TheBestScoreB, ASentence.Guesses.FGuessIdB, ASentence.Guesses.FRepGuessB,
+    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessBId, nil] as TSentenceListElement;
+    TheSentenceAlgorithm.RunPosMatch(TheBestScoreB, ASentence.Guesses.FGuessBId, ASentence.Guesses.FRepGuessB,
       ASentence.Guesses.FSRepGuessB, ASentence.Guesses.FMatchSentenceB);
 
-    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessIdC, nil] as TSentenceListElement;
-    TheSentenceAlgorithm.RunHybridPosMatch(TheBestScoreC, ASentence.Guesses.FGuessIdC, ASentence.Guesses.FRepGuessC,
+    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessCId, nil] as TSentenceListElement;
+    TheSentenceAlgorithm.RunHybridPosMatch(TheBestScoreC, ASentence.Guesses.FGuessCId, ASentence.Guesses.FRepGuessC,
       ASentence.Guesses.FSRepGuessC, ASentence.Guesses.FMatchSentenceC);
 
-    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessIdD, nil] as TSentenceListElement;
-    TheSentenceAlgorithm.RunHybridSemMatch(TheBestScoreD, ASentence.Guesses.FGuessIdD, ASentence.Guesses.FRepGuessD,
+    TheSentenceAlgorithm.Element2 := FSentences.ObjectOfValueDefault[ASentence.GuessDId, nil] as TSentenceListElement;
+    TheSentenceAlgorithm.RunHybridSemMatch(TheBestScoreD, ASentence.Guesses.FGuessDId, ASentence.Guesses.FRepGuessD,
       ASentence.Guesses.FSRepGuessD, ASentence.Guesses.FMatchSentenceD);
   finally
     TheCurrentSentence.Free;

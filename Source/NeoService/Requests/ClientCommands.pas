@@ -18,7 +18,7 @@ type
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
 
-  TCommandGetFullSentencesForStoryId = class(TClientCommand)
+  TCommandGetFullSentencesForPageId = class(TClientCommand)
   protected
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
@@ -54,6 +54,11 @@ type
   end;
 
   TCommandValidateAllReps = class(TClientCommand)
+  protected
+    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
+  end;
+
+  TCommandSplitSentence = class(TClientCommand)
   protected
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
@@ -97,16 +102,16 @@ begin
   Result := TResponseGuessRepsForSentenceId.Create(TheGuessObject);
 end;
 
-{ TCommandGetFullSentencesForStoryId }
+{ TCommandGetFullSentencesForPageId }
 
-class function TCommandGetFullSentencesForStoryId.DoExecute(ARequest: TRequest): TGenericResponse;
+class function TCommandGetFullSentencesForPageId.DoExecute(ARequest: TRequest): TGenericResponse;
 var
   TheSentences: TEntities;
-  TheRequest: TRequestGetFullSentencesForStoryId;
+  TheRequest: TRequestGetFullSentencesForPageId;
 begin
-  TheRequest := ARequest as TRequestGetFullSentencesForStoryId;
-  TheSentences := Core.GetFullSentencesForStoryId(TheRequest.StoryId);
-  Result := TResponseGetFullSentencesForStoryId.Create(TheSentences);
+  TheRequest := ARequest as TRequestGetFullSentencesForPageId;
+  TheSentences := Core.GetFullSentencesForPageId(TheRequest.PageId);
+  Result := TResponseGetFullSentencesForPageId.Create(TheSentences);
 end;
 
 { TCommandGetPosForSentences }
@@ -186,14 +191,27 @@ begin
   Result := nil;
 end;
 
+{ TCommandSplitSentence }
+
+class function TCommandSplitSentence.DoExecute(ARequest: TRequest): TGenericResponse;
+var
+  TheRequest: TRequestSplitSentence;
+  TheNewSentences: TEntities;
+begin
+  TheRequest := ARequest as TRequestSplitSentence;
+  TheNewSentences := Core.SplitSentence(TheRequest.Id, TheRequest.NewText);
+  Result := TResponseSplitSentence.Create(TheNewSentences);
+end;
+
 initialization
   // please keep these sorted
   TCommandGuessRepsForSentenceId.RegisterClass(TRequestGuessRepsForSentenceId);
   TCommandGetPosForPage.RegisterClass(TRequestGetPosForPage);
   TCommandGetPosForSentences.RegisterClass(TRequestGetPosForSentences);
-  TCommandGetFullSentencesForStoryId.RegisterClass(TRequestGetFullSentencesForStoryId);
+  TCommandGetFullSentencesForPageId.RegisterClass(TRequestGetFullSentencesForPageId);
   TCommandPredictAfterSplit.RegisterClass(TRequestPredictAfterSplit);
   TCommandSearch.RegisterClass(TRequestSearch);
+  TCommandSplitSentence.RegisterClass(TRequestSplitSentence);
   TCommandTrainUntrainedStories.RegisterClass(TRequestTrainUntrainedStories);
   TCommandValidateAllReps.RegisterClass(TRequestValidateAllReps);
   TCommandValidateRep.RegisterClass(TRequestValidateRep);

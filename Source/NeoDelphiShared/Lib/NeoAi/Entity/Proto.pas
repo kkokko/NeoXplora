@@ -10,24 +10,27 @@ type
   private
     FLevel: Integer;
     FName: string;
-    FStoryId: TId;
+    FPageId: TId;
+    FOrder: Integer;
   protected
     function GetName: string; override;
     procedure SetName(const AName: string); override;
   public
-    constructor Create; override;
     class var
       Tok_Id: TEntityFieldNamesToken;
       Tok_Level: TEntityFieldNamesToken;
       Tok_Name: TEntityFieldNamesToken;
-      Tok_StoryId: TEntityFieldNamesToken;
+      Tok_Order: TEntityFieldNamesToken;
+      Tok_PageId: TEntityFieldNamesToken;
     class function EntityToken_Id: TEntityFieldNamesToken; override;
-    class procedure RegisterFieldMappings;
+    class function EntityToken_Name: TEntityFieldNamesToken; override;
+    constructor Create; override;
   published
     property Id;
     property Level: Integer read FLevel write FLevel;
     property Name;
-    property StoryId: TId read FStoryId write FStoryId;
+    property Order: Integer read FOrder write FOrder;
+    property PageId: TId read FPageId write FPageId;
   end;
 
 implementation
@@ -48,20 +51,14 @@ begin
   Result := Tok_Id;
 end;
 
+class function TProto.EntityToken_Name: TEntityFieldNamesToken;
+begin
+  Result := Tok_Name;
+end;
+
 function TProto.GetName: string;
 begin
   Result := FName;
-end;
-
-class procedure TProto.RegisterFieldMappings;
-var
-  TheManager: TEntityMapping;
-begin
-  TheManager := TEntityMappingManager.GetMapping(Self);
-  TheManager.SetValueForField('Id', Tok_Id.PropertyName);
-  TheManager.SetValueForField('Level', Tok_Level.PropertyName);
-  TheManager.SetValueForField('Name', Tok_Name.PropertyName);
-  TheManager.SetValueForField('StoryId', Tok_StoryId.PropertyName);
 end;
 
 procedure TProto.SetName(const AName: string);
@@ -71,10 +68,10 @@ end;
 
 initialization
   TProto.RegisterEntityClassWithMappingToTable('proto');
-  TProto.RegisterToken(TProto.Tok_Id, 'prID');
-  TProto.RegisterToken(TProto.Tok_Level, 'level');
-  TProto.RegisterToken(TProto.Tok_Name, 'name');
-  TProto.RegisterToken(TProto.Tok_StoryId, 'pageId');
-  TProto.RegisterFieldMappings;
+  TProto.RegisterToken(TProto.Tok_Id, 'Id');
+  TProto.RegisterToken(TProto.Tok_Level, 'Level');
+  TProto.RegisterToken(TProto.Tok_Name, 'Name');
+  TProto.RegisterToken(TProto.Tok_PageId, 'PageId');
+  TProto.RegisterToken(TProto.Tok_Order, 'Order');
 
 end.

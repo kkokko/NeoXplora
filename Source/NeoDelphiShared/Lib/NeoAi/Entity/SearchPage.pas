@@ -25,8 +25,11 @@ type
 
 implementation
 
+uses
+  AppConsts;
+
 initialization
-  TSearchPage.RegisterEntityClassWithMappingToTable('page');
+  TSearchPage.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'page');
   TSearchPage.RegisterToken(TSearchPage.Tok_Title, 'Title');
   TSearchPage.RegisterToken(TSearchPage.Tok_Body, 'Body');
   TSearchPage.RegisterToken(TSearchPage.Tok_Link, 'Link');

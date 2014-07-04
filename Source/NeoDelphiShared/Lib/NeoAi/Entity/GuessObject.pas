@@ -21,10 +21,10 @@ type
     FSRepGuessA: string;
     FSRepGuessD: string;
     FCRepGuessA: string;
-    FGuessIdA: TId;
-    FGuessIdD: TId;
-    FGuessIdB: TId;
-    FGuessIdC: TId;
+    FGuessAId: TId;
+    FGuessBId: TId;
+    FGuessCId: TId;
+    FGuessDId: TId;
   public
     class var
       Tok_Id: TEntityFieldNamesToken;
@@ -41,10 +41,10 @@ type
       Tok_SRepGuessB: TEntityFieldNamesToken;
       Tok_SRepGuessC: TEntityFieldNamesToken;
       Tok_SRepGuessD: TEntityFieldNamesToken;
-      Tok_GuessIdA: TEntityFieldNamesToken;
-      Tok_GuessIdB: TEntityFieldNamesToken;
-      Tok_GuessIdC: TEntityFieldNamesToken;
-      Tok_GuessIdD: TEntityFieldNamesToken;
+      Tok_GuessAId: TEntityFieldNamesToken;
+      Tok_GuessBId: TEntityFieldNamesToken;
+      Tok_GuessCId: TEntityFieldNamesToken;
+      Tok_GuessDId: TEntityFieldNamesToken;
     class function EntityToken_Id: TEntityFieldNamesToken; override;
     class procedure RegisterFieldMappings;
   published
@@ -62,16 +62,16 @@ type
     property SRepGuessB: string read FSRepGuessB write FSRepGuessB;
     property SRepGuessC: string read FSRepGuessC write FSRepGuessC;
     property SRepGuessD: string read FSRepGuessD write FSRepGuessD;
-    property GuessIdA: TId read FGuessIdA write FGuessIdA;
-    property GuessIdB: TId read FGuessIdB write FGuessIdB;
-    property GuessIdC: TId read FGuessIdC write FGuessIdC;
-    property GuessIdD: TId read FGuessIdD write FGuessIdD;
+    property GuessAId: TId read FGuessAId write FGuessAId;
+    property GuessBId: TId read FGuessBId write FGuessBId;
+    property GuessCId: TId read FGuessCId write FGuessCId;
+    property GuessDId: TId read FGuessDId write FGuessDId;
   end;
 
 implementation
 
 uses
-  EntityMappingManager, EntityMapping;
+  EntityMappingManager, EntityMapping, AppConsts;
 
 { TGuessObject }
 
@@ -85,7 +85,6 @@ var
   TheManager: TEntityMapping;
 begin
   TheManager := TEntityMappingManager.GetMapping(Self);
-  TheManager.SetValueForField('Id', Tok_Id.PropertyName);
   TheManager.SetValueForField('MatchSentenceA', Tok_MatchSentenceA.PropertyName);
   TheManager.SetValueForField('MatchSentenceB', Tok_MatchSentenceB.PropertyName);
   TheManager.SetValueForField('MatchSentenceC', Tok_MatchSentenceC.PropertyName);
@@ -99,15 +98,12 @@ begin
   TheManager.SetValueForField('SRepGuessB', Tok_SRepGuessB.PropertyName);
   TheManager.SetValueForField('SRepGuessC', Tok_SRepGuessC.PropertyName);
   TheManager.SetValueForField('SRepGuessD', Tok_SRepGuessD.PropertyName);
-  TheManager.SetValueForField('GuessIdA', Tok_GuessIdA.PropertyName);
-  TheManager.SetValueForField('GuessIdB', Tok_GuessIdB.PropertyName);
-  TheManager.SetValueForField('GuessIdC', Tok_GuessIdC.PropertyName);
-  TheManager.SetValueForField('GuessIdD', Tok_GuessIdD.PropertyName);
 end;
 
 initialization
-  TGuessObject.RegisterEntityClassWithMappingToTable('sentence');
-  TGuessObject.RegisterToken(TGuessObject.Tok_Id, 'sentenceId');
+  TGuessObject.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'sentence');
+  TGuessObject.RegisterToken(TGuessObject.Tok_Id, 'Id');
+  // empty token names to prevent saving to the database
   TGuessObject.RegisterToken(TGuessObject.Tok_MatchSentenceA, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_MatchSentenceB, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_MatchSentenceC, '');
@@ -121,10 +117,10 @@ initialization
   TGuessObject.RegisterToken(TGuessObject.Tok_SRepGuessB, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_SRepGuessC, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_SRepGuessD, '');
-  TGuessObject.RegisterToken(TGuessObject.Tok_GuessIdA, 'sntid1');
-  TGuessObject.RegisterToken(TGuessObject.Tok_GuessIdB, 'sntid2');
-  TGuessObject.RegisterToken(TGuessObject.Tok_GuessIdC, 'sntid3');
-  TGuessObject.RegisterToken(TGuessObject.Tok_GuessIdD, 'sntid4');
+  TGuessObject.RegisterToken(TGuessObject.Tok_GuessAId, 'GuessAId');
+  TGuessObject.RegisterToken(TGuessObject.Tok_GuessBId, 'GuessBId');
+  TGuessObject.RegisterToken(TGuessObject.Tok_GuessCId, 'GuessCId');
+  TGuessObject.RegisterToken(TGuessObject.Tok_GuessDId, 'GuessDId');
   TGuessObject.RegisterFieldMappings;
 
 end.

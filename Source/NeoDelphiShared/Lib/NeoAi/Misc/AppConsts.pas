@@ -5,6 +5,7 @@ interface
 const
   ConstSplitChars = [' ', '/', '\', '[', ']', '{', '}', '(', ')', ',', '?', '!', '_', '=', '+', '"', ':', ';', '$',
     '%', '^', '&', '*', '#', '.'];
+  ConstNeoPrefix = 'neox_';
 
 implementation
 

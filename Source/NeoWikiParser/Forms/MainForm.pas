@@ -54,7 +54,7 @@ begin
     try
       if btnStartStop.Caption = 'Start' then
       begin
-        ShowMessage('STOP');
+        ShowMessage('Starting');
         FCount := 0;
         btnStartStop.Caption := 'Stop';
         TScheduler.GetInstance;
@@ -62,7 +62,7 @@ begin
       end
       else
       begin
-        ShowMessage('START');
+        ShowMessage('Stopping');
         btnStartStop.Caption := 'Start';
         TScheduler.EndInstance;
         Timer1.Enabled := False;
@@ -85,16 +85,6 @@ begin
   end
   else
     lblFileName.Caption := Settings.WikiFile;
-//  ThePage := TWikiPage.Create('Anarchy');
-//  try
-//    Memo1.Lines.LoadFromFile('C:\Work\PaulKp\Anarchism\Anarchism.txt');
-//    Memo1.Lines.Text := ThePage.LoadPageFromString(Memo1.Lines.Text);
-//    Memo2.Lines.Text := ThePage.Results.Tags;
-//    Memo5.Lines.Text := ThePage.Results.InternalLinks;
-//    Memo6.Lines.Text := ThePage.Results.Templates;
-//  finally
-//    ThePage.Free;
-//  end;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);

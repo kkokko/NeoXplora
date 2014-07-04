@@ -22,7 +22,7 @@ implementation
 
 uses
   Scheduler, SysUtils, LoggerUnit, ParseResult, Level0Prep, Level1ParseComments, Level2ParseTags, Level3Prep,
-  Level4ParseLanguage, Level5Prep, SkyLists, SentenceWithGuesses, AppUnit, StoryBase;
+  Level4ParseLanguage, Level5Prep, SkyLists, SentenceWithGuesses, AppUnit, PageBase;
 
 { TWikiPageProcessingThread }
 
@@ -109,20 +109,21 @@ begin
       TheList.Free;
     end;
 
-    // set the story
-    TheObject.Story := TStoryBase.Create;
-    TheObject.Story.Body := TheResult;
-    TheObject.Story.Source := 'http://en.wikipedia.org/wiki/' + string(AName);
-    TheObject.Story.Title := string(AName);
+    // set the Page
+    TheObject.Page := TPageBase.Create;
+    TheObject.Page.Body := TheResult;
+    TheObject.Page.Source := 'http://en.wikipedia.org/wiki/' + string(AName);
+    TheObject.Page.Name := string(AName);
 
     // split sentences, add pos, guesses
-    FSplitter.StorySplitProtos(TheResult);
+    FSplitter.PageSplitProtos(TheResult);
     for I := 0 to FSplitter.WordList.Count - 1 do
     begin
       TheSentence := TSentenceWithGuesses.Create;
       TheSentence.Name := FSplitter.WordList[I];
       FWordSplitter.SentenceSplitWords(TheSentence.Name);
       TheSentence.Pos := App.PosTagger.GetTagsForWords(FWordSplitter, False);
+      TheSentence.Order := I;
 //    Guessing reps - disabled for now
       App.SentenceList.GetRepGuess(FWordSplitter.WordList, TheSentence.Name, TheSentence.Pos, 1, False, TheSentence.Guesses);
       TheSentence.Rep := TheSentence.Guesses.RepGuessD;

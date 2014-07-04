@@ -56,3 +56,13 @@ __history/
 
 #viorel's computer
 UpdateExternal.bat
+/Source/NeoWikiParser/Dcu/*.dcu
+/Source/NeoService/dcu/*.dcu
+/Source/NeoService/Build/*.exe
+/Source/NeoService/Build/*.lnk
+/Source/NeoWikiParser/Build/*.exe
+/Source/NeoService/Build/*.ini
+/Source/NeoService/Build/*.map
+/Source/NeoWikiParser/Build/*.map
+/Source/NeoService/*.drc
+/Source/NeoWikiParser/Build/*.ini

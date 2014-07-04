@@ -41,7 +41,7 @@ type
 implementation
 
 uses
-  EntityMappingManager, EntityMapping;
+  EntityMappingManager, EntityMapping, AppConsts;
 
 { TPageBase }
 
@@ -72,7 +72,7 @@ begin
 end;
 
 initialization
-  TPageBase.RegisterEntityClassWithMappingToTable('page');
+  TPageBase.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'page');
   TPageBase.RegisterToken(TPageBase.Tok_Body, 'Body');
   TPageBase.RegisterToken(TPageBase.Tok_Id, 'Id');
   TPageBase.RegisterToken(TPageBase.Tok_Name, 'Name');

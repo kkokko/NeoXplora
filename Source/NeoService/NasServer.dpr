@@ -26,7 +26,7 @@ uses
   SentenceBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas',
   SentenceSplitter in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas',
   GuessObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas',
-  StoryBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\StoryBase.pas',
+  PageBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas',
   CRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas',
   CRepDecoder in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRepDecoder.pas',
   SentenceWithGuesses in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas',
@@ -43,18 +43,19 @@ uses
   RepGroup in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepGroup.pas',
   RepPropertyValue in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyValue.pas',
   RepPerson in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas',
-  RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas' {/  , LoggerUnit},
-  AppConsts in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas';
+  RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas',  AppConsts in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas';
 
-//var
-//  TheRec: TRepRecord;
 {$R *.res}
 
-begin
-//  TheRec := TRepDecoder.DecodeRep('p123(.name = John'' Smith, .ref = "abc \" . , asd"):"event 1 ,."(:subevent = [p2], .subattribute = [p1]."asd asd")>19+18+"abc ,"(.attr1 = value), g1([p1]+[p2]+[p3])');
-//  TLogger.Info(nil, [TheRec.ToString]);
-//  TheRec.Free;
+function AttachConsole(dwProcessId: DWORD): BOOL; stdcall; external kernel32 name 'AttachConsole';
 
+begin
+  if (ParamCount = 1) and ((ParamStr(1) = '/?') or (ParamStr(1) = '?'))  and AttachConsole($FFFFFFFF) then
+  begin
+    Writeln('Usage: ' + Forms.Application.ExeName + ' /install [ServiceName] [ServiceDescription]');
+    Writeln('Press enter to continue.');
+    FreeConsole;
+  end;
   if (ParamCount = 1) and (ParamStr(1) = '/debug') then
   begin
     Forms.Application.Initialize;

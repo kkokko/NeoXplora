@@ -6,14 +6,14 @@ uses
   Communication, EntityList, Entity, TypesConsts, GuessObject, SkyIdList;
 
 type
-{$Region 'TRequestGetFullSentencesForStoryId'}
-  TRequestGetFullSentencesForStoryId = class(TRequest)
+{$Region 'TRequestGetFullSentencesForPageId'}
+  TRequestGetFullSentencesForPageId = class(TRequest)
   private
-    FStoryId: TId;
+    FPageId: TId;
   published
-    property StoryId: TId read FStoryId write FStoryId;
+    property PageId: TId read FPageId write FPageId;
   end;
-  TResponseGetFullSentencesForStoryId = class(TResponse)
+  TResponseGetFullSentencesForPageId = class(TResponse)
   private
     FSentences: TEntityList;
   public
@@ -116,6 +116,25 @@ type
   end;
 
 {$EndRegion}
+{$Region 'TRequestSplitSentence'}
+  TRequestSplitSentence = class(TRequest)
+  private
+    FNewText: string;
+  published
+    property Id;
+    property NewText: string read FNewText write FNewText;
+  end;
+
+  TResponseSplitSentence= class(TResponse)
+  private
+    FNewSentences: TEntityList;
+  public
+    constructor Create(SomeNewSentences: TEntities); reintroduce;
+  published
+    property NewSentences: TEntityList read FNewSentences write FNewSentences; // array of TEntityWithName
+  end;
+
+{$EndRegion}
 {$Region 'TRequestValidateAllReps'}
   TRequestValidateAllReps = class(TRequest);
 
@@ -143,9 +162,9 @@ begin
   FGuessObject := AGuessObject;
 end;
 
-{ TResponseGetFullSentencesForStoryId }
+{ TResponseGetFullSentencesForPageId }
 
-constructor TResponseGetFullSentencesForStoryId.Create(SomeSentences: TEntities);
+constructor TResponseGetFullSentencesForPageId.Create(SomeSentences: TEntities);
 begin
   inherited Create;
   FSentences.AddMultiple(TObjects(SomeSentences), nil);
@@ -180,23 +199,33 @@ begin
     FSentences.AddObject(I, SomeSentences[I]);
 end;
 
+{ TResponseSplitSentence }
+
+constructor TResponseSplitSentence.Create(SomeNewSentences: TEntities);
+begin
+  inherited Create;
+  FNewSentences.AddMultiple(TObjects(SomeNewSentences), nil);
+end;
+
 initialization
   // please keep these sorted
   TEntityManager.RegisterEntityClasses([
-    TRequestGetFullSentencesForStoryId,
+    TRequestGetFullSentencesForPageId,
     TRequestGetPosForPage,
     TRequestGetPosForSentences,
     TRequestGuessRepsForSentenceId,
     TRequestPredictAfterSplit,
     TRequestSearch,
+    TRequestSplitSentence,
     TRequestTrainUntrainedStories,
     TRequestValidateAllReps,
     TRequestValidateRep,
 
-    TResponseGetFullSentencesForStoryId,
+    TResponseGetFullSentencesForPageId,
     TResponseGetPosForPage,
     TResponseGetPosForSentences,
     TResponseSearch,
+    TResponseSplitSentence,
     TResponseGuessRepsForSentenceId
   ]);
 

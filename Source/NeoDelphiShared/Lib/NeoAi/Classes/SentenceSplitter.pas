@@ -16,7 +16,7 @@ type
     procedure ReadWordPunctuation(const AString: string; var AnIndex: Integer); inline;
     procedure ReadWordString(const AString: string; var AnIndex: Integer); inline;
 
-    function ReplaceInvalidStoryChars(const AString: string): string;
+    function ReplaceInvalidPageChars(const AString: string): string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -28,9 +28,9 @@ type
     // splits a sentence into words considering punctuation and English language rules
     procedure SentenceSplitWords(const ASentence: string);
 
-    // split the story body into sentences.
+    // split the Page body into sentences.
     // The result will be stored in WordList
-    procedure StorySplitProtos(const AStoryBody: string);
+    procedure PageSplitProtos(const APageBody: string);
 
     property WordList: TSkyStringStringList read FWordList;
   end;
@@ -172,7 +172,7 @@ begin
     WordList.DeleteFromIndex(I);
 end;
 
-function TSentenceSplitter.ReplaceInvalidStoryChars(const AString: string): string;
+function TSentenceSplitter.ReplaceInvalidPageChars(const AString: string): string;
 begin
   Result := StringReplace(AString, #13, '', [rfReplaceAll]);
   Result := StringReplace(Result, #9, ' ', [rfReplaceAll]);
@@ -193,7 +193,7 @@ begin
   Result := StringReplace(Result, #$E2#$80#$BA, '''', [rfReplaceAll]); // › (U+203A) in UTF-8
 end;
 
-procedure TSentenceSplitter.StorySplitProtos(const AStoryBody: string);
+procedure TSentenceSplitter.PageSplitProtos(const APageBody: string);
 var
   TheBody: string;
   TheInQuote: Boolean;
@@ -203,7 +203,7 @@ var
   TheChar: Char;
 begin
   FWordList.Clear;
-  TheBody := Trim(ReplaceInvalidStoryChars(AStoryBody));
+  TheBody := Trim(ReplaceInvalidPageChars(APageBody));
 
   TheBody := StringReplace(TheBody, 'Mr.', 'Mr%&^', [rfReplaceAll, rfIgnoreCase]);
   TheBody := StringReplace(TheBody, 'Mrs.', 'Mrs%&^', [rfReplaceAll, rfIgnoreCase]);
@@ -219,7 +219,7 @@ begin
   TheBody := StringReplace(TheBody, 'St.', 'St%&^', [rfReplaceAll, rfIgnoreCase]);
   TheBody := StringReplace(TheBody, 'p.m.', 'p%&^m%&^', [rfReplaceAll, rfIgnoreCase]);
 
-  //If the ENTIRE story is INSIDE ONLY one open and ONLY one closed quote, remove them BEFORE processing.
+  //If the ENTIRE Page is INSIDE ONLY one open and ONLY one closed quote, remove them BEFORE processing.
   if (Length(TheBody) > 1) and (TheBody[1] = '"') and (TheBody[Length(TheBody)] = '"') then
     TheBody := Copy(TheBody, 2, Length(TheBody) - 2);
 
