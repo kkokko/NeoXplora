@@ -1,7 +1,9 @@
 <?php
-require_once APP_DIR . "/app/system/appentity.php";
 
-class ControllerPanel extends TAppEntity {
+namespace NeoX\Controller;
+
+require_once APP_DIR . "/app/system/Object.php";
+class TPanel extends \SkyCore\TObject {
 
   public $accessLevel = 'admin';
 
@@ -41,9 +43,6 @@ class ControllerPanel extends TAppEntity {
     $this->template->load("ireprules_add", "panel");
     $this->template->pageTitle = "IRep rules - Add | Admin Panel";
     $this->template->page = "ireprules_panel";
-	
-	$IRepRulesList = $this->core->model("ireprule")->getRulesList();
-	$this->template->rulesList = $IRepRulesList;
 	
     $this->template->hide_right_box = true;
     $this->template->render();

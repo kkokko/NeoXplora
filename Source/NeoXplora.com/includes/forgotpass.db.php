@@ -16,7 +16,7 @@ if (count($_POST) > 0) {
     }
 
     if (isset($_POST['txtEmail'])) {
-        $rs_email = mysql_query("SELECT * FROM users WHERE email=\"$_POST[txtEmail]\"");
+        $rs_email = mysql_query("SELECT * FROM old_users WHERE email=\"$_POST[txtEmail]\"");
         if (mysql_num_rows($rs_email)) {
             $rw_email = mysql_fetch_array($rs_email, 1);
 

@@ -1,9 +1,13 @@
 <?php
-  require_once APP_DIR . "/app/system/model.php";
-	class ModelSentence extends Model {
+  namespace NeoX\Entity;
+  
+  require_once APP_DIR . "/app/system/Entity.php";
+  class TSentence extends \SkyCore\TEntity {
 	  
+	  public static $entityname = "sentence";
+    
     //Table Name in the DB
-    public static $tablename = "sentence";
+    public static $tablename = "neox_sentence";
     
     //Table Fields in the DB
     public static $tok_id = "Id";
@@ -21,23 +25,6 @@
     public static $tok_status = "Status";
     public static $tok_assigneddate = "AssignedDate";
     
-    public function getById($Id) {
-      $query = $this->query("SELECT * FROM [[sentence]] WHERE [[sentence.id]] = :1", $Id);
-      
-      return $this->result($query);
-    }
-    
-    public function count() {
-      $query = $this->query("
-        SELECT 
-          COUNT(s.[[sentence.id]]) AS total
-        FROM [[sentence]] s
-      ");
-      $result = $query->fetch_array();
-      
-      return $result['total'];
-    }
-
     public function advancedCount() {
       $query = $this->query("
         SELECT 
@@ -52,12 +39,6 @@
       ", 'ssTrainedSplit', 'ssReviewedSplit', 'ssTrainedRep', 'ssReviewedRep', 'ssTrainedCRep', 'ssReviewedCRep');
       
       return $this->result($query);
-    }
-    
-    public function setAssignedDate($assignedDate, $sentenceID) {
-      $query = $this->query("UPDATE [[sentence]] SET [[sentence.assigneddate]] = :1 WHERE [[sentence.id]] = :2", $assignedDate, $sentenceID);
-      
-      return $this->check($query);
     }
     
 	}

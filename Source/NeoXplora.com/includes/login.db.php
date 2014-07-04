@@ -102,7 +102,7 @@ if (count($_POST) > 0 && isset($_POST['register_btn'])) {
                     if (is_int($user_id)) {
                         $wp_user_object = new WP_User($user_id);
                         $wp_user_object->set_role('subscriber');
-                        mysql_query("UPDATE users SET wp_u_id=$user_id WHERE id=$isReg[last_id]");
+                        mysql_query("UPDATE old_users SET wp_u_id=$user_id WHERE id=$isReg[last_id]");
                     }
 
                     $isLogin = UserSessionManager::Login($_POST['txtEmail'], $_POST['password'], isset($_POST['chkRememberMe']) ? $_POST['chkRememberMe'] : 0);

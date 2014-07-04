@@ -1,6 +1,11 @@
 <?php 
-require_once APP_DIR . "/app/system/appentity.php";
-class ModelIRepRule extends TAppEntity {
+
+
+namespace NeoX\Controller;
+require_once APP_DIR . "/app/system/Model.php";
+
+class ModelIRepRule extends \SkyCore\TModel {
+
 
 	public function getRulesList(){
 		

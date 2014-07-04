@@ -1,6 +1,8 @@
-<?php 
-require_once "trainentity.php";
-class ControllerTrainLinker extends TTrainEntity {
+<?php
+namespace NeoX\Controller;
+
+require_once "TrainObject.php";
+class TTrainLinker extends TTrainObject {
   
   public $accessLevel = 'user';
   private $entityList;

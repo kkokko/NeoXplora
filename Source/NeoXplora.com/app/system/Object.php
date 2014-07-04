@@ -1,5 +1,7 @@
 <?php
-  class TAppEntity {
+  namespace SkyCore;
+
+  class TObject {
     protected $db;
     protected $template;
     protected $delphi;
@@ -16,9 +18,9 @@
       if($this->delphi != null) {
         return $this->delphi;
       } else {
-        require_once __DIR__ . "/../../NeoShared/Server/App/Global.php";
+        require_once $GLOBALS['delphi_service_path'];
         $this->delphi = $server;
-        return $this->delphi; 
+        return $this->delphi;
       }
     }
     

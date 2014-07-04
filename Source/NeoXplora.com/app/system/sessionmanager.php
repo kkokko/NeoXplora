@@ -1,6 +1,7 @@
 <?php
+namespace SkyCore;
 
-class SessionManager {
+class TSessionManager {
 
     private $db;
 
@@ -9,7 +10,7 @@ class SessionManager {
     }
 
     public function login($email, $password, $isRemember = false) {
-        $sql = "SELECT * FROM users where email=\"$email\"";
+        $sql = "SELECT * FROM old_users where email=\"$email\"";
         $rs_login = $this->db->query($sql);
 
         if ($rs_login->num_rows == 1) {
@@ -108,7 +109,7 @@ class SessionManager {
     }
 
     public function updateUserSession() {
-        $rs_user = $this->db->query("SELECT * FROM users WHERE id='" . $this->getUserId() . "'");
+        $rs_user = $this->db->query("SELECT * FROM old_users WHERE id='" . $this->getUserId() . "'");
         $user = $rs_user->fetch_array();
         $_SESSION[session_id()]['email'] = $user['email'];
         $email_part = explode("@", $user['email']);

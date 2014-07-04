@@ -32,7 +32,7 @@ if (count($_POST) > 0) {
         return;
     }
     $pass = md5($_POST['pass1']);
-    if (mysql_query("UPDATE users SET password=\"$pass\" WHERE id=$id")) {
+    if (mysql_query("UPDATE old_users SET password=\"$pass\" WHERE id=$id")) {
         $_SESSION['cpMessage'] = "Your password has been changes";
         wp_set_password( $_POST['pass1'], UserSessionManager::GetWPUserId() );
     }

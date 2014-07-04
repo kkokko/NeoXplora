@@ -1,6 +1,8 @@
 <?php 
-require_once APP_DIR . "/app/system/appentity.php";
-class TTrainEntity extends TAppEntity {
+namespace NeoX\Controller;
+
+require_once APP_DIR . "/app/system/Object.php";
+class TTrainObject extends \SkyCore\TObject {
 
   protected $accessLevel = 'user';
 

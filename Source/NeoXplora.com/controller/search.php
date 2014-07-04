@@ -1,6 +1,8 @@
 <?php	
-require_once APP_DIR . "/app/system/appentity.php";
-class ControllerSearch extends TAppEntity {
+namespace NeoX\Controller;
+
+require_once APP_DIR . "/app/system/Object.php";
+class TSearch extends \SkyCore\TObject {
 	
     public function index() {
 	
