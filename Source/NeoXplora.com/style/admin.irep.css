@@ -1,3 +1,46 @@
+#conditionContainer{
+	background:#FFF;
+	padding:10px;
+	border:3px solid #9CF
+}
+
+#conditionContainer button{
+	background:#9CF;
+	color:#FFF;
+	font-size:20px;
+	padding:5px;
+	border:none;
+	margin-right:3px;
+}
+
+#conditionContainer input{
+	background:#FFF;
+	color:#9CD;
+	font-size:17px;
+	font-weight:bold;
+	margin-right:3px;
+	width:500px;
+	padding:5px;
+	border:3px solid #9CF;
+}
+
+.ruleGroup{
+	border:1px solid black;
+}
+
+.ruleItem{
+	cursor:pointer;
+	padding:10px;
+}
+
+li.selected{
+	background-color:orange;
+}
+
+.ruleItem:hover{
+	background-color:yellow;
+}
+
 .panel h3 {
 	color:white;
 	font-family: Verdana,Geneva,sans-serif;

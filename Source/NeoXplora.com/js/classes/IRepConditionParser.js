@@ -1,120 +1,106 @@
-var TIRepConditionParser_Implementation = {
-  construct: function() {
-    this.base(this);
-  },
-  
-  properties: {
-    PropertyType: null, // string  (valid values: ptAttribute, ptEvent)
-    PropertyKey: null, // string
-    OperatorType: null, // string  (valid values: otEquals, otLess, otLessOrEqual, otGreater, otGreaterOrEqual, otDiffers)
-    PropertyValue: null, // string
-    
-    __Position: 0,
-    __String: null
-  },
-  
-  methods: {
-    ParseString: function(string) {
-      this.set__String(string.trim());
-      this.setPropertyType(this.ParsePropertyType());
-      this.ParseSpaces(); // skipps spaces between operand and key
-      this.setPropertyKey(this.ParseOperand().trim());
-      this.ParseSpaces();
-      this.setOperatorType(this.ParseOperatorType());
-      this.ParseSpaces();
-      this.setPropertyValue(this.ParseOperand().trim());
-      if (this.get__Position() < this.get__String().length) {
-        throw "InvalidOperandException";
-      }
-      return new NeoAI.TRuleValue(
-        this.getPropertyType(), 
-        this.getOperatorType(), 
-        this.getPropertyKey(), 
-        this.getPropertyValue()
-      );
-    },
-      
-    ParsePropertyType: function() {
-      if(this.get__String().length > 0) {
-        switch(this.get__String()[this.get__Position()]) {
-          case '.':
-            this.set__Position(this.get__Position() + 1);
-            return 'ptAttribute';
-            break;
-          case ':':
-            this.set__Position(this.get__Position() + 1);
-            return 'ptEvent';
-            break;
-          default:
-            throw "UndefinedPropertyTypeException";
-            break;
-        }
-      } else {
-        throw "InvalidInputStringException";
-      }
-    },
-    
-    ParseOperand: function() {
-      var theInQuote = (this.get__String()[this.get__Position()] == '"');
-      if (theInQuote) {
-        this.set__Position(this.get__Position() + 1);
-      }
-      var theIncrement = theInQuote?2:0;
-      var theStart = this.get__Position();
-      while (this.get__Position() < this.get__String().length && !theInQuote && ("!=<>").indexOf(this.get__String()[this.get__Position()]) == -1) {
-        if((".,{}[]():+").indexOf(this.get__String()[this.get__Position()]) != -1) {
-          throw "InvalidOperandException";
-        }
-        if(!theInQuote && ("\\\"").indexOf(this.get__String()[this.get__Position()]) != -1) {
-          throw "InvalidOperandException";
-        }
-        if (this.get__String()[this.get__Position()] == '"'){
-          this.set__Position(this.get__Position() - 1);
-          theInQuote = false;
-          break;
-        }
-        if (this.get__String()[this.get__Position()] == '\\'){
-          this.set__Position(this.get__Position() + 1);
-        }
-        this.set__Position(this.get__Position() + 1);
-      }
-      if (theInQuote){
-        throw "InvalidOperandException";
-      }
-      var theResult = this.get__String().slice(theStart, this.get__Position());
-      this.set__Position(this.get__Position() + theIncrement);
-      return theResult; 
-    },
-    
-    ParseOperatorType: function() {
-      var operatorTypes = { '!=':'otDiffers','<=':'otLessOrEqual','>=':'otGreaterOrEqual','=':'otEquals','<':'otLess','>':'otGreater' };
-      var operatorLiteral = '';
-      while(this.get__Position() < this.get__String().length && ("!=<>").indexOf(this.get__String()[this.get__Position()]) != -1) {
-        operatorLiteral +=this.get__String()[this.get__Position()];
-        this.set__Position(this.get__Position() + 1);
-      }
-      if(operatorTypes[operatorLiteral] != null) {
-        return operatorTypes[operatorLiteral];
-      } else {
-        throw "InvalidOperatorException";
-      }
-    },
-    
-    ParseSpaces: function() {
-      while ((this.get__Position() < this.get__String().length) && (this.get__String()[this.get__Position()] == ' ')) {
-        this.set__Position(this.get__Position() + 1);
-      }
-    },
-    
-    ToString: function() {
-      return (
-        "TIRepConditionParser:{PropertyType: " + this.getPropertyType() +
-        ", OperandType: " + this.getOperatorType() +
-        ", PropertyKey: " + this.getPropertyKey() +
-        ", PropertyValue: " + this.getPropertyValue() + "}"
-      );
-    }
-  }  
-};
 
-Sky.Class.Define("NeoAI.TIRepConditionParser", TIRepConditionParser_Implementation);
+var TIRepConditionParser = function (){
+	
+	this.PropertyType = null; // string  (valid values: ptAttribute, ptEvent)
+	this.PropertyKey = null;  // string
+	this.OperatorType = null;  // string  (valid values: otEquals, otLess, otLessOrEqual, otGreater, otGreaterOrEqual, otDiffers)
+	this.PropertyValue = null;// string
+	
+	this.__position = 0;
+	this.__string = null;
+	
+	this.ParseString = function (string){
+		this.__string = string.trim();
+		
+		this.PropertyType = this.getPropertyType();
+		this.parseSpaces(); // skipps spaces between operand and key
+		this.PropertyKey = this.getOperand().trim();
+		this.parseSpaces();
+		this.OperatorType = this.getOperatorType();
+		this.parseSpaces();
+		this.PropertyValue = this.getOperand().trim();
+		
+		return new TRuleValue(this.PropertyType,this.OperatorType,this.PropertyKey,this.PropertyValue);
+	}
+	
+	this.getPropertyType = function (){
+		
+		if(this.__string.length>0){
+			switch(this.__string[this.__position]){
+				case '.':
+					this.__position++;
+					return 'ptAttribute';
+					break;
+				case ':':
+					this.__position++;
+					return 'ptEvent';
+					break;
+				default:
+					throw "UndefinedPropertyTypeException";
+					break;
+			}
+		}else{
+			throw "InvalidInputStringException";
+		}
+		
+	}
+	
+	this.getOperand = function(){
+		var theInQuote = (this.__string[this.__position] == '"');
+		if (theInQuote) {
+			this.__position++;
+		}
+		var theIncrement = theInQuote?2:0;
+		var theStart = this.__position;
+		while (this.__position < this.__string.length && !theInQuote && ("!=<>").indexOf(this.__string[this.__position])==-1) {
+			if((".,{}[]():+").indexOf(this.__string[this.__position])!=-1) {
+				throw "InvalidOperandException";
+			}
+			if(!theInQuote && ("\\\"").indexOf(this.__string[this.__position])!=-1) {
+				throw "InvalidOperandException";
+			}
+			if (this.__string[this.__position] == '"'){
+				dec(this.__position);
+				theInQuote = false;
+				break;
+			}
+			if (this.__string[this.__position] == '\\'){
+				this.__position++;
+			}
+			this.__position++;
+		}
+		if (theInQuote){
+			throw "InvalidOperandException";
+		}
+		var theResult = this.__string.slice(theStart, this.__position);
+		this.__position += theIncrement;
+		return theResult; 
+	}
+	
+	this.getOperatorType = function (){
+		var operatorTypes = { '!=':'otDiffers','<=':'otLessOrEqual','>=':'otGreaterOrEqual','=':'otEquals','<':'otLess','>':'otGreater' };
+		var operatorLiteral = '';
+		while(this.__position < this.__string.length && ("!=<>").indexOf(this.__string[this.__position])!=-1) {
+			operatorLiteral +=this.__string[this.__position];
+			this.__position++;
+		}
+		if(operatorTypes[operatorLiteral]!=null){
+			return operatorTypes[operatorLiteral];
+		}else throw "InvalidOperatorException";
+	}
+	
+	this.parseSpaces = function(){
+		while ((this.__position < this.__string.length) && (this.__string[this.__position] == ' ')) {
+			this.__position++;
+		}
+	}
+	
+	this.toString = function (){
+		return ("TIRepConditionParser:{PropertyType: "+this.PropertyType+
+				", OperandType: "+this.OperatorType+
+				", PropertyKey: "+this.PropertyKey+
+				", PropertyValue: "+this.PropertyValue+"}"
+				);
+	}
+
+};
