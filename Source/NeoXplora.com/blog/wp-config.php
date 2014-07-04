@@ -18,7 +18,7 @@
 define("DB_HOST", "127.0.0.1");
 define("DB_USER", "userneo123");
 define("DB_PASSWORD", "edu3uvy4e");
-define("DB_NAME", "zadmin_neo123");
+define("DB_NAME", "zadmin_neoxplora");
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
 

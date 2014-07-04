@@ -4,7 +4,7 @@ class UserSessionManager {
 
     public static function Login($email, $password, $isRemember = false) {
         $sql = "SELECT * FROM old_users where email=\"$email\"";
-        $rs_login = mysql_query($sql);
+        $rs_login = mysql_query($sql) or die(mysql_error());
 
         if (mysql_num_rows($rs_login) == 1) {
             $rw_login_data = mysql_fetch_array($rs_login, 1);

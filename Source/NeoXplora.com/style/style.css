@@ -324,6 +324,6 @@ label{color: #6C6C6C; font-size: 15px;}
   width: 100%;
 }
 
-.splitter {
-  
+.splitter input[type="text"] {
+  padding: 5px;
 }

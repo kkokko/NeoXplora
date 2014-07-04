@@ -6,7 +6,7 @@ if (stripos($_SERVER["PHP_SELF"], "/config.php") > 0)
 define("HOST", "127.0.0.1");
 define("DBU", "userneo123");
 define("DBPASS", "edu3uvy4e");
-define("DB", "zadmin_neo123");
+define("DB", "zadmin_neoxplora");
 
 $link = @mysql_connect(HOST, DBU, DBPASS);
 $db = mysql_select_db(DB, $link);

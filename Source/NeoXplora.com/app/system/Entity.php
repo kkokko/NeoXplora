@@ -4,11 +4,11 @@
   require_once APP_DIR . "/app/system/Model.php";
   class TEntity extends TModel {
     
-    public function select($ids, $limit = null) {
+    public function select($ids, $data = "*", $limit = null) {
       if(!is_array($ids)) {
-        return $this->selectSingle($ids);
+        return $this->selectSingle($ids, $data);
       } else {
-        return $this->selectMultiple($ids, $limit);
+        return $this->selectMultiple($ids, $data, $limit);
       }
     }
     
@@ -20,7 +20,6 @@
       } else {
         return $this->updateMultiple($ids, $data);
       }
-      
     }
     
     public function delete($ids, $except = null) {
@@ -29,6 +28,12 @@
       } else {
         return $this->deleteMultiple($ids, $except);
       }
+    }
+    
+    public function insert($fields, $values) {
+      if(!is_array($fields) || !is_array($values)) return false;
+      
+      return $this->insertSingle($fields, $values);
     }
     
     public function count() {
@@ -44,15 +49,64 @@
     
     //
     
-    private function selectSingle($id) {
-      $query = $this->query("SELECT * FROM [[" . $this::$entityname . "]] WHERE [[" . $this::$entityname . ".id]] = :1", $id);
+    private function insertSingle($fields, $values) {
+      $fieldlist = " (";
+      $valuelist = "";
       
-      return $this->result($query);
+      for($i = 0; $i < count($fields); $i++) {
+        $fieldlist .= $this->prepareQueryString("[[" . $this::$entityname . "." . $fields[$i] . "]]");
+        if($i + 1 != count($fields)) $fieldlist .= ", ";
+      }
+      $fieldlist .= ")";
+      
+      for($i = 0; $i < count($values); $i++) {
+        $vauelist .= "(";
+        for($j = 0; $j < count($values[$i]); $j++) {
+          $valuelist .= $this->prepareQueryString(":1", $values[$i][$j]);
+          if($i + 1 != count($fields)) $valuelist .= ", ";
+        }
+        $valuelist .= ")";
+        if($i + 1 != count($values)) $valuelist .= ", ";
+      }
+      
+      $query = $this->prepareQueryString("INSERT INTO [[" . $this::$entityname . "]]") . $fieldlist . " VALUES " . $valuelist;
+      $result = $this->db->query($query);
+      
+      return $this->check($result);
     }
     
-    private function selectMultiple($ids, $limit) {
+    private function selectSingle($id, $data) {
+      $fields = "";
+      if(!is_array($data)) {
+        if($data == "*") {
+          $fields = $data;
+        } else {
+          $fields = "[[" . $this::$entityname . "." . $data . "]]";
+        }
+      } else {
+        for($i = 0; $i < count($data); $i++) {
+          $fields .= "[[" . $this::$entityname . "." . $data[$i] . "]]";
+          if($i + 1 != count($data)) $fields .= ", ";
+        }
+      }
+      
+      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE [[" . $this::$entityname . ".id]] = :1", $id);
+      
+      $result = $this->result($query);
+      
+      if(!is_array($data) && $data != "*" && $result) {
+        $key = "tok_" . $data;
+        return $result[$this::$$key];
+      } else {
+        return $result;
+      }
+    }
+    
+    private function selectMultiple($ids, $data, $limit) {
       $condition_limit = "";
+      $fields = "";
       $condition = "";
+      
       $condition = " [[" . $this::$entityname . ".id]] IN (";
       for($i = 0; $i < count($ids); $i++) {
         $condition .= $ids[$i];
@@ -60,11 +114,24 @@
       }
       $condition .= ")";
       
+      if(!is_array($data)) {
+        if($data == "*") {
+          $fields = $data;
+        } else {
+          $fields = "[[" . $this::$entityname . "." . $data . "]]";
+        }
+      } else {
+        for($i = 0; $i < count($data); $i++) {
+          $fields .= "[[" . $this::$entityname . "." . $data[$i] . "]]";
+          if($i + 1 != count($data)) $fields .= ", ";
+        }
+      }
+      
       if(is_int($limit)) {
         $conditon_limit = " LIMIT " . $limit;
       }
       
-      $query = $this->query("SELECT * FROM [[" . $this::$entityname . "]] WHERE " . $condition . $limit);
+      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE " . $condition . $limit);
       
       return $this->result($query);
     }
@@ -97,7 +164,7 @@
       }
       $updates = implode(",", $updates);
 
-      $query = $this->prepareQueryString("UPDATE [[" . $this::$entityname . "]] SET ") . $updates . $this->prepareQueryString(" WHERE " . $condition, $id);
+      $query = $this->prepareQueryString("UPDATE [[" . $this::$entityname . "]] SET ") . $updates . $this->prepareQueryString(" WHERE " . $condition);
       $result = $this->db->query($query);
       
       return $this->check($result);

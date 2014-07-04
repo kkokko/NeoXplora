@@ -5,39 +5,35 @@ require_once APP_DIR . "/app/system/Object.php";
 class TTrainObject extends \SkyCore\TObject {
 
   protected $accessLevel = 'user';
-
-  protected function query($string) {
-    return $this->db->query($string);
-  }
   
   protected function update_status($sentenceID, $protoID = 0) {
     $query = null;
     if($protoID > 0) {
-      $query = $this->query("
-        SELECT s.*, p2.`pageStatus` 
-        FROM `sentence` s
-        INNER JOIN `page` p2 ON s.`pageID` = p2.`pageID`
-        WHERE s.`pageID` = 
+      $query = $this->db->query("
+        SELECT s.*, p2.`Status` 
+        FROM `neox_sentence` s
+        INNER JOIN `neox_page` p2 ON s.`PageId` = p2.`Id`
+        WHERE s.`PageId` = 
           (
-            SELECT se.`pageID` 
-            FROM `sentence` se 
-            WHERE se.`pr2ID` = '" . $protoID . "'
+            SELECT se.`PageId` 
+            FROM `neox_sentence` se 
+            WHERE se.`ProtoId` = '" . $protoID . "'
             LIMIT 1
           )
-      "); 
+      ") or die($this->db->error); 
     } else {
-      $query = $this->query("
-        SELECT s.*, p2.`pageStatus` 
-        FROM `sentence` s
-        INNER JOIN `page` p2 ON s.`pageID` = p2.`pageID`
-        WHERE s.`pageID` = 
+      $query = $this->db->query("
+        SELECT s.*, p2.`Status` AS pageStatus
+        FROM `neox_sentence` s
+        INNER JOIN `neox_page` p2 ON s.`PageId` = p2.`Id`
+        WHERE s.`PageId` = 
           (
-            SELECT se.`pageID` 
-            FROM `sentence` se 
-            WHERE se.`sentenceID` = '" . $sentenceID . "'
+            SELECT se.`PageId` 
+            FROM `neox_sentence` se 
+            WHERE se.`Id` = '" . $sentenceID . "'
             LIMIT 1
           )
-      ");
+      ") or die($this->db->error);
     }
     $fGen = 0;
     $tSplit = 0;
@@ -51,9 +47,9 @@ class TTrainObject extends \SkyCore\TObject {
     
     //Gather how many of each type of sentence this page has
     while($sentence = $query->fetch_array()) {
-      if($pageID == 0) $pageID = $sentence['pageID']; 
+      if($pageID == 0) $pageID = $sentence['PageId']; 
       if($pageStatus == 0) $pageStatus = $sentence['pageStatus'];
-      switch($sentence['sentenceStatus']) {
+      switch($sentence['Status']) {
         case 'ssReviewedCRep':
           $rCRep++;
           break;
@@ -107,7 +103,7 @@ class TTrainObject extends \SkyCore\TObject {
       $newPageStatus = 'psTrainingSplit';
     }
     
-    $this->query("UPDATE `page` SET `pageStatus` = '". $newPageStatus ."' WHERE `pageID` = '". $pageID ."'") or die(mysql_error());
+    $this->db->query("UPDATE `neox_page` SET `Status` = '". $newPageStatus ."' WHERE `Id` = '". $pageID ."'") or die($this->db->error);
     return $newPageStatus; 
   }
   

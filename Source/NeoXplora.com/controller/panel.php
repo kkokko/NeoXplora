@@ -62,9 +62,9 @@ class TPanel extends \SkyCore\TObject {
   }
   
   public function stats() {
-    $pageCounts = $this->core->model("page")->count();
-    $sentenceCounts = $this->core->model("sentence")->count();
-	
+    $pageCounts = $this->core->entity("page")->advancedCount();
+    $sentenceCounts = $this->core->entity("sentence")->advancedCount();
+    
     $this->template->pageCounts = $pageCounts;
     $this->template->sentenceCounts = $sentenceCounts;
     
