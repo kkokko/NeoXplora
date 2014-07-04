@@ -1,9 +1,10 @@
 <?php
-  require_once APP_DIR . "/app/system/appentity.php";
-  class Model extends TAppEntity {
+  namespace SkyCore;
+  
+  require_once APP_DIR . "/app/system/Object.php";
+  class TModel extends TObject {
     
-    public function query() {
-      //get first argument, the query string
+    public function prepareQueryString() {
       $query = func_get_arg(0);
       $fields = array();
       $search = array();
@@ -24,24 +25,25 @@
       
       foreach($fields as $field) {
         $fieldData = explode(".", $field);
-        if(count($fieldData) == 0) { 
+        if(count($fieldData) == 0) {
           continue;
         }
         
         $fullFieldName = "`" . $field . "`";
         //retrieve the model object
-        $model = $this->core->model($fieldData[0]);
+        $entity = $this->core->entity($fieldData[0]);
         
-        if($model) {
-          $modelName = $model::$tablename;
+        
+        if($entity) {
+          $entityName = $entity::$tablename;
           
           //get the real db field name
           if(count($fieldData) == 2) {
             $fieldToken = "tok_" . $fieldData[1];
-            $fieldName = $model::$$fieldToken;
+            $fieldName = $entity::$$fieldToken;
             $fullFieldName = "`" . $fieldName . "`";
           } elseif (count($fieldData) == 1) { //or get the table name for the model
-            $fullFieldName = "`" . $modelName . "`"; 
+            $fullFieldName = "`" . $entityName . "`"; 
           }
         }
         
@@ -70,6 +72,13 @@
       $query = preg_replace($search, $first_replace, $query);
       $query = preg_replace($second_search, $replace, $query);
       
+      return $query;
+    }
+    
+    public function query() {
+      //get first argument, the query string
+      $query = call_user_func_array(array($this, 'prepareQueryString'), func_get_args());
+      
       $result = $this->db->query($query) or die($this->db->error);
       return $result;
     }
@@ -87,15 +96,6 @@
         return true;
       } else {
         return false;
-      }
-    }
-    
-    public function bindResult($result, $pairs) {
-      $bindedResults = array();
-      foreach($result as $key => $value) {
-        if(array_key_exists($key, $pairs)) {
-          $bindedResults[$pairs[$key]] = $value; 
-        }
       }
     }
     

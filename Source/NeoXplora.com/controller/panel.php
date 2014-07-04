@@ -1,6 +1,8 @@
 <?php
-require_once APP_DIR . "/app/system/appentity.php";
-class ControllerPanel extends TAppEntity {
+namespace NeoX\Controller;
+
+require_once APP_DIR . "/app/system/Object.php";
+class TPanel extends \SkyCore\TObject {
 
   public $accessLevel = 'admin';
 

@@ -4,7 +4,7 @@ if (UserSessionManager::LoggedIn())
     header('location: index.php');
 $title = "Reset Password";
 if ($_SERVER['QUERY_STRING'] != '') {
-    $rs_auth = mysql_query("SELECT userid from auth WHERE code=\"$_SERVER[QUERY_STRING]\"");
+    $rs_auth = mysql_query("SELECT userid from old_auth WHERE code=\"$_SERVER[QUERY_STRING]\"");
     if (mysql_num_rows($rs_auth) == 0) {
         $_SESSION['rpError'] = "Reset password link is not valid";
     }

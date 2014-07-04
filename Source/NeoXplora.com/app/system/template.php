@@ -1,6 +1,7 @@
 <?php
-  namespace sky;
-  class Template {
+  namespace SkyCore;
+  
+  class TTemplate {
     private $args;
     private $template;
     private $parent;
@@ -20,7 +21,7 @@
     public function __get($name) {
       if(isset($this->args[$name])) {
         return $this->args[$name];
-      } else if($this->parent instanceof Template && $this->parent->{$name}) {
+      } else if($this->parent instanceof TTemplate && $this->parent->{$name}) {
         return $this->parent->{$name};
       } else {
         return "";
@@ -29,7 +30,7 @@
 
     public function __set($name, $value) {
       $this->args[$name] = $value;
-      if($value instanceof Template) {
+      if($value instanceof TTemplate) {
         $value->setParent($this);
       }
     }
@@ -40,7 +41,7 @@
     
     public function fetch($template = null, $template_path = "") {
       if($template && !$this->{"hide_" . $template}) {
-        $this->{$template} = new Template($template, $template_path);
+        $this->{$template} = new TTemplate($template, $template_path);
         return $this->{$template}->parse();
       } else {
         return "";
@@ -117,6 +118,6 @@
     
   }
   
-  Template::init();
+  TTemplate::init();
   
 ?>

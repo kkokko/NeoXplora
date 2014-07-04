@@ -1,6 +1,8 @@
 <?php
-  require_once APP_DIR . "/app/system/appentity.php";
-  class ModelTrainLinker extends TAppEntity {
+  namespace NeoX\Model;
+  
+  require_once __DIR__ . "/../Train.php";
+  class TTrainLinker extends TTrain {
     
     public function getCategory() {
       $query = $this->db->query("
@@ -23,7 +25,7 @@
         ORDER BY a.`trainedCount` ASC
         LIMIT 1;
       ") or die($this->db->error);
-
+      
       return $query->fetch_array();  
     }
     
