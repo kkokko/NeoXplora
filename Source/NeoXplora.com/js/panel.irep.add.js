@@ -1,9 +1,10 @@
 
-var conditions = new NeoAI.TRuleGroup();
+var conditions = new TRuleGroup();
 
 $(function(){
 	
-	
+	alert(conditions.toString());
+	bindGui();
 
 });
 
@@ -11,7 +12,7 @@ function bindGui(){
 	$("#addConditionButton").click(function(e){
 		
 		var string = $('#conditionInput').val();
-		var parser = new NeoAI.TIRepConditionParser();
+		var parser = NeoAI.TIRepConditionParser;
 		try{
 			var tRuleValue = parser.ParseString(string);
 			

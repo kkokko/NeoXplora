@@ -8,7 +8,7 @@ define("DBU", "userneo123");
 define("DBPASS", "edu3uvy4e");
 define("DB", "zadmin_neo123");
 
-$link = mysql_connect(HOST, DBU, DBPASS);
+$link = @mysql_connect(HOST, DBU, DBPASS);
 $db = mysql_select_db(DB, $link);
 
 
@@ -25,7 +25,7 @@ $base = str_replace("/admin","",$base);
 $fullbase = 'http://' . $_SERVER['HTTP_HOST'] . $base;
 
 $root = $_SERVER['DOCUMENT_ROOT'] . $base . '/';
-define('ROOT', $root);
+define('ROOT', '');
 define('BASE', $base);
 define('FULLBASE', $fullbase . '/');
 define('DEBUG', false);

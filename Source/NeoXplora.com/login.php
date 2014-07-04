@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 include 'includes/login.db.php';
 if (UserSessionManager::LoggedIn()){
   if(isset($_GET['action'])){

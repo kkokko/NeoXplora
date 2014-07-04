@@ -32,6 +32,7 @@ class ControllerPanel extends TAppEntity {
   public function ireprules_add(){
 	$this->template->addStyle("style/admin.css");
 	$this->template->addStyle("style/admin.irep.css");
+	$this->template->addScript("js/fw/skyjs.js");
 	$this->template->addScript("js/classes/IRepConditionParser.js");
 	$this->template->addScript("js/classes/TBaseRule.js");
 	$this->template->addScript("js/classes/TRuleGroup.js");
