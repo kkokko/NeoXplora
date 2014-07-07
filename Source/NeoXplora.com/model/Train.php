@@ -20,7 +20,8 @@
         FROM (
           SELECT c2.[[category.id]], c2.`pageCount`, COUNT(p2.[[page.id]]) AS trainedCount 
           FROM (
-            SELECT c.[[category.id]], COUNT(p.[[page.id]]) AS pageCount FROM [[category]] c
+            SELECT c.[[category.id]], COUNT(p.[[page.id]]) AS pageCount 
+            FROM [[category]] c
             INNER JOIN (
               SELECT DISTINCT pg.[[page.id]], pg.[[page.status]], pg.[[page.categoryid]]
               FROM [[page]] pg
@@ -72,7 +73,17 @@
       return $this->result($query);
     } 
     
-    public function countSentences($categoryID, $offset, $sStatus) {
+    public function countSentences($categoryID, $offset, $sStatus, $ignoreIDs = array()) {
+      $ignore = '';
+      if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $ignore .= " AND se.[[sentence.id]] NOT IN (";
+        for($i = 0; $i < count($ignoreIDs); $i++) {
+          $ignore .= "'" . $ignoreIDs[$i] . "'";
+          if($i != count($ignoreIDs) - 1) $ignore .= ', ';
+        }
+        $ignore .= ") ";
+      }
+      
       $query = $this->query("
         SELECT COUNT(se.[[sentence.id]]) AS sentenceCount
         FROM (
@@ -83,10 +94,45 @@
           AND s.[[sentence.status]] = :2
           LIMIT :3, 1
         ) a INNER JOIN [[sentence]] se ON a.[[page.id]] = se.[[sentence.pageid]]
+        " . $ignore . "
         WHERE se.[[sentence.status]] = :2
       ", $categoryID, $sStatus, $offset);
       //ssFinishedGenerate
       return $this->result($query);
+    } 
+    
+    public function getSentencesByProtoId($ProtoId) {
+      $query = $this->query("
+        SELECT s.[[sentence.status]], s.[[sentence.pageid]], p2.[[page.status]] as pageStatus 
+        FROM [[sentence]] s
+        INNER JOIN [[page]] p2 ON s.[[sentence.pageid]] = p2.[[page.id]]
+        WHERE s.[[sentence.pageid]] = 
+          (
+            SELECT se.[[sentence.pageid]] 
+            FROM [[sentence]] se 
+            WHERE se.[[sentence.protoid]] = :1
+            LIMIT 1
+          )
+      ", $ProtoId);
+      
+      return $this->fullresult($query);
+    }
+    
+    public function getSentencesFromPageById($Id) {
+      $query = $this->query("
+        SELECT s.[[sentence.status]], s.[[sentence.pageid]], p2.[[page.status]] as pageStatus 
+        FROM [[sentence]] s
+        INNER JOIN [[page]] p2 ON s.[[sentence.pageid]] = p2.[[page.id]]
+        WHERE s.[[sentence.pageid]] = 
+          (
+            SELECT se.[[sentence.pageid]] 
+            FROM [[sentence]] se 
+            WHERE se.[[sentence.id]] = :1
+            LIMIT 1
+          )
+      ", $Id);
+      
+      return $this->fullresult($query);
     }
     
   }

@@ -6,10 +6,6 @@
     <div>Review</div>
   </div>
   <div class="clear"></div>
-  <div class="button">
-    Add
-  </div>
-  <div class="clear"></div>
   <br/>
   <div class="boxContent">
           

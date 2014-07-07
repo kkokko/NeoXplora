@@ -37,7 +37,7 @@ class TTrainSplitter extends TTrainObject {
     $max_offset = min(array($pageCount, 5));
     $offset = rand(0, $max_offset - 1);
     
-    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate");
+    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate", $ignoreIDs);
     $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
       
     $sentence_data = $splitterModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs);
@@ -203,8 +203,8 @@ class TTrainSplitter extends TTrainObject {
   public function dont_split() {
     if(!isset($_POST['sentenceID'])) return;
     $sentenceID = $_POST['sentenceID'];
-    $this->core->entity("sentence")->update(
-      $sentenceID,
+    $query = $this->core->entity("sentence")->update(
+      intval($sentenceID),
       array(
         'status' => 'ssTrainedSplit'
       )
@@ -212,7 +212,7 @@ class TTrainSplitter extends TTrainObject {
     
     $this->update_status($sentenceID);
     
-    echo json_encode("");
+    echo json_encode("test");
   }
   
 }

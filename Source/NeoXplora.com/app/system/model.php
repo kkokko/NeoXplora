@@ -91,6 +91,14 @@
       }
     }
     
+    public function fullresult($query) {
+      if($query->num_rows) {
+        return $query;
+      } else {
+        return false;
+      }
+    }
+    
     public function check($query) {
       if($query) {
         return true;

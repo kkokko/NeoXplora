@@ -1,5 +1,6 @@
 <?php 
 namespace NeoX\Controller;
+use NeoX\Entity;
 
 require_once APP_DIR . "/app/system/Object.php";
 class TTrainObject extends \SkyCore\TObject {
@@ -7,33 +8,12 @@ class TTrainObject extends \SkyCore\TObject {
   protected $accessLevel = 'user';
   
   protected function update_status($sentenceID, $protoID = 0) {
+    
     $query = null;
     if($protoID > 0) {
-      $query = $this->db->query("
-        SELECT s.*, p2.`Status` 
-        FROM `neox_sentence` s
-        INNER JOIN `neox_page` p2 ON s.`PageId` = p2.`Id`
-        WHERE s.`PageId` = 
-          (
-            SELECT se.`PageId` 
-            FROM `neox_sentence` se 
-            WHERE se.`ProtoId` = '" . $protoID . "'
-            LIMIT 1
-          )
-      ") or die($this->db->error); 
+      $query = $this->core->model("train")->getSentencesByProtoId($protoID);
     } else {
-      $query = $this->db->query("
-        SELECT s.*, p2.`Status` AS pageStatus
-        FROM `neox_sentence` s
-        INNER JOIN `neox_page` p2 ON s.`PageId` = p2.`Id`
-        WHERE s.`PageId` = 
-          (
-            SELECT se.`PageId` 
-            FROM `neox_sentence` se 
-            WHERE se.`Id` = '" . $sentenceID . "'
-            LIMIT 1
-          )
-      ") or die($this->db->error);
+      $query = $this->core->model("train")->getSentencesFromPageById($sentenceID);
     }
     $fGen = 0;
     $tSplit = 0;
@@ -47,9 +27,9 @@ class TTrainObject extends \SkyCore\TObject {
     
     //Gather how many of each type of sentence this page has
     while($sentence = $query->fetch_array()) {
-      if($pageID == 0) $pageID = $sentence['PageId']; 
+      if($pageID == 0) $pageID = $sentence[Entity\TSentence::$tok_pageid]; 
       if($pageStatus == 0) $pageStatus = $sentence['pageStatus'];
-      switch($sentence['Status']) {
+      switch($sentence[Entity\TSentence::$tok_status]) {
         case 'ssReviewedCRep':
           $rCRep++;
           break;
@@ -103,7 +83,7 @@ class TTrainObject extends \SkyCore\TObject {
       $newPageStatus = 'psTrainingSplit';
     }
     
-    $this->db->query("UPDATE `neox_page` SET `Status` = '". $newPageStatus ."' WHERE `Id` = '". $pageID ."'") or die($this->db->error);
+    $this->core->entity("page")->update($pageID, array("status" => $newPageStatus));
     return $newPageStatus; 
   }
   
