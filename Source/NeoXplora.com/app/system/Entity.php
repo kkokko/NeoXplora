@@ -4,6 +4,20 @@
   require_once APP_DIR . "/app/system/Model.php";
   class TEntity extends TModel {
     
+    /*
+     *  INTERFACE 
+     */
+    
+    /* @param $condition - Can be an id, or an array with key value pairs, where the key is the name of the field 
+                           and the value is an array of values for the field.
+     * @param $data - Can be * (select everything), the name of a field or an array of field names
+     * @param $orderby - Array of key value pairs where the key is the field name and the value either ASC or DESC
+     * @param $limit - Integer representing the maximum number of results to return
+     * 
+     * @return - Array with fetched values if $condition is an id returns the fetched array row
+     *         - Selected field value if $condition is an id and $data is a field name
+     *         - MySQLi Query resource if $condition or $data is an array 
+    */                    
     public function select($condition = null, $data = "*", $orderby = null, $limit = null) {
       if(!is_array($condition)) {
         return $this->selectSingle($condition, $data, $orderby);
@@ -12,16 +26,28 @@
       }
     }
     
-    public function update($ids, $data) {
+    /* @param $condition - Can be an id, or an array with key value pairs, where the key is the name of the field 
+                           and the value is an array of values for the field.
+     * @param $data - Array with key value pairs, where the key is the name of the field and the value is the value 
+     *                that the field will be updated to
+     * 
+     * @return boolean - true for success, false otherwise
+     */
+    public function update($condition, $data) {
       if(!is_array($data) || count($data) == 0) return false;
       
-      if(!is_array($ids)) {
-        return $this->updateSingle($ids, $data);
+      if(!is_array($condition)) {
+        return $this->updateSingle($condition, $data);
       } else {
-        return $this->updateMultiple($ids, $data);
+        return $this->updateMultiple($condition, $data);
       }
     }
     
+    /* @param $ids - Can be an id, or an array of ids
+     * @param $except - Array of ids to not delete
+     * 
+     * @return boolean - true for success, false otherwise
+     */
     public function delete($ids, $except = null) {
       if(!is_array($ids)) {
         return $this->deleteSingle($ids);
@@ -30,12 +56,20 @@
       }
     }
     
+    /* @param $fields - Array with field list
+     * @param $values - Array with values for the above field list (must be in the same order). 
+     *                  Can be two-dimensional array for inserting multiple rows simultaniously
+     * 
+     * @return boolean - true for success, false otherwise
+     */
     public function insert($fields, $values) {
       if(!is_array($fields) || !is_array($values)) return false;
       
       return $this->insertSingle($fields, $values);
     }
     
+    /* @return int - number of records in the database for the entity
+     */
     public function count() {
       $query = $this->query("
         SELECT 
@@ -47,7 +81,10 @@
       return $result['total'];
     }
     
-    //
+    
+    /*
+     *  IMPLEMENTATION 
+     */
     
     private function insertSingle($fields, $values) {
       $fieldlist = " (";
