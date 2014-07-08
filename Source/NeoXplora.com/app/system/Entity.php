@@ -4,11 +4,11 @@
   require_once APP_DIR . "/app/system/Model.php";
   class TEntity extends TModel {
     
-    public function select($ids = null, $data = "*", $orderby = null, $limit = null) {
-      if(!is_array($ids)) {
-        return $this->selectSingle($ids, $data, $orderby);
+    public function select($condition = null, $data = "*", $orderby = null, $limit = null) {
+      if(!is_array($condition)) {
+        return $this->selectSingle($condition, $data, $orderby);
       } else {
-        return $this->selectMultiple($ids, $data, $orderby, $limit);
+        return $this->selectMultiple($condition, $data, $orderby, $limit);
       }
     }
     
@@ -118,17 +118,22 @@
       }
     }
     
-    private function selectMultiple($ids, $data, $orderby, $limit) {
+    private function selectMultiple($conditions, $data, $orderby, $limit) {
       $condition_limit = "";
       $fields = "";
       $condition = "";
       
-      $condition = " [[" . $this::$entityname . ".id]] IN (";
-      for($i = 0; $i < count($ids); $i++) {
-        $condition .= $ids[$i];
-        if($i + 1 != count($ids)) $condition .= ", ";
+      $k = 0;
+      foreach($conditions AS $key => $value) {
+        $condition = $this->prepareQueryString(" [[" . $this::$entityname . "." . $key . "]] IN (");
+        for($i = 0; $i < count($value); $i++) {
+          $condition .= $this->prepareQueryString(":1", $value[$i]);
+          if($i + 1 != count($value)) $condition .= ", ";
+        }
+        $condition .= ")";
+        if($k + 1 != count($conditions)) $condition .= " AND ";
+        $k++;
       }
-      $condition .= ")";
       
       if(!is_array($data)) {
         if($data == "*") {
@@ -158,7 +163,8 @@
         $conditon_limit = " LIMIT " . $limit;
       }
       
-      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE " . $condition . $order . $conditon_limit);
+      $query = $this->parseQueryString("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE ") . $condition . $this->prepareQueryString($order . $conditon_limit);
+      $query = $this->db->query($query);
       
       return $this->result($query);
     }
@@ -176,14 +182,20 @@
       return $this->check($result);
     }
     
-    private function updateMultiple($ids, $data) {
+    private function updateMultiple($conditions, $data) {
       $condition = "";
-      $condition = " [[" . $this::$entityname . ".id]] IN (";
-      for($i = 0; $i < count($ids); $i++) {
-        $condition .= $ids[$i];
-        if($i + 1 != count($ids)) $condition .= ", ";
+      
+      $k = 0;
+      foreach($conditions AS $key => $value) {
+        $condition = $this->prepareQueryString(" [[" . $this::$entityname . "." . $key . "]] IN (");
+        for($i = 0; $i < count($value); $i++) {
+          $condition .= $this->prepareQueryString(":1", $value[$i]);
+          if($i + 1 != count($value)) $condition .= ", ";
+        }
+        $condition .= ")";
+        if($k + 1 != count($conditions)) $condition .= " AND ";
+        $k++;
       }
-      $condition .= ")";
       
       $updates = array();
       foreach($data AS $key => $value) {
@@ -191,7 +203,7 @@
       }
       $updates = implode(",", $updates);
 
-      $query = $this->prepareQueryString("UPDATE [[" . $this::$entityname . "]] SET ") . $updates . $this->prepareQueryString(" WHERE " . $condition);
+      $query = $this->prepareQueryString("UPDATE [[" . $this::$entityname . "]] SET ") . $updates . " WHERE " . $condition;
       $result = $this->db->query($query);
       
       return $this->check($result);
