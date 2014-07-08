@@ -143,8 +143,8 @@
         $condition = " WHERE [[" . $this::$entityname . ".id]] = :1 ";
       }
       
-      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] " . $condition . $order, $id);
-      
+      $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] " . $condition . $order, $id);
+      $query = $this->db->query($query);
       $result = $this->result($query);
       
       if(!is_array($data) && $data != "*" && $result) {
@@ -197,13 +197,13 @@
       }
       
       if(is_int($limit)) {
-        $conditon_limit = " LIMIT " . $limit;
+        $condition_limit = " LIMIT " . $limit;
       }
       
-      $query = $this->parseQueryString("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE ") . $condition . $this->prepareQueryString($order . $conditon_limit);
-      $query = $this->db->query($query);
+      $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE ") . $condition . $this->prepareQueryString($order . $condition_limit);
+      $query = $this->db->query($query) or die($this->db->error);
       
-      return $this->result($query);
+      return $this->fullresult($query);
     }
     
     private function updateSingle($id, $data) {

@@ -14,6 +14,7 @@
     public static $tok_name = "Name";
     public static $tok_level = "Level";
     public static $tok_pageid = "PageId";
+    public static $tok_order = "Order";
     
 	}
 ?>

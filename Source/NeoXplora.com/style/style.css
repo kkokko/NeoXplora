@@ -79,7 +79,7 @@ h1, h2, h3, h4, h5, h6 { font-weight:normal;}
 #header .help a { color:#417BAA; font-size:14px;}
 #header .help a:hover { color:#90C7FF; }
 
-#content {   min-height:100%;    position:relative;}
+#content {   min-height: calc( 100% - 38px );    position:relative;}
 #content .search_box { width:612px; margin:195px auto 0;}
 #content #logo_box_wrp{width:470px;}
 #content .search_box .logo { 
@@ -242,6 +242,28 @@ label{color: #6C6C6C; font-size: 15px;}
   clear: both;
 }
 
+.boxPagination {
+  margin-top: 15px;
+  padding: 5px;
+}
+
+.boxPagination .button {
+  padding: 4px 8px;
+}
+
+.boxPagination .currentPage {
+  background-color: #888;
+  cursor: auto;
+}
+
+.boxPagination .inactive {
+  cursor: auto;
+}
+
+.boxPagination .inactive:hover {
+  background-color: #aaa;
+}
+
 .button {
   color: #fff;
   background-color: #aaa;
@@ -250,6 +272,7 @@ label{color: #6C6C6C; font-size: 15px;}
   float: left;
   cursor: pointer;
   margin-right: 5px;
+  border: 1px solid #888;
 }
 
 .button:hover {
@@ -294,7 +317,8 @@ label{color: #6C6C6C; font-size: 15px;}
   margin-top: 5px;
 }
 
-.buttons > div {
+.buttons > a {
+  display: block;
   color: #fff;
   background-color: #bbb;
   padding: 10px 15px;
@@ -302,28 +326,83 @@ label{color: #6C6C6C; font-size: 15px;}
   cursor: pointer;
 }
 
-.buttons > div:first-child {
+.buttons > a:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
 
-.buttons > div:last-child {
+.buttons > a:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
 
-.buttons > div:hover {
+.buttons > a:hover {
   background-color: #999;
 }
 
-.buttons > div.active {
+.buttons > a.active {
   background-color: #377EB8;
+}
+
+.buttons.smaller {
+  float: right;
+  margin-right: 5px;
+}
+
+.buttons.smaller > a {
+  padding: 7px 10px;
+  font-size: 14px;
+  font-family: Arial;
 }
 
 .splitter {
   width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
 }
 
 .splitter input[type="text"] {
   padding: 5px;
+  width: 100%;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box; 
+}
+
+.splitter th {
+  padding-bottom: 5px;
+}
+
+.splitter td {
+  vertical-align: middle;
+  padding: 5px;
+}
+
+.splitter .aproto td {
+  color: #555;
+}
+
+.splitter .aproto td {
+  padding-top: 15px;
+  border-bottom: 1px solid #aaa;
+}
+
+.splitter td .button:last-child {
+  margin-right: 0;
+}
+
+.splitter .row1 td:first-child {
+  background-color: #ccc;
+}
+
+.splitter .row2 td:first-child {
+  background-color: #eee;
+}
+
+.splitter .approvedSentence td {
+  background-color: #73C96D;
+}
+
+.splitter .dismissedSentence td {
+  background-color: #EDAE9A;
 }

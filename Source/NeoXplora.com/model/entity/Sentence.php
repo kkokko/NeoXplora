@@ -24,6 +24,7 @@
     public static $tok_guessdid = "GuessDId";
     public static $tok_status = "Status";
     public static $tok_assigneddate = "AssignedDate";
+    public static $tok_order = "Order";
     
     public function advancedCount() {
       $query = $this->query("

@@ -1,8 +1,8 @@
 <?php
 namespace NeoX\Controller;
 
-require_once "TrainObject.php";
-class TTrainLinker extends TTrainObject {
+require_once __DIR__ . "/../train.php";
+class TTrainLinker extends TTrain {
   
   public $accessLevel = 'user';
   private $entityList;
@@ -203,7 +203,7 @@ class TTrainLinker extends TTrainObject {
     if(!$query->num_rows) return;
     $this->query("UPDATE `sentence` SET `context_rep` = '" . $this->db->escape_string($newValue) . "', `sentenceStatus` = 'ssTrainedCRep' WHERE `sentenceID` = '" . $sentenceID . "'");
     
-    $this->update_status($sentenceID);
+    $this->updatePageStatus($sentenceID);
   }
 
   public function approve() {
@@ -216,7 +216,7 @@ class TTrainLinker extends TTrainObject {
     
     $this->query("UPDATE `sentence` SET `context_rep` = `representation`, `sentenceStatus` = 'ssTrainedCRep' WHERE `sentenceID` = '" . $sentenceID . "'") or die($this->db->error);
     
-    $this->update_status($sentenceID); 
+    $this->updatePageStatus($sentenceID); 
   }
 
 }
