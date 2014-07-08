@@ -4,11 +4,11 @@
   require_once APP_DIR . "/app/system/Model.php";
   class TEntity extends TModel {
     
-    public function select($ids, $data = "*", $limit = null) {
+    public function select($ids = null, $data = "*", $orderby = null, $limit = null) {
       if(!is_array($ids)) {
-        return $this->selectSingle($ids, $data);
+        return $this->selectSingle($ids, $data, $orderby);
       } else {
-        return $this->selectMultiple($ids, $data, $limit);
+        return $this->selectMultiple($ids, $data, $orderby, $limit);
       }
     }
     
@@ -75,7 +75,7 @@
       return $this->check($result);
     }
     
-    private function selectSingle($id, $data) {
+    private function selectSingle($id, $data, $orderby) {
       $fields = "";
       if(!is_array($data)) {
         if($data == "*") {
@@ -90,7 +90,23 @@
         }
       }
       
-      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE [[" . $this::$entityname . ".id]] = :1", $id);
+      $order = "";
+      if(is_array($orderby) && count($orderby)) {
+        $order = "ORDER BY";
+        $i = 0;
+        foreach($orderby AS $key => $value) {
+          $order .= " [[" . $this::$entityname . "." . $key . "]] " . $value;
+          if($i + 1 != count($orderby)) $order .= ", ";
+          $i++;
+        }
+      }
+      
+      $condition = "";
+      if($id) {
+        $condition = " WHERE [[" . $this::$entityname . ".id]] = :1 ";
+      }
+      
+      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] " . $condition . $order, $id);
       
       $result = $this->result($query);
       
@@ -102,7 +118,7 @@
       }
     }
     
-    private function selectMultiple($ids, $data, $limit) {
+    private function selectMultiple($ids, $data, $orderby, $limit) {
       $condition_limit = "";
       $fields = "";
       $condition = "";
@@ -127,11 +143,22 @@
         }
       }
       
+      $order = "";
+      if(is_array($orderby) && count($orderby)) {
+        $order = "ORDER BY";
+        $i = 0;
+        foreach($orderby AS $key => $value) {
+          $order .= " [[" . $this::$entityname . "." . $key . "]] " . $value;
+          if($i + 1 != count($orderby)) $order .= ", ";
+          $i++;
+        }
+      }
+      
       if(is_int($limit)) {
         $conditon_limit = " LIMIT " . $limit;
       }
       
-      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE " . $condition . $limit);
+      $query = $this->query("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE " . $condition . $order . $conditon_limit);
       
       return $this->result($query);
     }
