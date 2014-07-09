@@ -73,8 +73,8 @@
     public function count() {
       $query = $this->query("
         SELECT 
-          COUNT(t.[[" . $this::$entityname . ".id]]) AS total
-        FROM [[" . $this::$entityname . "]] t
+          COUNT(t.[[" . $this::getEntityName() . ".id]]) AS total
+        FROM [[" . $this::getEntityName() . "]] t
       ");
       $result = $query->fetch_array();
       
@@ -91,7 +91,7 @@
       $valuelist = "";
       
       for($i = 0; $i < count($fields); $i++) {
-        $fieldlist .= $this->prepareQueryString("[[" . $this::$entityname . "." . $fields[$i] . "]]");
+        $fieldlist .= $this->prepareQueryString("[[" . $this::getEntityName() . "." . $fields[$i] . "]]");
         if($i + 1 != count($fields)) $fieldlist .= ", ";
       }
       $fieldlist .= ")";
@@ -106,7 +106,7 @@
         if($i + 1 != count($values)) $valuelist .= ", ";
       }
       
-      $query = $this->prepareQueryString("INSERT INTO [[" . $this::$entityname . "]]") . $fieldlist . " VALUES " . $valuelist;
+      $query = $this->prepareQueryString("INSERT INTO [[" . $this::getEntityName() . "]]") . $fieldlist . " VALUES " . $valuelist;
       $result = $this->db->query($query);
       
       return $this->check($result);
@@ -118,11 +118,11 @@
         if($data == "*") {
           $fields = $data;
         } else {
-          $fields = "[[" . $this::$entityname . "." . $data . "]]";
+          $fields = "[[" . $this::getEntityName() . "." . $data . "]]";
         }
       } else {
         for($i = 0; $i < count($data); $i++) {
-          $fields .= "[[" . $this::$entityname . "." . $data[$i] . "]]";
+          $fields .= "[[" . $this::getEntityName() . "." . $data[$i] . "]]";
           if($i + 1 != count($data)) $fields .= ", ";
         }
       }
@@ -132,7 +132,7 @@
         $order = "ORDER BY";
         $i = 0;
         foreach($orderby AS $key => $value) {
-          $order .= " [[" . $this::$entityname . "." . $key . "]] " . $value;
+          $order .= " [[" . $this::getEntityName() . "." . $key . "]] " . $value;
           if($i + 1 != count($orderby)) $order .= ", ";
           $i++;
         }
@@ -140,19 +140,13 @@
       
       $condition = "";
       if($id) {
-        $condition = " WHERE [[" . $this::$entityname . ".id]] = :1 ";
+        $condition = " WHERE [[" . $this::getEntityName() . ".id]] = :1 ";
       }
       
-      $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] " . $condition . $order, $id);
+      $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::getEntityName() . "]] " . $condition . $order, $id);
       $query = $this->db->query($query);
-      $result = $this->result($query);
       
-      if(!is_array($data) && $data != "*" && $result) {
-        $key = "tok_" . $data;
-        return $result[$this::$$key];
-      } else {
-        return $result;
-      }
+      return $this->result($query);
     }
     
     private function selectMultiple($conditions, $data, $orderby, $limit) {
@@ -162,7 +156,7 @@
       
       $k = 0;
       foreach($conditions AS $key => $value) {
-        $condition = $this->prepareQueryString(" [[" . $this::$entityname . "." . $key . "]] IN (");
+        $condition = $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] IN (");
         for($i = 0; $i < count($value); $i++) {
           $condition .= $this->prepareQueryString(":1", $value[$i]);
           if($i + 1 != count($value)) $condition .= ", ";
@@ -176,11 +170,11 @@
         if($data == "*") {
           $fields = $data;
         } else {
-          $fields = "[[" . $this::$entityname . "." . $data . "]]";
+          $fields = "[[" . $this::getEntityName() . "." . $data . "]]";
         }
       } else {
         for($i = 0; $i < count($data); $i++) {
-          $fields .= "[[" . $this::$entityname . "." . $data[$i] . "]]";
+          $fields .= "[[" . $this::getEntityName() . "." . $data[$i] . "]]";
           if($i + 1 != count($data)) $fields .= ", ";
         }
       }
@@ -190,7 +184,7 @@
         $order = "ORDER BY";
         $i = 0;
         foreach($orderby AS $key => $value) {
-          $order .= " [[" . $this::$entityname . "." . $key . "]] " . $value;
+          $order .= " [[" . $this::getEntityName() . "." . $key . "]] " . $value;
           if($i + 1 != count($orderby)) $order .= ", ";
           $i++;
         }
@@ -200,7 +194,7 @@
         $condition_limit = " LIMIT " . $limit;
       }
       
-      $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::$entityname . "]] WHERE ") . $condition . $this->prepareQueryString($order . $condition_limit);
+      $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::getEntityName() . "]] WHERE ") . $condition . $this->prepareQueryString($order . $condition_limit);
       $query = $this->db->query($query) or die($this->db->error);
       
       return $this->fullresult($query);
@@ -209,11 +203,11 @@
     private function updateSingle($id, $data) {
       $updates = array();
       foreach($data AS $key => $value) {
-        $updates[] = $this->prepareQueryString(" [[" . $this::$entityname . "." . $key . "]] = :1", $value);
+        $updates[] = $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] = :1", $value);
       }
       $updates = implode(",", $updates);
 
-      $query = $this->prepareQueryString("UPDATE [[" . $this::$entityname . "]] SET ") . $updates . $this->prepareQueryString(" WHERE [[" . $this::$entityname . ".id]] = :1", $id);
+      $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . $this->prepareQueryString(" WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
       $result = $this->db->query($query);
       
       return $this->check($result);
@@ -224,7 +218,7 @@
       
       $k = 0;
       foreach($conditions AS $key => $value) {
-        $condition = $this->prepareQueryString(" [[" . $this::$entityname . "." . $key . "]] IN (");
+        $condition = $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] IN (");
         for($i = 0; $i < count($value); $i++) {
           $condition .= $this->prepareQueryString(":1", $value[$i]);
           if($i + 1 != count($value)) $condition .= ", ";
@@ -236,25 +230,25 @@
       
       $updates = array();
       foreach($data AS $key => $value) {
-        $updates[] = $this->prepareQueryString(" [[" . $this::$entityname . "." . $key . "]] = :1", $value);
+        $updates[] = $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] = :1", $value);
       }
       $updates = implode(",", $updates);
 
-      $query = $this->prepareQueryString("UPDATE [[" . $this::$entityname . "]] SET ") . $updates . " WHERE " . $condition;
+      $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . " WHERE " . $condition;
       $result = $this->db->query($query);
       
       return $this->check($result);
     }
     
     private function deleteSingle($id) {
-      $query = $this->query("DELETE FROM [[" . $this::$entityname . "]] WHERE [[" . $this::$entityname . ".id]] = :1", $id);
+      $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]] WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
       
       return $this->check($query);
     }
     
     private function deleteMultiple($ids, $except) {
       $condition_except = "";
-      $condition_ids = " [[" . $this::$entityname . ".id]] IN (";
+      $condition_ids = " [[" . $this::getEntityName() . ".id]] IN (";
       for($i = 0; $i < count($ids); $i++) {
         $condition_ids .= $ids[$i];
         if($i + 1 != count($ids)) $condition_ids .= ", ";
@@ -262,7 +256,7 @@
       $condition_ids .= ")";
       
       if(is_array($except) && count($except) > 0) {
-        $condition_except = " AND [[" . $this::$entityname . ".id]] NOT IN (";
+        $condition_except = " AND [[" . $this::getEntityName() . ".id]] NOT IN (";
         for($i = 0; $i < count($except); $i++) {
           $condition_except .= $except[$i];
           if($i + 1 != count($except)) $condition_except .= ", ";
@@ -270,9 +264,15 @@
         $condition_except .= ")";
       }
       
-      $query = $this->query("DELETE FROM [[" . $this::$entityname . "]] WHERE " . $condition_ids . $condition_except);
+      $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]] WHERE " . $condition_ids . $condition_except);
       
       return $this->check($query);
+    }
+    
+    protected function getEntityName() {
+      $class = explode('\\', get_class($this));
+      $className = $class[count($class) - 1];
+      return substr($className, 1);
     }
     
   }

@@ -4,8 +4,6 @@
   require_once APP_DIR . "/app/system/Entity.php";
   class TSentence extends \SkyCore\TEntity {
 	  
-	  public static $entityname = "sentence";
-    
     //Table Name in the DB
     public static $tablename = "neox_sentence";
     

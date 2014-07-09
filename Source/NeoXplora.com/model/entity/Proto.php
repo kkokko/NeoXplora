@@ -4,8 +4,6 @@
   require_once APP_DIR . "/app/system/Entity.php";
   class TProto extends \SkyCore\TEntity {
 	  
-    public static $entityname = "proto";
-    
     //Table Name in the DB
     public static $tablename = "neox_proto";
     

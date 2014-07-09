@@ -4,8 +4,6 @@
   require_once APP_DIR . "/app/system/Entity.php";
   class TPage extends \SkyCore\TEntity {
 	  
-    public static $entityname = "page";
-    
     //Table Name in the DB
     public static $tablename = "neox_page";
     
@@ -30,7 +28,6 @@
         LEFT JOIN [[page]] p3 ON p1.[[page.id]] = p3.[[page.id]] AND p3.[[page.status]] IN (:3, :4)
         LEFT JOIN [[page]] p4 ON p1.[[page.id]] = p4.[[page.id]] AND p4.[[page.status]] IN (:5, :6)
       ", 'psTrainedSplit', 'psReviewedSplit', 'psTrainedRep', 'psReviewedRep', 'psTrainedCRep', 'psReviewedCRep');
-      $count_data = $query->fetch_array();
       
       return $this->result($query);
     }

@@ -84,11 +84,15 @@
     }
 
     public function result($query) {
-      if($query && $query->num_rows) {
-        return $query->fetch_array();
-      } else {
-        return false;
+      if($query) {
+        if($query->num_rows == 1) {
+          return $query->fetch_array();
+        } else if($query->num_rows > 1) {
+          return $query;
+        }
       }
+      
+      return false;
     }
     
     public function fullresult($query) {
