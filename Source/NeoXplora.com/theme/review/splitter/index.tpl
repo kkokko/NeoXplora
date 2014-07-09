@@ -9,8 +9,8 @@
   </div>
   <div class="clear"></div>
   <div class="buttons smaller">
-    <a href="train.php?type=splitter">Approve All</a>
-    <a href="browse.php?type=splitter">Dismiss All</a>
+    <a href="javascript:void(0)" class="approveAllSplitButton">Approve All</a>
+    <a href="javascript:void(0)" class="dismissAllSplitButton">Dismiss All</a>
   </div>
   <div class="clear"></div>
   <br/>

@@ -88,11 +88,31 @@ var MSplitterReviewRequests_Implementation = {
     },
     
     approveAll: function(protoIDs) {
-
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.SplitterReviewIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.SplitterReviewIndex.getConfig().moduleType,
+          'action': 'approveMultiple',
+          'protoIDs': protoIDs
+        },
+        success: NeoX.Modules.SplitterReviewRequests.approveAllCallback
+      });
     },
     
     dismissAll: function(protoIDs) {
-      
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.SplitterReviewIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.SplitterReviewIndex.getConfig().moduleType,
+          'action': 'dismissMultiple',
+          'protoIDs': protoIDs
+        },
+        success: NeoX.Modules.SplitterReviewRequests.dismissAllCallback
+      });
     },
     
     /*
@@ -134,8 +154,6 @@ var MSplitterReviewRequests_Implementation = {
         	
           $("#s" + sentenceID).fadeOut("slow");
           var protoRow = $("#s" + sentenceID).prevAll('.aproto').eq(0);
-          //protoRow.find('td').animate({backgroundColor:'#ccc'}, 300);
-          //find('td').animate({backgroundColor:'#fff'}, 300);
           protoRow.nextUntil(".aproto").each(function(i) {
             if(i%2 == 0) { 
               $(this).removeClass('row2');
@@ -181,7 +199,7 @@ var MSplitterReviewRequests_Implementation = {
           if(flag == true) {
             var page = parseInt($('.currentPage').html(), 10);
             if(!page) page = 1;
-            loadReviewSplit(page);
+            NeoX.Modules.SplitterReviewRequests.load(page);
           }
         }, 300);
       };
@@ -189,7 +207,6 @@ var MSplitterReviewRequests_Implementation = {
     
     dismissCallback: function(protoID) {
       return function(json) {
-      	
       	$("#pr" + protoID).nextUntil(".aproto").removeClass("dismissedSentence approvedSentence row1 row2").addClass("dismissedSentence");
         $("#pr" + protoID).addClass("dismissed");
         setTimeout(function() {
@@ -202,18 +219,22 @@ var MSplitterReviewRequests_Implementation = {
           if(flag == true) {
             var page = parseInt($('.currentPage').html(), 10);
             if(!page) page = 1;
-            loadReviewSplit(page);
+            NeoX.Modules.SplitterReviewRequests.load(page);
           }
         }, 300);
       };
     },
     
-    approveAllCallback: function() {
-      
+    approveAllCallback: function(json) {
+      var page = parseInt($('.currentPage').html(), 10);
+      if(!page) page = 1;
+      NeoX.Modules.SplitterReviewRequests.load(page);
     },
     
     dismissAllCallback: function() {
-      
+      var page = parseInt($('.currentPage').html(), 10);
+      if(!page) page = 1;
+      NeoX.Modules.SplitterReviewRequests.load(page);
     }
     
   }

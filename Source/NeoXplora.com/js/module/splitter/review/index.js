@@ -16,7 +16,7 @@ var MSplitterReviewIndex_Implementation = {
         approve: '.approveReviewSplitButton',
         dismiss: '.dismissReviewSplitButton',
         approveAll: '.approveAllSplitButton',
-        dismissAll: 'dismissAllSplitButton'
+        dismissAll: '.dismissAllSplitButton'
     	},
       Inputs: {
       	newValue: '.newValue',

@@ -28,7 +28,7 @@ class TReviewSplitter extends TTrain {
   public function load() {
     $page = isset($_POST['page'])?$_POST['page']:1;
     $per_page = 5;
-    $pagination = "";
+    $pagination = array();
     
     $splitterModel = $this->core->model("splitter", "review");
     $count_data = $splitterModel->countProtos();
@@ -67,10 +67,11 @@ class TReviewSplitter extends TTrain {
       }
       
       require_once APP_DIR . "classes/Pagination.php";
-      $pagination = new Classes\Pagination($pages, $page);
-      $pagination_array = $pagination->generate();
+      $paginationObj = new Classes\Pagination($pages, $page);
+      $pagination_array = $paginationObj->generate();
       
-      $this->template->pagination = $pagination_array;
+      $this->template->pagination = (array) $pagination_array;
+      
       $this->template->currentPage = $page;
       $pagination = $this->template->fetch("pagination", "review/splitter");
       
@@ -240,7 +241,7 @@ class TReviewSplitter extends TTrain {
     );
     
     foreach($protoIDs as $protoID)
-      $this->update_status(0, $protoID);
+      $this->updatePageStatus(0, $protoID);
 
     $sentenceIDs = array();
     
@@ -286,7 +287,7 @@ class TReviewSplitter extends TTrain {
     );
       
     foreach($protoIDs as $protoID)
-      $this->update_status(0, $protoID);
+      $this->updatePageStatus(0, $protoID);
     
     echo json_encode("");
   }
