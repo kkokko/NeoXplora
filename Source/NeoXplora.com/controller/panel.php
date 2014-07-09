@@ -24,7 +24,7 @@ class TPanel extends \SkyCore\TObject {
     $this->template->pageTitle = "IRep rules | Admin Panel";
     $this->template->page = "ireprules_panel";
 	
-	$IRepRulesList = $this->core->model("ireprule")->getRulesList();
+	$IRepRulesList = $this->core->entity("ireprule")->getRulesList();
 	$this->template->rulesList = $IRepRulesList;
 	
     $this->template->hide_right_box = true;
@@ -48,11 +48,20 @@ class TPanel extends \SkyCore\TObject {
     $this->template->render();
   }
   
+  public function irep_postRuleName(){
+	if(isset($_REQUEST['ruleId']) && isset($_REQUEST['ruleName'])){
+		$ruleName = $_REQUEST['ruleName'];
+		$ruleId = intval($_REQUEST['ruleId']);
+		$result = $this->core->entity("ireprule")->postRuleName($ruleId,$ruleName);
+		print $result;
+	}
+  }
+  
   public function ireprules_UpdateRulePriority(){
 	
 	if(isset($_REQUEST['priorityData'])){
 		$pdata = $_REQUEST['priorityData'];
-		$result = $this->core->model("ireprule")->updatePriority($pdata);
+		$result = $this->core->entity("ireprule")->updatePriority($pdata);
 		if($result) {
 			print "success";
 			exit;

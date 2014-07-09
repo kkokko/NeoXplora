@@ -16,7 +16,8 @@ var TRuleValue = function(propertyType,operatorType,propertyKey,propertyValue){
 		return (indentStr+"TRuleValue["+this.Index+"]:{PropertyType: "+this.PropertyType+
 				", OperandType: "+this.OperatorType+
 				", PropertyKey: "+this.PropertyKey+
-				", PropertyValue: "+this.PropertyValue+"}"
+				", PropertyValue: "+this.PropertyValue+
+				", ConjunctionType: "+this.ConjunctionType+"}"
 				);
 	}
 	

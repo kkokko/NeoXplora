@@ -26,7 +26,7 @@ var TRuleGroup = function() {
 			if(childIndex==0){
 				var child = this.Children[childIndex];
 				this.RemoveChild(childIndex);
-				this.Parent.InsertChild(child,this.Index-1);
+				this.Parent.InsertChild(child,this.Index);
 				if(this.Children.length==0) this.Parent.RemoveChild(this.Index);
 			}else if (!this.Children[childIndex-1].hasOwnProperty('Children')){
 				this.swapChildren(childIndex,childIndex-1);
@@ -46,7 +46,7 @@ var TRuleGroup = function() {
 			}else{
 				var child = this.Children[childIndex];
 				this.RemoveChild(childIndex);
-				this.Children[childIndex+1].InsertChild(child,0);
+				this.Children[childIndex].InsertChild(child,0);
 			}
 		}
 	}

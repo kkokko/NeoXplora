@@ -1,44 +1,49 @@
-#conditionContainer{
-	background:#FFF;
-	padding:10px;
-	border:3px solid #9CF
+.formSection{
+	background-color:#FFF;
+	padding :5px;
 }
 
-#conditionContainer button{
-	background:#9CF;
+.formSection h4{
+	background-color:rgb(112,146,190);
 	color:#FFF;
-	font-size:20px;
 	padding:5px;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+}
+
+.subGroup{
+	padding-left:10px;
+	border-left:2px solid #EFEFEF;
+	margin-bottom:2px;
+	padding-top:2px;
+	font-size:12px;
+}
+
+.ConditionControl{
 	border:none;
-	margin-right:3px;
+	width:20px;
+	height:20px;
+	margin:1px;
 }
 
-#conditionContainer input{
-	background:#FFF;
-	color:#9CD;
-	font-size:17px;
-	font-weight:bold;
-	margin-right:3px;
-	width:500px;
-	padding:5px;
-	border:3px solid #9CF;
+.MoveUpButton{
+	background-image:url('../images/moveup_button.png');
 }
 
-.ruleGroup{
-	border:1px solid black;
+.MoveDownButton{
+	background-image:url('../images/movedown_button.png');
 }
 
-.ruleItem{
-	cursor:pointer;
-	padding:10px;
+.GroupButton{
+	background-image:url('../images/group_button.png');
 }
 
-li.selected{
-	background-color:orange;
-}
-
-.ruleItem:hover{
-	background-color:yellow;
+.GroupHeader{
+	background:#EFEFEF;
+	color:white;
+	font-size:14px;
+	text-align:right;
 }
 
 .panel h3 {

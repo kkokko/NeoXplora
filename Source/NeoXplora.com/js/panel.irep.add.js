@@ -1,60 +1,148 @@
 
-var conditions = new TRuleGroup();
+var conditions = null;
+
+var indexedObj = [];
 
 $(function(){
+	bindGUI();
+	initRuleConditionsForm();
+
+	// test rulesList
 	
 	
-	$("#conditionContainer").html(displayConditions(conditions));
-	bindGui();
+	for(var i =0;i<5;i++){
+		var str = '. ref = obj'+i;
+		var parser = new TIRepConditionParser();
+		var iRepRule = parser.ParseString(str);
+		conditions.InsertChild(iRepRule);
+	}
+	
+	displayConditions();
+	
+
 });
 
-function bindGui(){
-	$("#addConditionButton").click(function(e){
-		
-		var string = $('#conditionInput').val();
+function bindGUI(){
+	bindPostRuleNameButton();
+	bindAddConditionButton();
+}
+
+function bindAddConditionButton(){
+	$('#addConditionButton').click(function(e){
+	
 		var parser = new TIRepConditionParser();
+		
 		try{
-			var tRuleValue = parser.ParseString(string);
-			
-			conditions.InsertChild(tRuleValue);
-			$("#conditionContainer").html(displayConditions(conditions));
-			bindGui();
-			
+			var irepStr = $('#ruleStringInput').val();
+			var iRepRule = parser.ParseString(irepStr);
+			conditions.InsertChild(iRepRule);
+			displayConditions();
 		}catch(e){
 			alert(e);
 		}
-		return false;
-	});
-	
-	$("#addConditionGroupButton").click(function(e){
 		
-		conditions.InsertChild(new TRuleGroup);
-		$("#conditionContainer").html(displayConditions(conditions));
-		bindGui();
+		return false;
+		
+	});
+}
+
+function initRuleConditionsForm(){
+	conditions = new TRuleGroup()
+}
+
+
+function bindPostRuleNameButton(){
+	
+	$("#postRuleNameButton").click(function(e){
+		var ruleName = $("#ruleNameInput").val();
+		var ruleId = $("#ruleId").val();
+		if(ruleName != ""){
+			$.ajax({
+				url:"panel.php",
+				method:"POST",
+				data:{"ruleName":ruleName,"ruleId":ruleId, action:"irep_postRuleName"}
+			}).done(function(data){
+				alert(data);
+				var result = JSON.parse(data);
+				if(result.actionResult =="success"){
+					$("#ruleId").val(result.ruleId);
+					$("#postRuleNameButton").html("Update");
+					
+					initRuleConditionsForm();
+				}else{
+					alert(result.Message);
+				}
+			});
 			
+		}else{
+			alert("Please fill the rule name field.")
+		}
+		
 		return false;
 	});
-	bindSelection();
+	
 }
 
-function bindSelection(){
-	$('.ruleItem').click(function(e){
+function displayConditions(){
+
+	indexedObj = [];
+	$('#rulesList').html(conditionsToHTML(conditions));
+	bindConditionsGUI();
 	
-		var item = $(e.currentTarget);
-		item.toggleClass("selected");
-		
-		
+}
+
+function conditionsToHTML(conditionTree){
+	var resultHTML = "";
+	indexedObj.push(conditionTree);
+	var objectIndex = indexedObj.length-1;
+	if(conditionTree.hasOwnProperty("Children")){
+		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >';
+		if(conditionTree.CanMoveUp()){
+			resultHTML += '<button class="MoveUpButton ConditionControl"></button>';
+		}
+		if(conditionTree.CanMoveDown()){
+			resultHTML += '<button class="MoveDownButton ConditionControl"></button>';
+		}
+		if(conditionTree.Parent!=null){
+			resultHTML += '<button class="GroupButton ConditionControl"></button>';
+		}
+		resultHTML += '</div><ul class="subGroup">';
+		for(var i=0;i<conditionTree.Children.length;i++){
+			resultHTML += conditionsToHTML(conditionTree.Children[i]);
+		}
+		resultHTML += '</ul></li>';
+	}else{
+		resultHTML += '<li objIndex="'+objectIndex+'">';
+		if(conditionTree.CanMoveUp()){
+			resultHTML += '<button class="MoveUpButton ConditionControl"></button>';
+		}
+		if(conditionTree.CanMoveDown()){
+			resultHTML += '<button class="MoveDownButton ConditionControl"></button>';
+		}
+		resultHTML += '<button class="GroupButton ConditionControl"></button>';
+		resultHTML += conditionTree.PropertyKey+' '+conditionTree.OperatorType+' '+conditionTree.PropertyValue+'</li>';
+	}
+	return resultHTML;
+}
+
+function bindConditionsGUI(){
+	$('.MoveUpButton').click(function(e){
+		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
+		indexedObj[objectIndex].MoveUp();
+		displayConditions();
+	});
+	
+	$('.MoveDownButton').click(function(e){
+		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
+		indexedObj[objectIndex].MoveDown();
+		displayConditions();
+	});
+	
+	$('.GroupButton').click(function(e){
+		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
+		indexedObj[objectIndex].Parent.InsertChild(new TRuleGroup(),indexedObj[objectIndex].Index);
+		indexedObj[objectIndex].MoveUp();
+		displayConditions();
 	});
 }
 
-function displayConditions(ARuleGroup){
-	
-	var result = '<input type="text" id="conditionInput" value=". a = b"><button id="addConditionButton">Add condition</button>';
-	result += '<button id="addConditionGroupButton">Add condition group</button>';
-	result += '<ul class="ruleGroup">';
-	for(var i=0;i<ARuleGroup.Children.length;i++){
-		result += '<li class="ruleItem">'+ARuleGroup.Children[i].toString()+'</li>';
-	}
-	
-	return result + '</ul>';
-}
