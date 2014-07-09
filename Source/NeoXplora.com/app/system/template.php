@@ -21,6 +21,8 @@
     public function __get($name) {
       if(isset($this->args[$name])) {
         return $this->args[$name];
+      } else if($this->parent instanceof TTemplate && $this->parent->{$name}) {
+        return $this->parent->{$name};
       } else if($this->parent instanceof TTemplate && isset($this->parent->args[$name])) {
         return $this->parent->args[$name];
       } else {
