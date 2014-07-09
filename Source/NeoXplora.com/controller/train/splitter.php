@@ -3,20 +3,22 @@ namespace NeoX\Controller;
 use NeoX\Model;
 use NeoX\Entity;
 
-require_once "TrainObject.php";
-class TTrainSplitter extends TTrainObject {
+require_once __DIR__ . "/../train.php";
+class TTrainSplitter extends TTrain {
+  
+  protected $accessLevel = 'user';
   
   public function index() {
     $this->template->addScripts(array(
       "js/system/object.js"
     ));
     $this->template->addJSModules(array(
-      "NeoX.Modules.SplitterIndex" => "js/module/splitter/index.js",
-      "NeoX.Modules.SplitterRequests" => "js/module/splitter/requests.js",
+      "NeoX.Modules.SplitterTrainIndex" => "js/module/splitter/train/index.js",
+      "NeoX.Modules.SplitterTrainRequests" => "js/module/splitter/train/requests.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
     $this->template->load("index", "train/splitter");
-    $this->template->pageTitle = "Train Split";
+    $this->template->pageTitle = "Splitter";
     $this->template->page = "trainsplit";
     $this->template->hide_right_box = true;
     $this->template->render();
@@ -24,9 +26,9 @@ class TTrainSplitter extends TTrainObject {
   
   public function load() {
     $ignoreIDs = array();
-    //unset($_SESSION['ignoredPageIDs']);
-    if(isset($_SESSION['ignoredPageIDs']) && is_array($_SESSION['ignoredPageIDs'])) {
-      $ignoreIDs = array_values($_SESSION['ignoredPageIDs']);
+    //unset($_SESSION['ignoredSplitPageIDs']);
+    if(isset($_SESSION['ignoredSplitPageIDs']) && is_array($_SESSION['ignoredSplitPageIDs'])) {
+      $ignoreIDs = array_values($_SESSION['ignoredSplitPageIDs']);
     }
     $splitterModel = $this->core->model("splitter", "train");
     
@@ -37,7 +39,7 @@ class TTrainSplitter extends TTrainObject {
     $max_offset = min(array($pageCount, 5));
     $offset = rand(0, $max_offset - 1);
     
-    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate");
+    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate", $ignoreIDs);
     $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
       
     $sentence_data = $splitterModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs);
@@ -51,18 +53,19 @@ class TTrainSplitter extends TTrainObject {
           "assigneddate" => date("Y-m-d H:i:s")
         )
       );
-      
-      $this->template->level = 0;
-      $this->template->sentence = $sentence_data[Entity\TSentence::$tok_name];
-      $this->template->newSentence = $sentence_data[Entity\TSentence::$tok_name];
-      $this->template->index = 1;
-      $this->template->indentation = 0;
-      $this->template->sentenceID = $sentence_data[Entity\TSentence::$tok_id];
-      
-      $this->template->splitBtn = true;
-      $this->template->dontSplitBtn = true;
-      $this->template->skipBtn = true;
-      $this->template->approveBtn = true;
+
+      $this->template->sentence = array(
+        "id" => $sentence_data[Entity\TSentence::$tok_id],
+        "level" => 0,
+        "name" =>  $sentence_data[Entity\TSentence::$tok_name],
+        "newName" => $sentence_data[Entity\TSentence::$tok_name],
+        "index" => 1,
+        "indentation" => 0,
+        "splitBtn" => true,
+        "dontSplitBtn" => true,
+        "skipBtn" => true,
+        "approveBtn" => true
+      );
       
       $this->template->load("table", "train/splitter");
       
@@ -80,13 +83,13 @@ class TTrainSplitter extends TTrainObject {
     if(!isset($_POST['sentenceID'])) return;
     $sentenceID = $_POST['sentenceID'];
     
-    if(!isset($_SESSION['ignoredPageIDs'])) { 
-      $_SESSION['ignoredPageIDs'] = array();
+    if(!isset($_SESSION['ignoredSplitPageIDs'])) { 
+      $_SESSION['ignoredSplitPageIDs'] = array();
     }
-    $_SESSION['ignoredPageIDs'][] = $sentenceID;
+    $_SESSION['ignoredSplitPageIDs'][] = $sentenceID;
     
-    if(count($_SESSION['ignoredPageIDs']) > 10) { 
-      unset($_SESSION['ignoredPageIDs'][0]);
+    if(count($_SESSION['ignoredSplitPageIDs']) > 10) { 
+      unset($_SESSION['ignoredSplitPageIDs'][0]);
     }
     
     $this->core->entity("sentence")->update(
@@ -125,7 +128,7 @@ class TTrainSplitter extends TTrainObject {
       );      
     }
     
-    if($newSentenceID > 0) $this->update_status($newSentenceID);
+    if($newSentenceID > 0) $this->updatePageStatus($newSentenceID);
     
     $response = array(
       'newSentenceID' => $newSentenceID
@@ -145,7 +148,7 @@ class TTrainSplitter extends TTrainObject {
       )
     );
 
-    $this->update_status(0, $sentenceIDs[0]);
+    $this->updatePageStatus(0, $sentenceIDs[0]);
     
     echo json_encode("");
   }
@@ -155,7 +158,7 @@ class TTrainSplitter extends TTrainObject {
     
     $level = $_POST['level'];
     $sentenceID = $_POST['sentenceID'];
-    $newValue = $_POST['newValue'];
+    $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
     
     $originalValue = $this->core->entity("sentence")->select($sentenceID, "name");
     $result = $this->Delphi()->SplitSentence($sentenceID, $newValue);
@@ -164,32 +167,38 @@ class TTrainSplitter extends TTrainObject {
     $data = '';
         
     if($newSentencesCount == 1) {
-      $this->template->level = intval($level) + 1;
-      $this->template->sentence = $originalValue;
-      $this->template->newSentence = $newValue;
-      $this->template->index = intval($level) + 2;
-      $this->template->indentation = 0;
-      $this->template->sentenceID = $sentenceID;
-      $this->template->splitBtn = true;
-      $this->template->dontSplitBtn = true;
+      $this->template->sentence = array(
+        "id" => $sentenceID,
+        "level" => (intval($level) + 1),
+        "name" =>  $originalValue,
+        "newName" => $newValue,
+        "index" => intval($level) + 2,
+        "indentation" => 0,
+        "splitBtn" => true,
+        "dontSplitBtn" => true
+      );
       
       $data = $this->template->fetch("row", "train/splitter");
     } elseif($newSentencesCount > 1) {
       for($i = 0; $i < $newSentencesCount; $i++) {
-        $this->template->level = intval($level) + 1;
-        $this->template->sentence = $result->Item($i)->GetProperty("Name");
-        $this->template->newSentence = $result->Item($i)->GetProperty("Name");
-        $this->template->index = (intval($level) + 2) . '.' . ($i +1);
-        $this->template->indentation = 8 * (intval($level) + 2);
-        $this->template->sentenceID = $result->Item($i)->GetProperty("Id");
-        $this->template->splitBtn = true;
-        $this->template->dontSplitBtn = true;
+        $sentenceID = $result->Item($i)->GetProperty("Id");
+        
+        $this->template->sentence = array(
+          "id" => $result->Item($i)->GetProperty("Id"),
+          "level" => intval($level) + 1,
+          "name" =>  $result->Item($i)->GetProperty("Name"),
+          "newName" => $result->Item($i)->GetProperty("Name"),
+          "index" => (intval($level) + 2) . '.' . ($i +1),
+          "indentation" => 8 * (intval($level) + 2),
+          "splitBtn" => true,
+          "dontSplitBtn" => true
+        );
         
         $data .= $this->template->fetch("row", "train/splitter");
       }
     }
 
-    $this->update_status($sentenceID);
+    $this->updatePageStatus($sentenceID);
     
     $response = array(
       'data' => $data,
@@ -203,38 +212,18 @@ class TTrainSplitter extends TTrainObject {
   public function dont_split() {
     if(!isset($_POST['sentenceID'])) return;
     $sentenceID = $_POST['sentenceID'];
-    $this->core->entity("sentence")->update(
-      $sentenceID,
+    $query = $this->core->entity("sentence")->update(
+      intval($sentenceID),
       array(
         'status' => 'ssTrainedSplit'
       )
     );
     
-    $this->update_status($sentenceID);
+    $this->updatePageStatus($sentenceID);
     
     echo json_encode("");
   }
   
 }
-
-/*
-      if(count($sentences) == 1) {        
-          $proto = $this->core->entity("sentence")->select($sentenceID, "protoid");
-          
-          $protoID = $proto[Entity\TSentence::$tok_protoid];
-          $data .= "<tr id='s" . $sentenceID . "' class='asentence row1 pr" . $protoID . "'>";
-          $data .= "<td><input type='text' class='newValue' value='" . htmlspecialchars($sentences['0']['sentence'], ENT_QUOTES) . "' /></td>";
-          $data .= '<td><a href="javascript:void(0)" class="modifyReviewSplitButton">Modify</a></td>';
-          $data .= "</tr>";
-          $newSentenceIDs[$sentenceID] = $sentenceID;
-          $newSentences[] = $sentenceID;
-      */
-      /*
-        if($IsReview) {
-          $data .= "<tr id='s" . $newSentenceID . "' class='asentence row1 pr" . $sentence_data['pr2ID'] . "'>";
-          $data .= "<td><input type='text' class='newValue' value='" . htmlspecialchars($sentence['sentence'], ENT_QUOTES) . "' /></td>";
-          $data .= '<td><a href="javascript:void(0)" class="modifyReviewSplitButton">Modify</a></td>';
-          $data .= "</tr>";
-        }*/
 
 ?>

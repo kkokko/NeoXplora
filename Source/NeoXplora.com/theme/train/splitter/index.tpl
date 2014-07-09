@@ -1,13 +1,11 @@
 <?php echo $this->fetch("header"); ?>
 <div class="boxContainer">
   <div class="buttons">
-    <div class='active'>Train</div>
-    <div>Browse</div>
-    <div>Review</div>
-  </div>
-  <div class="clear"></div>
-  <div class="button">
-    Add
+    <a href="train.php?type=splitter" class='active'>Train</a>
+    <a href="browse.php?type=splitter">Browse</a>
+    <?php if($this->userlevel == 'admin') { ?>
+    <a href="review.php?type=splitter">Review</a>
+    <?php } ?>
   </div>
   <div class="clear"></div>
   <br/>

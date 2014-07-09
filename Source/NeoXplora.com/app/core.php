@@ -103,7 +103,6 @@
     }
     
     private function load_model($model, $parent = "") {
-      $model = ucfirst(strtolower($model));
       $file_path = APP_DIR . "model/" . (($parent != "")?$parent . "/":"") . $model . ".php";
       if(file_exists($file_path)) {
         require_once $file_path;
@@ -120,7 +119,6 @@
     }
     
     private function load_entity($entity, $parent = "") {
-      $entity = ucfirst(strtolower($entity));
       $file_path = APP_DIR . "model/entity/" . (($parent != "")?$parent . "/":"") . $entity . ".php";
       if(file_exists($file_path)) {
         require_once $file_path;
@@ -137,7 +135,6 @@
     }
     
     private function load_controller($controller, $parent = "") {
-      $controller = ucfirst(strtolower($controller));
       $file_path = APP_DIR . "controller/" . (($parent != "")?$parent . "/":"") . $controller . ".php";
       if(file_exists($file_path)) {
         require_once $file_path;

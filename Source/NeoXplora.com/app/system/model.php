@@ -84,8 +84,16 @@
     }
 
     public function result($query) {
-      if($query->num_rows) {
+      if($query && $query->num_rows) {
         return $query->fetch_array();
+      } else {
+        return false;
+      }
+    }
+    
+    public function fullresult($query) {
+      if($query && $query->num_rows) {
+        return $query;
       } else {
         return false;
       }

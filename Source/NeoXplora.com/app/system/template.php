@@ -41,8 +41,9 @@
     
     public function fetch($template = null, $template_path = "") {
       if($template && !$this->{"hide_" . $template}) {
-        $this->{$template} = new TTemplate($template, $template_path);
-        return $this->{$template}->parse();
+        $tpl = "tpl_" . $template;
+        $this->{$tpl} = new TTemplate($template, $template_path);
+        return $this->{$tpl}->parse();
       } else {
         return "";
       }
