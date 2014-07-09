@@ -12,7 +12,7 @@
 	  
 	  <div id="ruleConditionsForm" class="formSection">
 		<h4>Rule Conditions</h4>
-		<div class="controls">
+		<div class="controls" style="display:none;">
 			<input type="text" id="ruleStringInput">
 			<button id="addConditionButton"> Add Condition </button>
 		</div>

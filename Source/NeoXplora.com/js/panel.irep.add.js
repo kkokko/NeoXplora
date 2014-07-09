@@ -7,19 +7,6 @@ $(function(){
 	bindGUI();
 	initRuleConditionsForm();
 
-	// test rulesList
-	
-	
-	for(var i =0;i<5;i++){
-		var str = '. ref = obj'+i;
-		var parser = new TIRepConditionParser();
-		var iRepRule = parser.ParseString(str);
-		conditions.InsertChild(iRepRule);
-	}
-	
-	displayConditions();
-	
-
 });
 
 function bindGUI(){
@@ -62,11 +49,13 @@ function bindPostRuleNameButton(){
 				method:"POST",
 				data:{"ruleName":ruleName,"ruleId":ruleId, action:"irep_postRuleName"}
 			}).done(function(data){
-				alert(data);
+				
 				var result = JSON.parse(data);
 				if(result.actionResult =="success"){
 					$("#ruleId").val(result.ruleId);
 					$("#postRuleNameButton").html("Update");
+					
+					$("#ruleConditionsForm .controls").toggle(true);
 					
 					initRuleConditionsForm();
 				}else{
@@ -96,7 +85,7 @@ function conditionsToHTML(conditionTree){
 	indexedObj.push(conditionTree);
 	var objectIndex = indexedObj.length-1;
 	if(conditionTree.hasOwnProperty("Children")){
-		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >';
+		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+((conditionTree.Index>0)?conditionTree.ConjunctionType+" ":"");
 		if(conditionTree.CanMoveUp()){
 			resultHTML += '<button class="MoveUpButton ConditionControl"></button>';
 		}
@@ -120,7 +109,8 @@ function conditionsToHTML(conditionTree){
 			resultHTML += '<button class="MoveDownButton ConditionControl"></button>';
 		}
 		resultHTML += '<button class="GroupButton ConditionControl"></button>';
-		resultHTML += conditionTree.PropertyKey+' '+conditionTree.OperatorType+' '+conditionTree.PropertyValue+'</li>';
+		resultHTML += conditionTree.PropertyKey+' '+conditionTree.OperatorType+' '+
+					conditionTree.PropertyValue+((conditionTree.Index>0)?", "+conditionTree.ConjunctionType:"")+'</li>';
 	}
 	return resultHTML;
 }
