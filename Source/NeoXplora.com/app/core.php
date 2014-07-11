@@ -7,25 +7,30 @@
   
   class TCore extends TObject {
     
-    private $models;
-    private $entities;
-    private $controllers;
     private $appNamespace;
 	
     public function __construct() {
       require_once APP_DIR . "/app/Config.php";
       require_once APP_DIR . "/app/system/Template.php";
       require_once APP_DIR . "/app/system/SessionManager.php";
+      require_once APP_DIR . "/app/system/Registry.php";
       
-      $this->db = new \mysqli($db_host2, $db_username2, $db_password2, $db_name2) or die("error");
+      
+      $registry = TRegistry::getInstance();
+      
+      $this->registry = $registry;
+      
+      $this->registry->db = new \mysqli($db_host2, $db_username2, $db_password2, $db_name2) or die("error");
       $this->db->set_charset($db_collation2);
-      $this->userdb = new \mysqli($db_host, $db_username, $db_password, $db_name) or die("error");
-      $this->template = new TTemplate();
-      $this->session = new TSessionManager($this->userdb);
       
-      $this->models = array();
-      $this->entities = array();
-      $this->controllers = array();
+      $this->registry->userdb = new \mysqli($db_host, $db_username, $db_password, $db_name) or die("error");
+      $this->registry->template = new TTemplate();
+      $this->registry->session = new TSessionManager($this->userdb);
+      $this->registry->core = $this;
+      
+      $this->registry->models = array();
+      $this->registry->entities = array();
+      $this->registry->controllers = array();
       $this->appNamespace = $application_namespace;
       
       $path = implode("/", array_slice(explode("/", $_SERVER['PHP_SELF']), 0, -1));
@@ -108,7 +113,7 @@
         require_once $file_path;
         if(class_exists($this->getNamespace() . '\\Model\\T' . $this->parse_parent($parent) . $model)) {
           $class_name = $this->getNamespace() . '\\Model\\T' . $this->parse_parent($parent) . $model;
-          $this->models[strtolower($parent . "_" . $model)] = new $class_name($this, $this->db, $this->template);
+          $this->registry->models[strtolower($parent . "_" . $model)] = new $class_name($this->registry);
           return true; 
         } else {
           return false;
@@ -124,7 +129,7 @@
         require_once $file_path;
         if(class_exists($this->getNamespace() . '\\Entity\\T' . $this->parse_parent($parent) . $entity)) {
           $class_name = $this->getNamespace() . '\\Entity\\T' . $this->parse_parent($parent) . $entity;
-          $this->entities[strtolower($parent . "_" . $entity)] = new $class_name($this, $this->db, $this->template);
+          $this->registry->entities[strtolower($parent . "_" . $entity)] = new $class_name($this->registry);
           return true; 
         } else {
           return false;
@@ -140,7 +145,7 @@
         require_once $file_path;
         if(class_exists($this->getNamespace() . '\\Controller\\T' . $this->parse_parent($parent) . $controller)) {
           $class_name = $this->getNamespace() . '\\Controller\\T' . $this->parse_parent($parent) . $controller;
-          $this->controllers[strtolower($parent . "_" . $controller)] = new $class_name($this, $this->db, $this->template);
+          $this->registry->controllers[strtolower($parent . "_" . $controller)] = new $class_name($this->registry);
           return true; 
         } else {
           return false;
@@ -155,12 +160,10 @@
         $parents = preg_split("/\//", $parent);
         $parent = "";
         foreach($parents AS $value) {
-          $parent .= ucfirst(strtolower($value));
+          $parent .= $value;
         }
-        return $parent;
-      } else {
-        return ucfirst(strtolower($parent));
-      }
+      } 
+      return $parent;
     }
     
     private function initialize_session() {
