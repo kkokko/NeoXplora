@@ -34,11 +34,11 @@ class TPanel extends \SkyCore\TObject {
   public function ireprules_add(){
 	$this->template->addStyle("style/admin.css");
 	$this->template->addStyle("style/admin.irep.css");
-	$this->template->addScript("js/fw/skyjs.js");
+	$this->template->addScript("NeoShared/SkyJs/skyjs.js");
 	$this->template->addScript("js/classes/IRepConditionParser.js");
-	$this->template->addScript("js/classes/TBaseRule.js");
-	$this->template->addScript("js/classes/TRuleGroup.js");
-	$this->template->addScript("js/classes/TRuleValue.js");
+	$this->template->addScript("js/classes/BaseRule.js");
+	$this->template->addScript("js/classes/RuleGroup.js");
+	$this->template->addScript("js/classes/RuleValue.js");
 	$this->template->addScript("js/panel.irep.add.js");
     $this->template->load("ireprules_add", "panel");
     $this->template->pageTitle = "IRep rules - Add | Admin Panel";

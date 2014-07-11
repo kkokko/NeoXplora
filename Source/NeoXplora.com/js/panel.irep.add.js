@@ -33,14 +33,14 @@ function bindConditionsGUI(){
 	
 	$('.GroupButton.ConditionControl').click(function(e){
 		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
-		indexedConditionObj[objectIndex].Parent.InsertChild(new TRuleGroup(),indexedConditionObj[objectIndex].Index);
+		indexedConditionObj[objectIndex].getParent().InsertChild(new NeoAI.TRuleGroup(),indexedConditionObj[objectIndex].getIndex());
 		indexedConditionObj[objectIndex].MoveUp();
 		displayConditions();
 	});
 	
 	$('.DeleteButton.ConditionControl').click(function(e){
 		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
-		indexedConditionObj[objectIndex].Parent.RemoveChild(indexedConditionObj[objectIndex].Index);
+		indexedConditionObj[objectIndex].getParent().RemoveChild(indexedConditionObj[objectIndex].getIndex());
 		displayConditions();
 	});
 }
@@ -58,16 +58,9 @@ function bindValuesGUI(){
 		displayValues();
 	});
 	
-	$('.GroupButton.ValueControl').click(function(e){
-		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
-		indexedValueObj[objectIndex].Parent.InsertChild(new TRuleGroup(),indexedValueObj[objectIndex].Index);
-		indexedValueObj[objectIndex].MoveUp();
-		displayValues();
-	});
-	
 	$('.DeleteButton.ValueControl').click(function(e){
 		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
-		indexedValueObj[objectIndex].Parent.RemoveChild(indexedValueObj[objectIndex].Index);
+		indexedValueObj[objectIndex].getParent().RemoveChild(indexedValueObj[objectIndex].getIndex());
 		displayValues();
 	});
 }
@@ -110,7 +103,7 @@ function bindPostRuleNameButton(){
 function bindAddConditionButton(){
 	$('#addConditionButton').click(function(e){
 	
-		var parser = new TIRepConditionParser();
+		var parser = new NeoAI.TIRepConditionParser();
 		
 		try{
 			var irepStr = $('#conditionStringInput').val();
@@ -129,7 +122,7 @@ function bindAddConditionButton(){
 function bindAddValueButton(){
 	$('#addValueButton').click(function(e){
 	
-		var parser = new TIRepConditionParser();
+		var parser = new NeoAI.TIRepConditionParser();
 		
 		try{
 			var irepStr = $('#valueStringInput').val();
@@ -146,11 +139,11 @@ function bindAddValueButton(){
 }
 
 function initRuleConditionsForm(){
-	conditions = new TRuleGroup()
+	conditions = new NeoAI.TRuleGroup()
 }
 
 function initRuleValuesForm(){
-	values = new TRuleGroup()
+	values = new NeoAI.TRuleGroup()
 }
 
 
@@ -175,22 +168,23 @@ function conditionsToHTML(conditionTree){
 	var resultHTML = "";
 	indexedConditionObj.push(conditionTree);
 	var objectIndex = indexedConditionObj.length-1;
-	if(conditionTree.hasOwnProperty("Children")){
-		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+((conditionTree.Index>0)?conditionTree.ConjunctionType+" ":"");
+	if(typeof conditionTree.getChildren == 'function'){
+		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+conditionTree.getConjunctionType();
 		if(conditionTree.CanMoveUp()){
 			resultHTML += '<button class="MoveUpButton ConditionControl"></button>';
 		}
 		if(conditionTree.CanMoveDown()){
 			resultHTML += '<button class="MoveDownButton ConditionControl"></button>';
 		}
-		if(conditionTree.Parent!=null){
+		if(conditionTree.getParent() != null){
 			resultHTML += '<button class="GroupButton ConditionControl"></button>';
 			resultHTML += '<button class="DeleteButton ConditionControl"></button>';
 		}
 		
 		resultHTML += '</div><ul class="subGroup">';
-		for(var i=0;i<conditionTree.Children.length;i++){
-			resultHTML += conditionsToHTML(conditionTree.Children[i]);
+		var children = conditionTree.getChildren();
+		for(var i=0;i<children.length;i++){
+			resultHTML += conditionsToHTML(children[i]);
 		}
 		resultHTML += '</ul></li>';
 	}else{
@@ -203,8 +197,7 @@ function conditionsToHTML(conditionTree){
 		}
 		resultHTML += '<button class="GroupButton ConditionControl"></button>';
 		resultHTML += '<button class="DeleteButton ConditionControl"></button>';
-		resultHTML += conditionTree.PropertyKey+' '+conditionTree.OperatorType+' '+
-					conditionTree.PropertyValue+'</li>';
+		resultHTML += conditionTree.getPropertyKey()+' '+conditionTree.getOperatorType()+' '+conditionTree.getPropertyValue()+'</li>';
 	}
 	return resultHTML;
 }
@@ -213,22 +206,13 @@ function valuesToHTML(valueTree){
 	var resultHTML = "";
 	indexedValueObj.push(valueTree);
 	var objectIndex = indexedValueObj.length-1;
-	if(valueTree.hasOwnProperty("Children")){
-		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+((valueTree.Index>0)?valueTree.ConjunctionType+" ":"");
-		if(valueTree.CanMoveUp()){
-			resultHTML += '<button class="MoveUpButton ValueControl"></button>';
-		}
-		if(valueTree.CanMoveDown()){
-			resultHTML += '<button class="MoveDownButton ValueControl"></button>';
-		}
-		if(valueTree.Parent!=null){
-			resultHTML += '<button class="GroupButton ValueControl"></button>';
-			resultHTML += '<button class="DeleteButton ValueControl"></button>';
-		}
+	if(typeof valueTree.getChildren == 'function'){
+		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+valueTree.getConjunctionType();
 		
 		resultHTML += '</div><ul class="subGroup">';
-		for(var i=0;i<valueTree.Children.length;i++){
-			resultHTML += valuesToHTML(valueTree.Children[i]);
+		var children = valueTree.getChildren();
+		for(var i=0;i<children.length;i++){
+			resultHTML += valuesToHTML(children[i]);
 		}
 		resultHTML += '</ul></li>';
 	}else{
@@ -239,10 +223,8 @@ function valuesToHTML(valueTree){
 		if(valueTree.CanMoveDown()){
 			resultHTML += '<button class="MoveDownButton ValueControl"></button>';
 		}
-		resultHTML += '<button class="GroupButton ValueControl"></button>';
 		resultHTML += '<button class="DeleteButton ValueControl"></button>';
-		resultHTML += valueTree.PropertyKey+' '+valueTree.OperatorType+' '+
-					valueTree.PropertyValue+'</li>';
+		resultHTML += valueTree.getPropertyKey() + ' ' + valueTree.getOperatorType() + ' ' + valueTree.getPropertyValue() + '</li>';
 	}
 	return resultHTML;
 }

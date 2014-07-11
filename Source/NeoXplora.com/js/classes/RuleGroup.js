@@ -4,10 +4,11 @@ var TRuleGroup_Implementation = {
 	
 	construct: function() {
 		this.base(this);
+		this.setChildren([]);
 	},
 	
 	properties: { 
-		Children: [] //(array of RuleValue/RuleGroup)
+		Children: null //(array of RuleValue/RuleGroup)
 	},
 	 
 	methods: {
@@ -33,7 +34,7 @@ var TRuleGroup_Implementation = {
 				if(childIndex == 0) {
 					var child = children[childIndex];
 					this.RemoveChild(childIndex);
-					this.getParent().InsertChild(child, this.getIndex() - 1);
+					this.getParent().InsertChild(child, this.getIndex());
 					if(this.getChildren().length == 0) {
 						this.getParent().RemoveChild(this.getIndex());
 					}
@@ -52,12 +53,12 @@ var TRuleGroup_Implementation = {
 					if(children.length == 0) {
 						this.getParent().RemoveChild(this.Index);
 					}
-				} else if (!(typeof children[childIndex - 1].getChildren == 'function')) {
+				} else if (!(typeof children[childIndex + 1].getChildren == 'function')) {
 					this.swapChildren(childIndex, childIndex + 1);
 				} else {
 					var child = children[childIndex];
 					this.RemoveChild(childIndex);
-					children[childIndex + 1].InsertChild(child, 0);
+					children[childIndex].InsertChild(child, 0);
 				}
 			}
 		},
@@ -70,8 +71,9 @@ var TRuleGroup_Implementation = {
 		},
 		
 		reAdjustIndexes: function() {
-			for(var i = 0; i < this.getChildren().length; i++){
-				this.getChildren()[i].Index = i;
+			var children = this.getChildren();
+			for(var i = 0; i < children.length; i++){
+				children[i].setIndex(i);
 			}
 		},
 		

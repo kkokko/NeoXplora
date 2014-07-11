@@ -15,6 +15,7 @@
 		<div class="controls" style="display:none;">
 			<input type="text" id="conditionStringInput">
 			<button id="addConditionButton"> Add Condition </button>
+			<button id="saveConditionsButton"> Save </button>
 		</div>
 		<div id="conditionsList">
 			<p>None</p>
@@ -25,6 +26,7 @@
 		<div class="controls" style="display:none;">
 			<input type="text" id="valueStringInput">
 			<button id="addValueButton"> Add Value </button>
+			<button id="saveValuesButton"> Save </button>
 		</div>
 		<div id="valuesList">
 			<p>None</p>

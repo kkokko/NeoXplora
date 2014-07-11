@@ -6,6 +6,10 @@
 	
 }
 
+#saveValuesButton,#saveConditionsButton{
+	float:right;
+}
+
 .formSection{
 	background-color:#FFF;
 	padding :5px;

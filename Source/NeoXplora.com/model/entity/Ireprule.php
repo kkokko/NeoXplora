@@ -67,6 +67,20 @@ namespace NeoX\Entity;
 		return ($result)?true:false;
 	}
 	
+	function getRuleData($ruleId){
+		
+	}
+	
+	function getRuleGroups($ruleId){
+		$sql = 'SELECT * FROM `neox_irepgroup`';
+		$result = $this->query($sql);
+		
+	}
+	
+	function getRuleConditions($ruleId){
+		
+	}
+	
 }
 
 ?>
