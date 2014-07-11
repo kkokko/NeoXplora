@@ -33,7 +33,7 @@
      * 
      * @return boolean - true for success, false otherwise
      */
-    public function update($condition, $data) {
+    public function update($condition = null, $data) {
       if(!is_array($data) || count($data) == 0) return false;
       
       if(!is_array($condition)) {
@@ -48,11 +48,11 @@
      * 
      * @return boolean - true for success, false otherwise
      */
-    public function delete($ids, $except = null) {
-      if(!is_array($ids)) {
-        return $this->deleteSingle($ids);
+    public function delete($condition = null, $except = null) {
+      if(!is_array($condition)) {
+        return $this->deleteSingle($condition);
       } else {
-        return $this->deleteMultiple($ids, $except);
+        return $this->deleteMultiple($condition, $except);
       }
     }
     
@@ -207,7 +207,12 @@
       }
       $updates = implode(",", $updates);
 
-      $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . $this->prepareQueryString(" WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
+      $condition = "";
+      if($id && is_int($id)) {
+        $condition = $this->prepareQueryString(" WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
+      }
+
+      $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . $condition;
       $result = $this->db->query($query);
       
       return $this->check($result);
@@ -241,30 +246,48 @@
     }
     
     private function deleteSingle($id) {
-      $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]] WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
+      if(is_int($id)) {
+        $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]] WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
+      } else {
+        $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]]");
+      }
       
       return $this->check($query);
     }
     
-    private function deleteMultiple($ids, $except) {
+    private function deleteMultiple($conditions, $except) {
+      $condition = "";
       $condition_except = "";
-      $condition_ids = " [[" . $this::getEntityName() . ".id]] IN (";
-      for($i = 0; $i < count($ids); $i++) {
-        $condition_ids .= $ids[$i];
-        if($i + 1 != count($ids)) $condition_ids .= ", ";
+      
+      $k = 0;
+      foreach($conditions AS $key => $value) {
+        $condition = $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] IN (");
+        for($i = 0; $i < count($value); $i++) {
+          $condition .= $this->prepareQueryString(":1", $value[$i]);
+          if($i + 1 != count($value)) $condition .= ", ";
+        }
+        $condition .= ")";
+        if($k + 1 != count($conditions)) $condition .= " AND ";
+        $k++;
       }
-      $condition_ids .= ")";
       
       if(is_array($except) && count($except) > 0) {
-        $condition_except = " AND [[" . $this::getEntityName() . ".id]] NOT IN (";
-        for($i = 0; $i < count($except); $i++) {
-          $condition_except .= $except[$i];
-          if($i + 1 != count($except)) $condition_except .= ", ";
+        $k = 0;
+        $condition_except .= " AND"; 
+        foreach($except AS $key => $value) {
+          $condition_except .= $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] NOT IN (");
+          for($i = 0; $i < count($value); $i++) {
+            $condition_except .= $this->prepareQueryString(":1", $value[$i]);
+            if($i + 1 != count($value)) $condition_except .= ", ";
+          }
+          $condition_except .= ")";
+          if($k + 1 != count($except)) $condition_except .= " AND ";
+          $k++;
         }
-        $condition_except .= ")";
       }
       
-      $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]] WHERE " . $condition_ids . $condition_except);
+      $query = $this->prepareQueryString("DELETE FROM [[" . $this::getEntityName() . "]] WHERE ") . $condition . $condition_except;
+      $result = $this->db->query($query);
       
       return $this->check($query);
     }
