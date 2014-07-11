@@ -1,3 +1,11 @@
+#conditionsList,#valuesList{
+	padding: 10px;
+}
+
+#conditionsList p,#valuesList p{
+	
+}
+
 .formSection{
 	background-color:#FFF;
 	padding :5px;
@@ -20,7 +28,7 @@
 	font-size:12px;
 }
 
-.ConditionControl{
+.ConditionControl,.ValueControl{
 	border:none;
 	width:20px;
 	height:20px;
@@ -37,6 +45,10 @@
 
 .GroupButton{
 	background-image:url('../images/group_button.png');
+}
+
+.DeleteButton{
+	background-image:url('../images/delete_button.png');
 }
 
 .GroupHeader{

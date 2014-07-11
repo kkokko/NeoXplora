@@ -13,12 +13,22 @@
 	  <div id="ruleConditionsForm" class="formSection">
 		<h4>Rule Conditions</h4>
 		<div class="controls" style="display:none;">
-			<input type="text" id="ruleStringInput">
+			<input type="text" id="conditionStringInput">
 			<button id="addConditionButton"> Add Condition </button>
 		</div>
-		<ul id="rulesList">
-		
-		</ul>
+		<div id="conditionsList">
+			<p>None</p>
+		</div>
+	  </div>
+	  <div id="ruleValuesForm" class="formSection">
+		<h4>Rule Values</h4>
+		<div class="controls" style="display:none;">
+			<input type="text" id="valueStringInput">
+			<button id="addValueButton"> Add Value </button>
+		</div>
+		<div id="valuesList">
+			<p>None</p>
+		</div>
 	  </div>
     </div>
   </div>
