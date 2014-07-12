@@ -67,18 +67,49 @@ namespace NeoX\Entity;
 		return ($result)?true:false;
 	}
 	
-	function getRuleData($ruleId){
-		
+	function updateRuleValues($ruleId,$updateData){
+		$success = true;
+		foreach($updateData as $valueData){
+			$success &= $this->updateRuleValue($ruleId,$valueData);
+		}
+		if($success){
+			return $this->getRuleValues($ruleId);
+		}else{
+			return false;
+		}
 	}
 	
-	function getRuleGroups($ruleId){
-		$sql = 'SELECT * FROM `neox_irepgroup`';
+	function updateRuleValue($ruleId,$valueData){
+		$actionType = $valueData['actionType'];
+		if($actionType=="delete"){
+			
+			$dbId = $valueData['dbId'];
+			$sql = "DELETE FROM `neox_ireprulevalue` WHERE  `Id`=$dbId;";
+			$result = $this->query($sql);
+			return ($result)?true:false;
+			
+		}else{
+			$PropertyType = $valueData['PropertyType'];
+			$PropertyKey = $valueData['PropertyKey'];
+			$OperatorType = $valueData['OperatorType'];
+			$PropertyValue = $valueData['PropertyValue'];
+			$sql = "INSERT INTO `neox_ireprulevalue` 
+					(`RuleId`, `PropertyType`, `PropertyKey`, `OperandType`, `PropertyValue`) 
+					VALUES ($ruleId, '$PropertyType', '$PropertyKey', '$OperatorType', '$PropertyValue');";
+			$result = $this->query($sql);
+			return ($result)?true:false;
+		}
+	}
+	
+	function getRuleValues($ruleId){
+		
+		$sql="SELECT * FROM `neox_ireprulevalue` WHERE `RuleId`=$ruleId";
 		$result = $this->query($sql);
-		
-	}
-	
-	function getRuleConditions($ruleId){
-		
+		$valueList = array();
+		while($rule = $result->fetch_array()){
+			$valueList[] = $rule;
+		}
+		return $valueList;
 	}
 	
 }

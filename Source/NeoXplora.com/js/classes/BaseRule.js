@@ -7,7 +7,9 @@ var TBaseRule_Implementation = {
 	properties: {
 		ConjunctionType:  "ctAnd",
 		Index: 0,
-		Parent: null
+		Parent: null,
+		DBId : -1,
+		Modified : true
 	},
 	
 	methods: {

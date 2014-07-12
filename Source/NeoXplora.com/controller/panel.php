@@ -57,6 +57,30 @@ class TPanel extends \SkyCore\TObject {
 	}
   }
   
+  public function irep_updateRuleValues(){
+	if(isset($_REQUEST['ruleId'])){
+		$ruleId = intval($_REQUEST['ruleId']);
+		$updateData = $_REQUEST['updateData'];
+		$resultData = $this->core->entity("ireprule")->updateRuleValues($ruleId,$updateData);
+		$result = array("result"=>"success","data"=>array());
+		
+		foreach($resultData as $data){
+			$result["data"][] = array(
+				"Id"=>$data["Id"],
+				"PropertyType"=>$data["PropertyType"],
+				"PropertyKey"=>$data["PropertyKey"],
+				"PropertyValue"=>$data["PropertyValue"],
+				"OperandType"=>$data["OperandType"]
+			);
+		}
+		
+		print json_encode($result);
+		return;
+	}
+	
+	print "fail";
+  }
+  
   public function ireprules_UpdateRulePriority(){
 	
 	if(isset($_REQUEST['priorityData'])){

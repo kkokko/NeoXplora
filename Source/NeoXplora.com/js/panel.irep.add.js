@@ -4,6 +4,7 @@ var values = null;
 
 var indexedConditionObj = [];
 var indexedValueObj = [];
+var deletedValues = [];
 
 $(function(){
 	bindGUI();
@@ -16,6 +17,7 @@ function bindGUI(){
 	bindPostRuleNameButton();
 	bindAddConditionButton();
 	bindAddValueButton();
+	bindSaveValuesButton();
 }
 
 function bindConditionsGUI(){
@@ -61,6 +63,7 @@ function bindValuesGUI(){
 	$('.DeleteButton.ValueControl').click(function(e){
 		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 		indexedValueObj[objectIndex].getParent().RemoveChild(indexedValueObj[objectIndex].getIndex());
+		deletedValues.push(indexedValueObj[objectIndex]);
 		displayValues();
 	});
 }
@@ -227,6 +230,73 @@ function valuesToHTML(valueTree){
 		resultHTML += valueTree.getPropertyKey() + ' ' + valueTree.getOperatorType() + ' ' + valueTree.getPropertyValue() + '</li>';
 	}
 	return resultHTML;
+}
+
+// DB related
+
+function bindSaveValuesButton(){
+	$('#saveValuesButton').click(function(e){
+		var modified = values.GetModifiedNodes();
+		alert(deletedValues.join("\n"));
+		
+		var uData = [];
+		
+		for(var i=0;i<modified.length;i++){
+			if(modified[i].getDBId()>0){
+				//uData.push({actionType:"update",dbId:modified[i].getDBId(),order:modified[i].getIndex()});
+			}else{
+				uData.push({
+					actionType:"insert",
+					nodeType:(typeof modified[i].getChildren == 'function')?"Group":"Value",
+					PropertyType:modified[i].getPropertyType(),
+					PropertyKey:modified[i].getPropertyKey(),
+					OperatorType:modified[i].getOperatorType(),
+					PropertyValue:modified[i].getPropertyValue()
+				});
+			}
+		}
+		for(var i=0;i<deletedValues.length;i++){
+			if(deletedValues[i].getDBId()>0){
+				uData.push({
+					actionType: "delete",
+					dbId:deletedValues[i].getDBId()
+				});
+			}
+		}
+		if(uData.length>0){
+			var ruleId = $("#ruleId").val();
+			$.ajax({
+				url:"panel.php",
+				method:"POST",
+				data:{
+					action:"irep_updateRuleValues",
+					ruleId:ruleId,
+					updateData: uData
+				}
+			}).done(function(data){
+				
+				alert(data);
+				var result = JSON.parse(data);
+				if(result.result=="success"){
+					loadRuleValues(result.data);
+				}
+				values.SetUpdated();
+				deletedValues = [];
+			});
+		}
+	});
+}
+
+function loadRuleValues(jsonValues){
+	values= new NeoAI.TRuleGroup();
+	for(var i=0;i<jsonValues.length;i++){
+		var value = new NeoAI.TRuleValue(jsonValues[i].PropertyType,jsonValues[i].OperandType,jsonValues[i].PropertyKey,jsonValues[i].PropertyValue);
+		value.setDBId(jsonValues[i].Id);
+		
+		values.InsertChild(value);
+		
+	}
+	displayValues();
 }
 
 

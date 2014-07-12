@@ -12,7 +12,19 @@ var TRuleGroup_Implementation = {
 	},
 	 
 	methods: {
-	 
+		
+		GetModifiedNodes: function(){
+			var nodes = [];
+			var children = this.getChildren();
+			for(var i=0;i<children.length;i++){
+				if(children[i].getModified()){
+					nodes.push(children[i]);
+				}
+				// to be continued...
+			}
+			return nodes;
+		},
+		
 		InsertChild: function(child, index) { // (TBaseRule, integer)
 			index = typeof index !== 'undefined' ? index : -1;
 			if(child != null) {
@@ -73,7 +85,19 @@ var TRuleGroup_Implementation = {
 		reAdjustIndexes: function() {
 			var children = this.getChildren();
 			for(var i = 0; i < children.length; i++){
-				children[i].setIndex(i);
+				if(children[i].getIndex() != i){
+					children[i].setIndex(i);
+					children[i].setModified(true);
+				}
+			}
+		},
+		
+		SetUpdated: function(){
+			this.setModified(false);
+			var children = this.getChildren();
+			for(var i=0;i<children.length;i++){
+				children[i].setModified(false);
+				// to be continued...
 			}
 		},
 		
@@ -84,7 +108,11 @@ var TRuleGroup_Implementation = {
 			var tmpIndex = this.getChildren()[index1].getIndex();
 			this.getChildren()[index1].setIndex(this.getChildren()[index2].getIndex());
 			this.getChildren()[index2].setIndex(tmpIndex);
+			this.getChildren()[index1].setModified(true);
+			this.getChildren()[index2].setModified(true);
 		},
+		
+		
 		
 		toString: function(indent) {
 			indent = typeof indent !== 'undefined' ? indent : 0;
