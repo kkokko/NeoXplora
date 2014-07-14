@@ -85,30 +85,13 @@
 
     public function result($query) {
       if($query) {
-        if($query->num_rows == 1) {
-          return $query->fetch_array();
-        } else if($query->num_rows > 1) {
+        if($query->num_rows > 1) {
           return $query;
+        } else {
+          return false;
         }
       }
-      
       return false;
-    }
-    
-    public function fullresult($query) {
-      if($query && $query->num_rows) {
-        return $query;
-      } else {
-        return false;
-      }
-    }
-    
-    public function check($query) {
-      if($query) {
-        return true;
-      } else {
-        return false;
-      }
     }
     
   }
