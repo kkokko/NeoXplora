@@ -2,7 +2,7 @@
 <div id="content">
   <div class="container relative">
     <div class="panel">
-      <h3>IRep Rules - Add</h3>
+      <h3 id="pageHeadTitle">Add IRep Rule</h3>
 	  <div id="ruleNameForm" class="formSection">
 		<h4>Rule Name</h4>
 		<input type="text" id="ruleNameInput" value="<?php print $this->ruleName; ?>">

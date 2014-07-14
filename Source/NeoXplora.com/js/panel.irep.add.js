@@ -22,6 +22,7 @@ function getRuleData(){
 		$("#postRuleNameButton").html("Update");
 		$("#ruleConditionsForm .controls").toggle(true);
 		$("#ruleValuesForm .controls").toggle(true);
+		$("#pageHeadTitle").html("Edit IRep Rule");
 		$.ajax({
 			url:"panel.php",
 			method:"POST",
@@ -63,6 +64,12 @@ function bindGUI(){
 }
 
 function bindConditionsGUI(){
+
+	$('.CTSelector').change(function(e){
+		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
+		indexedConditionObj[objectIndex].setConjunctionType($(e.currentTarget).val());
+		indexedConditionObj[objectIndex].SetModified(true);
+	});
 	$('.MoveUpButton.ConditionControl').click(function(e){
 		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 		indexedConditionObj[objectIndex].MoveUp();
@@ -215,7 +222,9 @@ function conditionsToHTML(conditionTree){
 	indexedConditionObj.push(conditionTree);
 	var objectIndex = indexedConditionObj.length-1;
 	if(typeof conditionTree.getChildren == 'function'){
-		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+conditionTree.getConjunctionType();
+		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >Conjunction Type:';
+		var cType = conditionTree.getConjunctionType()=="ctAnd";
+		resultHTML += '<select class="CTSelector"><option value="ctAnd" '+((cType)?'selected="selected"':'')+'>ctAnd</option><option value="ctOr" '+((!cType)?'selected="selected"':'')+'>ctOr</option></select>';
 		if(conditionTree.CanMoveUp()){
 			resultHTML += '<button class="MoveUpButton ConditionControl"></button>';
 		}

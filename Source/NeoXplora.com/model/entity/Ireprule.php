@@ -145,8 +145,8 @@ namespace NeoX\Entity;
 	}
 	
 	function insertRuleCondition($ruleId,$groupId,$order,$propertyType,$propertyKey,$operandType,$propertyValue){
-		$sql = "INSERT INTO `neox_ireprulecondition` (`RuleId`, `GroupId`, `Order`, `PropertyType`, `PropertyKey`, `OperandType`, `PropertyValue`) 
-				VALUES ($ruleId, $groupId, $order, '$propertyType', '$propertyKey', '$operandType', '$propertyValue');";
+		$sql = "INSERT INTO `neox_ireprulecondition` (`GroupId`, `Order`, `PropertyType`, `PropertyKey`, `OperandType`, `PropertyValue`) 
+				VALUES ($groupId, $order, '$propertyType', '$propertyKey', '$operandType', '$propertyValue');";
 		$result = $this->db->query($sql);
 		$insertedId = $this->db->insert_id;
 		return $insertedId;
