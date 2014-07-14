@@ -31,7 +31,7 @@ class TReviewSplitter extends TTrain {
     $pagination = array();
     
     $splitterModel = $this->core->model("splitter", "review");
-    $count_data = $splitterModel->countProtos();
+    $count_data = $splitterModel->countProtos()->fetch_array();
     
     if($count_data['total'] > 0) {
       $pages = ceil($count_data['total'] / $per_page);
@@ -93,7 +93,7 @@ class TReviewSplitter extends TTrain {
     if(!isset($_POST['protoID'])) return;
     $protoId = $_POST['protoID'];
     
-    $sentence_data = $this->core->model("splitter", "review")->getFirstSentenceIdForProtoId($protoId);
+    $sentence_data = $this->core->model("splitter", "review")->getFirstSentenceIdForProtoId($protoId)->fetch_array();
     $sentenceId = $sentence_data[Entity\TSentence::$tok_id];
     $sentenceNewValue = $sentence_data[Entity\TProto::$tok_name];
     
@@ -124,7 +124,8 @@ class TReviewSplitter extends TTrain {
     if(!isset($_POST['sentenceID']) || !isset($_POST['newValue'])) return;
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
     $sentenceId = $_POST['sentenceID'];
-    $protoId = $this->core->entity("sentence")->select($sentenceId, "protoid");
+    $protoId = $this->core->entity("sentence")->select($sentenceId, "protoid")->fetch_array();
+    $protoId = $protoId[Entity\TProto::$tok_id];
     
     $result = $this->Delphi()->SplitSentence($sentenceId, $newValue);
 

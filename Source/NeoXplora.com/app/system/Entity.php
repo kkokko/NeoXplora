@@ -109,7 +109,7 @@
       $query = $this->prepareQueryString("INSERT INTO [[" . $this::getEntityName() . "]]") . $fieldlist . " VALUES " . $valuelist;
       $result = $this->db->query($query);
       
-      return $this->check($result);
+      return $this->result($result);
     }
     
     private function selectSingle($id, $data, $orderby) {
@@ -197,7 +197,7 @@
       $query = $this->prepareQueryString("SELECT " . $fields . " FROM [[" . $this::getEntityName() . "]] WHERE ") . $condition . $this->prepareQueryString($order . $condition_limit);
       $query = $this->db->query($query) or die($this->db->error);
       
-      return $this->fullresult($query);
+      return $this->result($query);
     }
     
     private function updateSingle($id, $data) {
@@ -215,7 +215,7 @@
       $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . $condition;
       $result = $this->db->query($query);
       
-      return $this->check($result);
+      return $this->result($result);
     }
     
     private function updateMultiple($conditions, $data) {
@@ -242,7 +242,7 @@
       $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . " WHERE " . $condition;
       $result = $this->db->query($query);
       
-      return $this->check($result);
+      return $this->result($result);
     }
     
     private function deleteSingle($id) {
@@ -252,7 +252,7 @@
         $query = $this->query("DELETE FROM [[" . $this::getEntityName() . "]]");
       }
       
-      return $this->check($query);
+      return $this->result($query);
     }
     
     private function deleteMultiple($conditions, $except) {
@@ -289,7 +289,7 @@
       $query = $this->prepareQueryString("DELETE FROM [[" . $this::getEntityName() . "]] WHERE ") . $condition . $condition_except;
       $result = $this->db->query($query);
       
-      return $this->check($query);
+      return $this->result($result);
     }
     
     protected function getEntityName() {

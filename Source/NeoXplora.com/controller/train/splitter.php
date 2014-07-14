@@ -32,17 +32,17 @@ class TTrainSplitter extends TTrain {
     }
     $splitterModel = $this->core->model("splitter", "train");
     
-    $category_data = $splitterModel->getCategory("ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs);
+    $category_data = $splitterModel->getCategory("ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs)->fetch_array();
     
     $categoryID = $category_data['id'];
     $pageCount = $category_data['pageCount'];
     $max_offset = min(array($pageCount, 5));
     $offset = rand(0, $max_offset - 1);
     
-    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate", $ignoreIDs);
+    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate", $ignoreIDs)->fetch_array();
     $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
       
-    $sentence_data = $splitterModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs);
+    $sentence_data = $splitterModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs)->fetch_array();
     
     $data = 'No sentence to display';
     
@@ -160,7 +160,9 @@ class TTrainSplitter extends TTrain {
     $sentenceID = $_POST['sentenceID'];
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
     
-    $originalValue = $this->core->entity("sentence")->select($sentenceID, "name");
+    $originalValue = $this->core->entity("sentence")->select($sentenceID, "name")->fetch_array();
+    $originalValue = $originalValue[Entity\TSentence::$tok_name];
+    
     $result = $this->Delphi()->SplitSentence($sentenceID, $newValue);
 
     $newSentencesCount = $result->Count();    

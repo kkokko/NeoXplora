@@ -84,14 +84,13 @@
     }
 
     public function result($query) {
-      if($query) {
-        if($query->num_rows > 1) {
-          return $query;
-        } else {
-          return false;
-        }
+      if($query === true) {
+        return true;
+      } else if ($query === false || $query->num_rows < 1) {
+        return false;
+      } else {
+        return $query;
       }
-      return false;
     }
     
   }

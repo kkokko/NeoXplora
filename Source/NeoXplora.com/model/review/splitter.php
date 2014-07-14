@@ -38,7 +38,7 @@
         ORDER BY a.[[proto.order]] ASC, se.[[sentence.order]] ASC
       ", 'ssTrainedSplit', intval($offset), intval($limit));
       
-      return $this->fullresult($query);
+      return $this->result($query);
     }
 
     public function getFirstSentenceIdForProtoId($protoId) {
@@ -69,7 +69,7 @@
         AND [[sentence.id]] <> :2
       ", $protoId, $sentenceId);
     
-      return ($this->check($updateQuery) && $this->check($deleteQuery));
+      return ($this->result($updateQuery) && $this->result($deleteQuery));
     }
     
   }

@@ -124,7 +124,7 @@
           )
       ", $ProtoId);
       
-      return $this->fullresult($query);
+      return $this->result($query);
     }
     
     public function getSentencesFromPageById($Id) {
@@ -141,7 +141,7 @@
           )
       ", $Id);
       
-      return $this->fullresult($query);
+      return $this->result($query);
     }
     
   }

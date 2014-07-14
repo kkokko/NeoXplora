@@ -26,7 +26,7 @@
         LIMIT 1;
       ") or die($this->db->error);
       
-      return $query->fetch_array();  
+      return $this->result($query);  
     }
     
     public function getPageByCategoryID($categoryID, $offset = 0) {
@@ -39,11 +39,7 @@
         LIMIT " . $offset . ",1
       ") or die($this->db->error);
       
-      if($query->num_rows) {
-        return $query->fetch_array();
-      } else {
-        return false;
-      }
+      return $this->result($query);
     }
     
   }
