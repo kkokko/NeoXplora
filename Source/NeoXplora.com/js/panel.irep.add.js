@@ -3,21 +3,63 @@ var conditions = null;
 var values = null;
 
 var indexedConditionObj = [];
+var deletedConditions = [];
 var indexedValueObj = [];
 var deletedValues = [];
+
+
 
 $(function(){
 	bindGUI();
 	initRuleConditionsForm();
 	initRuleValuesForm();
-
+	getRuleData();
 });
+
+function getRuleData(){
+	var ruleId = parseInt($("#ruleId").val());
+	if(ruleId>=0){
+		$("#postRuleNameButton").html("Update");
+		$("#ruleConditionsForm .controls").toggle(true);
+		$("#ruleValuesForm .controls").toggle(true);
+		$.ajax({
+			url:"panel.php",
+			method:"POST",
+			data:{
+				action:"irep_getRuleConditionsData",
+				ruleId:ruleId
+			}
+		}).done(function(data){
+			conditions = loadConditionData(JSON.parse(data));
+			displayConditions();
+			conditions.SetUpdated();
+		});
+
+		$.ajax({
+			url:"panel.php",
+			method:"POST",
+			data:{
+				action:"irep_getRuleValuesData",
+				ruleId:ruleId
+			}
+		}).done(function(data){
+			var result = JSON.parse(data);
+			if(result.result=="success"){
+				loadRuleValues(result.data);
+			}
+			values.SetUpdated();
+			deletedValues = [];
+		});
+		
+	}
+}
 
 function bindGUI(){
 	bindPostRuleNameButton();
 	bindAddConditionButton();
 	bindAddValueButton();
 	bindSaveValuesButton();
+	bindSaveConditionsButton();
 }
 
 function bindConditionsGUI(){
@@ -43,6 +85,7 @@ function bindConditionsGUI(){
 	$('.DeleteButton.ConditionControl').click(function(e){
 		var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 		indexedConditionObj[objectIndex].getParent().RemoveChild(indexedConditionObj[objectIndex].getIndex());
+		deletedConditions.push(indexedConditionObj[objectIndex]);
 		displayConditions();
 	});
 }
@@ -112,13 +155,12 @@ function bindAddConditionButton(){
 			var irepStr = $('#conditionStringInput').val();
 			var iRepRule = parser.ParseString(irepStr);
 			conditions.InsertChild(iRepRule);
+			$('#conditionStringInput').val("");
 			displayConditions();
 		}catch(e){
 			alert(e);
 		}
-		
 		return false;
-		
 	});
 }
 
@@ -131,6 +173,7 @@ function bindAddValueButton(){
 			var irepStr = $('#valueStringInput').val();
 			var iRepRule = parser.ParseString(irepStr);
 			values.InsertChild(iRepRule);
+			$('#valueStringInput').val("");
 			displayValues();
 		}catch(e){
 			alert(e);
@@ -142,11 +185,11 @@ function bindAddValueButton(){
 }
 
 function initRuleConditionsForm(){
-	conditions = new NeoAI.TRuleGroup()
+	conditions = new NeoAI.TRuleGroup();
 }
 
 function initRuleValuesForm(){
-	values = new NeoAI.TRuleGroup()
+	values = new NeoAI.TRuleGroup();
 }
 
 
@@ -237,14 +280,11 @@ function valuesToHTML(valueTree){
 function bindSaveValuesButton(){
 	$('#saveValuesButton').click(function(e){
 		var modified = values.GetModifiedNodes();
-		alert(deletedValues.join("\n"));
 		
 		var uData = [];
 		
 		for(var i=0;i<modified.length;i++){
-			if(modified[i].getDBId()>0){
-				//uData.push({actionType:"update",dbId:modified[i].getDBId(),order:modified[i].getIndex()});
-			}else{
+			if(modified[i].getDBId()==-1 && !(typeof modified[i].getChildren == 'function')){
 				uData.push({
 					actionType:"insert",
 					nodeType:(typeof modified[i].getChildren == 'function')?"Group":"Value",
@@ -275,7 +315,6 @@ function bindSaveValuesButton(){
 				}
 			}).done(function(data){
 				
-				alert(data);
 				var result = JSON.parse(data);
 				if(result.result=="success"){
 					loadRuleValues(result.data);
@@ -297,6 +336,87 @@ function loadRuleValues(jsonValues){
 		
 	}
 	displayValues();
+}
+
+function bindSaveConditionsButton(){
+	
+	$('#saveConditionsButton').click(function(e){
+		
+		var modified = conditions.GetModifiedNodes();
+		
+		var uData = [];
+		
+		for(var i=0;i<modified.length;i++){
+			var nodeType = (typeof modified[i].getChildren == 'function')?"Group":"Value";
+			if(nodeType=='Group'){
+				uData.push({
+					actionType:"update",
+					nodeType:nodeType,
+					Order:modified[i].getIndex(),
+					dbId:modified[i].getDBId(),
+					ParentLocalId:modified.indexOf(modified[i].getParent()),
+					// group data
+					ConjunctionType:modified[i].getConjunctionType()
+				});
+			}else{
+				uData.push({
+					actionType:"update",
+					nodeType:nodeType,
+					Order:modified[i].getIndex(),
+					dbId:modified[i].getDBId(),
+					ParentLocalId:modified.indexOf(modified[i].getParent()),
+					// value data:
+					PropertyType:modified[i].getPropertyType(),
+					OperatorType:modified[i].getOperatorType(),
+					PropertyKey:modified[i].getPropertyKey(),
+					PropertyValue:modified[i].getPropertyValue()
+				});
+			}
+		}
+		for(var i=0;i<deletedConditions.length;i++){
+			var nodeType = (typeof deletedConditions[i].getChildren == 'function')?"Group":"Value";
+			if(deletedConditions[i].getDBId()>0){
+				uData.push({
+					actionType: "delete",
+					nodeType:nodeType,
+					dbId:deletedConditions[i].getDBId()
+				});
+			}
+		}
+		if(uData.length>0){
+			var ruleId = $("#ruleId").val();
+			$.ajax({
+				url:"panel.php",
+				method:"POST",
+				data:{
+					action:"irep_updateRuleConditions",
+					ruleId:ruleId,
+					updateData:uData
+				}
+			}).done(function(data){
+				conditions = loadConditionData(JSON.parse(data));
+				displayConditions();
+				conditions.SetUpdated();
+			});
+		}
+	
+	});
+}
+
+function loadConditionData(jsonData){
+	if(typeof jsonData.Children != 'undefined'){
+		var target = new NeoAI.TRuleGroup();
+		target.setDBId(jsonData.id);
+		target.setConjunctionType(jsonData.ConjunctionType);
+		for(var i=0;i<jsonData.Children.length;i++){
+			target.InsertChild(loadConditionData(jsonData.Children[i]));
+		}
+		return target;
+	}else{
+		var node = new NeoAI.TRuleValue(jsonData.PropertyType,jsonData.OperandType,jsonData.PropertyKey,jsonData.PropertyValue);
+		node.setDBId(jsonData.id);
+		return node;
+	}
 }
 
 

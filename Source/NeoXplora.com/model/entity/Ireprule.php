@@ -9,7 +9,14 @@ namespace NeoX\Entity;
 	public static $entityname = "ireprule";
 	
 	public static $tablename = "neox_ireprule";
-
+	
+	public function getRuleName($ruleId){
+		$sql = "SELECT * FROM `neox_ireprule` WHERE `Id`=$ruleId";
+		$result = $this->query($sql);
+		$result = $result->fetch_array();
+		return $result['Name'];
+	}
+	
 	public function getRulesList(){
 		
 		$sql = "SELECT * FROM `neox_ireprule` ORDER BY `Order`";
@@ -67,6 +74,141 @@ namespace NeoX\Entity;
 		return ($result)?true:false;
 	}
 	
+	// Rule Conditions
+	
+	function updateRuleConditions($ruleId,$updateData){
+		$success = true;
+		
+		foreach($updateData as &$nodeData){
+			if($nodeData['actionType']=="update"){
+				$parentId = "null";
+				if(intval($nodeData['ParentLocalId'])>=0){
+					$parentId = $updateData[$nodeData['ParentLocalId']]['dbId'];
+				}
+				if($nodeData['nodeType']=='Group'){
+					
+					if($nodeData['dbId']>0){
+						$this->updateConditionsGroup($nodeData['dbId'],$nodeData['Order'],$parentId,$nodeData['ConjunctionType']);
+					}else{
+						$nodeData['dbId'] = $this->insertConditionsGroup($ruleId,$nodeData['Order'],$parentId,$nodeData['ConjunctionType']);
+					}
+				}else{
+					// value
+					if($nodeData['dbId']>0){
+						$this->updateRuleCondition($nodeData['dbId'],$parentId,$nodeData['Order']);
+					}else{
+						$this->insertRuleCondition(
+							$ruleId,
+							$parentId,
+							$nodeData['Order'],
+							$nodeData['PropertyType'],
+							$nodeData['PropertyKey'],
+							$nodeData['OperatorType'],
+							$nodeData['PropertyValue']
+						);
+					}
+				}
+			}else{
+				if($nodeData['nodeType']=='Group'){
+					$this->deleteConditionsGroup($nodeData['dbId']);
+				}else{
+					$this->deleteRuleCondition($nodeData['dbId']);
+				}
+			}
+		}
+		
+		return $this->getRuleConditions($ruleId);
+	}
+	
+	function insertConditionsGroup($ruleId,$order,$parentId,$conjunctionType){
+		$sql = "INSERT INTO `neox_irepgroup` (`RuleId`, `Order`, `ParentId`, `ConjunctionType`) 
+				VALUES ($ruleId, $order, $parentId, '$conjunctionType')";
+		$result = $this->db->query($sql);
+		$insertedId = $this->db->insert_id;
+		return $insertedId;
+	}
+	
+	function updateConditionsGroup($groupId,$order,$parentId,$conjuctionType){
+		$sql = "UPDATE `neox_irepgroup` SET `Order`=$order, `ParentId`=$parentId, `ConjunctionType`='$conjuctionType' WHERE  `Id`=$groupId;";
+		$result = $this->db->query($sql);
+	}
+	
+	function deleteConditionsGroup($groupId){
+		$this->deleteRuleConditionByGroupId($groupId);
+		$sql = "SELECT * FROM `neox_irepgroup` WHERE `ParentId`=$groupId";
+		$result = $this->query($sql);
+		while($subGroup = $result->fetch_array()){
+			$this->deleteConditionsGroup($subGroup['Id']);
+		}
+		$sql = "DELETE FROM `neox_irepgroup` WHERE  `Id`=$groupId;";
+		$result = $this->query($sql);
+	}
+	
+	function insertRuleCondition($ruleId,$groupId,$order,$propertyType,$propertyKey,$operandType,$propertyValue){
+		$sql = "INSERT INTO `neox_ireprulecondition` (`RuleId`, `GroupId`, `Order`, `PropertyType`, `PropertyKey`, `OperandType`, `PropertyValue`) 
+				VALUES ($ruleId, $groupId, $order, '$propertyType', '$propertyKey', '$operandType', '$propertyValue');";
+		$result = $this->db->query($sql);
+		$insertedId = $this->db->insert_id;
+		return $insertedId;
+	}
+	
+	function updateRuleCondition($conditionId,$groupId,$order){
+		$sql = "UPDATE `neox_ireprulecondition` SET `GroupId`=$groupId, `Order`=$order WHERE  `Id`=$conditionId;";
+		$result = $this->db->query($sql);
+	}
+	
+	function deleteRuleCondition($conditionId){
+		$sql = "DELETE FROM `neox_ireprulecondition` WHERE  `Id`=$conditionId;";
+		$result = $this->db->query($sql);
+	}
+	
+	function deleteRuleConditionByGroupId($groupId){
+		$sql = "DELETE FROM `neox_ireprulecondition` WHERE  `GroupId`=$groupId;";
+		$result = $this->db->query($sql);
+	}
+	
+	function getRuleConditions($ruleId){
+		$sql = "SELECT * FROM `neox_irepgroup` WHERE `RuleId`=$ruleId AND `ParentId` IS NULL";
+		$result = $this->query($sql);
+		$groupData = $result->fetch_array();
+		return array(
+				'id'=>$groupData['Id'],
+				'ConjunctionType'=>$groupData['ConjunctionType'],
+				'Children'=> $this->getConditionGroupChildren($groupData['Id'])
+			);
+	}
+	
+	function getConditionGroupChildren($groupId){
+	
+		$children = array();
+		
+		$sql = "SELECT * FROM `neox_irepgroup` WHERE `ParentId`=$groupId";
+		$result = $this->query($sql);
+		while($record = $result->fetch_array()){
+			$children[intval($record['Order'])] = array(
+				'id'=>$record['Id'],
+				'ConjunctionType'=>$record['ConjunctionType'],
+				'Children'=> $this->getConditionGroupChildren($record['Id'])
+			);
+		}
+		$sql = "SELECT * FROM `neox_ireprulecondition` WHERE `GroupId`=$groupId";
+		$result = $this->query($sql);
+		while($record = $result->fetch_array()){
+			$children[intval($record['Order'])] = array(
+				'id'=>$record['Id'],
+				'PropertyType'=>$record['PropertyType'],
+				'PropertyKey'=>$record['PropertyKey'],
+				'PropertyValue'=>$record['PropertyValue'],
+				'OperandType'=>$record['OperandType']
+			);
+		}
+		ksort($children);
+		return $children;
+		
+	}
+	
+	// Rule values
+	
 	function updateRuleValues($ruleId,$updateData){
 		$success = true;
 		foreach($updateData as $valueData){
@@ -109,7 +251,20 @@ namespace NeoX\Entity;
 		while($rule = $result->fetch_array()){
 			$valueList[] = $rule;
 		}
-		return $valueList;
+		
+		$result = array("result"=>"success","data"=>array());
+		
+		foreach($valueList as $data){
+			$result["data"][] = array(
+				"Id"=>$data["Id"],
+				"PropertyType"=>$data["PropertyType"],
+				"PropertyKey"=>$data["PropertyKey"],
+				"PropertyValue"=>$data["PropertyValue"],
+				"OperandType"=>$data["OperandType"]
+			);
+		}
+		
+		return $result;
 	}
 	
 }

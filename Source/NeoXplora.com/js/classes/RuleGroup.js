@@ -15,12 +15,16 @@ var TRuleGroup_Implementation = {
 		
 		GetModifiedNodes: function(){
 			var nodes = [];
+			if(this.getModified()){
+				nodes.push(this);
+			}
 			var children = this.getChildren();
 			for(var i=0;i<children.length;i++){
-				if(children[i].getModified()){
+				if(children[i].getModified() && !(typeof children[i].getChildren == 'function')){
 					nodes.push(children[i]);
+				}else if (typeof children[i].getChildren == 'function'){
+					nodes = nodes.concat(children[i].GetModifiedNodes());
 				}
-				// to be continued...
 			}
 			return nodes;
 		},
@@ -37,6 +41,7 @@ var TRuleGroup_Implementation = {
 					this.getChildren().splice(index, 0, child);
 					this.reAdjustIndexes();
 				}
+				child.SetModified(true);
 			}
 		},
 		
@@ -87,17 +92,21 @@ var TRuleGroup_Implementation = {
 			for(var i = 0; i < children.length; i++){
 				if(children[i].getIndex() != i){
 					children[i].setIndex(i);
-					children[i].setModified(true);
+					children[i].SetModified(true);
+					this.SetModified(true);
 				}
 			}
 		},
 		
 		SetUpdated: function(){
-			this.setModified(false);
+			this.SetModified(false);
 			var children = this.getChildren();
 			for(var i=0;i<children.length;i++){
-				children[i].setModified(false);
-				// to be continued...
+				if(typeof children[i].getChildren == 'function'){
+					children[i].SetUpdated();
+				}else{
+					children[i].SetModified(false);
+				}
 			}
 		},
 		
@@ -108,8 +117,9 @@ var TRuleGroup_Implementation = {
 			var tmpIndex = this.getChildren()[index1].getIndex();
 			this.getChildren()[index1].setIndex(this.getChildren()[index2].getIndex());
 			this.getChildren()[index2].setIndex(tmpIndex);
-			this.getChildren()[index1].setModified(true);
-			this.getChildren()[index2].setModified(true);
+			this.getChildren()[index1].SetModified(true);
+			this.getChildren()[index2].SetModified(true);
+			this.SetModified(true);
 		},
 		
 		

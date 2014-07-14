@@ -5,8 +5,8 @@
       <h3>IRep Rules - Add</h3>
 	  <div id="ruleNameForm" class="formSection">
 		<h4>Rule Name</h4>
-		<input type="text" id="ruleNameInput">
-		<input type="hidden" id="ruleId" value="-1">
+		<input type="text" id="ruleNameInput" value="<?php print $this->ruleName; ?>">
+		<input type="hidden" id="ruleId" value="<?php print $this->ruleId; ?>">
 		<button id="postRuleNameButton">Create</button>
 	  </div>
 	  

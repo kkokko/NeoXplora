@@ -11,10 +11,10 @@
 			<?php
 			foreach($this->rulesList as $IRepRule){
 				?>
-				<li data-id="<?php print $IRepRule['id']; ?>" data-priority="<?php print $IRepRule['priority']; ?>">
+				<li data-id="<?php print $IRepRule['Id']; ?>" data-priority="<?php print $IRepRule['priority']; ?>">
 					<?php print $IRepRule['Name']; ?>
 					<div style="float:right">
-					<a href="#" ><img src="images/edit_icon.png" width="20"></a>
+					<a href="?action=ireprules_edit&ruleId=<?php print $IRepRule['Id']; ?>" ><img src="images/edit_icon.png" width="20"></a>
 					<a href="#" ><img src="images/delete_icon.png" width="20"></a>
 					</div>
 				</li>

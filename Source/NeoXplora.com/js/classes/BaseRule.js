@@ -37,6 +37,19 @@ var TBaseRule_Implementation = {
 		
 		MoveDown: function() {
 			this.getParent().MoveChild(this.getIndex(), false);
+		},
+		
+		SetModified: function(value){
+			if(value){
+				this.setModified(true);
+				var parent = this.getParent();
+				while(parent!=null){
+					parent.setModified(true);
+					parent = parent.getParent();
+				}
+			}else{
+				this.setModified(false);
+			}	
 		}
 	}
 }

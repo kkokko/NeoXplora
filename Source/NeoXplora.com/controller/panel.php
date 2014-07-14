@@ -32,6 +32,8 @@ class TPanel extends \SkyCore\TObject {
   }
   
   public function ireprules_add(){
+	$this->template->ruleId = -1;
+	$this->template->ruleName = "";
 	$this->template->addStyle("style/admin.css");
 	$this->template->addStyle("style/admin.irep.css");
 	$this->template->addScript("NeoShared/SkyJs/skyjs.js");
@@ -48,6 +50,45 @@ class TPanel extends \SkyCore\TObject {
     $this->template->render();
   }
   
+  public function ireprules_edit(){
+	if(isset($_REQUEST['ruleId'])){
+		$ruleId = intval($_REQUEST['ruleId']);
+		$this->template->ruleId = $ruleId;
+		$this->template->ruleName = $this->core->entity("ireprule")->getRuleName($ruleId);
+		$this->template->addStyle("style/admin.css");
+		$this->template->addStyle("style/admin.irep.css");
+		$this->template->addScript("NeoShared/SkyJs/skyjs.js");
+		$this->template->addScript("js/classes/IRepConditionParser.js");
+		$this->template->addScript("js/classes/BaseRule.js");
+		$this->template->addScript("js/classes/RuleGroup.js");
+		$this->template->addScript("js/classes/RuleValue.js");
+		$this->template->addScript("js/panel.irep.add.js");
+		$this->template->load("ireprules_add", "panel");
+		$this->template->pageTitle = "IRep rules - Add | Admin Panel";
+		$this->template->page = "ireprules_panel";
+		
+		$this->template->hide_right_box = true;
+		$this->template->render();
+	}
+  }
+  
+  public function irep_getRuleConditionsData(){
+	if(isset($_REQUEST['ruleId'])){
+		$ruleId = intval($_REQUEST['ruleId']);
+		$ruleConditionData = $this->core->entity("ireprule")->getRuleConditions($ruleId);
+		//print_r($ruleConditionData);
+		print json_encode($ruleConditionData);
+	}
+  }
+  
+  public function irep_getRuleValuesData(){
+	if(isset($_REQUEST['ruleId'])){
+		$ruleId = intval($_REQUEST['ruleId']);
+		$ruleValueData = $this->core->entity("ireprule")->getRuleValues($ruleId);
+		print json_encode($ruleValueData);
+	}
+  }
+  
   public function irep_postRuleName(){
 	if(isset($_REQUEST['ruleId']) && isset($_REQUEST['ruleName'])){
 		$ruleName = $_REQUEST['ruleName'];
@@ -62,19 +103,19 @@ class TPanel extends \SkyCore\TObject {
 		$ruleId = intval($_REQUEST['ruleId']);
 		$updateData = $_REQUEST['updateData'];
 		$resultData = $this->core->entity("ireprule")->updateRuleValues($ruleId,$updateData);
-		$result = array("result"=>"success","data"=>array());
 		
-		foreach($resultData as $data){
-			$result["data"][] = array(
-				"Id"=>$data["Id"],
-				"PropertyType"=>$data["PropertyType"],
-				"PropertyKey"=>$data["PropertyKey"],
-				"PropertyValue"=>$data["PropertyValue"],
-				"OperandType"=>$data["OperandType"]
-			);
-		}
-		
-		print json_encode($result);
+		print json_encode($resultData);
+		return;
+	}
+	print "fail";
+  }
+  
+  public function irep_updateRuleConditions(){
+	if(isset($_REQUEST['ruleId'])){
+		$ruleId = intval($_REQUEST['ruleId']);
+		$updateData = $_REQUEST['updateData'];
+		$resultData = $this->core->entity("ireprule")->updateRuleConditions($ruleId,$updateData);
+		print json_encode($resultData);
 		return;
 	}
 	
