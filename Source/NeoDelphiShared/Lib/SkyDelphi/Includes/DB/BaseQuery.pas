@@ -15,6 +15,8 @@ type
   public
     constructor Create(AConnection: TObject); reintroduce;
 
+    class procedure DeleteOneToMany(AConnection: TObject; ADeleteFromClass: TEntityClass;
+      AManyLinkField: string; AnId: TId);
     class procedure DoExecuteQuery(AConnection: TObject; const ASql: string);
     class procedure ExecuteQuery(AConnection: TObject; AQuery: TDBSQLQuery);
     class function LoadOneToMany(AConnection: TObject; AResultClass: TEntityClass;
@@ -55,6 +57,23 @@ uses
   TypesFunctions, StringArray, SysUtils, BaseConnection, SkyException;
 
 {$Region 'TDBSQLQuery defs'}
+function QueryDeleteOneToManyForId: TDBSQLQuery;
+begin
+  Result.Name := 'QueryDeleteOneToManyForId';
+  Result.Query := TStringArray.FromArray
+  ([
+      'delete from ', '!B',
+      ' where ', '!B.IdA', '=', '!TheId', ';'
+  ]);
+{$IFDEF UNICODE}
+  Result.Params := TKeyStringValue.MakeArray(
+{$ELSE}
+  Result.Params := TKeyStringValueArray.MakeArray(
+{$ENDIF}
+    ['B', 'B.IdA', 'TheId'],
+    ['B', 'B.IdA', '0']);
+end;
+
 function QuerySelectOneToManyForId: TDBSQLQuery;
 begin
   Result.Name := 'QuerySelectOneToManyForId';
@@ -131,6 +150,20 @@ constructor TBaseQuery.Create(AConnection: TObject);
 begin
   inherited Create(nil);
   Connection := (AConnection as TBaseConnection).Connection;
+end;
+
+class procedure TBaseQuery.DeleteOneToMany(AConnection: TObject; ADeleteFromClass: TEntityClass;
+  AManyLinkField: string; AnId: TId);
+var
+  TheQuery: TDBSQLQuery;
+  TheResultEntityMapping: TEntityMapping;
+begin
+  TheQuery := QueryDeleteOneToManyForId;
+  TheResultEntityMapping := TEntityMappingManager.GetMapping(ADeleteFromClass);
+  TheQuery.Params.ValueForKey['B'] := (AConnection as TBaseConnection).GetTableMapping(ADeleteFromClass);
+  TheQuery.Params.ValueForKey['B.IdA'] := TheResultEntityMapping.GetValueForField(AManyLinkField);
+  TheQuery.Params.ValueForKey['TheId'] := IntToStr(AnId);
+  (AConnection as TBaseConnection).ExecuteQuery(TheQuery);
 end;
 
 class procedure TBaseQuery.DoExecuteQuery(AConnection: TObject; const ASql: string);

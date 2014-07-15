@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Controls, Forms,
-  Dialogs, StdCtrls, DB, MemDS, DBAccess, Uni;
+  Dialogs, StdCtrls;
 
 type
   TfrmDebug = class(TForm)
@@ -34,7 +34,7 @@ implementation
 {$R *.dfm}
 
 uses
-  ServiceThread, AppUnit, SkyHttpClient, Entity, ServerCore, DateUtils, TimedLock;
+  ServiceThread, AppUnit, SkyHttpClient, DateUtils;
 
 procedure TfrmDebug.btnCloseClick(Sender: TObject);
 begin

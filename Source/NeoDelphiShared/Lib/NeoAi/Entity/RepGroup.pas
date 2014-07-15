@@ -9,29 +9,21 @@ type
   TRepGroup = class(TRepEntity)
   private
     FMembers: TEntityList;
-  protected
+  published
     function GetEntityType: TRepEntity.TEntityType; override;
-  public
-    constructor Create; override;
   published
     property Id;
     property EntityNumber;
     property EntityType;
-    property Members: TEntityList read FMembers write FMembers;
+    property Kids;
+    property Members: TEntityList read FMembers write FMembers; // array of TRepEntity
     property Name;
     property PageId;
-    property Properties;
   end;
 
 implementation
 
 { TRepGroup }
-
-constructor TRepGroup.Create;
-begin
-  inherited Create;
-  FMembers.OwnsItems := False;
-end;
 
 function TRepGroup.GetEntityType: TRepEntity.TEntityType;
 begin

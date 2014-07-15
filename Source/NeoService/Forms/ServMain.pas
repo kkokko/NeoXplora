@@ -3,7 +3,7 @@ unit ServMain;
 interface
 
 uses
-  Windows, Classes, SvcMgr, SyncObjs;
+  Windows, Classes, SvcMgr;
 
 type
   TNasService = class(TService)

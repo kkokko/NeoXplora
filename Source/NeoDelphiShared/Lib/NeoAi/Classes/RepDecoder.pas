@@ -106,12 +106,7 @@ var
   TheName: string;
 begin
   TheName := ReadIdentifier;
-  Result := AParent.Kids.ObjectOfValueDefault[TheName, nil] as TRepPropertyKey;
-  if Result = nil then
-  begin
-    Result := TRepPropertyKey.Create(AParent, APropertyType, TheName);
-    AParent.Kids.AddObject(TheName, Result);
-  end;
+  Result := AParent.GetOrCreateKid(TheName, APropertyType) as TRepPropertyKey;
   if GetCurrentChar = '(' then
   begin
     Inc(FRepString^.Position);
@@ -345,7 +340,7 @@ begin
       repeat
         // check if the Event has an Operator + value
         // and add them
-        ReadPropertyValue(TheEvent, TheOperator); // = fast(.when=now, :keepinh speed < 30 kph)
+        ReadPropertyValue(TheEvent, TheOperator); // = fast(.when=now, :keeping speed < 30 kph)
         TheMoreValues := GetCurrentChar = '+';
         if TheMoreValues then
         begin

@@ -386,7 +386,7 @@ begin
       if AValue = 0 then
         TheValue := ''
       else if 'TDate' = AFieldInfo.FieldType then
-        TheValue := XMLDateTimeToStrEx(Trunc(AValue))
+        TheValue := XMLDateToStr(Trunc(AValue))
       else if 'TDateTime' = AFieldInfo.FieldType then
         TheValue := XMLDateTimeToStrEx(AValue)
       else if 'TTime' = AFieldInfo.FieldType then

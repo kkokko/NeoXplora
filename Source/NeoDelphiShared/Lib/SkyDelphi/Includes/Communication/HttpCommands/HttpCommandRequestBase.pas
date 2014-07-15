@@ -32,15 +32,6 @@ begin
   Result := TCommand.GetClassForRequest(ARequest, TCommand).Execute(ARequest);
 end;
 
-procedure SaveStreamToFile(AStream: TMemoryStream; const AName: string);
-begin
-  AStream.Position := 0;
-  try
-    AStream.SaveToFile(AName);
-  except // eat the error
-  end;
-end;
-
 class procedure THttpCommandRequestBase.RunCommand(AServer: TObject;
   const AFileExt: string; AnEntityReader: TEntityReaderClass;
   AnEntityWriter: TEntityWriterClass);

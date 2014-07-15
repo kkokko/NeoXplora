@@ -104,13 +104,14 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepGroup.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyValue.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas">
-				<Form>/  , LoggerUnit
-  AppConsts in &apos;..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas&apos;;
-
-{$R *.res</Form>
-			</DCCReference>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleGroup.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRule.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleCondition.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleValue.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRule.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\IRep.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

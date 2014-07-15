@@ -67,7 +67,7 @@ type
 implementation
 
 uses
-  EntityMappingManager, EntityMapping, AppConsts;
+  AppConsts;
 
 { TSentenceBase }
 

@@ -11,6 +11,7 @@ type
     class function GetFinishedStoriesCount: Integer;
     class function GetFullSentencesForPageId(APageId: TId): TEntities;
     class function GetHypernyms: TEntities;
+    class function GetIRepRules: TEntities;
     class function GetSearchPagesByOffset(ASearch: string; AnOffset: Integer): TEntities;
     class function GetSentenceBaseById(AnId: TId): TSentenceBase;
     class function GetSplitSentences: TEntities;
@@ -22,6 +23,7 @@ type
     class function QueryGetFinishedStoriesCount: TDBSQLQuery;
     class function QueryGetFullSentencesForPageId(APageId: TId): TDBSQLQuery;
     class function QueryGetHypernyms: TDBSQLQuery;
+    class function QueryGetIRepRules: TDBSQLQuery;
     class function QueryGetSearchPagesByOffset(AnOffset: Integer): TDBSQLQuery;
     class function QueryGetSentenceBaseById(AnId: TId): TDBSQLQuery;
     class function QueryGetSplitSentences: TDBSQLQuery;
@@ -35,7 +37,7 @@ implementation
 
 uses
   StringArray, AppUnit, EntityWithName, PageBase, TypesFunctions, SentenceWithGuesses, TypInfo, CountData, EntityWithId,
-  SearchPage, SysUtils;
+  SearchPage, SysUtils, RepGroup, IRepRule;
 
 { TAppSQLServerQuery }
 
@@ -57,6 +59,11 @@ end;
 class function TAppSQLServerQuery.GetFullSentencesForPageId(APageId: TId): TEntities;
 begin
   Result := App.SQLConnection.SelectQuery([TSentenceWithGuesses], QueryGetFullSentencesForPageId(APageId));
+end;
+
+class function TAppSQLServerQuery.GetIRepRules: TEntities;
+begin
+  Result := App.SQLConnection.SelectQuery([TIRepRule], QueryGetIRepRules);
 end;
 
 class function TAppSQLServerQuery.GetHypernyms: TEntities;
@@ -183,6 +190,16 @@ begin
     TSentenceBase.Tok_SRep.SQLToken,'` like ''%eg(%'' or',
     ' se.`', TSentenceBase.Tok_SRep.SQLToken,'` like ''%part(%'' or se.`',
     TSentenceBase.Tok_SRep.SQLToken,'` like ''%property(%'');'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryGetIRepRules: TDBSQLQuery;
+begin
+  Result.Name := 'QueryGetIRepRules';
+  Result.Query := TStringArray.FromArray([
+    'select * from `',
+    TIRepRule.SQLToken,
+    '` order by `', TIRepRule.Tok_Order.SQLToken, '`;'
   ]);
 end;
 

@@ -3,7 +3,7 @@ unit RepEntity;
 interface
 
 uses
-  RepObjectBase, TypesConsts, SkyLists, Entity;
+  RepObjectBase, TypesConsts, SkyLists, Entity, EntityList;
 
 type
   TRepEntity = class(TRepObjectBase)
@@ -13,7 +13,7 @@ type
   private
     FPageId: TId;
     FEntityNumber: Integer;
-    FProperties: TSkyStringList;
+    FMembers: TEntityList;
     procedure SetEntityType(const Value: TEntityType);
   protected
     function GetEntityType: TRepEntity.TEntityType; virtual; abstract;
@@ -27,7 +27,6 @@ type
     property Kids;
     property Name;
     property PageId: TId read FPageId write FPageId;
-    property Properties: TSkyStringList read FProperties write FProperties; // array of TRepProperty
   end;
 
 implementation
@@ -41,6 +40,7 @@ constructor TRepEntity.Create(ANumber: Integer);
 begin
   Create;
   FEntityNumber := ANumber;
+  FMembers.OwnsItems := False;
 end;
 
 function TRepEntity.GetName: string;

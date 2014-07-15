@@ -3,16 +3,21 @@ unit ServerCore;
 interface
 
 uses
-  Classes, Windows, EntityList, Entity, TypesConsts, VersionableEntity, SentenceList, GuessObject, DBAccess, Uni,
-  SentenceWithGuesses, TimedLock, PosTagger, Hypernym;
+  Windows, EntityList, Entity, TypesConsts, SentenceList, GuessObject, SentenceWithGuesses, TimedLock, PosTagger, 
+  Hypernym, SkyIdList;
 
 type
   TServerCore = class(TObject)
   private
     type
       TLockType = (ltRead, ltWrite);
+      TRuleCacheStatus = record
+        IRepRulesChanged: Boolean;
+        CRepRulesChanged: Boolean;
+      end;
   private
     FHypernym: THypernym;
+    FIRepList: TEntityList;
     FLock: TRTLCriticalSection;
     FLockCount: Integer;
     FTimedLock: TTimedLock;
@@ -20,8 +25,19 @@ type
     FPosTagger: TPosTagger;
     FSentenceList: TSentenceList;
     FStartDate: TDateTime;
+    FIRepRulesChanged: Boolean;
+    FCRepRulesChanged: Boolean;
+
+    function LoadIRepRules: TSkyIdList;
+    function LoadIRepRuleGroups(ARuleList: TSkyIdList): TSkyIdList;
+    procedure LoadIRepRuleConditions(AGroupList: TSkyIdList);
+    procedure LoadIRepRuleValues(ARuleList: TSkyIdList);
+
     procedure SentenceLockAquire(ALockType: TLockType);
     procedure SentenceLockRelease(ALockType: TLockType);
+    function GetRuleCacheStatus: TRuleCacheStatus;
+    procedure ReloadIRepRules;
+    procedure ReloadCRepRules;
   public
     constructor Create;
     destructor Destroy; override;
@@ -30,6 +46,9 @@ type
     class procedure EndInstance;
     procedure ReloadSentences;
 
+    // when the IRep rules have changed the server application must be notified and they will be reloaded
+    // on next cache reload
+    property RuleCacheStatus: TRuleCacheStatus read GetRuleCacheStatus;
     property MainThreadHandle: HWND read FMainThreadHandle write FMainThreadHandle;
 
     // user commands - please keep sorted
@@ -54,10 +73,9 @@ procedure FreeCore;
 implementation
 
 uses
-  SysUtils, EntityService, AppUnit, AppClientSession, AppSQLServerQuery, ExceptionClasses, Session, ClientSession,
-  AsyncSession, EntityManager, SkyIdList, AppExceptionClasses, BaseConnection, EntityWithName, TypesFunctions,
-  EntityFieldNamesToken, SentenceBase, SentenceSplitter, DB, CRep, LoggerUnit, DateUtils, RepDecoder,
-  SearchPage, SkyLists;
+  SysUtils, AppUnit, AppSQLServerQuery, BaseConnection, EntityWithName, TypesFunctions, SentenceBase,
+  SentenceSplitter, CRep, RepDecoder, SearchPage, SkyLists, RepGroup, IRepRuleGroup, LoggerUnit, 
+  IRepRule, IRepRuleValue, IRepRuleCondition;
 
 var
   _Core: TServerCore;
@@ -75,11 +93,20 @@ end;
 procedure TServerCore.CacheReload;
 var
   TheCount: Integer;
+  TheStatus: TRuleCacheStatus;
 begin
   TheCount := TAppSQLServerQuery.GetFinishedStoriesCount;
-  if TheCount = FSentenceList.SentenceCount then
-    Exit;
-  ReloadSentences;
+  if TheCount <> FSentenceList.SentenceCount then
+    ReloadSentences;
+  TheStatus := RuleCacheStatus;
+  if TheStatus.IRepRulesChanged then
+    ReloadIRepRules;
+  if TheStatus.CRepRulesChanged then
+    ReloadCRepRules;
+end;
+
+procedure TServerCore.ReloadCRepRules;
+begin
 end;
 
 procedure TServerCore.ReloadSentences;
@@ -129,6 +156,8 @@ begin
   FTimedLock := TTimedLock.Create('NasServerSentenceUpdate');
   FTimedLock.LockInterval := 10000; // 10 seconds
   FLockCount := 0;
+  FIRepRulesChanged := True;
+  FIRepList := TEntityList.Create;
   InitializeCriticalSection(FLock);
 end;
 
@@ -139,6 +168,7 @@ begin
   FHypernym.Free;
   FSentenceList.Free;
   FPosTagger.Free;
+  FIRepList.Free;
   App.RemoveDefaultDatabaseConnection;
   inherited;
 end;
@@ -223,6 +253,17 @@ begin
   except
     TEntity.FreeEntities(Result);
     raise;
+  end;
+end;
+
+function TServerCore.GetRuleCacheStatus: TRuleCacheStatus;
+begin
+  SentenceLockAquire(ltRead);
+  try
+    Result.IRepRulesChanged := FIRepRulesChanged;
+    Result.CRepRulesChanged := FCRepRulesChanged;
+  finally
+    SentenceLockRelease(ltRead);
   end;
 end;
 
@@ -319,6 +360,155 @@ begin
   finally
     TheSplitter.Free;
     TheSentence.Free;
+  end;
+end;
+
+function TServerCore.LoadIRepRules: TSkyIdList;
+var
+  TheEntities: TEntities;
+  I: Integer;
+begin
+  Result := TSkyIdList.Create;
+  try
+    Result.Sorted := False;
+    TheEntities := TAppSQLServerQuery.GetIRepRules;
+    for I := 0 to High(TheEntities) do
+      Result.AddObject(TheEntities[I].Id, TheEntities[I]);
+    Result.Sorted := True;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TServerCore.LoadIRepRuleGroups(ARuleList: TSkyIdList): TSkyIdList;
+var
+  TheEntities: TEntities;
+  TheGroup: TIRepRuleGroup;
+  TheParentGroup: TIRepRuleGroup;
+  TheRule: TIRepRule;
+  I: Integer;
+begin
+  Result := TSkyIdList.Create(False);
+  try
+    Result.Sorted := False;
+    TheEntities := App.SQLConnection.SelectAll(TIRepRuleGroup);
+    for I := 0 to High(TheEntities) do
+      Result.AddObject(TheEntities[I].Id, TheEntities[I]);
+    Result.Sorted := True;
+    I := 0;
+    while I < Result.Count do
+    begin
+      TheGroup := Result.Objects[I] as TIRepRuleGroup;
+      if TheGroup.ParentId = IdNil then
+      begin
+        TheRule := ARuleList.ObjectOfValueDefault[TheGroup.RuleId, nil] as TIRepRule;
+        if TheRule = nil then
+        begin
+          TLogger.Warn(Self, ['LoadIRepRuleGroups', 'Orpaned IRepRuleGroup', IdToStr(TheGroup.Id)]);
+          TheGroup.Free;
+          Result.DeleteFromIndex(I);
+          Continue;
+        end;
+        if TheRule.MainRuleGroup <> nil then
+        begin
+          TLogger.Warn(Self, ['LoadIRepRuleGroups', 'Duplicate main IRepRuleGroup for IRepRule', IdToStr(TheRule.Id)]);
+          TheGroup.Free;
+          Result.DeleteFromIndex(I);
+          Continue;
+        end;
+        TheRule.MainRuleGroup := TheGroup;
+      end else
+      begin
+        TheParentGroup := Result.ObjectOfValueDefault[TheGroup.ParentId, nil] as TIRepRuleGroup;
+        if TheParentGroup = nil then
+        begin
+          TLogger.Warn(Self, ['LoadIRepRuleGroups', 'Orpaned IRepRuleGroup', IdToStr(TheGroup.Id)]);
+          TheGroup.Free;
+          Result.DeleteFromIndex(I);
+          Continue;
+        end;
+        TheParentGroup.Members.Add(TheGroup);
+      end;
+      Inc(I);
+    end;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+procedure TServerCore.LoadIRepRuleConditions(AGroupList: TSkyIdList);
+var
+  TheCondition: TIRepRuleCondition;
+  TheGroup: TIRepRuleGroup;
+  TheEntities: TEntities;
+  I: Integer;
+begin
+  TheEntities := App.SQLConnection.SelectAll(TIRepRuleCondition);
+  for I := 0 to High(TheEntities) do
+  begin
+    TheCondition := TheEntities[I] as TIRepRuleCondition;      
+    TheGroup := AGroupList.ObjectOfValueDefault[TheCondition.GroupId, nil] as TIRepRuleGroup;
+    if TheGroup = nil then
+    begin
+      TLogger.Warn(Self, ['LoadIRepRuleConditions', 'Orpaned IRepRuleCondition', IdToStr(TheCondition.Id)]);
+      TheCondition.Free;
+      Continue;
+    end;
+    TheGroup.Members.Add(TheCondition);
+  end;    
+end;
+
+procedure TServerCore.LoadIRepRuleValues(ARuleList: TSkyIdList);
+var
+  TheEntities: TEntities;
+  TheRule: TIRepRule;
+  TheValue: TIRepRuleValue;
+  I: Integer;
+begin
+  TheEntities := App.SQLConnection.SelectAll(TIRepRuleValue);
+  for I := 0 to High(TheEntities) do
+  begin
+    TheValue := TheEntities[I] as TIRepRuleValue;      
+    TheRule := ARuleList.ObjectOfValueDefault[TheValue.RuleId, nil] as TIRepRule;
+    if TheRule = nil then
+    begin
+      TLogger.Warn(Self, ['LoadIRepRuleValues', 'Orpaned IRepRuleValue', IdToStr(TheValue.Id)]);
+      TheValue.Free;
+      Continue;
+    end;
+    TheRule.Values.Add(TheValue);
+  end;    
+end;
+
+procedure TServerCore.ReloadIRepRules;
+var
+  TheGroupList: TSkyIdList;
+  TheIRepList: TSkyIdList;
+begin
+  TheIRepList := LoadIRepRules;
+  try
+    TheGroupList := LoadIRepRuleGroups(TheIRepList);
+    try
+      LoadIRepRuleConditions(TheGroupList);
+    finally
+      TheGroupList.Free;
+    end;
+    LoadIRepRuleValues(TheIRepList);
+    SentenceLockAquire(ltWrite);
+    try
+      FIRepList.Sorted := False;
+      FIRepList.Clear;
+      FIRepList.AddMultiple(TheIRepList.GetAllObjects, nil);
+      TheIRepList.OwnsObjects := False;
+      FIRepList.Sort(TIRepRule.Tok_Order);
+      FIRepRulesChanged := False;
+    finally
+      SentenceLockRelease(ltWrite);
+    end;
+  finally
+    TheIRepList.Free;
   end;
 end;
 
@@ -428,6 +618,7 @@ begin
               TheNewSentence.Name := TheSplitter.WordList[I];
               TheWordsSplitter.SentenceSplitWords(TheNewSentence.Name);
               TheNewSentence.Pos := FPosTagger.GetTagsForWords(TheWordsSplitter, True);
+              TheNewSentence.Order := TheNewSentence.Order + I;
               TheNewSentence.Status := ssTrainedSplit;
               TheNewSentence.Id := App.SQLConnection.InsertEntity(TheNewSentence);
               TheResults.Add(TEntityWithName.Create(TheNewSentence.Id, TheNewSentence.Name));

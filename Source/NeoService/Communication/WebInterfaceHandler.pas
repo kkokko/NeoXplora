@@ -21,7 +21,7 @@ implementation
 
 uses
   AppUnit, TypesFunctions, AppHttpCommandRequestJson, AppClientSession,
-  ServerCore, Session, LoggerUnit;
+  Session, LoggerUnit;
 
 var
   _WebInterfaceHandler: TWebInterfaceHandler = nil;

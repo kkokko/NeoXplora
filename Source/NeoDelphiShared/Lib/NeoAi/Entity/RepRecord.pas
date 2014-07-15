@@ -13,7 +13,7 @@ type
     constructor Create; override;
     function GetOrCreateEntity(AKind: Char; ANumber: Integer): TRepEntity;
   published
-    property RepEntities: TSkyStringList read FRepEntities write FRepEntities; // array of TRepEntity
+    property RepEntities: TSkyStringList read FRepEntities write FRepEntities; // array of TRepEntity: (Person Object or Group)
   end;
 
 implementation

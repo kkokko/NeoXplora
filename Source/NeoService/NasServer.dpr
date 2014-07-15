@@ -43,7 +43,14 @@ uses
   RepGroup in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepGroup.pas',
   RepPropertyValue in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyValue.pas',
   RepPerson in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas',
-  RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas',  AppConsts in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas';
+  AppConsts in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas',
+  IRepRuleGroup in '..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleGroup.pas',
+  IRepRule in '..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRule.pas',
+  IRepRuleCondition in '..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleCondition.pas',
+  IRepRuleValue in '..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleValue.pas',
+  RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas',
+  BaseRule in '..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRule.pas',
+  IRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\IRep.pas';
 
 {$R *.res}
 
@@ -60,7 +67,7 @@ begin
   begin
     Forms.Application.Initialize;
     Forms.Application.CreateForm(TfrmDebug, frmDebug);
-  Forms.Application.Run;
+    Forms.Application.Run;
   end
   else
   begin

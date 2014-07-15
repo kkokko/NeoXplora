@@ -56,6 +56,7 @@ const
   OneHour = 1/24;
   OneDay = 1;
   OneWeek = 7;
+  TimeError = 0.000004;
 
 var
   _SQLServerFormat: TFormatSettings;

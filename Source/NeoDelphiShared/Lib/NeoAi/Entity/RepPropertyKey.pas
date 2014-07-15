@@ -9,10 +9,10 @@ type
   TRepPropertyKey = class(TRepObjectBase)
   public
     type
-      TPropertyType = (ptAttribute, ptEvent);
+      TConjunctionType = (ctAnd, ctOr);
       TParentType = (ptEntity, ptAttrKey, ptAttrValue, ptEventKey, ptEventValue);
   private
-    FPropertyKeyType: TPropertyType;
+    FPropertyKeyType: TRepObjectBase.TPropertyType;
     FParentId: TId;
     FParentType: TParentType;
     FKey: string;
@@ -20,10 +20,11 @@ type
     FParent: TEntity;
   public
     constructor Create; overload; override;
-    constructor Create(AParent: TEntity; APropertyKeyType: TPropertyType; const AKey: string); overload;
+    constructor Create(AParent: TEntity; APropertyKeyType: TRepObjectBase.TPropertyType; const AKey: string); overload;
 
     function AddLiteralValue(AnOperatorType: TRepPropertyValue.TOperatorType; const AValue: string): TRepPropertyValue;
     procedure AddLinkValue(AnOperatorType: TRepPropertyValue.TOperatorType; ALinkType: TRepPropertyValue.TLinkType; ALinkObject: TEntity);
+    function GetValuesWithOperatorTypes(SomeValueType: TRepPropertyValue.TOperatorTypes): TEntities;
     
     property Parent: TEntity read FParent write FParent;
   published
@@ -32,8 +33,8 @@ type
     property Kids;
     property ParentId: TId read FParentId write FParentId;
     property ParentType: TParentType read FParentType write FParentType;
-    property PropertyType: TPropertyType read FPropertyKeyType write FPropertyKeyType;
-    property Values: TSkyStringList read FValues write FValues;
+    property PropertyType: TRepObjectBase.TPropertyType read FPropertyKeyType write FPropertyKeyType;
+    property Values: TSkyStringList read FValues write FValues; // array of (string: TRepPropertyValue)
   end;
 
 implementation
@@ -65,12 +66,28 @@ begin
   FValues.Sorted := True;
 end;
 
-constructor TRepPropertyKey.Create(AParent: TEntity; APropertyKeyType: TPropertyType; const AKey: string);
+constructor TRepPropertyKey.Create(AParent: TEntity; APropertyKeyType: TRepObjectBase.TPropertyType; const AKey: string);
 begin
   Create;
   FParent := AParent;
   FPropertyKeyType := APropertyKeyType;
   FKey := AKey;
+end;
+
+function TRepPropertyKey.GetValuesWithOperatorTypes(SomeValueType: TRepPropertyValue.TOperatorTypes): TEntities;
+var
+  TheCount: Integer;
+  I: Integer;
+begin
+  SetLength(Result, Values.Count);
+  TheCount := 0;
+  for I := 0 to Values.Count - 1 do
+    if ((Values.Objects[I] as TRepPropertyValue).OperatorType in SomeValueType) then
+    begin
+      Result[TheCount] := Values.Objects[I] as TEntity;
+      Inc(TheCount);
+    end;
+  SetLength(Result, TheCount);
 end;
 
 initialization

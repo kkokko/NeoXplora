@@ -3,7 +3,7 @@ unit EntityXmlReader;
 interface
 
 uses
-  Classes, Entity, OmniXML, EntityReader, EntityList, SkyIdList;
+  Classes, Entity, OmniXML, EntityReader, EntityList, SkyIdList, SkyStringList;
 
 type
   TEntityXmlReaderContext = class;
