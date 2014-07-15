@@ -97,10 +97,10 @@
       $fieldlist .= ")";
       
       for($i = 0; $i < count($values); $i++) {
-        $vauelist .= "(";
+        $valuelist .= "(";
         for($j = 0; $j < count($values[$i]); $j++) {
           $valuelist .= $this->prepareQueryString(":1", $values[$i][$j]);
-          if($i + 1 != count($fields)) $valuelist .= ", ";
+          if($j + 1 != count($fields)) $valuelist .= ", ";
         }
         $valuelist .= ")";
         if($i + 1 != count($values)) $valuelist .= ", ";
