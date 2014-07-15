@@ -1,0 +1,15 @@
+.error {
+    color: #780000;
+    display: inline-block;
+}
+table td {
+  padding: 2px;
+}
+.red {
+  color: #CD0A0A;
+}
+.linkerRuleLabel
+{
+  color:#555;
+  margin-top:5px;  
+}
