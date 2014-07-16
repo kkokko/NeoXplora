@@ -14,6 +14,15 @@
         }
     }
     );
+    
+    $("#linkerRuleType1").click(function()
+    {
+      $("#tr_value").hide();
+    });
+    $("#linkerRuleType2").click(function(){
+      $("#tr_value").show();
+    });
+  
   });
   
 </script>
@@ -39,29 +48,11 @@
         <span class="linkerRuleLabel"><strong>Type :</strong></span>
       </td>
       <td>
-        <input type="radio" name="linkerRuleType" id="linkerRuleType" value="rtNegate" class="required" <?php echo $this->rulesList['type1']; ?> >&nbsp;rtNegate&nbsp;
-        <input type="radio" name="linkerRuleType" id="linkerRuleType" value="rtScoring" class="required" <?php echo $this->rulesList['type2']; ?> >&nbsp;rtScoring&nbsp;
+        <input type="radio" name="linkerRuleType" id="linkerRuleType1" value="rtNegate" class="required" <?php echo $this->rulesList['type1']; ?> >&nbsp;rtNegate&nbsp;
+        <input type="radio" name="linkerRuleType" id="linkerRuleType2" value="rtScoring" class="required" <?php echo $this->rulesList['type2']; ?> >&nbsp;rtScoring&nbsp;
       </td>
-     </tr>
-     
-     <tr>
-      <td valign="top">
-        <span class="linkerRuleLabel"><strong>Value :</strong></span>
-      </td>
-      <td>
-        <input type="text" name="linkerRuleValue" id="linkerRuleValue" value="<?php echo $this->rulesList['value']; ?>" class="form-control" style="width:10%;" required>
-      </td>
-     </tr>
-     
-     <tr>
-      <td valign="top">
-        <span class="linkerRuleLabel"><strong>Conditions :</strong></span>
-      </td>
-      <td>
-      <textarea name="linkerRuleConditions" id="linkerRuleConditions" class="form-control" style="width:30%;"><?php echo $this->rulesList['conditions']; ?></textarea>
-      </td>
-     </tr>
-     
+     </tr> 
+         
      <tr>
         <td colspan="2">&nbsp; </td>
      </tr>

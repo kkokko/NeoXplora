@@ -8,14 +8,12 @@
     public static $entityname = "linkerrule";
     
     //Table Name in the DB
-    public static $tablename = "neox_linkerrule";
+    public static $tablename = "neox_creprule";
     
     //Table Fields in the DB
     public static $tok_id = "Id";
     public static $tok_name = "Name";
-    public static $tok_type = "Type";
-	  public static $tok_value = "Value";
-	  public static $tok_conditions = "Conditions";
+    public static $tok_type = "RuleType";
 	  public static $tok_order = "Order";
 	  
 	
@@ -50,7 +48,15 @@
     
     $query = $this->core->entity("linkerrule")->select($linkerRuleId, "*");
     
-    return $query;
+    if(is_array($query) && isset($query['Id']))
+    {
+      $result = $query;
+    }
+    else if(isset($query) && $query != '' )
+    {
+      $result = $query->fetch_assoc();  
+    }
+    return $result;
   }
   
   public function getMaxId(){
@@ -60,11 +66,11 @@
     if(is_array($query) && isset($query['Id']))
     {
       
-      $result[] = $query;
+      $result = $query;
       
       return $result;
     }
-    if(isset($query) && $query != '' )
+    else if(isset($query) && $query != '' )
     {
       $result = $query->fetch_array();
       

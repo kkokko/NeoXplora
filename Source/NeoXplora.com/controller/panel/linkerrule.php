@@ -32,8 +32,6 @@ class TPanelLinkerRule extends TPanel {
         "id" => Entity\TLinkerRule::$tok_id,
         "name" =>  Entity\TLinkerRule::$tok_name,
         "type" => Entity\TLinkerRule::$tok_type,
-        "value" => Entity\TLinkerRule::$tok_value,
-        "conditions" => Entity\TLinkerRule::$tok_conditions,
         "order" => Entity\TLinkerRule::$tok_order
       );
       
@@ -90,8 +88,6 @@ class TPanelLinkerRule extends TPanel {
         "type" => isset($LinkerRulesList[Entity\TLinkerRule::$tok_type])?$LinkerRulesList[Entity\TLinkerRule::$tok_type]:'',
         "type1" => isset($LinkerRulesList[Entity\TLinkerRule::$tok_type.'1'])?$LinkerRulesList[Entity\TLinkerRule::$tok_type.'1']:'',
         "type2" => isset($LinkerRulesList[Entity\TLinkerRule::$tok_type.'2'])?$LinkerRulesList[Entity\TLinkerRule::$tok_type.'2']:'',
-        "value" => isset($LinkerRulesList[Entity\TLinkerRule::$tok_value])?$LinkerRulesList[Entity\TLinkerRule::$tok_value]:'',
-        "conditions" => isset($LinkerRulesList[Entity\TLinkerRule::$tok_conditions])?$LinkerRulesList[Entity\TLinkerRule::$tok_conditions]:'',
         "order" => isset($LinkerRulesList[Entity\TLinkerRule::$tok_order])?$LinkerRulesList[Entity\TLinkerRule::$tok_order]:''
       );
       
@@ -119,9 +115,7 @@ class TPanelLinkerRule extends TPanel {
     $linkerRuleId = $_REQUEST['linkerRuleId'];
     $linkerRuleName = $_REQUEST['linkerRuleName'];
     $linkerRuleType = $_REQUEST['linkerRuleType'];
-    $linkerRuleValue = $_REQUEST['linkerRuleValue'];
-    $linkerRuleConditions = $_REQUEST['linkerRuleConditions'];
-    
+   
     $linkerRuleResult = $this->core->entity("linkerrule")->getMaxId();
    
     $linkerRuleOrder = $linkerRuleResult['Id'] + 1;
@@ -130,12 +124,10 @@ class TPanelLinkerRule extends TPanel {
     {
         $linkerInsertValue[0][] = $linkerRuleName;
         $linkerInsertValue[0][] = $linkerRuleType;
-        $linkerInsertValue[0][] = $linkerRuleValue;
-        $linkerInsertValue[0][] = $linkerRuleConditions;
         $linkerInsertValue[0][] = $linkerRuleOrder;
         
       $this->core->entity("linkerrule")->insert(
-      array("name", "type", "value", "conditions", "order"), 
+      array("name", "type", "order"), 
       $linkerInsertValue
       );
       
@@ -146,12 +138,10 @@ class TPanelLinkerRule extends TPanel {
     else 
     {
 	     $this->core->entity("linkerrule")->update(
-        $linkerRuleId,
+        (int)$linkerRuleId,
         array(
           'name' => $linkerRuleName, 
-          'type' => $linkerRuleType, 
-          'value' => $linkerRuleValue, 
-          'conditions' => $linkerRuleConditions
+          'type' => $linkerRuleType
         )
       );
       

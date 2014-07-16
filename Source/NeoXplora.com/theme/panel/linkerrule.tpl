@@ -38,7 +38,7 @@
     			 <tr>
     			   <th>Name</th>
     			   <th>Type</th>
-    			   <th>Value</th>
+    			   
     			   <th width="10%">Action</th>
     			   
     			  </tr>
@@ -52,7 +52,7 @@
     			<tr> 
     			 <td><?php echo $LinkerRule[$this->linkerRulesDB['name']] ?></td>
     			 <td><?php echo $LinkerRule[$this->linkerRulesDB['type']] ?></td>
-    			 <td><?php echo $LinkerRule[$this->linkerRulesDB['value']] ?></td>
+    			 
     			 <td align="center">
     			     <a href="panel.php?type=linkerrule&action=addEditLinkerRule&linkerRuleId=<?php echo $LinkerRule[$this->linkerRulesDB['id']]; ?>" ><img src="images/edit_icon.png" width="16"></a>
                <a href="javascript:void(0);" onClick="if(confirm('Are you sure you want to delete linker rule <?php echo $LinkerRule[$this->linkerRulesDB['name']]; ?>'))  delete_linkerrule(<?php echo $LinkerRule[$this->linkerRulesDB['id']]; ?>);"><img src="images/delete_icon.png" width="16"></a>
