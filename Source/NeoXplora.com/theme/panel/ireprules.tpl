@@ -2,7 +2,11 @@
 <div id="content">
   <div class="container relative">
     <div class="panel">
-      <h3>IRep Rules <a href="?action=ireprules_add"><button>Add Rule</button></a></h3>
+		<div class="buttons">
+			<a href="?action=ireprules" class="active">IRep Rules</a>
+			<a href="?action=ireprules_add">Add Rule</a>
+		</div>
+      <h3>IRep Rules </h3>
 	  <div class="rulesContainer">
 		<?php
 		if(count($this->rulesList)>0){
@@ -11,7 +15,7 @@
 			<?php
 			foreach($this->rulesList as $IRepRule){
 				?>
-				<li data-id="<?php print $IRepRule['Id']; ?>" data-priority="<?php print $IRepRule['priority']; ?>">
+				<li data-id="<?php print $IRepRule['Id']; ?>" data-priority="<?php print $IRepRule['Order']; ?>">
 					<?php print $IRepRule['Name']; ?>
 					<div style="float:right">
 					<a href="?action=ireprules_edit&ruleId=<?php print $IRepRule['Id']; ?>" ><img src="images/edit_icon.png" width="20"></a>

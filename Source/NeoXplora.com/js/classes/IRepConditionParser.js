@@ -61,7 +61,11 @@ var TIRepConditionParser_Implementation = {
       }
       var theIncrement = theInQuote?2:0;
       var theStart = this.get__Position();
-      while (this.get__Position() < this.get__String().length && !theInQuote && ("!=<>").indexOf(this.get__String()[this.get__Position()]) == -1) {
+      while (
+			this.get__Position() < this.get__String().length && 
+			!theInQuote && 
+			("!=<>").indexOf(this.get__String()[this.get__Position()]) == -1
+	  ) {
         if((".,{}[]():+").indexOf(this.get__String()[this.get__Position()]) != -1) {
           throw "InvalidOperandException";
         }
@@ -69,7 +73,6 @@ var TIRepConditionParser_Implementation = {
           throw "InvalidOperandException";
         }
         if (this.get__String()[this.get__Position()] == '"'){
-          this.set__Position(this.get__Position() - 1);
           theInQuote = false;
           break;
         }
@@ -78,6 +81,13 @@ var TIRepConditionParser_Implementation = {
         }
         this.set__Position(this.get__Position() + 1);
       }
+	  while (this.get__Position() < this.get__String().length && theInQuote){
+		if (this.get__String()[this.get__Position()] == '"'){
+          theInQuote = false;
+          break;
+        }
+		this.set__Position(this.get__Position() + 1);
+	  }
       if (theInQuote){
         throw "InvalidOperandException";
       }

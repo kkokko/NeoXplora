@@ -6,12 +6,26 @@
 	
 }
 
-#saveValuesButton,#saveConditionsButton{
-	float:right;
+
+
+.button{
+	float:none;
+}
+
+.controls{
+	padding:10px;
+}
+
+.controls input{
+	padding: 5px;
+	width: 70%;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box; 
 }
 
 .formSection{
-	background-color:#FFF;
+	
 	padding :5px;
 }
 
@@ -26,17 +40,24 @@
 
 .subGroup{
 	padding-left:10px;
-	border-left:2px solid #EFEFEF;
+	border-left:2px solid #FFF;
+	border-bottom:2px solid #FFF;
+	border-right:2px solid #FFF;
 	margin-bottom:2px;
-	padding-top:2px;
+	padding:2px;
 	font-size:12px;
 }
 
 .ConditionControl,.ValueControl{
+
+	vertical-align: middle;
+	display:inline;
 	border:none;
 	width:20px;
 	height:20px;
 	margin:1px;
+	cursor:pointer;
+	border-radius:5px;
 }
 
 .MoveUpButton{
@@ -53,11 +74,18 @@
 
 .DeleteButton{
 	background-image:url('../images/delete_button.png');
+	margin-right:10px;
 }
 
 .GroupHeader{
-	background:#EFEFEF;
+	font-family: Verdana, Geneva, sans-serif; 
+	font-size:14px;
+	font-weight:bold;
+	margin-top:2px;
+	background:#FFF;
 	text-align:right;
+	padding:3px;
+	min-height:20px;
 }
 
 .panel h3 {

@@ -7,6 +7,19 @@ var deletedConditions = [];
 var indexedValueObj = [];
 var deletedValues = [];
 
+var literals = {
+	"ctAnd":"AND",
+	"ctOr":"OR",
+	'otDiffers':'!=',
+	'otLessOrEqual':'<=',
+	'otGreaterOrEqual':'>=',
+	'otEquals':'=',
+	'otLess':'<',
+	'otGreater':'>',
+	'ptAttribute':'<b>[Attribute]</b> ',
+	'ptEvent':'<b>[Event]</b> '
+};
+
 
 
 $(function(){
@@ -224,7 +237,7 @@ function conditionsToHTML(conditionTree){
 	if(typeof conditionTree.getChildren == 'function'){
 		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >Conjunction Type:';
 		var cType = conditionTree.getConjunctionType()=="ctAnd";
-		resultHTML += '<select class="CTSelector"><option value="ctAnd" '+((cType)?'selected="selected"':'')+'>ctAnd</option><option value="ctOr" '+((!cType)?'selected="selected"':'')+'>ctOr</option></select>';
+		resultHTML += '<select class="CTSelector"><option value="ctAnd" '+((cType)?'selected="selected"':'')+'>AND</option><option value="ctOr" '+((!cType)?'selected="selected"':'')+'>OR</option></select>';
 		if(conditionTree.CanMoveUp()){
 			resultHTML += '<button class="MoveUpButton ConditionControl"></button>';
 		}
@@ -252,7 +265,7 @@ function conditionsToHTML(conditionTree){
 		}
 		resultHTML += '<button class="GroupButton ConditionControl"></button>';
 		resultHTML += '<button class="DeleteButton ConditionControl"></button>';
-		resultHTML += conditionTree.getPropertyKey()+' '+conditionTree.getOperatorType()+' '+conditionTree.getPropertyValue()+'</li>';
+		resultHTML += literals[conditionTree.getPropertyType()]+ conditionTree.getPropertyKey()+' '+literals[conditionTree.getOperatorType()]+' '+conditionTree.getPropertyValue()+'</li>';
 	}
 	return resultHTML;
 }
@@ -262,14 +275,19 @@ function valuesToHTML(valueTree){
 	indexedValueObj.push(valueTree);
 	var objectIndex = indexedValueObj.length-1;
 	if(typeof valueTree.getChildren == 'function'){
-		resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >'+valueTree.getConjunctionType();
-		
-		resultHTML += '</div><ul class="subGroup">';
 		var children = valueTree.getChildren();
-		for(var i=0;i<children.length;i++){
-			resultHTML += valuesToHTML(children[i]);
+		if(children.length>0){
+			resultHTML += '<li><div class="GroupHeader"  objIndex="'+objectIndex+'" >';
+			
+			resultHTML += '</div><ul class="subGroup">';
+			var children = valueTree.getChildren();
+			for(var i=0;i<children.length;i++){
+				resultHTML += valuesToHTML(children[i]);
+			}
+			resultHTML += '</ul></li>';
+		}else{
+			return "";
 		}
-		resultHTML += '</ul></li>';
 	}else{
 		resultHTML += '<li objIndex="'+objectIndex+'">';
 		if(valueTree.CanMoveUp()){
@@ -279,7 +297,7 @@ function valuesToHTML(valueTree){
 			resultHTML += '<button class="MoveDownButton ValueControl"></button>';
 		}
 		resultHTML += '<button class="DeleteButton ValueControl"></button>';
-		resultHTML += valueTree.getPropertyKey() + ' ' + valueTree.getOperatorType() + ' ' + valueTree.getPropertyValue() + '</li>';
+		resultHTML += literals[valueTree.getPropertyType()]+ valueTree.getPropertyKey() + ' ' + literals[valueTree.getOperatorType()] + ' ' + valueTree.getPropertyValue() + '</li>';
 	}
 	return resultHTML;
 }
