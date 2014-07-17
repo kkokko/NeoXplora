@@ -406,3 +406,8 @@ label{color: #6C6C6C; font-size: 15px;}
 .trainer .dismissedSentence td {
   background-color: #EDAE9A;
 }
+
+.trainer .areviewedsentence { 
+  font-size: 14px; 
+  padding: 10px; 
+}

@@ -2,7 +2,7 @@
 namespace NeoX\Controller;
 
 require_once APP_DIR . "/app/system/Object.php";
-class TReview extends \SkyCore\TObject {
+class TBrowse extends \SkyCore\TObject {
 
   protected $accessLevel = 'admin';
 
