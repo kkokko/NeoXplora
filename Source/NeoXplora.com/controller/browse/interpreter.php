@@ -27,7 +27,7 @@ class TBrowseInterpreter extends TTrain {
   
   public function load() { 
     $page = isset($_POST['page'])?$_POST['page']:1;
-    $per_page = 5;
+    $per_page = 10;
     $pagination = array();
     
     $interpreterModel = $this->core->model("interpreter", "browse");

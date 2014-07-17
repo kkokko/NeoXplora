@@ -4,7 +4,7 @@
   require_once __DIR__ . "/../Train.php";
   class TBrowseInterpreter extends TTrain {
     
-    public function countSentences() {
+    public function countSentences($categoryID = null, $offset = null, $sStatus = null, $ignoreIDs = null) {
       $query = $this->query("
         SELECT COUNT(se.[[sentence.id]]) AS total
         FROM [[sentence]] se 
