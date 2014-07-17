@@ -355,13 +355,13 @@ label{color: #6C6C6C; font-size: 15px;}
   font-family: Arial;
 }
 
-.splitter {
+.trainer {
   width: 100%;
   border-spacing: 0;
   border-collapse: separate;
 }
 
-.splitter input[type="text"] {
+.trainer input[type="text"] {
   padding: 5px;
   width: 100%;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -369,40 +369,40 @@ label{color: #6C6C6C; font-size: 15px;}
   box-sizing: border-box; 
 }
 
-.splitter th {
+.trainer th {
   padding-bottom: 5px;
 }
 
-.splitter td {
+.trainer td {
   vertical-align: middle;
   padding: 5px;
 }
 
-.splitter .aproto td {
+.trainer .aproto td {
   color: #555;
 }
 
-.splitter .aproto td {
+.trainer .aproto td {
   padding-top: 15px;
   border-bottom: 1px solid #aaa;
 }
 
-.splitter td .button:last-child {
+.trainer td .button:last-child {
   margin-right: 0;
 }
 
-.splitter .row1 td:first-child {
+.trainer .row1 td:first-child {
   background-color: #ccc;
 }
 
-.splitter .row2 td:first-child {
+.trainer .row2 td:first-child {
   background-color: #eee;
 }
 
-.splitter .approvedSentence td {
+.trainer .approvedSentence td {
   background-color: #73C96D;
 }
 
-.splitter .dismissedSentence td {
+.trainer .dismissedSentence td {
   background-color: #EDAE9A;
 }

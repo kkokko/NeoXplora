@@ -1,10 +1,9 @@
 <?php echo $this->fetch("header"); ?>
       <div class="boxContainer">
         <div class="buttons">
-          <div class='active'>Train</div>
-          <div>Examples</div>
-          <div>Review</div>
-          <div>Bye</div>
+          <a href="train.php?type=linker" class='active'>Train</a>
+          <a href="browse.php?type=linker">Browse</a>
+          <a href="review.php?type=linker">Review</a>
         </div>
         <div class="clear"></div>
         <div class="button">

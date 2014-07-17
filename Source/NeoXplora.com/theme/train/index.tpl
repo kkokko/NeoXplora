@@ -9,7 +9,7 @@
             </a>
           </div>
           <div class="btnTrain" >  
-            <a href=#>
+            <a href="<?php echo $this->site_url; ?>train.php?type=interpreter">
               <img src="images/btnInterpreter.png" width="100" height="100" alt="Train Interpreter"/>
               <span class="spanTrain">Identify people, objects, properties & actions </span>
             </a>

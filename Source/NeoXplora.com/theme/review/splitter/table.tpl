@@ -1,4 +1,4 @@
-<table class='splitter'>
+<table class='trainer'>
   <tr>
     <th>Sentence</th>
     <th style="width: 270px">Actions</th>
