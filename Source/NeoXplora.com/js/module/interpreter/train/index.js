@@ -19,7 +19,7 @@ var MInterpreterTrainIndex_Implementation = {
       Inputs: {
       	sentenceID: '.sentenceID',
       	repGuessValue: '.repguess',
-      	newValue: '.newRepValue',
+      	newValue: '.newRepValue'
       },
       Containers: {
       	error: '.rep-error',
@@ -71,7 +71,8 @@ var MInterpreterTrainIndex_Implementation = {
         NeoX.Modules.InterpreterTrainRequests.load();
       } else {
       	var sentenceID = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.sentenceID).val();
-        NeoX.Modules.InterpreterTrainRequests.use(sentenceID);
+      	var newValue = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.repGuessValue).html();
+        NeoX.Modules.InterpreterTrainRequests.use(sentenceID, newValue);
       }
     },
     

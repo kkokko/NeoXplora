@@ -57,7 +57,7 @@ var MInterpreterTrainRequests_Implementation = {
       });
     },
       
-    use: function(sentenceID) {
+    use: function(sentenceID, newValue) {
     	$.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
