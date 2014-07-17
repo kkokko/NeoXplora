@@ -30,7 +30,7 @@ class TTrainSplitter extends TTrain {
     if(isset($_SESSION['ignoredSplitPageIDs']) && is_array($_SESSION['ignoredSplitPageIDs'])) {
       $ignoreIDs = array_values($_SESSION['ignoredSplitPageIDs']);
     }
-    $splitterModel = $this->core->model("splitter", "train");
+    $splitterModel = $this->core->model("train");
     
     $category_data = $splitterModel->getCategory("ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs)->fetch_array();
     

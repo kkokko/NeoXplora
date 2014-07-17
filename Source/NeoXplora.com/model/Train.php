@@ -60,7 +60,8 @@
       $query = $this->query("
         SELECT
           se.[[sentence.id]],
-          se.[[sentence.name]]
+          se.[[sentence.name]],
+          se.[[sentence.rep]]
         FROM (
           SELECT DISTINCT p.[[page.id]], p.[[page.status]] 
           FROM [[page]] p

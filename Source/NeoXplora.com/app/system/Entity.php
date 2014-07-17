@@ -208,11 +208,12 @@
       $updates = implode(",", $updates);
 
       $condition = "";
-      if($id && is_int($id)) {
+      if($id) {
         $condition = $this->prepareQueryString(" WHERE [[" . $this::getEntityName() . ".id]] = :1", $id);
       }
 
       $query = $this->prepareQueryString("UPDATE [[" . $this::getEntityName() . "]] SET ") . $updates . $condition;
+
       $result = $this->db->query($query);
       
       return $this->result($result);

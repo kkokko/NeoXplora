@@ -86,7 +86,7 @@
     public function result($query) {
       if($query === true) {
         return true;
-      } else if ($query === false || $query->num_rows < 1) {
+      } else if ($query === false) {
         return false;
       } else {
         return $query;

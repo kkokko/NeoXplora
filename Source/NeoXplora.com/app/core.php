@@ -63,10 +63,10 @@
             $controller->$action();
           }
         } else {
-          die("Invalid request");
+          die("Invalid request " . $file . " - " . $type . " - " . $action );
         }
       } else {
-        die("Invalid request");
+        die("Invalid request " . $file . " - " . $type . " - " . $action );
       }
     }
     
