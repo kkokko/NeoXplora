@@ -1054,7 +1054,7 @@ function modifyReviewSplit(sentenceID, newValue) {
         }
         $("#s" + sentenceID).fadeOut("slow");
         var protoRow = $("#s" + sentenceID).prevAll('.aproto').eq(0);
-        protoRow.find('td').animate({backgroundColor:'#ccc'}, 300);
+        //protoRow.find('td').animate({backgroundColor:'#ccc'}, 300);
         //find('td').animate({backgroundColor:'#fff'}, 300);
         protoRow.nextUntil(".aproto").each(function(i) {
           if(i%2 == 0) { 
