@@ -3,10 +3,9 @@
   <div class="container relative">
     <div class="panel">
 		<div class="buttons">
-			<a href="?action=ireprules" class="active">IRep Rules</a>
-			<a href="?action=ireprules_add">Add Rule</a>
+			<a href="?type=ireprules" class="active">IRep Rules</a>
+			<a href="?type=ireprules&action=add">Add Rule</a>
 		</div>
-      <h3>IRep Rules </h3>
 	  <div class="rulesContainer">
 		<?php
 		if(count($this->rulesList)>0){
@@ -18,7 +17,7 @@
 				<li data-id="<?php print $IRepRule['Id']; ?>" data-priority="<?php print $IRepRule['Order']; ?>">
 					<?php print $IRepRule['Name']; ?>
 					<div style="float:right">
-					<a href="?action=ireprules_edit&ruleId=<?php print $IRepRule['Id']; ?>" ><img src="images/edit_icon.png" width="20"></a>
+					<a href="?type=ireprules&action=edit&ruleId=<?php print $IRepRule['Id']; ?>" ><img src="images/edit_icon.png" width="20"></a>
 					<a href="#" ><img src="images/delete_icon.png" width="20"></a>
 					</div>
 				</li>

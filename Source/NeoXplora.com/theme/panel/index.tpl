@@ -3,7 +3,7 @@
   <div class="container relative">
     <div class="panel">
       <a href="panel.php?action=stats"><img src="images/stats.jpg" alt="Stats" /></a>
-      <a href="panel.php?action=ireprules"><img src="images/ireprules.jpg" alt="IRep Rules" /></a>
+      <a href="panel.php?type=ireprules"><img src="images/ireprules.jpg" alt="IRep Rules" /></a>
       <a href="panel.php?type=linkerrule"><img src="images/linkerrule.jpg" alt="Linker Rules" /></a>
     </div>
   </div>

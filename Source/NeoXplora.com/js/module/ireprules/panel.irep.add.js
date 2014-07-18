@@ -40,7 +40,8 @@ function getRuleData(){
 			url:"panel.php",
 			method:"POST",
 			data:{
-				action:"irep_getRuleConditionsData",
+				type:'ireprules',
+				action:"getRuleConditionsData",
 				ruleId:ruleId
 			}
 		}).done(function(data){
@@ -53,7 +54,8 @@ function getRuleData(){
 			url:"panel.php",
 			method:"POST",
 			data:{
-				action:"irep_getRuleValuesData",
+				type:'ireprules',
+				action:"getRuleValuesData",
 				ruleId:ruleId
 			}
 		}).done(function(data){
@@ -140,9 +142,13 @@ function bindPostRuleNameButton(){
 			$.ajax({
 				url:"panel.php",
 				method:"POST",
-				data:{"ruleName":ruleName,"ruleId":ruleId, action:"irep_postRuleName"}
+				data:{
+					"ruleName":ruleName,
+					"ruleId":ruleId,
+					type:'ireprules',
+					action:"postRuleName"
+				}
 			}).done(function(data){
-				
 				var result = JSON.parse(data);
 				if(result.actionResult =="success"){
 					$("#ruleId").val(result.ruleId);
@@ -336,7 +342,8 @@ function bindSaveValuesButton(){
 				url:"panel.php",
 				method:"POST",
 				data:{
-					action:"irep_updateRuleValues",
+					type:'ireprules',
+					action:"updateRuleValues",
 					ruleId:ruleId,
 					updateData: uData
 				}
@@ -416,7 +423,8 @@ function bindSaveConditionsButton(){
 				url:"panel.php",
 				method:"POST",
 				data:{
-					action:"irep_updateRuleConditions",
+					type:'ireprules',
+					action:"updateRuleConditions",
 					ruleId:ruleId,
 					updateData:uData
 				}

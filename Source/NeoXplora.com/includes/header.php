@@ -12,8 +12,8 @@ $title = isset($pagetitle) ? $pagetitle : "";
         <link href="<?php echo FULLBASE; ?>fonts/font.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo FULLBASE; ?>style/toastr.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo FULLBASE; ?>favicon.ico" rel="SHORTCUT ICON" />
-        <script src="<?php echo FULLBASE; ?>js/jquery-1.9.1.min.js"></script>
-        <script src="<?php echo FULLBASE; ?>js/toastr.min.js"></script>
+        <script src="<?php echo FULLBASE; ?>js/lib/jquery-1.9.1.min.js"></script>
+        <script src="<?php echo FULLBASE; ?>js/lib/toastr.min.js"></script>
         <script src="<?php echo FULLBASE; ?>js/main.js"></script>
     </head>
 

@@ -14,7 +14,7 @@
     public static $tok_id = "Id";
     public static $tok_name = "Name";
     public static $tok_type = "RuleType";
-	  public static $tok_order = "Order";
+	public static $tok_order = "Order";
 	  
 	
 	public function myGetLinkerRules(){

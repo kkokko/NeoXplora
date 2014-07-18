@@ -14,21 +14,21 @@ function IRepRulesUpdateHandler(event,ui){
 	
 	$('#rulesSortable li').each(function(index){
 		var el = $(this);
-		data.push([el.attr('data-id'),el.index()]);
+		data.push([el.attr('data-id'),el.index()+1]);
 	});
 	
 	$.ajax({
 		url:'panel.php',
 		method:'POST',
 		data:{
-			action:'ireprules_UpdateRulePriority',
+			type:'ireprules',
+			action:'updateRulePriority',
 			priorityData:data
 		}
 	}).done(function(data){
-		
+		if(data.trim()!="success"){
+			alert("Error updating Rules Order");
+		}
 	});
-	
-	
-
-	
 }
+
