@@ -4,7 +4,7 @@ var TIRepConditionParser_Implementation = {
   },
   
   properties: {
-    PropertyType: null, // string  (valid values: ptAttribute, ptEvent)
+    KeyPropertyType: null, // string  (valid values: ptAttribute, ptEvent)
     PropertyKey: null, // string
     OperatorType: null, // string  (valid values: otEquals, otLess, otLessOrEqual, otGreater, otGreaterOrEqual, otDiffers)
     PropertyValue: null, // string
@@ -16,7 +16,7 @@ var TIRepConditionParser_Implementation = {
   methods: {
     ParseString: function(string) {
       this.set__String(string.trim());
-      this.setPropertyType(this.ParsePropertyType());
+      this.setKeyPropertyType(this.ParseKeyPropertyType());
       this.ParseSpaces(); // skipps spaces between operand and key
       this.setPropertyKey(this.ParseOperand().trim());
       this.ParseSpaces();
@@ -27,14 +27,14 @@ var TIRepConditionParser_Implementation = {
         throw "InvalidOperandException";
       }
       return new NeoAI.TRuleValue(
-        this.getPropertyType(), 
+        this.getKeyPropertyType(), 
         this.getOperatorType(), 
         this.getPropertyKey(), 
         this.getPropertyValue()
       );
     },
       
-    ParsePropertyType: function() {
+    ParseKeyPropertyType: function() {
       if(this.get__String().length > 0) {
         switch(this.get__String()[this.get__Position()]) {
           case '.':
@@ -46,7 +46,7 @@ var TIRepConditionParser_Implementation = {
             return 'ptEvent';
             break;
           default:
-            throw "UndefinedPropertyTypeException";
+            throw "UndefinedKeyPropertyTypeException";
             break;
         }
       } else {
@@ -118,7 +118,7 @@ var TIRepConditionParser_Implementation = {
     
     ToString: function() {
       return (
-        "TIRepConditionParser:{PropertyType: " + this.getPropertyType() +
+        "TIRepConditionParser:{KeyPropertyType: " + this.getKeyPropertyType() +
         ", OperandType: " + this.getOperatorType() +
         ", PropertyKey: " + this.getPropertyKey() +
         ", PropertyValue: " + this.getPropertyValue() + "}"

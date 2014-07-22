@@ -2,16 +2,16 @@ var TRuleValue_Implementation = {
 
   extend: "NeoAI.TBaseRule",
   
-  construct: function(propertyType, operatorType, propertyKey, propertyValue) {
+  construct: function(keyPropertyType, operatorType, propertyKey, propertyValue) {
 	this.base(this);
-    this.setPropertyType(propertyType);
+    this.setKeyPropertyType(keyPropertyType);
     this.setOperatorType(operatorType);
     this.setPropertyKey(propertyKey);
     this.setPropertyValue(propertyValue);
   },
   
   properties: {
-    PropertyType: null,
+    KeyPropertyType: null,
     OperatorType: null,
     PropertyKey: null,
     PropertyValue: null

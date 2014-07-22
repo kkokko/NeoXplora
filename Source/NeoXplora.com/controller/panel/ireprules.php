@@ -12,7 +12,15 @@ class TPanelIRepRules extends TPanel {
   public function index(){
 	$this->template->addStyle("style/admin.css");
 	$this->template->addStyle("style/admin.irep.css");
-	$this->template->addScript("js/module/ireprules/panel.irep.js");
+	
+	$this->template->addScripts(array(
+      "js/system/object.js"
+    ));
+    $this->template->addJSModules(array(
+      "NeoX.Modules.IRepRuleBrowseIndex" => "js/module/ireprules/browse/index.js",
+      "NeoX.Modules.IRepRuleBrowseRequests" => "js/module/ireprules/browse/requests.js"
+    ));
+	
     $this->template->load("index", "panel/ireprules");
     $this->template->pageTitle = "IRep rules | Admin Panel";
     $this->template->page = "ireprules_panel";
@@ -34,7 +42,13 @@ class TPanelIRepRules extends TPanel {
 	$this->template->addScript("js/classes/BaseRule.js");
 	$this->template->addScript("js/classes/RuleGroup.js");
 	$this->template->addScript("js/classes/RuleValue.js");
-	$this->template->addScript("js/module/ireprules/panel.irep.add.js");
+	$this->template->addScripts(array(
+      "js/system/object.js"
+    ));
+    $this->template->addJSModules(array(
+      "NeoX.Modules.IRepRuleEditIndex" => "js/module/ireprules/edit/index.js",
+      "NeoX.Modules.IRepRuleEditRequests" => "js/module/ireprules/edit/requests.js"
+    ));
     $this->template->load("add_edit", "panel/ireprules");
     $this->template->pageTitle = "IRep rules - Add | Admin Panel";
     $this->template->page = "ireprules_panel";
@@ -55,7 +69,13 @@ class TPanelIRepRules extends TPanel {
 		$this->template->addScript("js/classes/BaseRule.js");
 		$this->template->addScript("js/classes/RuleGroup.js");
 		$this->template->addScript("js/classes/RuleValue.js");
-		$this->template->addScript("js/module/ireprules/panel.irep.add.js");
+		$this->template->addScripts(array(
+		  "js/system/object.js"
+		));
+		$this->template->addJSModules(array(
+		  "NeoX.Modules.IRepRuleEditIndex" => "js/module/ireprules/edit/index.js",
+		  "NeoX.Modules.IRepRuleEditRequests" => "js/module/ireprules/edit/requests.js"
+		));
 		$this->template->load("add_edit", "panel/ireprules");
 		$this->template->pageTitle = "IRep rule - Edit | Admin Panel";
 		$this->template->page = "ireprules_panel";
@@ -162,7 +182,7 @@ class TPanelIRepRules extends TPanel {
 		while($record = $result->fetch_array()){
 			$children[intval($record['Order'])] = array(
 				'id'=>$record['Id'],
-				'PropertyType'=>$record['PropertyType'],
+				'KeyPropertyType'=>$record['KeyPropertyType'],
 				'PropertyKey'=>$record['PropertyKey'],
 				'PropertyValue'=>$record['PropertyValue'],
 				'OperandType'=>$record['OperandType']
@@ -177,6 +197,7 @@ class TPanelIRepRules extends TPanel {
 		if(isset($_REQUEST['ruleId'])){
 			$ruleId = intval($_REQUEST['ruleId']);
 			$updateData = $_REQUEST['updateData'];
+			
 			$success = true;
 			
 			foreach($updateData as &$nodeData){
@@ -201,7 +222,7 @@ class TPanelIRepRules extends TPanel {
 								$ruleId,
 								$parentId,
 								$nodeData['Order'],
-								$nodeData['PropertyType'],
+								$nodeData['KeyPropertyType'],
 								$nodeData['PropertyKey'],
 								$nodeData['OperatorType'],
 								$nodeData['PropertyValue']
@@ -270,10 +291,10 @@ class TPanelIRepRules extends TPanel {
 		return $result;
 	}
 	
-	private function insertRuleCondition($ruleId,$groupId,$order,$propertyType,$propertyKey,$operandType,$propertyValue){
+	private function insertRuleCondition($ruleId,$groupId,$order,$keyPropertyType,$propertyKey,$operandType,$propertyValue){
 		$result = $this->core->entity("ireprulecondition")->insert(
-			array("groupId","order","propertyType","propertyKey","operandType","propertyValue"),
-			array(array($groupId, $order, $propertyType, $propertyKey, $operandType, $propertyValue))
+			array("groupId","order","keyPropertyType","propertyKey","operandType","propertyValue"),
+			array(array($groupId, $order, $keyPropertyType, $propertyKey, $operandType, $propertyValue))
 		);
 		if($result){
 			$insertedId = $this->db->insert_id;
@@ -292,7 +313,7 @@ class TPanelIRepRules extends TPanel {
 	}
 	
 	private function deleteRuleCondition($conditionId){
-		$result = $this->core->entity("ireprulecondition")->delete($conditionId);
+		$result = $this->core->entity("ireprulecondition")->delete(array("id"=>array($conditionId)));
 		return $result;
 	}
 	
@@ -333,18 +354,18 @@ class TPanelIRepRules extends TPanel {
 			
 			$dbId = $valueData['dbId'];
 			
-			$result = $this->core->entity("ireprulevalue")->delete($dbId);
+			$result = $this->core->entity("ireprulevalue")->delete(array("id"=>array($dbId)));
 			return $result;
 			
 		}else{
-			$PropertyType = $valueData['PropertyType'];
+			$KeyPropertyType = $valueData['KeyPropertyType'];
 			$PropertyKey = $valueData['PropertyKey'];
 			$OperatorType = $valueData['OperatorType'];
 			$PropertyValue = $valueData['PropertyValue'];
 			
 			$result = $this->core->entity("ireprulevalue")->insert(
-				array("ruleId","propertyType","propertyKey","operandType","propertyValue"),
-				array(array($ruleId, $PropertyType, $PropertyKey, $OperatorType, $PropertyValue))
+				array("ruleId","keyPropertyType","propertyKey","operandType","propertyValue"),
+				array(array($ruleId, $KeyPropertyType, $PropertyKey, $OperatorType, $PropertyValue))
 			);
 			return $result;
 		}
@@ -362,7 +383,7 @@ class TPanelIRepRules extends TPanel {
 		foreach($valueList as $data){
 			$result["data"][] = array(
 				"Id"=>$data["Id"],
-				"PropertyType"=>$data["PropertyType"],
+				"KeyPropertyType"=>$data["KeyPropertyType"],
 				"PropertyKey"=>$data["PropertyKey"],
 				"PropertyValue"=>$data["PropertyValue"],
 				"OperandType"=>$data["OperandType"]
