@@ -5,7 +5,6 @@
 	  <div class="buttons">
 		<a href="?type=ireprules">IRep Rules</a>
 	    <a href="javascript:void(0)" id="pageHeadTitle" class="active">Add IRep Rule</a>
-		<a href="javascript:void(0)">Save All</a>
 	  </div>
       
 	  <div id="ruleNameForm" class="formSection">

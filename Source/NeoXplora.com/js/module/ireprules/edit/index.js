@@ -30,10 +30,32 @@ var MIRepRuleEditIndex_Implementation = {
 			'ptEvent':'<b>[Event]</b> '
 		},
 		Buttons:{
+			PostRuleName:"#postRuleNameButton",
+			MoveUpCondtion:'.MoveUpButton.ConditionControl',
+			MoveDownCondtion:'.MoveDownButton.ConditionControl',
+			GroupCondtion:'.GroupButton.ConditionControl',
+			DeleteCondition:'.DeleteButton.ConditionControl',
+			
+			DeleteValue:'.DeleteButton.ValueControl',
+			
+			AddValue:'#addValueButton',
+			SaveValue:'#saveValuesButton',
+			SaveConditions:'#saveConditionsButton'
 			
 		},
 		Inputs:{
-		
+			RuleId:"#ruleId",
+			RuleName:"#ruleNameInput",
+			ConditionString:'#conditionStringInput',
+			ValueString:'#valueStringInput'
+		},
+		Controls:{
+			RuleConditionsForm:"#ruleConditionsForm .controls",
+			RuleValuesForm:"#ruleValuesForm .controls",
+			PageHeadTitle:"#pageHeadTitle",
+			CTSelector:'.CTSelector',
+			ConditionList:'#conditionsList',
+			ValueList:'#valuesList'
 		},
 		moduleScript:'panel.php',
 		moduleType: 'ireprules'
@@ -52,12 +74,12 @@ var MIRepRuleEditIndex_Implementation = {
     },
 	
 	getRuleData: function (){
-		var ruleId = parseInt($("#ruleId").val());
+		var ruleId = parseInt($(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.RuleId).val());
 		if(ruleId>=0){
-			$("#postRuleNameButton").html("Update");
-			$("#ruleConditionsForm .controls").toggle(true);
-			$("#ruleValuesForm .controls").toggle(true);
-			$("#pageHeadTitle").html("Edit IRep Rule");
+			$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.PostRuleName).html("Update");
+			$(NeoX.Modules.IRepRuleEditIndex.getConfig().Controls.RuleConditionsForm).toggle(true);
+			$(NeoX.Modules.IRepRuleEditIndex.getConfig().Controls.RuleValuesForm).toggle(true);
+			$(NeoX.Modules.IRepRuleEditIndex.getConfig().Controls.PageHeadTitle).html("Edit IRep Rule");
 			
 			NeoX.Modules.IRepRuleEditRequests.getRuleConditionsData(ruleId);
 			NeoX.Modules.IRepRuleEditRequests.getRuleValuesData(ruleId);
@@ -74,31 +96,31 @@ var MIRepRuleEditIndex_Implementation = {
 
 	bindConditionsGUI: function (){
 
-		$('.CTSelector').change(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Controls.CTSelector).change(function(e){
 			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].setConjunctionType($(e.currentTarget).val());
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].SetModified(true);
 		});
-		$('.MoveUpButton.ConditionControl').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.MoveUpCondtion).click(function(e){
 			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].MoveUp();
 			NeoX.Modules.IRepRuleEditIndex.displayConditions();
 		});
 		
-		$('.MoveDownButton.ConditionControl').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.MoveDownCondtion).click(function(e){
 			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].MoveDown();
 			NeoX.Modules.IRepRuleEditIndex.displayConditions();
 		});
 		
-		$('.GroupButton.ConditionControl').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.GroupCondtion).click(function(e){
 			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].getParent().InsertChild(new NeoAI.TRuleGroup(),NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].getIndex());
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].MoveUp();
 			NeoX.Modules.IRepRuleEditIndex.displayConditions();
 		});
 		
-		$('.DeleteButton.ConditionControl').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.DeleteCondtion).click(function(e){
 			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].getParent().RemoveChild(NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex].getIndex());
 			NeoX.Modules.IRepRuleEditIndex.getConfig().deletedConditions.push(NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj[objectIndex]);
@@ -107,19 +129,7 @@ var MIRepRuleEditIndex_Implementation = {
 	},
 
 	 bindValuesGUI: function(){
-		$('.MoveUpButton.ValueControl').click(function(e){
-			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
-			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedValueObj[objectIndex].MoveUp();
-			NeoX.Modules.IRepRuleEditIndex.displayValues();
-		});
-		
-		$('.MoveDownButton.ValueControl').click(function(e){
-			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
-			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedValueObj[objectIndex].MoveDown();
-			NeoX.Modules.IRepRuleEditIndex.displayValues();
-		});
-		
-		$('.DeleteButton.ValueControl').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.DeleteValue).click(function(e){
 			var objectIndex = parseInt($(e.currentTarget).parent().attr("objIndex"));
 			NeoX.Modules.IRepRuleEditIndex.getConfig().indexedValueObj[objectIndex].getParent().RemoveChild(NeoX.Modules.IRepRuleEditIndex.getConfig().indexedValueObj[objectIndex].getIndex());
 			NeoX.Modules.IRepRuleEditIndex.getConfig().deletedValues.push(NeoX.Modules.IRepRuleEditIndex.getConfig().indexedValueObj[objectIndex]);
@@ -128,9 +138,9 @@ var MIRepRuleEditIndex_Implementation = {
 	},
 
 	bindPostRuleNameButton: function (){
-		$("#postRuleNameButton").click(function(e){
-			var ruleName = $("#ruleNameInput").val();
-			var ruleId = $("#ruleId").val();
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.PostRuleName).click(function(e){
+			var ruleName = $(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.RuleName).val();
+			var ruleId = $(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.RuleId).val();
 			if(ruleName != ""){
 				NeoX.Modules.IRepRuleEditRequests.postRuleName(ruleName,ruleId);
 			}else{
@@ -143,15 +153,15 @@ var MIRepRuleEditIndex_Implementation = {
 	},
 
 	bindAddConditionButton : function (){
-		$('#addConditionButton').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.AddCondition).click(function(e){
 		
 			var parser = new NeoAI.TIRepConditionParser();
 			
 			try{
-				var irepStr = $('#conditionStringInput').val();
+				var irepStr = $(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.ConditionString).val();
 				var iRepRule = parser.ParseString(irepStr);
 				NeoX.Modules.IRepRuleEditIndex.getConfig().conditions.InsertChild(iRepRule);
-				$('#conditionStringInput').val("");
+				$(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.ConditionString).val("");
 				NeoX.Modules.IRepRuleEditIndex.displayConditions();
 			}catch(e){
 				alert(e);
@@ -161,15 +171,15 @@ var MIRepRuleEditIndex_Implementation = {
 	},
 
 	bindAddValueButton: function (){
-		$('#addValueButton').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.AddValue).click(function(e){
 		
 			var parser = new NeoAI.TIRepConditionParser();
 			
 			try{
-				var irepStr = $('#valueStringInput').val();
+				var irepStr = $(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.ValueString).val();
 				var iRepRule = parser.ParseString(irepStr);
 				NeoX.Modules.IRepRuleEditIndex.getConfig().values.InsertChild(iRepRule);
-				$('#valueStringInput').val("");
+				$(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.ValueString).val("");
 				NeoX.Modules.IRepRuleEditIndex.displayValues();
 			}catch(e){
 				alert(e);
@@ -191,7 +201,7 @@ var MIRepRuleEditIndex_Implementation = {
 	displayConditions: function (){
 
 		NeoX.Modules.IRepRuleEditIndex.getConfig().indexedConditionObj = [];
-		$('#conditionsList').html(NeoX.Modules.IRepRuleEditIndex.conditionsToHTML(NeoX.Modules.IRepRuleEditIndex.getConfig().conditions));
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Controls.ConditionList).html(NeoX.Modules.IRepRuleEditIndex.conditionsToHTML(NeoX.Modules.IRepRuleEditIndex.getConfig().conditions));
 		NeoX.Modules.IRepRuleEditIndex.bindConditionsGUI();
 		
 	},
@@ -199,7 +209,7 @@ var MIRepRuleEditIndex_Implementation = {
 	displayValues: function (){
 
 		NeoX.Modules.IRepRuleEditIndex.getConfig().indexedValueObj = [];
-		$('#valuesList').html(NeoX.Modules.IRepRuleEditIndex.valuesToHTML(NeoX.Modules.IRepRuleEditIndex.getConfig().values));
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Controls.ValueList).html(NeoX.Modules.IRepRuleEditIndex.valuesToHTML(NeoX.Modules.IRepRuleEditIndex.getConfig().values));
 		NeoX.Modules.IRepRuleEditIndex.bindValuesGUI();
 		
 	},
@@ -264,12 +274,7 @@ var MIRepRuleEditIndex_Implementation = {
 			}
 		}else{
 			resultHTML += '<li objIndex="'+objectIndex+'">';
-			if(valueTree.CanMoveUp()){
-				resultHTML += '<button class="MoveUpButton ValueControl"></button>';
-			}
-			if(valueTree.CanMoveDown()){
-				resultHTML += '<button class="MoveDownButton ValueControl"></button>';
-			}
+			
 			resultHTML += '<button class="DeleteButton ValueControl"></button>';
 			resultHTML += NeoX.Modules.IRepRuleEditIndex.getConfig().literals[valueTree.getKeyPropertyType()]+ valueTree.getPropertyKey() + ' ' + NeoX.Modules.IRepRuleEditIndex.getConfig().literals[valueTree.getOperatorType()] + ' ' + valueTree.getPropertyValue() + '</li>';
 		}
@@ -279,7 +284,7 @@ var MIRepRuleEditIndex_Implementation = {
 	// DB related
 
 	bindSaveValuesButton: function (){
-		$('#saveValuesButton').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.SaveValue).click(function(e){
 			var modified = NeoX.Modules.IRepRuleEditIndex.getConfig().values.GetModifiedNodes();
 			
 			var uData = [];
@@ -305,7 +310,7 @@ var MIRepRuleEditIndex_Implementation = {
 				}
 			}
 			if(uData.length>0){
-				var ruleId = $("#ruleId").val();
+				var ruleId = $(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.RuleId).val();
 				NeoX.Modules.IRepRuleEditRequests.saveValues(ruleId,uData);
 			}
 		});
@@ -325,7 +330,7 @@ var MIRepRuleEditIndex_Implementation = {
 
 	bindSaveConditionsButton: function (){
 		
-		$('#saveConditionsButton').click(function(e){
+		$(NeoX.Modules.IRepRuleEditIndex.getConfig().Buttons.SaveConditions).click(function(e){
 			
 			var modified = NeoX.Modules.IRepRuleEditIndex.getConfig().conditions.GetModifiedNodes();
 			
@@ -369,7 +374,7 @@ var MIRepRuleEditIndex_Implementation = {
 				}
 			}
 			if(uData.length>0){
-				var ruleId = $("#ruleId").val();
+				var ruleId = $(NeoX.Modules.IRepRuleEditIndex.getConfig().Inputs.RuleId).val();
 				NeoX.Modules.IRepRuleEditRequests.saveConditions(ruleId,uData);
 			}
 		
