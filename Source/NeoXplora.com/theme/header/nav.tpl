@@ -11,7 +11,7 @@
         <span>&nbsp;</span>
       </a>
     </li>
-    <?php if($this->logged_in && (strtolower($this->page) == 'train')) { ?>
+    <?php if($this->logged_in && $this->userlevel == "admin") { ?>
     <li>
       <a href="<?php echo $this->site_url; ?>train.php" class="train <?php echo (strtolower($this->page) == 'train') ? 'active' : '' ?>">
         <span>&nbsp;</span>

@@ -28,9 +28,9 @@ class TTrainLinker extends TTrain {
       "js/system/object.js"
     ));
     $this->template->addJSModules(array(
-      "NeoX.Modules.LinkerIndex" => "js/module/linker/index.js",
-      "NeoX.Modules.EntityControl" => "js/module/linker/entity.js",
-      "NeoX.Modules.WordControl" => "js/module/linker/word.js",
+      "NeoX.Modules.LinkerTrainIndex" => "js/module/linker/train/index.js",
+      "NeoX.Modules.EntityControl" => "js/module/linker/train/entity.js",
+      "NeoX.Modules.WordControl" => "js/module/linker/train/word.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
     $this->template->addStyle("style/train/linker.css");
@@ -68,18 +68,41 @@ class TTrainLinker extends TTrain {
       $entityData = array();
       $entityId = $this->entityList->Item($i);
       $entityType = $this->entityList->Object($i)->GetProperty('Type');
+      $groupMembers = array();
       $attributeList = $this->entityList->Object($i)->GetProperty('Attributes');
       
       for($j = 0; $j < $attributeList->Count(); $j++) {
-        $entityData[$attributeList->Item($j)->GetProperty('Key')] = array();
+        $attributeKey = $attributeList->Item($j)->GetProperty('Key');
+        
+        if($entityType == "etGroup" && $attributeKey == "Members") {
+          for($k = 0; $k < $valuesData->Count(); $k++) {
+            $groupMembers[] = $valuesData->Item($k)->GetProperty('Id');
+          }
+          continue;
+        }
+        
+        $entityData[$attributeKey] = array();
         $valuesData = $attributeList->Item($j)->GetProperty('Values');
         for($k = 0; $k < $valuesData->Count(); $k++) {
-          $entityData[$attributeList->Item($j)->GetProperty('Key')][] = $valuesData->Item($k)->GetProperty('Name');
+          $entityData[$attributeKey][] = $valuesData->Item($k)->GetProperty('Name');
         }
       }
       
+      $type = "";
+      switch($entityType) {
+        case "etObject":
+          $type = "Object";
+          break;
+        case "etGroup":
+          $type = "Group";
+          break;
+        case "etPerson":
+          $type = "Person";
+          break;
+      }
+      
       $entities[$entityId] = array(
-        "type" => $entityType,
+        "type" => $type,
         "data" => $entityData
       );  
     }

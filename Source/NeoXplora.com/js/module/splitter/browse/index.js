@@ -10,7 +10,12 @@ var MSplitterBrowseIndex_Implementation = {
   properties: {
     Config: {
     	Buttons: {
-    		goToPage: '.goToPage'
+    		goToPage: '.goToPage',
+    		firstPage: '.firstBtn',
+    		previousPage: '.previousBtn',
+    		nextPage: '.nextBtn',
+    		lastPage: '.lastBtn'  
+    		
     	},
       Inputs: {
       	newValue: '.newValue',
@@ -33,7 +38,10 @@ var MSplitterBrowseIndex_Implementation = {
     
     hookEvents: function() {
     	NeoX.Modules.SplitterBrowseIndex.hookEvent('click', NeoX.Modules.SplitterBrowseIndex.getConfig().Buttons.goToPage, NeoX.Modules.SplitterBrowseIndex.goToPage);
-    	
+    	NeoX.Modules.SplitterBrowseIndex.hookEvent('click', NeoX.Modules.SplitterBrowseIndex.getConfig().Buttons.firstPage, NeoX.Modules.SplitterBrowseIndex.goToFirst);
+    	NeoX.Modules.SplitterBrowseIndex.hookEvent('click', NeoX.Modules.SplitterBrowseIndex.getConfig().Buttons.previousPage, NeoX.Modules.SplitterBrowseIndex.goToPrevious);
+    	NeoX.Modules.SplitterBrowseIndex.hookEvent('click', NeoX.Modules.SplitterBrowseIndex.getConfig().Buttons.nextPage, NeoX.Modules.SplitterBrowseIndex.goToNext);
+    	NeoX.Modules.SplitterBrowseIndex.hookEvent('click', NeoX.Modules.SplitterBrowseIndex.getConfig().Buttons.lastPage, NeoX.Modules.SplitterBrowseIndex.goToLast);
     },
     
     load: function() {
@@ -46,9 +54,31 @@ var MSplitterBrowseIndex_Implementation = {
       $('html, body').animate({
           scrollTop: $('#content').offset().top
       }, 50);
+    },
+    
+    goToFirst: function() {
+      NeoX.Modules.SplitterBrowseRequests.load(1);
+    },
+    
+    goToPrevious: function() {
+    	var previousPage = parseInt($(".currentPage").html(), 10) - 1;
+    	if(previousPage > 0) {
+        NeoX.Modules.SplitterBrowseRequests.load(previousPage);
+    	}
+    },
+    
+    goToNext: function() {
+      var nextPage = parseInt($(".currentPage").html(), 10) + 1;
+      var lastPage = parseInt($(".goToPage").last().html());
+      if(nextPage <= lastPage) {
+        NeoX.Modules.SplitterBrowseRequests.load(nextPage);
+      }
+    },
+    
+    goToLast: function() {
+      var lastPage = parseInt($(".goToPage").last().html());
+      NeoX.Modules.SplitterBrowseRequests.load(lastPage);
     }
-    
-    
     
   }
   

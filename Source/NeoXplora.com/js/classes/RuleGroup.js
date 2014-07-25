@@ -149,4 +149,4 @@ var TRuleGroup_Implementation = {
 	
 };
 
-Sky.Class.Define("NeoAI.TRuleGroup", TRuleGroup_Implementation)
+Sky.Class.Define("NeoAI.TRuleGroup", TRuleGroup_Implementation);

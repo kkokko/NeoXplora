@@ -5,14 +5,26 @@ var TBaseObject_Implementation = {
   },
   
   methods: {
-    hookEvent: function(event, selector, func) {
+  	
+    hookEvent: function(event, selector, func, data) {
       $(document).ready(function() {
-        $(document).on(event, selector, func);
+      	if(data) {
+    		  $(document).on(event, selector, data, func);
+      	} else {
+          $(document).on(event, selector, func);
+      	}
       });
     },
+    
     getClassList: function(element) {
-      return element.attr('class').split(/\s+/);
+    	var classAttr = element.attr('class');
+    	if(classAttr) {
+        return classAttr.split(/\s+/);
+    	} else {
+    		return [""];
+    	}
     }
+    
   }
   
 };

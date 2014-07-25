@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6 { font-weight:normal;}
 #header .nav ul li { display:block; float:left; margin:0 25px 0 0;}
 #header .nav ul li a { display:block;  height: 38px;}
 #header .nav ul li a span{ display:block; height: 38px;}
-#header .nav ul li a:hover {background-position: 0 -38px !important;}
+/*#header .nav ul li a:hover {background-position: 0px -40px !important;}*/
 
 #header .nav ul li a.search {width: 71px; background: url(../images/search.png) no-repeat scroll 0 0 transparent;}
 #header .nav ul li a.news {width: 55px; background: url(../images/news.png) no-repeat scroll 0 0 transparent;}
@@ -67,7 +67,7 @@ h1, h2, h3, h4, h5, h6 { font-weight:normal;}
 #header .nav ul li a.notes {width: 60px; background: url(../images/notes.png) no-repeat scroll 0 0 transparent;}
 #header .nav ul li a.train {width: 57px; background: url(../images/train.png) no-repeat scroll 0 0 transparent;}
 
-.active {background-position: 0 -38px !important;}
+/*.active {background-position: 0 -38px !important;}*/
 
 .nav a.menu { display:none; float:left; height:33px; padding:7px 0 0 0; width:40px; background:rgba(0,0,0,0.2);}
 .nav a.menu span { display:block; margin:4px 10px; background:#fff; height:3px;}
@@ -410,4 +410,45 @@ label{color: #6C6C6C; font-size: 15px;}
 .trainer .areviewedsentence { 
   font-size: 14px; 
   padding: 10px; 
+}
+
+.leftMenu {
+  float: left;
+}
+
+.rightMenu {
+  float: right;
+}
+
+.bigButton {
+  position: relative;
+  display: block;
+  color: #fff;
+  background-color: #377EB8;
+  padding: 10px 15px;
+  cursor: pointer;
+  border: 0;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.bigButton:hover {
+  background-color: #377EB8;
+}
+
+.bigButton .button-dropdown li {
+  margin: 0;
+  padding: 8px 6px;
+}
+
+.bigButton .button-dropdown {
+  margin: 0;
+  top: 45px;
+  right: 0;
+  border: 1px solid #888;
+}
+
+.button-dropdown a {
+  color: #fff;
+  display: block;
 }

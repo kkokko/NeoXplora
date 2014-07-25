@@ -101,12 +101,12 @@ var MInterpreterReviewRequests_Implementation = {
       	if(json && json['StrIndex']) {
         	var near = newValue.substr(json['StrIndex'], newValue.length);
           $("#s" + sentenceID).find('.rep-error').remove();
-          $("#s" + sentenceID).find('.newValue').after("<div class='rep-error' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
+          $("#s" + sentenceID).find(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.newValue).after("<div class='rep-error' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
       	} else {
           $("#s" + sentenceID).removeClass("dismissedSentence approvedSentence row1 row2").addClass("approvedSentence");
           setTimeout(function() {
             var flag = true;
-            $(".areviewedsentence").each(function() {
+            $(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.asentence).each(function() {
               if(!$(this).hasClass('approved') || !$(this).hasClass('dismissed')) {
                 flag = false;
               }
@@ -127,7 +127,7 @@ var MInterpreterReviewRequests_Implementation = {
       	$("#s" + sentenceID).find('.rep-error').remove();
         setTimeout(function() {
           var flag = true;
-          $(".areviewedsentence").each(function() {
+          $(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.asentence).each(function() {
             if(!$(this).hasClass('approved') || !$(this).hasClass('dismissed')) {
               flag = false;
             }
@@ -152,7 +152,7 @@ var MInterpreterReviewRequests_Implementation = {
       		console.log(response[k]);
           if(response[k] instanceof Object) {
             $("#s" + k).find('.rep-error').remove();
-          	$("#s" + k).find('.newValue').after("<div class='rep-error' style='color: red'><br/>" + response[k]['ErrorString'] + " at \"" + response[k]['StrIndex'] + "\"</div>");
+          	$("#s" + k).find(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.newValue).after("<div class='rep-error' style='color: red'><br/>" + response[k]['ErrorString'] + " at \"" + response[k]['StrIndex'] + "\"</div>");
           } else {
             $("#s" + k).removeClass("dismissedSentence approvedSentence row1 row2").addClass("approvedSentence");
           }

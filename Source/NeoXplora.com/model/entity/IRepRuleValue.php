@@ -12,9 +12,9 @@ namespace NeoX\Entity;
 	public static $tok_id = "Id";
 	public static $tok_ruleId = "RuleId";
 	public static $tok_keyPropertyType = "KeyPropertyType";
-	public static $tok_propertyKey = "PropertyKey";
-	public static $tok_operandType = "OperandType";
-	public static $tok_propertyValue = "PropertyValue";
+	public static $tok_propertyKey = "Key";
+	public static $tok_operandType = "OperatorType";
+	public static $tok_propertyValue = "Value";
 	
   }
 

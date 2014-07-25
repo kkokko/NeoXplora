@@ -17,8 +17,8 @@
 				<li data-id="<?php print $IRepRule['Id']; ?>" data-priority="<?php print $IRepRule['Order']; ?>">
 					<?php print $IRepRule['Name']; ?>
 					<div style="float:right">
-					<a href="?type=ireprules&action=edit&ruleId=<?php print $IRepRule['Id']; ?>" ><img src="images/edit_icon.png" width="20"></a>
-					<a href="#" ><img src="images/delete_icon.png" width="20"></a>
+            <a href="?type=ireprules&action=edit&ruleId=<?php print $IRepRule['Id']; ?>" ><img src="images/edit_icon.png" width="20"></a>
+            <a href="javascript:void(0)" id="deleteRule"><img src="images/delete_icon.png" width="20"></a>
 					</div>
 				</li>
 				<?php

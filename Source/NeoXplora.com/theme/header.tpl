@@ -13,6 +13,9 @@
     <script src="<?php echo $this->site_url; ?>js/lib/jquery-ui-1.10.4.min.js"></script>
     <script src="<?php echo $this->site_url; ?>NeoShared/SkyJs/skyjs.js"></script>
     <script src="<?php echo $this->site_url; ?>js/lib/toastr.min.js"></script>
+    <script src="<?php echo $this->site_url; ?>js/lib/stacktrace.js"></script>
+    
+    <script src="<?php echo $this->site_url; ?>js/jquery.matchHeight-min.js"></script>
     <script src="<?php echo $this->site_url; ?>js/main.js"></script>
     <?php echo $this->headerinclude; ?>
   </head>

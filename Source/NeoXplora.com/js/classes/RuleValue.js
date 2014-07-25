@@ -3,7 +3,7 @@ var TRuleValue_Implementation = {
   extend: "NeoAI.TBaseRule",
   
   construct: function(keyPropertyType, operatorType, propertyKey, propertyValue) {
-	this.base(this);
+    this.base(this);
     this.setKeyPropertyType(keyPropertyType);
     this.setOperatorType(operatorType);
     this.setPropertyKey(propertyKey);
@@ -36,6 +36,6 @@ var TRuleValue_Implementation = {
     
   }
 
-}
+};
 
 Sky.Class.Define("NeoAI.TRuleValue", TRuleValue_Implementation);

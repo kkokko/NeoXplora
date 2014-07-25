@@ -1,9 +1,21 @@
 <?php echo $this->fetch("header"); ?>
       <div class="boxContainer">
-        <div class="buttons">
+        <div class="buttons leftMenu">
           <a href="train.php?type=linker" class='active'>Train</a>
           <a href="browse.php?type=linker">Browse</a>
           <a href="review.php?type=linker">Review</a>
+        </div>
+        <div class="button bigButton rightMenu">
+          Linker
+          <ul class='button-dropdown'>
+            <li><a href="train.php?type=splitter">Splitter</a></li>
+            <li><a href="train.php?type=interpreter">Interpreter</a></li>
+            <li><a href="train.php?type=linker">Linker</a></li>
+            <li><a href="train.php?type=tutor">Tutor</a></li>
+            <li><a href="train.php?type=deducer">Deducer</a></li>
+            <li><a href="train.php?type=summarizer">Summarizer</a></li>
+            <li><a href="train.php?type=quizzer">Quizzer</a></li>
+          </ul>
         </div>
         <div class="clear"></div>
         <div class="button">
@@ -11,6 +23,7 @@
           <ul class='button-dropdown'>
             <li id="add-person">Person</li>
             <li id="add-object">Object</li>
+            <li id="add-group">Group</li>
           </ul>
         </div>
         <div class="clear"></div>
@@ -21,11 +34,10 @@
           <?php } ?>
         </div>
         <div class="boxRight">
-          <?php $k = 1; ?>
-          <?php foreach($this->entities AS $entity) { ?>
-            <div class='entity'>
-              <div class='portrait color<?php echo $k++; ?>'>
-                <?php /*<img src="<?php echo $this->site_url; ?>images/person.png" /> */ ?>
+          <?php foreach($this->entities AS $id => $entity) { ?>
+            <div class='entity <?php if($entity['type'] != "Group") echo "singleEntity"; else echo "groupEntity"; ?>'>
+              <div class='portrait color<?php echo ($id + 1); ?>'>
+                <?php echo $entity['type']; ?>
               </div>
               <div class='info'>
                 <?php foreach($entity['data'] as $info_key => $info_values) { ?>

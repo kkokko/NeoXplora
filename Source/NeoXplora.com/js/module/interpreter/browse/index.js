@@ -10,7 +10,11 @@ var MInterpreterBrowseIndex_Implementation = {
   properties: {
     Config: {
     	Buttons: {
-    		goToPage: '.goToPage'
+    		goToPage: '.goToPage',
+        firstPage: '.firstBtn',
+        previousPage: '.previousBtn',
+        nextPage: '.nextBtn',
+        lastPage: '.lastBtn'  
     	},
       Inputs: {
       	newValue: '.newValue',
@@ -33,7 +37,10 @@ var MInterpreterBrowseIndex_Implementation = {
     
     hookEvents: function() {
     	NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.goToPage, NeoX.Modules.InterpreterBrowseIndex.goToPage);
-    	
+    	NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.firstPage, NeoX.Modules.InterpreterBrowseIndex.goToFirst);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.previousPage, NeoX.Modules.InterpreterBrowseIndex.goToPrevious);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.nextPage, NeoX.Modules.InterpreterBrowseIndex.goToNext);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.lastPage, NeoX.Modules.InterpreterBrowseIndex.goToLast);
     },
     
     load: function() {
@@ -46,6 +53,30 @@ var MInterpreterBrowseIndex_Implementation = {
       $('html, body').animate({
           scrollTop: $('#content').offset().top
       }, 50);
+    },
+    
+    goToFirst: function() {
+      NeoX.Modules.InterpreterBrowseRequests.load(1);
+    },
+    
+    goToPrevious: function() {
+      var previousPage = parseInt($(".currentPage").html(), 10) - 1;
+      if(previousPage > 0) {
+        NeoX.Modules.InterpreterBrowseRequests.load(previousPage);
+      }
+    },
+    
+    goToNext: function() {
+      var nextPage = parseInt($(".currentPage").html(), 10) + 1;
+      var lastPage = parseInt($(".goToPage").last().html());
+      if(nextPage <= lastPage) {
+        NeoX.Modules.InterpreterBrowseRequests.load(nextPage);
+      }
+    },
+    
+    goToLast: function() {
+      var lastPage = parseInt($(".goToPage").last().html());
+      NeoX.Modules.InterpreterBrowseRequests.load(lastPage);
     }
     
     

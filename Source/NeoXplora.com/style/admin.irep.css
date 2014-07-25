@@ -6,8 +6,6 @@
 	
 }
 
-
-
 .button{
 	float:none;
 }
@@ -16,12 +14,20 @@
 	padding:10px;
 }
 
-.controls input{
+.controls input {
 	padding: 5px;
 	width: 70%;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box; 
+}
+
+.controls #ruleScore {
+  width: 50px;
+}
+
+.controls select {
+  padding: 5px; 
 }
 
 .formSection{
@@ -97,18 +103,26 @@
 
 .rulesContainer{
 	margin-top:15px;
-	background:#FFF;
 	padding:10px;
 }
 
 #rulesSortable { list-style-type: none; margin: 0; padding: 0; width: 60%; margin: 0 auto 0 auto;}
 #rulesSortable li { 
-	font-size:16px;
-	margin: 0 5px 5px 5px; padding: 5px; height: 1.5em; 
-	box-shadow:2px 3px 3px #EEE;
-	background-color:#EEE;
-	border:2px solid #9CF;
-	cursor:move;
+	font-size: 14px;
+  margin: 0 5px 5px 5px;
+  font-family: Arial;
+  padding: 5px;
+  padding-top: 7px;
+  height: 19px;
+  cursor: move;
+  border: 1px solid #666;
+	background-color: rgb(112,146,190);
+  color: #FFF;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  text-shadow: 
 }
-html>body #rulesSortable li { height: 1.5em; }
+}
+html>body #rulesSortable li { height: 19px; }
 .ui-state-highlight { height: 1.5em;  }

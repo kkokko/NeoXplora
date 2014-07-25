@@ -36,6 +36,11 @@ var MInterpreterBrowseRequests_Implementation = {
     loadCallback: function(json) {
     	$(NeoX.Modules.InterpreterBrowseIndex.getConfig().dataContainer).html(json['data']);
     	$(NeoX.Modules.InterpreterBrowseIndex.getConfig().paginationContainer).html(json['pagination']);
+    	if(json['pagination'] == "") {
+        $(".buttons.smaller").hide();
+      } else {
+        $(".buttons.smaller").show();
+      }
     }
        
     

@@ -57,7 +57,7 @@ var MInterpreterReviewIndex_Implementation = {
     approve: function() {
     	var sentenceID = $(this).parent().parent().attr('id');
       sentenceID = parseInt(sentenceID.replace('s', ''), 10);
-      var newValue = $(this).parent().parent().find(".newValue").val();
+      var newValue = $(this).parent().parent().find(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.newValue).val();
       NeoX.Modules.InterpreterReviewRequests.approve(sentenceID, newValue);
     },
     
@@ -70,11 +70,11 @@ var MInterpreterReviewIndex_Implementation = {
     approveAll: function() {
     	var sentenceIDs = [];
     	var newValues = [];
-      $('.areviewedsentence').each(function() {
+      $(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.asentence).each(function() {
         var sentenceID = $(this).attr('id');
         sentenceID = parseInt(sentenceID.replace('s', ''), 10);
         sentenceIDs.push(sentenceID);
-        var newValue = $(this).find(".newValue").val();
+        var newValue = $(this).find(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.newValue).val();
         newValues.push(newValue);
       });
       NeoX.Modules.InterpreterReviewRequests.approveAll(sentenceIDs, newValues);
@@ -82,7 +82,7 @@ var MInterpreterReviewIndex_Implementation = {
     
     dismissAll: function() {
     	var sentenceIDs = [];
-      $('.areviewedsentence').each(function() {
+      $(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.asentence).each(function() {
         var sentenceID = $(this).attr('id');
         sentenceID = parseInt(sentenceID.replace('s', ''), 10);
         sentenceIDs.push(sentenceID);

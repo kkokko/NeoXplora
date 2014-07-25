@@ -52,6 +52,6 @@ var TBaseRule_Implementation = {
 			}	
 		}
 	}
-}
+};
 
 Sky.Class.Define("NeoAI.TBaseRule", TBaseRule_Implementation);
