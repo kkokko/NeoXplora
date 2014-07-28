@@ -125,7 +125,7 @@ class TReviewSplitter extends TTrain {
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
     $sentenceId = $_POST['sentenceID'];
     $protoId = $this->core->entity("sentence")->select($sentenceId, "protoid")->fetch_array();
-    $protoId = $protoId[Entity\TProto::$tok_id];
+    $protoId = $protoId[Entity\TSentence::$tok_protoid];
     
     $result = $this->Delphi()->SplitSentence($sentenceId, $newValue);
 
