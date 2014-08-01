@@ -1,4 +1,5 @@
 <?php
+echo "om";exit;
 include_once 'includes/config.php';
 $pagetitle = "Search";
 include_once 'includes/header.php';
