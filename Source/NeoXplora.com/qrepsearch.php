@@ -4,7 +4,7 @@ include_once 'includes/config.php';
 $pagetitle = "Search";
 include_once 'includes/header.php';
 //@ $db = new mysqli('localhost', 'root', '', 'zadmin_neoxplora');
-@ $db = new mysqli('127.0.0.1', 'userneo123', 'edu3uvy4e', 'zadmin_neo123');
+//@ $db = new mysqli('127.0.0.1', 'userneo123', 'edu3uvy4e', 'zadmin_neo123');
 
 $strSearchQrep = $_REQUEST['q'];
 
@@ -130,14 +130,14 @@ if($strSearchQrep != '')
                 )
                 GROUP BY nre.PageId ORDER BY cntKey DESC ";
     
-    $result=  $db->query($qry);
+    $result=  mysql_query($qry, $link);
     
-    while($arrResult = $result->fetch_array())
+    while($arrResult = mysql_fetch_array($result))
     {
       $arrURL[$arrResult['PageId']] = $arrResult['PageId']; 
     }
-    print_r($arrURL);
-    echo FULLBASE;
+    //print_r($arrURL);
+    //echo FULLBASE;
     //$rows = $result->fetch_assoc();
     //print_r($rows);
 }
