@@ -2,8 +2,8 @@
 include_once 'includes/config.php';
 $pagetitle = "Search";
 include_once 'includes/header.php';
-@ $db = new mysqli('localhost', 'root', '', 'zadmin_neoxplora');
-//@ $db = new mysqli('127.0.0.1', 'userneo123dev', 'y6ege6ere', 'zadmin_neo123dev');
+//@ $db = new mysqli('localhost', 'root', '', 'zadmin_neoxplora');
+@ $db = new mysqli('127.0.0.1', 'userneo123', 'edu3uvy4e', 'zadmin_neoxplora');
 
 $strSearchQrep = $_REQUEST['q'];
 
