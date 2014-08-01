@@ -25,10 +25,17 @@ class TTrainLinker extends TTrain {
     $this->template->entities = $entities;
     
     $this->template->addScripts(array(
-      "js/system/object.js"
+      "js/system/object.js",
+      "js/classes/StringList.js",
+      "js/classes/rep/RepRecord.js",
+      "js/classes/rep/RepRecordWord.js",
+      "js/classes/rep/RepEntity.js",
+      "js/classes/rep/RepPropertyKey.js",
+      "js/classes/rep/RepPropertyValue.js"
     ));
     $this->template->addJSModules(array(
       "NeoX.Modules.LinkerTrainIndex" => "js/module/linker/train/index.js",
+      "NeoX.Modules.LinkerTrainRequests" => "js/module/linker/train/requests.js",
       "NeoX.Modules.EntityControl" => "js/module/linker/train/entity.js",
       "NeoX.Modules.WordControl" => "js/module/linker/train/word.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
@@ -51,7 +58,8 @@ class TTrainLinker extends TTrain {
       for($j = 0; $j < $wordsList->Count(); $j++) {
         $word = $wordsList->Item($j);
         if($wordsList->Object($j)) {
-          $sentence .= "<span class='word highlighted color" . ($wordsList->Object($j)->GetProperty('Id') + 1) . "' id='e" . $wordsList->Object($j)->GetProperty('Id') . "-w" . $j . "'>" . $word . "</span>";
+          $wordId = $wordsList->Object($j)->GetProperty('Id');
+          $sentence .= "<span class='word highlighted color" . ($wordId + 1) . "' id='e" . $wordId . "-w" . $j . "'>" . $word . "</span>";
         } else {
           $sentence .= $word;
         }

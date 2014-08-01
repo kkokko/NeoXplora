@@ -27,17 +27,38 @@ var MEntityControl_Implementation = {
     },
     
     setup: function() {
-    	$(document).ready(function() {
-    		$(NeoX.Modules.EntityControl.getConfig().Controls.self).draggable({ helper: "clone" });
-        $(NeoX.Modules.EntityControl.getConfig().Controls.self).droppable({
-          drop: NeoX.Modules.EntityControl.handleDragAndDrop
-        });
-    	});
+    	NeoX.Modules.EntityControl.setupDraggable();
+    	NeoX.Modules.EntityControl.setupDroppable();
     	$(NeoX.Modules.EntityControl.getConfig().Controls.self).matchHeight(false);
     },
     
     hookEvents: function() {
       NeoX.Modules.EntityControl.hookEvent("click", NeoX.Modules.EntityControl.getConfig().Controls.self, this.select);
+    },
+    
+    setupDraggable: function() {
+    	$(document).ready(function() {
+      	$(NeoX.Modules.EntityControl.getConfig().Controls.self).draggable({
+          helper: function() {
+            var portrait = $(this).find('.portrait');
+            return portrait.clone().width(portrait.width()).height(portrait.height());
+          },
+          revert: "invalid",
+          cursor: "pointer",
+          cursorAt: { 
+            left: 62,
+            top: 15
+          }
+        });
+      });
+    },
+    
+    setupDroppable: function() {
+    	$(document).ready(function() {
+        $(NeoX.Modules.EntityControl.getConfig().Controls.self).droppable({
+          drop: NeoX.Modules.EntityControl.handleDragAndDrop
+        });
+      });
     },
     
     select: function() {
