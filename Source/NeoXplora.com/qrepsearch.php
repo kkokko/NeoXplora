@@ -6,7 +6,7 @@ include_once 'includes/header.php';
 //@ $db = new mysqli('localhost', 'root', '', 'zadmin_neoxplora');
 @ $db = new mysqli('127.0.0.1', 'userneo123', 'edu3uvy4e', 'zadmin_neo123');
 
-$strSearchQrep = $_REQUEST['q'];
+echo $strSearchQrep = $_REQUEST['q'];
 
 if($strSearchQrep != '')
 {
@@ -109,7 +109,7 @@ if($strSearchQrep != '')
    // echo $strWhere;
    // echo $strPropValWhere;
     
-   $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
+  echo  $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
                 INNER JOIN neox_reppropertykey as nrp ON nrp.ParentEntityId = nre.Id 
                 WHERE nrp.ParentEntityId IN
                 (
