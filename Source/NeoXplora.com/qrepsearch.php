@@ -129,8 +129,8 @@ if($strSearchQrep != '')
                   
                 )
                 GROUP BY nre.PageId ORDER BY cntKey DESC ";
-    
-    $result=  mysql_query($qry, $link) or die(mysql_error());
+    echo $link;
+    $result=  mysql_query($qry, $link) or die("error : " . mysql_error());
     
     while($arrResult = mysql_fetch_array($result))
     {
