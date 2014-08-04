@@ -109,7 +109,7 @@ if($strSearchQrep != '')
    // echo $strWhere;
    // echo $strPropValWhere;
     
-   $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
+  echo $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
                 INNER JOIN neox_reppropertykey as nrp ON nrp.ParentEntityId = nre.Id 
                 WHERE nrp.ParentEntityId IN
                 (
@@ -136,7 +136,7 @@ if($strSearchQrep != '')
     {
       $arrURL[$arrResult['PageId']] = $arrResult['PageId']; 
     }
-    //print_r($arrURL);
+    print_r($arrURL);
     //echo FULLBASE;
     //$rows = $result->fetch_assoc();
     //print_r($rows);
