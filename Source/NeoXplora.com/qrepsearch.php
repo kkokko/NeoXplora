@@ -3,8 +3,7 @@ error_reporting(E_ALL);
 include_once 'includes/config.php';
 $pagetitle = "Search";
 include_once 'includes/header.php';
-//@ $db = new mysqli('localhost', 'root', '', 'zadmin_neoxplora');
-//@ $db = new mysqli('127.0.0.1', 'userneo123', 'edu3uvy4e', 'zadmin_neo123');
+include_once 'includes/qrepconfig.php';
 
 $strSearchQrep = $_REQUEST['q'];
 
@@ -109,7 +108,7 @@ if($strSearchQrep != '')
    // echo $strWhere;
    // echo $strPropValWhere;
     
-  echo $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
+  $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
                 INNER JOIN neox_reppropertykey as nrp ON nrp.ParentEntityId = nre.Id 
                 WHERE nrp.ParentEntityId IN
                 (
@@ -129,14 +128,14 @@ if($strSearchQrep != '')
                   
                 )
                 GROUP BY nre.PageId ORDER BY cntKey DESC ";
-    echo $link;
-    $result=  mysql_query($qry, $link) or die("error : " . mysql_error($link));
+    
+    $result=  mysql_query($qry, $link1) or die("error : " . mysql_error($link1));
     
     while($arrResult = mysql_fetch_array($result))
     {
       $arrURL[$arrResult['PageId']] = $arrResult['PageId']; 
     }
-    print_r($arrURL);
+    //print_r($arrURL);
     //echo FULLBASE;
     //$rows = $result->fetch_assoc();
     //print_r($rows);
