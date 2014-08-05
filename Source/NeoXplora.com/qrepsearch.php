@@ -163,7 +163,7 @@ if($strSearchQrep != '')
   <div class="searchResultContainer">
   <?php if(count($arrURL) > 0) {
     foreach($arrURL as $strVal){
-    echo '<a href="">'.$strVal.'</a><br />';
+    echo '<a href="">'.getPageNameByID($strVal).'</a><br />';
     }
   } ?>
   </div>
@@ -171,4 +171,14 @@ if($strSearchQrep != '')
 </div>
 <?php
 include_once 'includes/footer.php';
+
+function getPageNameByID($pageId)
+{
+  global $link1;
+  $qry = "SELECT * FROM neox_page WHERE Id = '".$pageId."' ";
+  $result=  mysql_query($qry, $link1) or die("error : " . mysql_error($link1));
+  $arrResult = mysql_fetch_assoc($result);
+  
+  return $arrResult['Name'];
+}
 ?>
