@@ -60,7 +60,19 @@ if($strSearchQrep != '')
             $arrPropKey = explode('.',$value);
             $strWhere .= " and `Key` = '".trim($arrPropKey[1])."' ";
           }
+          
+          if($strPT != '')
+          $arrPropKeyVal = explode($strPT,$value);
+          
+          $strWhere .= " and `Id` IN (SELECT KeyId FROM neox_reppropertyvalue WHERE ( `OperatorType` = '".$arrPropertyTypeColVal[$strPT]."' and `Value` = '".trim($arrPropKeyVal[1])."' ) )";
           $strWhere .= " ) ";
+          
+          if($strPropValWhere != '')
+            $strPropValWhere .= " or ";
+        if($strPT != '')
+        $arrPropKeyVal = explode($strPT,$value);
+        $strPropValWhere .= " ( `OperatorType` = '".$arrPropertyTypeColVal[$strPT]."' and `Value` = '".trim($arrPropKeyVal[1])."' ) ";
+        
           
       }
       else if(strpos($value, ':'))
@@ -97,37 +109,27 @@ if($strSearchQrep != '')
         }
         
        
-        if($strPropValWhere != '')
+        /*if($strPropValWhere != '')
             $strPropValWhere .= " or ";
         if($strPT != '')
         $arrPropKeyVal = explode($strPT,$value);
         $strPropValWhere .= " ( `OperatorType` = '".$arrPropertyTypeColVal[$strPT]."' and `Value` = '".trim($arrPropKeyVal[1])."' ) ";
-        
+        */
         
     }
    // echo $strWhere;
    // echo $strPropValWhere;
-    
-  $qry="SELECT count(*) as cntKey, nre.PageId FROM neox_repentity as nre 
-                INNER JOIN neox_reppropertykey as nrp ON nrp.ParentEntityId = nre.Id 
-                WHERE nrp.ParentEntityId IN
-                (
-                  SELECT ParentEntityId FROM neox_reppropertykey WHERE ($strWhere) and Id IN 
-                  (
-                    SELECT KeyId FROM neox_reppropertyvalue WHERE $strPropValWhere
-                  )
-                  UNION
-                  SELECT ParentEntityId FROM neox_reppropertykey WHERE ParentEntityId IN 
-                  (
-                    SELECT ParentEntityId FROM neox_reppropertykey WHERE ($strWhere) and Id IN 
-                    (
-                      SELECT KeyId FROM neox_reppropertyvalue WHERE $strPropValWhere
-                    )
-                  )
-                  and PropertyType = 'ptEvent'
-                  
-                )
-                GROUP BY nre.PageId ORDER BY cntKey DESC ";
+                    
+    $qry = "SELECT count(*) as cntKey, PageId FROM 
+            (
+            SELECT nrk.Id, PageId FROM neox_reppropertykey nrk INNER JOIN neox_repentity nre 
+                  ON nre.Id = nrk.ParentEntityId WHERE (".str_replace('`Id`','nrk.Id',$strWhere).") 
+            UNION 
+            SELECT nrk.Id, PageId FROM neox_reppropertykey nrk INNER JOIN neox_repentity nre 
+                  ON nre.Id = nrk.ParentEntityId WHERE ParentEntityId IN ( 
+                    SELECT ParentEntityId FROM neox_reppropertykey as nk WHERE (".str_replace('`Id`','nk.Id',$strWhere).") ) and PropertyType = 'ptEvent' 
+            ) as resultTB 
+            GROUP BY PageId ORDER BY cntKey DESC";
     
     $result=  mysql_query($qry, $link1) or die("error : " . mysql_error($link1));
     
