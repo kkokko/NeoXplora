@@ -64,7 +64,9 @@ if($strSearchQrep != '')
           if($strPT != '')
           $arrPropKeyVal = explode($strPT,$value);
           
-          $strWhere .= " and `Id` IN (SELECT KeyId FROM neox_reppropertyvalue WHERE ( `OperatorType` = '".$arrPropertyTypeColVal[$strPT]."' and `Value` = '".trim($arrPropKeyVal[1])."' ) )";
+          $strKeyVal = $arrPropKeyVal[1];
+          
+          $strWhere .= " and `Id` IN (SELECT KeyId FROM neox_reppropertyvalue WHERE ( `OperatorType` = '".$arrPropertyTypeColVal[$strPT]."' and `Value` = '".trim($strKeyVal)."' ) )";
           $strWhere .= " ) ";
           
           if($strPropValWhere != '')
@@ -120,7 +122,7 @@ if($strSearchQrep != '')
    // echo $strWhere;
    // echo $strPropValWhere;
                     
-    $qry = "SELECT count(*) as cntKey, PageId FROM 
+   $qry = "SELECT count(*) as cntKey, PageId FROM 
             (
             SELECT nrk.Id, PageId FROM neox_reppropertykey nrk INNER JOIN neox_repentity nre 
                   ON nre.Id = nrk.ParentEntityId WHERE (".str_replace('`Id`','nrk.Id',$strWhere).") 
@@ -146,7 +148,7 @@ if($strSearchQrep != '')
 <link href="<?php echo FULLBASE; ?>style/search_results.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo FULLBASE; ?>js/search.js"></script>
 <div id="content">
-    <div class="container relative">
+    <div class="container relative searchPageContainer">
         <div id ="search_box" class="search_box" >
             <div id='logo_box_wrp'>
                 <div class="logo"><img src="images/NeoXploraLOGO.png" alt="" border="0" /></div>
@@ -158,17 +160,18 @@ if($strSearchQrep != '')
             </div>
             </form>
         </div>
-    </div>
+    
 
 
 <div id="searchResults">
   <div class="searchResultContainer">
   <?php if(count($arrURL) > 0) {
     foreach($arrURL as $strVal){
-    echo '<a href="">'.getPageNameByID($strVal).'</a><br />';
+    echo '<div class="searchResultItem"><a href=""><span class="titletext">'.getPageNameByID($strVal).'</span></a></div>';
     }
   } ?>
   </div>
+</div>
 </div>
 </div>
 <?php

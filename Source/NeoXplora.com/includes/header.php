@@ -76,8 +76,8 @@ $title = isset($pagetitle) ? $pagetitle : "";
                         <a href="<?php echo FULLBASE; ?>login.php">Sign in</a>
                     <?php } ?>
                 </div>
-                <?php 
-				if(strtolower($title) != 'news')
+                <?php  
+				if(strtolower($title) != 'news' && strtolower($title) != 'search')
 
 				if (RIGHT_BOX) { ?>
                     <div class="help">
