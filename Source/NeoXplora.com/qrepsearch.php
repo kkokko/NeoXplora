@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 include_once 'includes/config.php';
-$pagetitle = "Search";
+$pagetitle = "QREP Search";
 include_once 'includes/header.php';
 include_once 'includes/qrepconfig.php';
 

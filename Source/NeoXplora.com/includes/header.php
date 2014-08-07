@@ -77,7 +77,7 @@ $title = isset($pagetitle) ? $pagetitle : "";
                     <?php } ?>
                 </div>
                 <?php  
-				if(strtolower($title) != 'news' && strtolower($title) != 'search')
+				if(strtolower($title) != 'news' && strtolower($title) != 'qrep search')
 
 				if (RIGHT_BOX) { ?>
                     <div class="help">
