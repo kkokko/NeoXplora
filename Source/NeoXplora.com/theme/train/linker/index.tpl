@@ -18,39 +18,35 @@
           </ul>
         </div>
         <div class="clear"></div>
-        <div class="button">
-          Add
-          <ul class='button-dropdown'>
-            <li id="add-person">Person</li>
-            <li id="add-object">Object</li>
-            <li id="add-group">Group</li>
-          </ul>
+        <div class="buttons smaller">
+          <a href="javascript:void(0)" class="firstBtn">Skip</a>
+          <a href="javascript:void(0)" class="previousBtn">Finish</a>
         </div>
         <div class="clear"></div>
+        <table class="color-pallette">
+          <tr>
+            <td class="s0 currentStyle"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
+            <td class="s3"></td>
+            <td class="s4"></td>
+          </tr>
+          <tr>
+            <td class="s5"></td>
+            <td class="s6"></td>
+            <td class="s7"></td>
+            <td class="s8"></td>
+            <td class="s9"></td>
+          </tr>
+        </table>
         <br/>
-        <div class="boxLeft">
-          <?php foreach($this->sentences AS $sentence) { ?>
-            <?php echo $sentence; ?><br/>
-          <?php } ?>
+        <div class='clear'></div>
+        <div class="buttons smaller">
+          <a href="javascript:void(0)" class="addRepColumn">Add Rep Column</a>
         </div>
-        <div class="boxRight">
-          <?php foreach($this->entities AS $id => $entity) { ?>
-            <div class='entity <?php if($entity['type'] != "Group") echo "singleEntity"; else echo "groupEntity"; ?>'>
-              <div class='portrait color<?php echo ($id + 1); ?>'>
-                <?php echo $entity['type']; ?>
-              </div>
-              <div class='info'>
-                <?php foreach($entity['data'] as $info_key => $info_values) { ?>
-                  <div class='label'><?php echo $info_key; ?></div>
-                    <?php foreach($info_values AS $info_value) { ?>
-                      <div class='value'><?php echo $info_value; ?></div>
-                    <?php } ?>
-                <?php } ?>
-              </div>
-              
-            </div>
-          <?php } ?>
-          <div class='clear'></div>          
+        <div class='clear'></div>
+        <div class="boxContent">
+          
         </div>
         <div class='clear'></div>
       </div>

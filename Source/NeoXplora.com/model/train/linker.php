@@ -4,40 +4,51 @@
   require_once __DIR__ . "/../Train.php";
   class TTrainLinker extends TTrain {
     
-    public function getCategory() {
-      $query = $this->db->query("
-        SELECT a.*
+    public function getCategory($sStatus = null, $pStatus = "psFinishedCrawl", $pStatus2 = "psFinishedGenerate", $ignoreIDs = array()) {
+      $ignore = '';
+      if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $ignore .= " AND se.[[sentence.id]] NOT IN (";
+        for($i = 0; $i < count($ignoreIDs); $i++) {
+          $ignore .= "'" . $ignoreIDs[$i] . "'";
+          if($i != count($ignoreIDs) - 1) $ignore .= ', ';
+        }
+        $ignore .= ") ";
+      }
+    
+      $query = $this->query("
+        SELECT a.[[category.id]], a.`pageCount`, a.`trainedCount`
         FROM (
-          SELECT c2.`categoryID`, c2.`pageCount`, COUNT(p2.`pageID`) AS trainedCount 
+          SELECT c2.[[category.id]], c2.`pageCount`, COUNT(p2.[[page.id]]) AS trainedCount 
           FROM (
-            SELECT c.`categoryID`, COUNT(p.`pageID`) AS pageCount FROM `category` c
+            SELECT c.[[category.id]], COUNT(p.[[page.id]]) AS pageCount 
+            FROM [[category]] c
             INNER JOIN (
-              SELECT DISTINCT pg.`pageID`, pg.`pageStatus`, pg.`categoryID`
-              FROM `page`pg
-              INNER JOIN `sentence` se ON pg.`pageID` = se.`pageID`
-            ) p ON c.`categoryID` = p.`categoryID` AND p.`pageStatus` IN ('psReviewedRep', 'psTrainingCRep')
-            GROUP BY(c.`categoryID`)
+              SELECT DISTINCT pg.[[page.id]], pg.[[page.status]], pg.[[page.categoryid]]
+              FROM [[page]] pg
+              WHERE pg.[[page.status]] = :1 " . $ignore . "
+            ) p ON c.[[category.id]] = p.[[page.categoryid]]
+            GROUP BY(c.[[category.id]])
           ) c2
-          LEFT JOIN `page` p2 ON p2.`categoryID` = c2.`categoryID` AND p2.`pageStatus` NOT IN ('psFinishedCrawl', 'psFinishedGenerate')
-          GROUP BY (c2.`categoryID`)
-        ) a INNER JOIN `page` p3 ON p3.`categoryID` = a.`categoryID`
-        GROUP BY p3.`categoryID`
+          LEFT JOIN [[page]] p2 ON p2.[[page.categoryid]] = c2.[[category.id]] AND p2.[[page.status]] NOT IN (:2, :3)
+          GROUP BY (c2.[[category.id]])
+        ) a INNER JOIN [[page]] p3 ON p3.[[page.categoryid]] = a.[[category.id]]
+        GROUP BY p3.[[page.categoryid]]
         ORDER BY a.`trainedCount` ASC
         LIMIT 1;
-      ") or die($this->db->error);
-      
-      return $this->result($query);  
+      ", "psReviewedRep", $pStatus, $pStatus2);
+      //"ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate"
+      return $this->result($query);
     }
     
     public function getPageByCategoryID($categoryID, $offset = 0) {
-      $query = $this->db->query("
-        SELECT DISTINCT p.`pageID`, p.`pageStatus`, p.`title`
-        FROM `page` p
-        INNER JOIN `sentence` se ON p.`pageID` = se.`pageID` AND p.`pageStatus` IN ('psReviewedRep', 'psTrainingCRep')
-        WHERE p.`categoryID` = '" . $categoryID . "'
-        ORDER BY p.`assigned_date` ASC, `pageID` ASC
-        LIMIT " . $offset . ",1
-      ") or die($this->db->error);
+      $query = $this->query("
+        SELECT DISTINCT p.[[page.id]], p.[[page.status]], p.[[page.title]]
+        FROM [[page]] p
+        INNER JOIN [[sentence]] se ON p.[[page.id]] = se.[[sentence.pageid]] AND p.[[page.status]] IN (:1, :2)
+        WHERE p.[[page.categoryid]] = :3
+        ORDER BY p.[[page.assigneddate]] ASC, p.[[page.id]] ASC
+        LIMIT :4,1
+      ", 'psReviewedRep', 'psTrainingCRep', intval($categoryID), intval($offset));
       
       return $this->result($query);
     }

@@ -129,7 +129,7 @@
       
       $order = "";
       if(is_array($orderby) && count($orderby)) {
-        $order = "ORDER BY";
+        $order = " ORDER BY";
         $i = 0;
         foreach($orderby AS $key => $value) {
           $order .= " [[" . $this::getEntityName() . "." . $key . "]] " . $value;
@@ -181,7 +181,7 @@
       
       $order = "";
       if(is_array($orderby) && count($orderby)) {
-        $order = "ORDER BY";
+        $order = " ORDER BY";
         $i = 0;
         foreach($orderby AS $key => $value) {
           $order .= " [[" . $this::getEntityName() . "." . $key . "]] " . $value;

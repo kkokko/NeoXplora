@@ -58,9 +58,19 @@ var TStringList_Implementation = {
       }
     },
     
+    insertAt: function(index, item, object) {
+      if(this.count() >= index) {
+        this.Items.splice(index, 0, item);
+        this.Objects.splice(index, 0, object);
+      } else {
+        throw "StringListIndexOutOfBounds";
+      }
+    },
+    
     remove: function(index) {
       if(this.count() > index) {
-        this.Items = this.Items.splice(index, 1);
+        this.Items.splice(index, 1);
+        this.Objects.splice(index, 1);
       } else {
         throw "StringListIndexOutOfBounds";
       }
@@ -79,4 +89,4 @@ var TStringList_Implementation = {
 
 };
 
-Sky.Class.Define("NeoX.TStringList", TStringList_Implementation);
+Sky.Class.Define("Sky.TStringList", TStringList_Implementation);

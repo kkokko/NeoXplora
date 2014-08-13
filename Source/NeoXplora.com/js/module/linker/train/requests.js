@@ -22,7 +22,7 @@ var MLinkerTrainRequests_Implementation = {
         dataType: 'json',
         data: {
           'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
-          'action': 'load'
+          'action': 'loadPage'
         },
         success: NeoX.Modules.LinkerTrainRequests.loadCallback
       });
@@ -32,9 +32,12 @@ var MLinkerTrainRequests_Implementation = {
      */
     
     loadCallback: function(json) {
-      NeoX.Modules.LinkerTrainIndex.loadData(json);
-      $(NeoX.Modules.LinkerTrainIndex.getConfig().sentenceContainer).html(NeoX.Modules.LinkerTrainIndex.sentencesToHtml());
-      $(NeoX.Modules.LinkerTrainIndex.getConfig().entityContainer).html(NeoX.Modules.LinkerTrainIndex.entitiesToHtml());
+    	if(json.length == 0) {
+        $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).html("No pages available for training.");
+    	} else {
+    		NeoX.Modules.LinkerTrainIndex.loadData(json);
+    		NeoX.Modules.LinkerTrainIndex.repaint();
+    	}
     }
     
   }

@@ -123,3 +123,101 @@
 .activeEntity {
   border: 2px solid #377EB8;
 }
+
+.boxContent .trainer-container {
+  overflow-x: auto;
+  width: 100%;
+  white-space: nowrap;
+  padding-bottom: 20px;
+}
+
+.boxContent .trainer-container .trainer {
+  width: auto;
+}
+
+.boxContent .trainer-container .trainer td {
+  padding-right: 20px;
+}
+
+.color-pallette {
+  float: right;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 0;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.color-pallette td {
+  height: 35px;
+  width: 35px;
+  padding: 0;
+}
+
+.s1 {
+  background-color: yellow;
+  border: 2px solid yellow; 
+  color: #000;
+}
+
+.s2 {
+  background-color: #FF66FF;
+  border: 2px solid #FF66FF; 
+  color: #fff;
+}
+
+.s3 {
+  background-color: #5B9BD5;
+  border: 2px solid #5B9BD5;
+  color: #000;
+}
+
+.s4 {
+  background-color: #FFC000; 
+  border: 2px solid #FFC000;
+  color: #000;
+}
+
+.s5 {
+  background-color: #70AD47;
+  border: 2px solid #70AD47; 
+  color: #000;
+}
+
+.s6 {
+  background-color: #7030A0;
+  border: 2px solid #7030A0; 
+  color: #fff;
+}
+
+.s7 {
+  background-color: #A5A5A5;
+  border: 2px solid #A5A5A5; 
+  color: #000;
+}
+
+.s8 {
+  background-color: #66FFFF;
+  border: 2px solid #66FFFF; 
+  color: #000;
+}
+
+.s9 {
+  background-color: #D9E2F3;
+  border: 2px solid #D9E2F3; 
+  color: #000;
+}
+
+.s10 {
+  background-color: #00CC00;
+  border: 2px solid #00CC00; 
+  color: #000;
+}
+
+.color-pallette td.currentStyle {
+  border: 2px solid #000;
+}
+
+.char {
+  cursor: pointer;
+}
