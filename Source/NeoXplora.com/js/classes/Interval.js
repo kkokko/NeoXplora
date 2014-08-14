@@ -24,6 +24,10 @@ var TInterval_Implementation = {
  	
   	OverlapsWith: function(AnInterval) {
   	  return (this.Until > AnInterval.From) && (AnInterval.Until > this.From);
+  	},
+  	
+  	Equals: function(AnInterval) {
+  		return (this.From == AnInterval.From && this.Until == AnInterval.Until);
   	}
   }
 

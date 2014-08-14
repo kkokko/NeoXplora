@@ -1,4 +1,4 @@
-<div class="trainer-container">
+
   <table class="trainer">
     <tr class="table-header">
       <th>Sentence</th>
@@ -9,4 +9,3 @@
       <?php echo $this->fetch("row", "train/linker"); ?>
     <?php } ?>
   </table>
-</div>

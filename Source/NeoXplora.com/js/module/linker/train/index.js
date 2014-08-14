@@ -18,10 +18,12 @@ var MLinkerTrainIndex_Implementation = {
       selectedStyle: 's0',
       data: null,
       charSelector: '.char',
-      ctrlDown: false,
       startPos: null,
       currentCol: null,
-      currentRow: null
+      currentRow: null,
+      styles: ['#AEABAB', '#ADB9CA', '#BDD7EE', '#F7CBAC', '#DBDBDB', '#FEE599', '#B4C6E7', '#C5E0B3', '#757070', '#8496B0', '#9CC3E5',
+                '#F4B183', '#C9C9C9', '#FFD965', '#8EAADB', '#A8D08D', '#3A3838', '#323F4F', '#2F75B5', '#C55A11', '#7B7B7B', '#BF9000',
+                '#2F5496', '#538135', '#171616', '#222A35', '#1E4E79', '#833C0B', '#525252', '#7F6000', '#1F3864', '#375623']
     }
   },
   
@@ -36,17 +38,20 @@ var MLinkerTrainIndex_Implementation = {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", ".color-pallette td", NeoX.Modules.LinkerTrainIndex.selectStyle);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.addRepBtn, NeoX.Modules.LinkerTrainIndex.addRepColumn);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().charSelector, NeoX.Modules.LinkerTrainIndex.charClicked);
-      $(document).on('keydown', function(event) {
-        if(event.which=="17") {
-          NeoX.Modules.LinkerTrainIndex.getConfig().ctrlDown = true;
-        }
-      });
-      $(document).on('keyup', function() {
-        NeoX.Modules.LinkerTrainIndex.getConfig().ctrlDown = false;
-      });
     },
     
     load: function() {
+    	var styles = '<style type="text/css">';
+    	for( var i = 0; i < NeoX.Modules.LinkerTrainIndex.getConfig().styles.length; i++ ) {
+    		styles += ".s" + (i + 1) + " { ";
+    		styles += "border: 2px solid " + NeoX.Modules.LinkerTrainIndex.getConfig().styles[i] + "; ";
+    		styles += "background-color: " + NeoX.Modules.LinkerTrainIndex.getConfig().styles[i] + "; ";
+    		styles += " } ";
+    	}
+    	styles += "</style>";
+    	$(document).ready(function() {
+        $("head").append(styles);
+    	});
       NeoX.Modules.LinkerTrainRequests.load();    	
     },
     
@@ -102,28 +107,9 @@ var MLinkerTrainIndex_Implementation = {
         html += '<tr data-id="' + i +  '">';
         html += '<td>' + data.object(i).Sentence +  '</td>';
         
-        html += '<td class="rep" data-id="1">';
-        for(var j = 0; j < data.object(i).Highlights.count(); j++) {
-          html += '<span class="' + data.object(i).Highlights.item(j).Style + '">'
-          html += NeoX.Modules.LinkerTrainIndex.markupStringChars(
-            data.object(i).Rep.substr(data.object(i).Highlights.item(j).Interval.From, data.object(i).Highlights.item(j).Interval.Until - data.object(i).Highlights.item(j).Interval.From), 
-            data.object(i).Highlights.item(j).Interval.From
-          );
-          html += '</span>';
-        }
-        html += '</td>';
-        var rep = NeoX.Modules.LinkerTrainIndex.markupStringChars(data.object(i).Rep);
+        html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         for(var j = 0; j < data.object(i).Children.count(); j++) {
-          html += '<td class="rep" data-id="' + (j + 2) + '">';
-          for(var k = 0; k < data.object(i).Children.object(j).count(); k++) {
-            html += '<span class="' + data.object(i).Children.object(j).object(k).Style + '">'
-            html += NeoX.Modules.LinkerTrainIndex.markupStringChars(
-              data.object(i).Rep.substr(data.object(i).Children.object(j).object(k).Interval.From, data.object(i).Children.object(j).object(k).Interval.Until - data.object(i).Children.object(j).object(k).Interval.From), 
-              data.object(i).Children.object(j).object(k).Interval.From
-            );
-            html += '</span>';
-          }
-          html += '</td>';
+          html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
         }
         html += '</tr>';
       }
@@ -134,7 +120,21 @@ var MLinkerTrainIndex_Implementation = {
       $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).html(html);
     },
     
-    markupStringChars: function(str, offset) {
+    repaintRow: function(rowNumber, rep, highlightArray) {
+    	html = '<td class="rep" data-id="' + rowNumber + '">';
+      for(var j = 0; j < highlightArray.count(); j++) {
+        html += '<span class="highlighted ' + highlightArray.item(j).Style + '">';
+        html += NeoX.Modules.LinkerTrainIndex.repaintChars(
+          rep.substr(highlightArray.item(j).Interval.From, highlightArray.item(j).Interval.Until - highlightArray.item(j).Interval.From), 
+          highlightArray.item(j).Interval.From
+        );
+        html += '</span>';
+      }
+      html += '</td>';
+      return html;
+    },
+    
+    repaintChars: function(str, offset) {
     	if(!offset) offset = 0;
     	var output = '';
     	
@@ -146,7 +146,9 @@ var MLinkerTrainIndex_Implementation = {
     },
     
     charClicked: function(e) {
-    	var scr = $(".trainer-container").scrollLeft();
+    	if ( e.ctrlKey || e.metaKey ) {
+    		e.preventDefault();
+    	}
     	
       var charPos = parseInt($(this).attr("data-id"), 10);
       var repIndex = parseInt($(this).parents("tr").first().attr("data-id"), 10);
@@ -161,6 +163,10 @@ var MLinkerTrainIndex_Implementation = {
           startPos--;
         }
         
+        if(startPos > 0 && (TheObject.Rep[startPos-1] == "." || TheObject.Rep[startPos-1] == ":")) {
+          startPos--;
+        }
+        
         while(stopPos < TheObject.Rep.length && /[a-zA-Z0-9]/.test(TheObject.Rep[stopPos+1])) {
           stopPos++;
         }
@@ -168,7 +174,7 @@ var MLinkerTrainIndex_Implementation = {
         if(startPos <= stopPos) {
         	var TheInterval;
         	
-          if(NeoX.Modules.LinkerTrainIndex.getConfig().ctrlDown == true && 
+          if(( e.ctrlKey || e.metaKey ) && 
              NeoX.Modules.LinkerTrainIndex.getConfig().startPos != null && 
              NeoX.Modules.LinkerTrainIndex.getConfig().currentCol == colIndex && 
              NeoX.Modules.LinkerTrainIndex.getConfig().currentRow == repIndex) 
@@ -184,7 +190,7 @@ var MLinkerTrainIndex_Implementation = {
             NeoX.Modules.LinkerTrainIndex.getConfig().currentRow = repIndex;
             NeoX.Modules.LinkerTrainIndex.getConfig().startPos = {
               "from": startPos,
-              "until": stopPos + 1
+              "until": stopPos + 1 
             };
         	}
 
@@ -199,7 +205,6 @@ var MLinkerTrainIndex_Implementation = {
         }
       }
       
-      $(".trainer-container").scrollLeft(scr);
     }
 
   }

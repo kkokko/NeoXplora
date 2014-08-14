@@ -1,5 +1,5 @@
 <?php echo $this->fetch("header"); ?>
-      <div class="boxContainer">
+      <div style="padding: 20px 30px;">
         <div class="buttons leftMenu">
           <a href="train.php?type=linker" class='active'>Train</a>
           <a href="browse.php?type=linker">Browse</a>
@@ -25,18 +25,41 @@
         <div class="clear"></div>
         <table class="color-pallette">
           <tr>
-            <td class="s0 currentStyle"></td>
+            <td rowspan="2" style="padding: 5px; text-align: center;" class="s0 currentStyle">NO COLOR</td>
             <td class="s1"></td>
             <td class="s2"></td>
             <td class="s3"></td>
             <td class="s4"></td>
-          </tr>
-          <tr>
             <td class="s5"></td>
             <td class="s6"></td>
             <td class="s7"></td>
             <td class="s8"></td>
             <td class="s9"></td>
+            <td class="s10"></td>
+            <td class="s11"></td>
+            <td class="s12"></td>
+            <td class="s13"></td>
+            <td class="s14"></td>
+            <td class="s15"></td>
+            <td class="s16"></td>
+          </tr>
+          <tr>
+            <td class="s17"></td>
+            <td class="s18"></td>
+            <td class="s19"></td>
+            <td class="s20"></td>
+            <td class="s21"></td>
+            <td class="s22"></td>
+            <td class="s23"></td>
+            <td class="s24"></td>
+            <td class="s25"></td>
+            <td class="s26"></td>
+            <td class="s27"></td>
+            <td class="s28"></td>
+            <td class="s29"></td>
+            <td class="s30"></td>
+            <td class="s31"></td>
+            <td class="s32"></td>
           </tr>
         </table>
         <br/>
