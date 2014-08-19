@@ -53,5 +53,39 @@
       return $this->result($query);
     }
     
+    public function getCReps($pageid) {
+      $query = $this->query("
+        SELECT cr.[[crep.id]] AS `CRepId`, s.[[sentence.id]] AS `SentenceId`, s.[[sentence.rep]] AS `Rep`, s.[[sentence.name]] AS `Sentence`
+        FROM [[crep]] cr
+        INNER JOIN [[sentence]] s ON cr.[[crep.sentenceid]] = s.[[sentence.id]]
+        WHERE cr.[[crep.pageid]] = :1 AND [[crep.parentcrepid]] IS NULL
+        ORDER BY cr.[[crep.id]] ASC
+      ", intval($pageid));
+      
+      return $this->result($query);
+    }
+    
+    public function getHighlights($CRepId) {
+      $query = $this->query("
+        SELECT ch.[[crephighlight.from]] AS `From`, ch.[[crephighlight.until]] AS `Until`, ch.[[crephighlight.style]] AS `Style`
+        FROM [[crephighlight]] ch
+        WHERE ch.[[crephighlight.crepid]] = :1
+        ORDER BY ch.[[crephighlight.id]] ASC 
+      ", intval($CRepId));
+      
+      return $this->result($query);
+    }
+    
+    public function getChildren($CRepId) {
+      $query = $this->query("
+        SELECT cr.[[crep.id]] AS `CRepId`
+        FROM [[crep]] cr
+        WHERE cr.[[crep.parentcrepid]] = :1
+        ORDER BY cr.[[crep.id]] ASC 
+      ", intval($CRepId));
+      
+      return $this->result($query);
+    }
+    
   }
 ?>

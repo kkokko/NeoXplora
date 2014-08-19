@@ -3,7 +3,6 @@
         <div class="buttons leftMenu">
           <a href="train.php?type=linker" class='active'>Train</a>
           <a href="browse.php?type=linker">Browse</a>
-          <a href="review.php?type=linker">Review</a>
         </div>
         <div class="button bigButton rightMenu">
           Linker
@@ -19,8 +18,9 @@
         </div>
         <div class="clear"></div>
         <div class="buttons smaller">
-          <a href="javascript:void(0)" class="firstBtn">Skip</a>
-          <a href="javascript:void(0)" class="previousBtn">Finish</a>
+          <a href="javascript:void(0)" class="saveBtn">Save Progress</a>
+          <a href="javascript:void(0)" class="finishBtn">Finish Training</a>
+          <a href="javascript:void(0)" class="skipBtn">Skip to Next</a>
         </div>
         <div class="clear"></div>
         <table class="color-pallette">

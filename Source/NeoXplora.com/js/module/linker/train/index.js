@@ -10,7 +10,10 @@ var MLinkerTrainIndex_Implementation = {
   properties: {
     Config: {
     	Buttons: {
-        addRepBtn: '.addRepColumn'
+        addRepBtn: '.addRepColumn',
+        saveBtn: '.saveBtn',
+        skipBtn: '.skipBtn',
+        finishBtn: '.finishBtn'
       },
       moduleScript: 'train.php',
       moduleType: 'linker',
@@ -21,9 +24,10 @@ var MLinkerTrainIndex_Implementation = {
       startPos: null,
       currentCol: null,
       currentRow: null,
+      keyDown: false,
       styles: ['#AEABAB', '#ADB9CA', '#BDD7EE', '#F7CBAC', '#DBDBDB', '#FEE599', '#B4C6E7', '#C5E0B3', '#757070', '#8496B0', '#9CC3E5',
                 '#F4B183', '#C9C9C9', '#FFD965', '#8EAADB', '#A8D08D', '#3A3838', '#323F4F', '#2F75B5', '#C55A11', '#7B7B7B', '#BF9000',
-                '#2F5496', '#538135', '#171616', '#222A35', '#1E4E79', '#833C0B', '#525252', '#7F6000', '#1F3864', '#375623']
+                '#2F5496', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF', '#6633CC', '#663300', '#880000']
     }
   },
   
@@ -37,8 +41,25 @@ var MLinkerTrainIndex_Implementation = {
     hookEvents: function() {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", ".color-pallette td", NeoX.Modules.LinkerTrainIndex.selectStyle);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.addRepBtn, NeoX.Modules.LinkerTrainIndex.addRepColumn);
+      NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.saveBtn, NeoX.Modules.LinkerTrainIndex.save);
+      NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.skipBtn, NeoX.Modules.LinkerTrainIndex.skip);
+      NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.finishBtn, NeoX.Modules.LinkerTrainIndex.finish);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().charSelector, NeoX.Modules.LinkerTrainIndex.charClicked);
+      $(document).on("keydown", NeoX.Modules.LinkerTrainIndex.onKeyDown);
+      $(document).on("keyup", NeoX.Modules.LinkerTrainIndex.onKeyUp);
     },
+    
+    onKeyDown: function(e) {
+      if(e.which == "18") {
+        NeoX.Modules.LinkerTrainIndex.getConfig().keyDown = true;
+      } else {
+      	NeoX.Modules.LinkerTrainIndex.getConfig().keyDown = false;
+      }
+    },
+    
+    onKeyUp: function() {
+      NeoX.Modules.LinkerTrainIndex.getConfig().keyDown = false;
+    },    
     
     load: function() {
     	var styles = '<style type="text/css">';
@@ -53,6 +74,52 @@ var MLinkerTrainIndex_Implementation = {
         $("head").append(styles);
     	});
       NeoX.Modules.LinkerTrainRequests.load();    	
+    },
+    
+    save: function() {
+    	NeoX.Modules.LinkerTrainRequests.save(NeoX.Modules.LinkerTrainIndex.dataToSaveArray());
+    },
+    
+    finish: function() {
+    	NeoX.Modules.LinkerTrainRequests.finish(NeoX.Modules.LinkerTrainIndex.dataToSaveArray());
+    },
+    
+    skip: function() {
+      NeoX.Modules.LinkerTrainRequests.skip();
+    },
+    
+    dataToSaveArray: function() {
+    	var data = [];
+      for(var i = 0; i < NeoX.Modules.LinkerTrainIndex.getConfig().data.count(); i++) {
+        var CRepRecord = NeoX.Modules.LinkerTrainIndex.getConfig().data.object(i);
+        var Highlights = [];
+        var Children = [];
+        for(var j = 0; j < CRepRecord.Highlights.count(); j++) {
+          Highlights.push({
+            'From': CRepRecord.Highlights.object(j).Interval.From,
+            'Until': CRepRecord.Highlights.object(j).Interval.Until,
+            'Style': CRepRecord.Highlights.object(j).Style
+          });  
+        }
+        for(var j = 0; j < CRepRecord.Children.count(); j++) {
+          var SubHighlights = [];
+          for(var k = 0; k < CRepRecord.Children.object(j).count(); k++) {
+            SubHighlights.push({
+              'From': CRepRecord.Children.object(j).object(k).Interval.From,
+              'Until': CRepRecord.Children.object(j).object(k).Interval.Until,
+              'Style': CRepRecord.Children.object(j).object(k).Style
+            });
+          }
+          Children.push(SubHighlights);
+        }
+        data.push({
+          'Id': CRepRecord.Id,
+          'Highlights': Highlights,
+          'Children': Children
+        });
+      }
+      
+      return data;
     },
     
     selectStyle: function() {
@@ -82,8 +149,37 @@ var MLinkerTrainIndex_Implementation = {
     	var dataList = NeoX.Modules.LinkerTrainIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
     		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep);
-    		var interval = new Sky.TInterval(0, data[i].Rep.length);
-    		CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});
+    		
+    		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
+        CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
+    		
+    		if(data[i].hasOwnProperty("Highlights") && data[i].Highlights instanceof Array && data[i].Highlights.length > 0) {
+    			for(var j = 0; j < data[i].Highlights.length; j++) {
+      			var interval = new Sky.TInterval(parseInt(data[i].Highlights[j].From, 10), parseInt(data[i].Highlights[j].Until, 10));
+      			CRepRecord.Highlights.add({'Interval': interval, 'Style': data[i].Highlights[j].Style});
+      			if(data[i].Highlights[j].Style.split("-").length > 1) {
+              NeoX.Modules.LinkerTrainIndex.createCSS(data[i].Highlights[j].Style);
+      			}
+    			}
+    		} else {
+    			var interval = new Sky.TInterval(0, data[i].Rep.length);
+          CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});
+    		}
+    		
+    		if(data[i].hasOwnProperty("Children") && data[i].Children instanceof Array && data[i].Children.length > 0) {
+    		  for(var j = 0; j < data[i].Children.length; j++) {
+    		    var Highlights = new Sky.TList();
+    		    for(var k = 0; k < data[i].Children[j].length; k++) {
+    		      var interval = new Sky.TInterval(parseInt(data[i].Children[j][k].From, 10), parseInt(data[i].Children[j][k].Until, 10));
+              Highlights.add({'Interval': interval, 'Style': data[i].Children[j][k].Style});
+              if(data[i].Children[j][k].Style.split("-").length > 1) {
+                NeoX.Modules.LinkerTrainIndex.createCSS(data[i].Children[j][k].Style);
+              }
+    		    }
+    		    CRepRecord.Children.add(Highlights);
+    		  }
+    		}
+    		
     		dataList.add(data[i].Id, CRepRecord);
     	}
     },
@@ -146,10 +242,6 @@ var MLinkerTrainIndex_Implementation = {
     },
     
     charClicked: function(e) {
-    	if ( e.ctrlKey || e.metaKey ) {
-    		e.preventDefault();
-    	}
-    	
       var charPos = parseInt($(this).attr("data-id"), 10);
       var repIndex = parseInt($(this).parents("tr").first().attr("data-id"), 10);
       var colIndex = parseInt($(this).parents("td").first().attr("data-id"), 10);
@@ -174,7 +266,7 @@ var MLinkerTrainIndex_Implementation = {
         if(startPos <= stopPos) {
         	var TheInterval;
         	
-          if(( e.ctrlKey || e.metaKey ) && 
+          if( (NeoX.Modules.LinkerTrainIndex.getConfig().keyDown == true ) && 
              NeoX.Modules.LinkerTrainIndex.getConfig().startPos != null && 
              NeoX.Modules.LinkerTrainIndex.getConfig().currentCol == colIndex && 
              NeoX.Modules.LinkerTrainIndex.getConfig().currentRow == repIndex) 
@@ -204,6 +296,45 @@ var MLinkerTrainIndex_Implementation = {
         	throw "StartBiggerThenStopException";
         }
       }
+      
+    },
+    
+    createCSS: function(AStyle) {
+    	var styles = AStyle.split("-");
+      
+      for(var i = 0; i < styles.length; i++) {
+        styles[i] = parseInt(styles[i].replace("s", ""), 10) - 1;
+      }
+      
+      var last = 0;
+      var chunkSize = Math.floor(100 / styles.length);
+      var css1 = "background: -moz-linear-gradient(left";
+      var css2 = "background: -webkit-gradient(linear, left top, right top";
+      var css3 = "background: -webkit-linear-gradient(left";
+      var css4 = "background: -o-linear-gradient(left";
+      var css5 = "background: -ms-linear-gradient(left";
+      var css6 = "background: linear-gradient(to right";
+
+      for(var i = 0; i < styles.length; i++) {
+        var colorCode = NeoX.Modules.LinkerTrainIndex.getConfig().styles[styles[i]];
+        var addition = ", " + colorCode + " " + last + "%, " + colorCode + " " + (last + chunkSize) + "%";
+        css1 += addition;
+        css2 += ", color-stop(" + last + "%, " + colorCode + "), color-stop(" + (last + chunkSize) + "%, " + colorCode + ")";
+        css3 += addition;
+        css4 += addition;
+        css5 += addition;
+        css6 += addition;
+        last += chunkSize;
+      }
+      
+      css1 += ");";
+      css2 += ");";
+      css3 += ");";
+      css4 += ");";
+      css5 += ");";
+      css6 += ");";
+      
+      $("head").append("<style type='text/css'> ." + AStyle + " { " + css1 + "  " + css2 + "  " + css3 + "  " + css4 + "  " + css5 + "  " + css6 + " } </style>");
       
     }
 
