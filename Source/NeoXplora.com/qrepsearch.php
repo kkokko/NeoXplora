@@ -9,8 +9,12 @@ $strSearchQrep = $_REQUEST['q'];
 
 if($strSearchQrep != '')
 {
+   /* Don't require LIST + ANSWER url OF site CONTAINING 
     $arrSearchQrep = explode(' CONTAINING ',$strSearchQrep);
     $strFinSearchQrep = $arrSearchQrep[1];
+    */
+    
+    $strFinSearchQrep = $strSearchQrep;
     preg_match_all("/\((([^()]*|(?R))*)\)/", $strFinSearchQrep, $matches);
 
     $strSubAtt = "";
@@ -361,7 +365,7 @@ function getPageIdFromParentValueId($ParentValueId)
   global $link1;
   $qry = "SELECT * FROM neox_reppropertykey WHERE Id IN (SELECT nrv.KeyId FROM neox_reppropertykey nrk INNER JOIN neox_reppropertyvalue nrv ON nrv.Id = nrk.ParentValueId  
                   WHERE nrv.Id = '".$ParentValueId."') ";
-  $result=  mysql_query($qry, $link1) or die("error : " . mysql_error($link1));
+  $result=  mysql_query($qry, $link1) or die("error parent value: " . mysql_error($link1));
   $arrResult = mysql_fetch_assoc($result);
   
   if($arrResult['ParentValueId'] != null)
