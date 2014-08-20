@@ -40,6 +40,7 @@ if($strSearchQrep != '')
                                    
     $strWhere = "";
     $strPropValWhere = "";
+    $strKey = "";
     foreach($arrExpSearchrep as $key => $value)
     { 
       if(strpos($value, '.') !== false)
@@ -63,11 +64,14 @@ if($strSearchQrep != '')
              $pattern =  '/\.([^'.preg_quote($strPT, '/').']*?)'.preg_quote($strPT, '/').'/';
              preg_match($pattern, $value, $matches);
              $strWhere .= " and `Key` = '".trim($matches[1])."' ";
+             $strKey .= "'".trim($matches[1])."', ";
+             
           }
           else 
           {
             $arrPropKey = explode('.',$value);
             $strWhere .= " and `Key` = '".trim($arrPropKey[1])."' ";
+            $strKey .= "'".trim($arrPropKey[1])."', ";
           }
           
           if($strPT != '')
@@ -88,6 +92,40 @@ if($strSearchQrep != '')
       }
       else if(strpos($value, ':') !== false)
         {
+          
+          if($strWhere != '')
+            $strWhere .= " or ";
+          
+          $strWhere .= " ( ";
+          $strWhere .= " `PropertyType` = 'ptEvent' ";
+          
+          $strPT = '';
+          foreach ($arrPropertyTypeCol as $propertyType) 
+          {
+            if (strpos($value, $propertyType) !== false) {
+                $strPT = $propertyType; // field value found in a string
+            }
+          }
+          
+          if($strPT != '')
+          {
+             $pattern =  '/\:([^'.preg_quote($strPT, '/').']*?)'.preg_quote($strPT, '/').'/';
+             preg_match($pattern, $value, $matches);
+             $strWhere .= " and `Key` = '".trim($matches[1])."' ";
+             $strKey .= "'".trim($matches[1])."', ";
+          }
+          else 
+          {
+            $arrPropKey = explode(':',$value);
+            $strWhere .= " and `Key` = '".trim($arrPropKey[1])."' ";
+            $strKey .= "'".trim($arrPropKey[1])."', ";
+          }
+          
+          
+          $strWhere .= " ) ";
+          
+         
+        
           /* 
           if($strWhere != '')
             $strWhere .= " or ";
@@ -128,6 +166,7 @@ if($strSearchQrep != '')
         */
         
     }
+$strKey = substr($strKey, 0, -2);
    // echo $strWhere;
    // echo $strPropValWhere;
                     
@@ -172,15 +211,15 @@ if($strSearchQrep != '')
     while($arrResult = mysql_fetch_array($result))
     {
       $arrResultURL[$i]['PageId'] = $arrResult['PageId']; 
-      $arrResultURL[$i]['cntKey'] = $arrResult['cntKey']; 
+      $arrResultURL[$i]['cntKey'] = $arrResult['cntKey'] + $arrResult['cntKey']; 
       $strPageId .= $arrResult['PageId'].', ';
       $i++;
     }
     $strPageId = substr($strPageId, 0, -2);
- 
+ //print_r($arrResultURL);
         
      // For ParentKeyId
-    $qry = "SELECT * FROM neox_reppropertykey nrk WHERE nrk.ParentKeyId IN (".$strKeyId.")  ";
+    $qry = "SELECT * FROM neox_reppropertykey nrk WHERE nrk.ParentKeyId IN (".$strKeyId.") and nrk.Key IN (".$strKey.") ";
     $result=  mysql_query($qry, $link1) or die("error : " . mysql_error($link1));
      
     while($arrResult = mysql_fetch_array($result))
