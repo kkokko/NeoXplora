@@ -60,8 +60,8 @@ var MSplitterTrainIndex_Implementation = {
       var sentenceID = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();
       var newSplitValue = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).val();
       var level = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).val();
-      
-      NeoX.Modules.SplitterTrainRequests.split(sentenceID, newSplitValue, level);
+      var approved = ($(".checkApproved").length > 0) && $(".checkApproved").is(":checked");
+      NeoX.Modules.SplitterTrainRequests.split(sentenceID, newSplitValue, level, approved);
     },
       
     dontSplit: function() {

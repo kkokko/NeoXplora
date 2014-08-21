@@ -28,7 +28,7 @@ var MInterpreterTrainRequests_Implementation = {
       });
     },
     
-    save: function(sentenceID, newValue) {
+    save: function(sentenceID, newValue, approved) {
     	$.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -37,7 +37,8 @@ var MInterpreterTrainRequests_Implementation = {
           'type': NeoX.Modules.InterpreterTrainIndex.getConfig().moduleType,
           'action': 'save',
           'sentenceID': sentenceID,
-          'newValue': newValue
+          'newValue': newValue,
+          'approved': approved
         },
         success: NeoX.Modules.InterpreterTrainRequests.saveCallback(newValue)
       });
@@ -57,7 +58,7 @@ var MInterpreterTrainRequests_Implementation = {
       });
     },
       
-    use: function(sentenceID, newValue) {
+    use: function(sentenceID, newValue, approved) {
     	$.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -65,7 +66,8 @@ var MInterpreterTrainRequests_Implementation = {
         data: {
           'type': NeoX.Modules.InterpreterTrainIndex.getConfig().moduleType,
           'action': 'approveGuess',
-          'sentenceID': sentenceID
+          'sentenceID': sentenceID,
+          'approved': approved
         },
         success: NeoX.Modules.InterpreterTrainRequests.useCallback(newValue)
       });

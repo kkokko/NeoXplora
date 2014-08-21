@@ -57,7 +57,8 @@ var MInterpreterTrainIndex_Implementation = {
       } else {
       	var sentenceID = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.sentenceID).val();
         var newValue = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.newValue).val();
-        NeoX.Modules.InterpreterTrainRequests.save(sentenceID, newValue);
+        var approved = ($(".checkApproved").length > 0) && $(".checkApproved").is(":checked");
+        NeoX.Modules.InterpreterTrainRequests.save(sentenceID, newValue, approved);
       }
     },
     
@@ -72,7 +73,8 @@ var MInterpreterTrainIndex_Implementation = {
       } else {
       	var sentenceID = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.sentenceID).val();
       	var newValue = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.repGuessValue).html();
-        NeoX.Modules.InterpreterTrainRequests.use(sentenceID, newValue);
+      	var approved = ($(".checkApproved").length > 0) && $(".checkApproved").is(":checked");
+        NeoX.Modules.InterpreterTrainRequests.use(sentenceID, newValue, approved);
       }
     },
     
@@ -93,7 +95,8 @@ var MInterpreterTrainIndex_Implementation = {
         } else {
           var sentenceID = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.sentenceID).val();
           var newValue = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.newValue).val();
-          NeoX.Modules.InterpreterTrainRequests.save(sentenceID, newValue);
+          var approved = ($(".checkApproved").length > 0) && $(".checkApproved").is(":checked");
+          NeoX.Modules.InterpreterTrainRequests.save(sentenceID, newValue, approved);
         }
       }
     }

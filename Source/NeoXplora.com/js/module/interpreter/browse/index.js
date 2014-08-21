@@ -79,8 +79,6 @@ var MInterpreterBrowseIndex_Implementation = {
       NeoX.Modules.InterpreterBrowseRequests.load(lastPage);
     }
     
-    
-    
   }
   
 };

@@ -39,7 +39,7 @@ class TBrowseInterpreter extends TTrain {
       
       $query = $interpreterModel->getSentences($start, $per_page);
       
-      if(!$query) {
+      if(!$query || $query->num_rows < 1) {
         $query = $interpreterModel->getSentences(0, $per_page);
         $page = 1;
       }

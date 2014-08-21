@@ -37,26 +37,23 @@ class TTrainLinker extends TTrain {
   
   public function loadPage() {
     $pageData = null;
-    if(!isset($_SESSION['pageID'])) {
-      $ignore = '';
+    //unset($_SESSION['ignoredPageIDs']);
+    if(!isset($_SESSION['pageID']) || $_SESSION['pageID'] == -1) {
+      $ignoreIDs = array();
+      
       if(isset($_SESSION['ignoredPageIDs']) && is_array($_SESSION['ignoredPageIDs'])) {
-        $ignore .= " AND st.`pageID` NOT IN (";
-        for($i = 0; $i < count($_SESSION['ignoredPageIDs']); $i++) {
-          $ignore .= "'" . $_SESSION['ignoredPageIDs'][$i] . "'";
-          if($i != count($_SESSION['ignoredPageIDs']) - 1) $ignore .= ', ';
-        }
-        $ignore .= ") ";
+        $ignoreIDs = array_values($_SESSION['ignoredPageIDs']);
       }
-
+      
       $linkerModel = $this->core->model("linker", "train");
-      $category_data = $linkerModel->getCategory()->fetch_array();
+      $category_data = $linkerModel->getCategory($ignoreIDs)->fetch_array();
       $categoryID = $category_data[Entity\TCategory::$tok_id];
       
       $pageCount = $category_data['pageCount'];
       $max_offset = min(array($pageCount, 5));
       $offset = rand(0, $max_offset - 1);
       
-      $pageData = $linkerModel->getPageByCategoryID($categoryID, $offset);
+      $pageData = $linkerModel->getPageByCategoryID($categoryID, $offset, $ignoreIDs);
     } else {
       $pageData = $this->core->entity("page")->select(array("id" => $_SESSION['pageID']), "*"); 
     }
@@ -79,7 +76,10 @@ class TTrainLinker extends TTrain {
       
       $query = $this->core->model("linker", "train")->getCReps($_SESSION['pageID']);
       
+      
+      
       if($query->num_rows > 0) {
+        
         while($sentence_data = $query->fetch_array()) {
           $highlights = array();
           $children = array();
@@ -143,9 +143,73 @@ class TTrainLinker extends TTrain {
   }
 
   public function save() {
+    if(!isset($_SESSION['pageID'])) return;
+    
     $data = $_POST['data'];
     $pageId = $_SESSION['pageID'];
     
+    $this->saveData($data, $pageId);
+    
+    echo json_encode('');
+  }
+
+  public function finish() {
+    if(!isset($_SESSION['pageID'])) return;
+    
+    $data = $_POST['data'];
+    $pageId = $_SESSION['pageID'];
+    
+    $this->saveData($data, $pageId);
+    
+    $this->core->entity("page")->update(
+      $pageId, 
+      array(
+        "status" => "psReviewedCRep"
+      )
+    );
+    
+    unset($_SESSION['pageID']);
+    $_SESSION['pageID'] = -1;
+    
+    echo json_encode('');
+  }
+  
+  public function skip() {
+    if(!isset($_SESSION['pageID'])) return;
+    
+    if(!isset($_SESSION['ignoredPageIDs'])) { 
+      $_SESSION['ignoredPageIDs'] = array();
+    }
+    if(!in_array($_SESSION['pageID'], $_SESSION['ignoredPageIDs']) && $_SESSION['pageID'] != -1) {
+      $_SESSION['ignoredPageIDs'][] = $_SESSION['pageID'];
+    }
+    
+    if(count($_SESSION['ignoredPageIDs']) > 10) { 
+      unset($_SESSION['ignoredPageIDs'][0]);
+    }
+    
+    $query = $this->core->entity("page")->select(
+      array("status" => array("psReviewedRep", "psTrainingCRep"))
+    );
+    
+    if($query->num_rows == count($_SESSION['ignoredPageIDs'])) {
+      unset($_SESSION['ignoredPageIDs']);
+    }
+    
+    $this->core->entity("page")->update(
+      $_SESSION['pageID'], 
+      array(
+        "assigneddate" => date("Y-m-d H:i:s", 0)
+      )
+    );
+    
+    unset($_SESSION['pageID']);
+    $_SESSION['pageID'] = -1;
+    
+    echo json_encode("");
+  }
+  
+  private function saveData($data, $pageId) {
     $this->core->entity("crephighlight")->delete(
       array( "pageid" => array( $pageId ) )
     );
@@ -175,7 +239,7 @@ class TTrainLinker extends TTrain {
         for($j = 0; $j < count($data[$i]['Children']); $j++) {
           $this->core->entity("crep")->insert(
             array( "pageid", "sentenceid", "parentcrepid" ),
-            array( array( $pageId, $data[$i]['Id'], ) )
+            array( array( $pageId, $data[$i]['Id'], $crepId) )
           );
           
           $childCrepId = $this->db->insert_id;
@@ -189,44 +253,6 @@ class TTrainLinker extends TTrain {
         }
       }
     }
-    
-    echo json_encode('');
-  }
-
-  public function finish() {
-    $this->save();
-    
-    $this->core->entity("page")->update(
-      $_SESSION['pageID'], 
-      array(
-        "status" => "psReviewedCRep"
-      )
-    );
-    
-    unset($_SESSION['pageID']);
-    
-  }
-  
-  public function skip() {
-    if(!isset($_SESSION['ignoredSplitPageIDs'])) { 
-      $_SESSION['ignoredSplitPageIDs'] = array();
-    }
-    $_SESSION['ignoredSplitPageIDs'][] = $_SESSION['pageID'];
-    
-    if(count($_SESSION['ignoredSplitPageIDs']) > 10) { 
-      unset($_SESSION['ignoredSplitPageIDs'][0]);
-    }
-    
-    $this->core->entity("page")->update(
-      $_SESSION['pageID'], 
-      array(
-        "assigneddate" => date("Y-m-d H:i:s", 0)
-      )
-    );
-    
-    unset($_SESSION['pageID']);
-    
-    echo json_encode("");
   }
 
 }

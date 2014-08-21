@@ -14,9 +14,6 @@
     <td>
       <a href="javascript:void(0)" class="btnDone button">Done</a> 
       <a href="javascript:void(0)" class="btnSkip button">Skip</a>
-      <?php if($this->userlevel == "admin") { ?>
-      <a href="javascript:void(0)" class="btnApprove button">Approve</a>
-      <?php } ?>
     </td>
   </tr>
   <tr>

@@ -15,9 +15,6 @@
     <?php } ?>
     <?php if(isset($this->sentence['skipBtn'])) { ?>
       <div class="button skipSplitButton">Skip</div>
-    <?php } ?> 
-    <?php if(isset($this->sentence['approveBtn']) && $this->userlevel == 'admin') { ?>
-      <div class="button approveSplitButton">Approve</div> 
     <?php } ?>
   </td>
 </tr>

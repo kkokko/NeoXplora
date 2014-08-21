@@ -4,10 +4,10 @@
   require_once __DIR__ . "/../Train.php";
   class TTrainLinker extends TTrain {
     
-    public function getCategory($sStatus = null, $pStatus = "psFinishedCrawl", $pStatus2 = "psFinishedGenerate", $ignoreIDs = array()) {
+    public function getCategory($ignoreIDs = array(), $pStatus = "psFinishedCrawl", $pStatus2 = "psFinishedGenerate", $sStatus = null) {
       $ignore = '';
       if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
-        $ignore .= " AND se.[[sentence.id]] NOT IN (";
+        $ignore .= " AND pg.[[page.id]] NOT IN (";
         for($i = 0; $i < count($ignoreIDs); $i++) {
           $ignore .= "'" . $ignoreIDs[$i] . "'";
           if($i != count($ignoreIDs) - 1) $ignore .= ', ';
@@ -40,12 +40,22 @@
       return $this->result($query);
     }
     
-    public function getPageByCategoryID($categoryID, $offset = 0) {
+    public function getPageByCategoryID($categoryID, $offset = 0, $ignoreIDs = array()) {
+      $ignore = '';
+      if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $ignore .= " AND p.[[page.id]] NOT IN (";
+        for($i = 0; $i < count($ignoreIDs); $i++) {
+          $ignore .= "'" . $ignoreIDs[$i] . "'";
+          if($i != count($ignoreIDs) - 1) $ignore .= ', ';
+        }
+        $ignore .= ") ";
+      }  
+      
       $query = $this->query("
         SELECT DISTINCT p.[[page.id]], p.[[page.status]], p.[[page.title]]
         FROM [[page]] p
         INNER JOIN [[sentence]] se ON p.[[page.id]] = se.[[sentence.pageid]] AND p.[[page.status]] IN (:1, :2)
-        WHERE p.[[page.categoryid]] = :3
+        WHERE p.[[page.categoryid]] = :3 " . $ignore . "
         ORDER BY p.[[page.assigneddate]] ASC, p.[[page.id]] ASC
         LIMIT :4,1
       ", 'psReviewedRep', 'psTrainingCRep', intval($categoryID), intval($offset));

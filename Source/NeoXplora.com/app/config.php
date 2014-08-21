@@ -14,7 +14,10 @@
   $db_collation2 = "utf8";
   
   $GLOBALS['delphi_service_path'] = __DIR__ . "/../NeoShared/Server/App/Global.php";
+  $GLOBALS['random_training'] = FALSE;
   
   $application_namespace = "neox";
+  
+  
   
 ?>

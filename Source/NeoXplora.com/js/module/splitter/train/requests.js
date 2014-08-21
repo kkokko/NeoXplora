@@ -42,7 +42,7 @@ var MSplitterTrainRequests_Implementation = {
       });
     },
     
-    split: function(sentenceID, newSplitValue, level) {
+    split: function(sentenceID, newSplitValue, level, approved) {
       $.ajax({
         type: "POST",
         url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
@@ -52,7 +52,8 @@ var MSplitterTrainRequests_Implementation = {
           'action': 'split',
           'sentenceID': sentenceID,
           'newValue': newSplitValue,
-          'level': level
+          'level': level,
+          'approved': approved
         },
         success: NeoX.Modules.SplitterTrainRequests.splitCallback(sentenceID, level)
       });

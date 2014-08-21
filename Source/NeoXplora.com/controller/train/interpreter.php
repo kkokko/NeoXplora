@@ -29,24 +29,30 @@ class TTrainInterpreter extends TTrain {
     if(isset($_SESSION['ignoredInterpreterPageIDs']) && is_array($_SESSION['ignoredInterpreterPageIDs'])) {
       $ignoreIDs = array_values($_SESSION['ignoredInterpreterPageIDs']);
     }
-    $splitterModel = $this->core->model("train");
+    $trainModel = $this->core->model("train");
+    $sentence_data = null;
     
-    $category_data = $splitterModel->getCategory("ssReviewedSplit", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs);
-
-    $category_data = $category_data->fetch_array();
-    $categoryID = $category_data['id'];
-    $pageCount = $category_data['pageCount'];
-    $max_offset = min(array($pageCount, 5));
-    $offset = rand(0, $max_offset - 1);
-    
-    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssReviewedSplit", $ignoreIDs)->fetch_array();
-    $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
+    if($GLOBALS['random_training'] == true) {
+      $category_data = $trainModel->getCategory("ssReviewedSplit", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs);
+  
+      $category_data = $category_data->fetch_array();
+      $categoryID = $category_data['id'];
+      $pageCount = $category_data['pageCount'];
+      $max_offset = min(array($pageCount, 5));
+      $offset = rand(0, $max_offset - 1);
       
-    $sentence_data = $splitterModel->getSentence($categoryID, $offset, $sentence_offset, "ssReviewedSplit", $ignoreIDs)->fetch_array();
+      $sentenceCount = $trainModel->countSentences($categoryID, $offset, "ssReviewedSplit", $ignoreIDs)->fetch_array();
+      $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
+        
+      $sentence_data = $trainModel->getSentence($categoryID, $offset, $sentence_offset, "ssReviewedSplit", $ignoreIDs);
+    } else {
+      $sentence_data = $trainModel->getSentenceNotRandom("ssReviewedSplit", $ignoreIDs);
+    }
     
     $data = 'No sentence to display';
     
-    if($sentence_data) {
+    if($sentence_data && $sentence_data->num_rows) {
+      $sentence_data = $sentence_data->fetch_array();
       $this->core->entity("sentence")->update(
         $sentence_data[Entity\TSentence::$tok_id], 
         array(
@@ -82,7 +88,10 @@ class TTrainInterpreter extends TTrain {
     if(!isset($_SESSION['ignoredInterpreterPageIDs'])) { 
       $_SESSION['ignoredInterpreterPageIDs'] = array();
     }
-    $_SESSION['ignoredInterpreterPageIDs'][] = $sentenceID;
+    
+    if(!in_array($sentenceID, $_SESSION['ignoredInterpreterPageIDs'])) {
+      $_SESSION['ignoredInterpreterPageIDs'][] = $sentenceID;
+    }
     
     if(count($_SESSION['ignoredInterpreterPageIDs']) > 10) { 
       unset($_SESSION['ignoredInterpreterPageIDs'][0]);
@@ -103,18 +112,22 @@ class TTrainInterpreter extends TTrain {
           
     $sentenceID = $_POST['sentenceID'];
     $newValue = trim(htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES));
+    $approved =  $_POST['approved'];
     
     if(trim($newValue) == ''){
       return;
     }
     
     $validator = $this->Delphi()->ValidateRep($newValue);
+    $status = 'ssTrainedRep';
+    if($approved) $status = 'ssReviewedRep';
+    
     if($validator === true) {      
       $this->core->entity("sentence")->update(
         $sentenceID, 
         array(
           "rep" => $newValue,
-          "status" => 'ssTrainedRep'
+          "status" => $status
         )
       );
       $this->updatePageStatus($sentenceID);
@@ -131,16 +144,20 @@ class TTrainInterpreter extends TTrain {
   public function approveGuess() {
     if(!isset($_POST['sentenceID'])) return;
     $sentenceID = (int) $_POST['sentenceID'];
-
+    $approved =  $_POST['approved'];
+    
     $repguess = $this->Delphi()->GuessRepsForSentenceId($sentenceID)->GetProperty("RepGuessA");
     
     $validator = $this->Delphi()->ValidateRep($repguess);
+    $status = 'ssTrainedRep';
+    if($approved) $status = 'ssReviewedRep';
+    
     if($validator === true) {
       $this->core->entity("sentence")->update(
         $sentenceID, 
         array(
           "rep" => $repguess,
-          "status" => 'ssTrainedRep'
+          "status" => $status
         )
       );
       $this->updatePageStatus($sentenceID);

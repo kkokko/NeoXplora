@@ -77,6 +77,7 @@ var MLinkerTrainRequests_Implementation = {
     	if(json.length == 0) {
         $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).html("No pages available for training.");
     	} else {
+    		NeoX.Modules.LinkerTrainIndex.getConfig().data = new Sky.TStringList();
     		NeoX.Modules.LinkerTrainIndex.loadData(json);
     		NeoX.Modules.LinkerTrainIndex.repaint();
     	}

@@ -21,6 +21,10 @@
   </div>
   <div class="clear"></div>
   <br/>
+  <?php if($this->userlevel == 'admin') { ?>
+    <div style="display: inline-block; padding-top: 5px; margin-bottom: 10px; padding-left: 5px;"><input type="checkbox" class="checkApproved" checked /> Approve</div> 
+  <?php } ?>
+  <br/>
   <div class="boxContent">
           
   </div>

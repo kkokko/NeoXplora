@@ -157,9 +157,13 @@
       $k = 0;
       foreach($conditions AS $key => $value) {
         $condition = $this->prepareQueryString(" [[" . $this::getEntityName() . "." . $key . "]] IN (");
-        for($i = 0; $i < count($value); $i++) {
-          $condition .= $this->prepareQueryString(":1", $value[$i]);
-          if($i + 1 != count($value)) $condition .= ", ";
+        if(!is_array($value)) {
+          $condition .= $this->prepareQueryString(":1", $value);
+        } else {
+          for($i = 0; $i < count($value); $i++) {
+            $condition .= $this->prepareQueryString(":1", $value[$i]);
+            if($i + 1 != count($value)) $condition .= ", ";
+          }
         }
         $condition .= ")";
         if($k + 1 != count($conditions)) $condition .= " AND ";

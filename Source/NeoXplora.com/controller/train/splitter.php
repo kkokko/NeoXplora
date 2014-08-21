@@ -30,23 +30,31 @@ class TTrainSplitter extends TTrain {
     if(isset($_SESSION['ignoredSplitPageIDs']) && is_array($_SESSION['ignoredSplitPageIDs'])) {
       $ignoreIDs = array_values($_SESSION['ignoredSplitPageIDs']);
     }
-    $splitterModel = $this->core->model("train");
     
-    $category_data = $splitterModel->getCategory("ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs)->fetch_array();
+    $trainModel = $this->core->model("train");
+    $sentence_data = null;
     
-    $categoryID = $category_data['id'];
-    $pageCount = $category_data['pageCount'];
-    $max_offset = min(array($pageCount, 5));
-    $offset = rand(0, $max_offset - 1);
-    
-    $sentenceCount = $splitterModel->countSentences($categoryID, $offset, "ssFinishedGenerate", $ignoreIDs)->fetch_array();
-    $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
+    if($GLOBALS['random_training'] == true) {
+      $category_data = $trainModel->getCategory("ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs)->fetch_array();
       
-    $sentence_data = $splitterModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs)->fetch_array();
+      $categoryID = $category_data['id'];
+      $pageCount = $category_data['pageCount'];
+      $max_offset = min(array($pageCount, 5));
+      $offset = rand(0, $max_offset - 1);
+      
+      $sentenceCount = $trainModel->countSentences($categoryID, $offset, "ssFinishedGenerate", $ignoreIDs)->fetch_array();
+      $sentence_offset = rand(0, $sentenceCount['sentenceCount'] - 1);
+        
+      $sentence_data = $trainModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs);
+    } else {
+      $sentence_data = $trainModel->getSentenceNotRandom("ssFinishedGenerate", $ignoreIDs);
+    } 
     
     $data = 'No sentence to display';
     
-    if($sentence_data) {
+    if($sentence_data && $sentence_data->num_rows) {
+      $sentence_data = $sentence_data->fetch_array();
+      
       $this->core->entity("sentence")->update(
         $sentence_data[Entity\TSentence::$tok_id], 
         array(
@@ -86,7 +94,10 @@ class TTrainSplitter extends TTrain {
     if(!isset($_SESSION['ignoredSplitPageIDs'])) { 
       $_SESSION['ignoredSplitPageIDs'] = array();
     }
-    $_SESSION['ignoredSplitPageIDs'][] = $sentenceID;
+    
+    if(!in_array($sentenceID, $_SESSION['ignoredSplitPageIDs'])) {
+      $_SESSION['ignoredSplitPageIDs'][] = $sentenceID;
+    }
     
     if(count($_SESSION['ignoredSplitPageIDs']) > 10) { 
       unset($_SESSION['ignoredSplitPageIDs'][0]);
@@ -159,6 +170,7 @@ class TTrainSplitter extends TTrain {
     $level = $_POST['level'];
     $sentenceID = $_POST['sentenceID'];
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
+    $approved=  $_POST['approved'];
     
     $originalValue = $this->core->entity("sentence")->select($sentenceID, "name")->fetch_array();
     $originalValue = $originalValue[Entity\TSentence::$tok_name];
@@ -169,6 +181,15 @@ class TTrainSplitter extends TTrain {
     $data = '';
         
     if($newSentencesCount == 1) {
+      if($approved) {
+        $this->core->entity("sentence")->update(
+          $sentenceID,
+          array(
+            'status' => 'ssReviewedSplit'
+          )
+        );
+      }
+      
       $this->template->sentence = array(
         "id" => $sentenceID,
         "level" => (intval($level) + 1),
@@ -184,6 +205,15 @@ class TTrainSplitter extends TTrain {
     } elseif($newSentencesCount > 1) {
       for($i = 0; $i < $newSentencesCount; $i++) {
         $sentenceID = $result->Item($i)->GetProperty("Id");
+        
+        if($approved) {
+          $this->core->entity("sentence")->update(
+            $sentenceID,
+            array(
+              'status' => 'ssReviewedSplit'
+            )
+          );
+        }
         
         $this->template->sentence = array(
           "id" => $result->Item($i)->GetProperty("Id"),

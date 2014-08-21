@@ -77,7 +77,34 @@
       ", $categoryID, $sStatus, $offset, $sentence_offset);
       //ssFinishedGenerate
       return $this->result($query);
-    } 
+    }
+    
+    public function getSentenceNotRandom($sStatus, $ignoreIDs = array()) {
+      $ignore_se = '';
+      if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $ignore = '(';
+        for($i = 0; $i < count($ignoreIDs); $i++) {
+          $ignore .= "'" . $ignoreIDs[$i] . "'";
+          if($i != count($ignoreIDs) - 1) $ignore .= ', ';
+        }
+        $ignore .= ") ";
+        
+        $ignore_se = ' AND se.[[sentence.id]] NOT IN ' . $ignore;
+      }
+      
+      $query = $this->query("
+        SELECT
+          se.[[sentence.id]],
+          se.[[sentence.name]],
+          se.[[sentence.rep]]
+        FROM [[sentence]] se 
+        WHERE se.[[sentence.status]] = :1
+        " . $ignore_se . "
+        ORDER BY se.[[sentence.assigneddate]] ASC, se.[[sentence.id]] DESC
+      ", $sStatus);
+      
+      return $this->result($query);
+    }
     
     public function countSentences($categoryID, $offset, $sStatus, $ignoreIDs = array()) {
       $ignore_s = '';
