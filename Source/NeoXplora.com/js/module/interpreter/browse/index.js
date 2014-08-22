@@ -21,6 +21,10 @@ var MInterpreterBrowseIndex_Implementation = {
         aproto: '.aproto',
         asentence: '.asentence'
       },
+      Containers: {
+        error: '.rep-error',
+        table: '.trainer'
+      },
       moduleScript: 'browse.php',
       moduleType: 'interpreter',
       dataContainer: '.boxContent',
@@ -41,6 +45,9 @@ var MInterpreterBrowseIndex_Implementation = {
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.previousPage, NeoX.Modules.InterpreterBrowseIndex.goToPrevious);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.nextPage, NeoX.Modules.InterpreterBrowseIndex.goToNext);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.lastPage, NeoX.Modules.InterpreterBrowseIndex.goToLast);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', '.areviewedsentence td', NeoX.Modules.InterpreterBrowseIndex.edit);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', '.saveRep', NeoX.Modules.InterpreterBrowseIndex.saveRep);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('keydown', '.newRep', NeoX.Modules.InterpreterBrowseIndex.saveRepKey);
     },
     
     load: function() {
@@ -77,6 +84,25 @@ var MInterpreterBrowseIndex_Implementation = {
     goToLast: function() {
       var lastPage = parseInt($(".goToPage").last().html());
       NeoX.Modules.InterpreterBrowseRequests.load(lastPage);
+    },
+    
+    edit: function() {
+    	if($(this).find("input").length == 0) {
+        var rep = $(this).html().trim();
+        var newRep = $(this).html("<input type='text' class='newRep' value='" + rep + "' style='width: 830px;' /> <input type='button' value='Save' style='padding: 4px;' class='saveRep' />");
+        $('.newRep').focus();
+    	}
+    },
+    
+    saveRep: function(e) {
+    	e.stopPropagation();
+    	NeoX.Modules.InterpreterBrowseRequests.save(parseInt($(this).parent().parent().attr('data-id'), 10), $('.newRep').val(), $(this).parent());
+    },
+    
+    saveRepKey: function(e) {
+    	if(e.which == 13) {
+        NeoX.Modules.InterpreterBrowseRequests.save(parseInt($(this).parent().parent().attr('data-id'), 10), $(this).val(), $(this).parent());
+    	}
     }
     
   }

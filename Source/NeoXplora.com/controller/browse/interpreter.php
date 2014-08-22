@@ -78,6 +78,36 @@ class TBrowseInterpreter extends TTrain {
     
     echo json_encode($response);
   }
+  
+  public function save() {
+    if(!isset($_POST['sentenceID']) || !isset($_POST['newValue'])) return;
+          
+    $sentenceID = $_POST['sentenceID'];
+    $newValue = trim(htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES));
+    
+    if(trim($newValue) == ''){
+      return;
+    }
+    
+    $validator = $this->Delphi()->ValidateRep($newValue);
+    
+    if($validator === true) {      
+      $this->core->entity("sentence")->update(
+        $sentenceID, 
+        array(
+          "rep" => $newValue
+        )
+      );
+      $this->updatePageStatus($sentenceID);
+      echo json_encode("");
+    } else {
+      $response = array(
+        "ErrorString" => $validator['ErrorString'],
+        "StrIndex" => $validator['StrIndex']
+      ); 
+      echo json_encode($response);
+    }
+  }
 
  }
 ?>

@@ -8,7 +8,7 @@ class TPanel extends \SkyCore\TObject {
   public $accessLevel = 'admin';
 
   public function index() {
-    $this->template->addStyle("style/admin.css");
+    $this->template->addStyle("style/admin.pages.css");
     $this->template->load("index", "panel");
     $this->template->pageTitle = "Admin Panel";
     $this->template->page = "panel";
@@ -20,8 +20,8 @@ class TPanel extends \SkyCore\TObject {
     $pageCounts = $this->core->entity("page")->advancedCount();
     $sentenceCounts = $this->core->entity("sentence")->advancedCount();
     
-    $this->template->pageCounts = $pageCounts;
-    $this->template->sentenceCounts = $sentenceCounts;
+    $this->template->pageCounts = $pageCounts->fetch_array();
+    $this->template->sentenceCounts = $sentenceCounts->fetch_array();
     
     $this->template->addStyle("style/admin.css");
     $this->template->load("stats", "panel");

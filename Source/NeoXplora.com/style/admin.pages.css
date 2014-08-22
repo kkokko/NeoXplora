@@ -1,0 +1,37 @@
+.panel {
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+h4{
+  background-color:rgb(112,146,190);
+  color:#FFF;
+  padding:5px;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+
+.pagesForm td {
+  padding: 5px;
+}
+
+.pagesForm td textarea {
+  height: 100px;
+  width: 290px;
+  padding: 5px;
+}
+
+.pagesForm td input{
+  width: 290px;
+  padding: 5px;
+}
+
+.pagesForm td:first-child {
+  vertical-align: top;
+}
+
+.page-list li {
+  margin-bottom: 5px;
+}

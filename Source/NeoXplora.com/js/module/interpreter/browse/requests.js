@@ -29,6 +29,21 @@ var MInterpreterBrowseRequests_Implementation = {
       });
     },
     
+    save: function(id, rep, container) {
+    	$.ajax({
+        type: "POST",
+        url: NeoX.Modules.InterpreterBrowseIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.InterpreterBrowseIndex.getConfig().moduleType,
+          'action': 'save',
+          'sentenceID': id,
+          'newValue': rep
+        },
+        success: NeoX.Modules.InterpreterBrowseRequests.saveCallback(rep, container)
+      });
+    },
+    
     /*
      * AJAX SUCCESS CALLBACKS
      */
@@ -41,6 +56,18 @@ var MInterpreterBrowseRequests_Implementation = {
       } else {
         $(".buttons.smaller").show();
       }
+    },
+    
+    saveCallback: function(newValue, container) {
+      return function(json) {
+        if(json && json['ErrorString'] && json['StrIndex']) {
+          var near = newValue.substr(json['StrIndex'], newValue.length);
+          container.find('.rep-error').remove();
+          container.append("<br/><div class='rep-error' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
+        } else {
+          container.html(newValue);
+        }
+      };
     }
        
     
