@@ -14,7 +14,8 @@ var MLinkerBrowseIndex_Implementation = {
         firstPage: '.firstBtn',
         previousPage: '.previousBtn',
         nextPage: '.nextBtn',
-        lastPage: '.lastBtn'  
+        lastPage: '.lastBtn',
+        retrainBtn: '.retrainBtn'
       },
       moduleScript: 'browse.php',
       moduleType: 'linker',
@@ -51,6 +52,7 @@ var MLinkerBrowseIndex_Implementation = {
       NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.previousPage, NeoX.Modules.LinkerBrowseIndex.goToPrevious);
       NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.nextPage, NeoX.Modules.LinkerBrowseIndex.goToNext);
       NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.lastPage, NeoX.Modules.LinkerBrowseIndex.goToLast);
+      NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.retrainBtn, NeoX.Modules.LinkerBrowseIndex.retrain);
     },
     
     load: function() {
@@ -85,8 +87,13 @@ var MLinkerBrowseIndex_Implementation = {
     },
     
     goToLast: function() {
-      var lastPage = parseInt($(".goToPage").last().html());
+      var lastPage = parseInt($(".goToPage").last().html(), 10);
       NeoX.Modules.LinkerBrowseRequests.load(lastPage);
+    },
+    
+    retrain: function() {
+    	var pageId = parseInt($(".pageId").val(), 10);
+      NeoX.Modules.LinkerBrowseRequests.retrain(pageId);
     },
     
     loadData: function(data) {
@@ -131,7 +138,7 @@ var MLinkerBrowseIndex_Implementation = {
     repaint: function() {
     	var data = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
     	
-    	var html = '<div class="trainer-container">' +
+    	var html = '<input type="hidden" class="pageId" value=""/><div class="trainer-container">' +
         '<table class="trainer">' + 
         '<tr class="table-header">' +
         '<th>Sentence</th>' +

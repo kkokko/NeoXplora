@@ -201,6 +201,22 @@ class TTrainInterpreter extends TTrain {
     }
   }
   
+  public function resplit() {
+    if(!isset($_POST['sentenceID'])) return;
+          
+    $sentenceID = $_POST['sentenceID'];
+    
+    $this->core->entity("sentence")->update(
+      $sentenceID, 
+      array(
+        "status" => 'ssFinishedGenerate'
+      )
+    );
+    $this->updatePageStatus($sentenceID);
+    echo json_encode("");
+
+  }
+  
 }
 
 ?>

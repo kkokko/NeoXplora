@@ -14,6 +14,7 @@
     <td>
       <a href="javascript:void(0)" class="btnDone button">Done</a> 
       <a href="javascript:void(0)" class="btnSkip button">Skip</a>
+      <a href="javascript:void(0)" class="btnResplit button">ReSplit</a>
     </td>
   </tr>
   <tr>

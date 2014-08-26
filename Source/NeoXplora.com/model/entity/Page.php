@@ -32,5 +32,16 @@
       return $this->result($query);
     }
     
+    public function deleteWithData($pageId) {
+      $query = $this->query("
+        DELETE s.*, pr.*
+        FROM [[sentence]] s
+        INNER JOIN [[proto]] pr ON s.[[sentence.pageid]] = pr.[[proto.pageid]]
+        WHERE s.[[sentence.pageid]] = :1
+      ", intval($pageId));
+      
+      $this->delete(intval($pageId));
+    }
+    
 	}
 ?>

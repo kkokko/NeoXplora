@@ -29,6 +29,20 @@ var MLinkerBrowseRequests_Implementation = {
       });
     },
     
+    retrain: function(pageID) {
+    	$.ajax({
+        type: "POST",
+        url: NeoX.Modules.LinkerBrowseIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.LinkerBrowseIndex.getConfig().moduleType,
+          'action': 'retrain',
+          'pageId': pageID
+        },
+        success: NeoX.Modules.LinkerBrowseRequests.retrainCallback
+      });
+    },
+    
     /*
      * AJAX SUCCESS CALLBACKS
      */
@@ -42,12 +56,17 @@ var MLinkerBrowseRequests_Implementation = {
     		NeoX.Modules.LinkerBrowseIndex.repaint();
     	}
     	$(NeoX.Modules.LinkerBrowseIndex.getConfig().paginationContainer).html(json['pagination']);
+    	$(".pageId").val(json['pageid']);
       if(json['pagination'] == "") {
         $(".buttons.smaller").hide();
       } else {
         $(".buttons.smaller").show();
       }
-    	
+    },
+    
+    retrainCallback: function(json) {
+    	var page = parseInt($(".currentPage").html(), 10);
+    	NeoX.Modules.LinkerBrowseRequests.load(page);
     }
   }
 

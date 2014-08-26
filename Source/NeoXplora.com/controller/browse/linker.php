@@ -51,7 +51,8 @@ class TBrowseLinker extends TTrain {
       
       $page_data = $query->fetch_array();
       $pagetitle = $page_data[Entity\TPage::$tok_title];
-      
+      $pageId = $page_data[Entity\TPage::$tok_id];
+            
       require_once __DIR__ . "/../../model/entity/sentence.php";
       
       $query = $this->core->model("linker", "train")->getCReps($page_data[Entity\TPage::$tok_id]);
@@ -109,10 +110,26 @@ class TBrowseLinker extends TTrain {
 
     $response = array(
       'data' => $data,
+      'pageid' => $pageId,
       'pagination' => $pagination
     );
 
     echo json_encode($response);
+  }
+
+  public function retrain() {
+    if(!isset($_POST['pageId'])) return;
+    
+    $pageId = $_POST['pageId'];
+    
+    $this->core->entity("page")->update(
+      $pageId, 
+      array(
+        "status" => "psReviewedRep"
+      )
+    );
+    
+    echo json_encode('');
   }
 
 }

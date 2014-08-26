@@ -88,6 +88,20 @@ var MInterpreterTrainRequests_Implementation = {
       });
     },
     
+    resplit: function(sentenceID) {
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.InterpreterTrainIndex.getConfig().moduleType,
+          'action': 'resplit',
+          'sentenceID': sentenceID
+        },
+        success: NeoX.Modules.InterpreterTrainRequests.resplitCallback
+      });
+    },
+    
     /*
      * AJAX SUCCESS CALLBACKS
      */
@@ -122,6 +136,10 @@ var MInterpreterTrainRequests_Implementation = {
           NeoX.Modules.InterpreterTrainRequests.load();
         }
       };
+    },
+    
+    resplitCallback: function(json) {
+      NeoX.Modules.InterpreterTrainRequests.load();
     },
     
     approveCallback: function(newValue) {

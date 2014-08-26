@@ -19,10 +19,6 @@ class TPanelPages extends TPanel {
     $this->template->load("index", "panel/pages");
     $this->template->pageTitle = "Manage Pages | Admin Panel";
     $this->template->page = "pages_panel";
-    /*$this->template->addJSModules(array(
-      "NeoX.Modules.LinkerRuleBrowseIndex" => "js/module/linkerrules/browse/index.js",
-      "NeoX.Modules.LinkerRuleBrowseRequests" => "js/module/linkerrules/browse/requests.js"
-    ));*/
     
     $page = isset($_GET['page'])?$_GET['page']:1;
     $per_page = 15;
@@ -69,10 +65,24 @@ class TPanelPages extends TPanel {
   public function add() {
     $this->template->addStyle("style/admin.pages.css");
     
-    /*$this->template->addJSModules(array(
-      "NeoX.Modules.LinkerRuleEditIndex" => "js/module/linkerrules/edit/index.js",
-      "NeoX.Modules.LinkerRuleEditRequests" => "js/module/linkerrules/edit/requests.js"
-    ));*/
+    $pageTitle = '';
+    $pageBody = '';
+    
+    if(isset($_POST['submit'])) {
+      $pageTitle = $_POST['pageTitle'];
+      $pageBody = $_POST['pageBody'];
+      
+      if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "") {
+        $this->Delphi()->PageAdd($pageTitle, $pageBody);
+        $this->template->redirect = "panel.php?type=pages";
+      }
+    }
+    
+    $this->template->pageData = array(
+      'Title' => $pageTitle,
+      'Body' => $pageBody
+    );
+    
     $this->template->load("add", "panel/pages");
     $this->template->pageTitle = "Add Page | Admin Panel";
     $this->template->page = "add_pages_panel";
@@ -82,41 +92,64 @@ class TPanelPages extends TPanel {
   }
 
   public function edit() {
-    if(isset($_REQUEST['ruleId'])) {
-      $ruleId = intval($_REQUEST['ruleId']);
-      $ruleData = $this->getRuleInfo($ruleId);
-      $this->template->ruleId = $ruleId;
-      $this->template->ruleName = $ruleData[Entity\TLinkerRule::$tok_name];
-      $this->template->ruleType = $ruleData[Entity\TLinkerRule::$tok_type];
-      $this->template->ruleScore = $ruleData[Entity\TLinkerRule::$tok_score];
-      $this->template->addStyle("style/admin.css");
-      $this->template->addStyle("style/admin.irep.css");
-      $this->template->addScript("js/classes/LinkerConditionParser.js");
-      $this->template->addScript("js/classes/BaseRule.js");
-      $this->template->addScript("js/classes/RuleGroup.js");
-      $this->template->addScript("js/classes/RuleValue.js");
-      $this->template->addScript("js/classes/LinkerRuleValue.js");
-      $this->template->addScripts(array("js/system/object.js"));
-      $this->template->addJSModules(array(
-        "NeoX.Modules.LinkerRuleEditIndex" => "js/module/linkerrules/edit/index.js",
-        "NeoX.Modules.LinkerRuleEditRequests" => "js/module/linkerrules/edit/requests.js"
-      ));
-      $this->template->load("add_edit", "panel/linkerrules");
-      $this->template->pageTitle = "Linker rule - Edit | Admin Panel";
-      $this->template->page = "linkerrules_panel";
-
-      $this->template->hide_right_box = true;
-      $this->template->render();
+    if(!isset($_GET['pageid'])) return;
+    if(!isset($_GET['page'])) {
+      $page = 1;
+    } else {
+      $page = intval($_GET['page']);
     }
+    
+    $pageId = intval($_GET['pageid']);
+    $pageData = $this->core->entity("page")->select(array("id" => $pageId));
+    if($pageData->num_rows == 0) {
+      $this->template->redirect = "panel.php?type=pages&page=" . $page;
+    } else {
+      $pageData = $pageData->fetch_array();
+      $pageTitle = $pageData[Entity\TPage::$tok_title];
+      $pageBody = $pageData[Entity\TPage::$tok_body];
+      
+      $this->template->pageData = array(
+        'Id' => $pageId,
+        'Title' => $pageTitle,
+        'Body' => $pageBody
+      );
+      
+      $this->template->addStyle("style/admin.pages.css");
+  
+      $this->template->currentPage = $page;
+      $this->template->load("edit", "panel/pages");
+      $this->template->pageTitle = "Edit Page | Admin Panel";
+      
+      $this->template->page = "edit_pages_panel";
+      
+      if(isset($_POST['submit'])) {
+        if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "") {
+          //edit request to delphi
+          $this->Delphi()->PageAdd($pageId, $pageTitle, $pageBody);
+          $this->template->redirect = "panel.php?type=pages&page=" . $page;
+        }
+      }
+    }
+
+    $this->template->hide_right_box = true;
+    $this->template->render();
   }
   
   public function delete() {
-    if(!isset($_POST['ruleId'])) echo "Rule Id not set";
-    $ruleId = (int) $_POST['ruleId'];
+    if(!isset($_GET['pageid'])) return;
+    if(!isset($_GET['page'])) {
+      $page = 1;
+    } else {
+      $page = intval($_GET['page']);
+    }
     
-    $query = $this->core->entity("LinkerRule")->deleteRuleWithData($ruleId);
+    $pageId = (int) $_GET['pageid'];
     
-    echo $query;
+    //delete page
+    $query = $this->core->entity("page")->deleteWithData($pageId);
+    
+    $this->template->redirect = "panel.php?type=pages&page=" . $page;
+    $this->template->render();
   }
  
 

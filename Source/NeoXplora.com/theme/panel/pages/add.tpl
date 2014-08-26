@@ -11,15 +11,15 @@
         <table class="pagesForm">
           <tr>
             <td>Title:</td> 
-            <td><input type="text" name="pageTitle" /></td>
+            <td><input type="text" name="pageTitle" value ="<?php echo $this->pageData['Title']; ?>" /></td>
           </tr>
           <tr>
             <td>Body:</td>
-            <td><textarea name="pageBody"></textarea></td>
+            <td><textarea name="pageBody"><?php echo $this->pageData['Body']; ?></textarea></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="submit" value="Add Page" style="width: 100px; float: right;" /></td>
+            <td><input type="submit" name="submit" value="Add Page" style="width: 100px; float: right;" /></td>
           </tr>
         </table>
       </form>

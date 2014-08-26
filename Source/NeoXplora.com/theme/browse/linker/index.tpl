@@ -24,6 +24,11 @@
           <a href="javascript:void(0)" class="lastBtn">Last</a>
         </div>
         <div class='clear'></div>
+        <br/>
+        <div class="buttons smaller">
+          <a href="javascript:void(0)" class="retrainBtn">Send Back to Training</a>
+        </div>
+        <div class='clear'></div>
         <div class="boxContent">
           
         </div>

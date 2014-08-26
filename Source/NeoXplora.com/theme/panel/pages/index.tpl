@@ -17,7 +17,7 @@
             <?php echo $APage['Title']; ?>
             <div style="float:right">
               <a href="panel.php?type=pages&action=edit&pageid=<?php echo $APage['Id']; ?>&page=<?php echo $this->currentPage; ?>" class="editPage">Edit</a> | 
-              <a href="panel.php?type=pages&action=delete&pageid=<?php echo $APage['Id']; ?>&page=<?php echo $this->currentPage; ?>" class="deletePage">Delete</a>
+              <a href="panel.php?type=pages&action=delete&pageid=<?php echo $APage['Id']; ?>&page=<?php echo $this->currentPage; ?>" onclick="return confirm('Are you sure you want to delete this page and all of its data ?')" class="deletePage">Delete</a>
             </div>
           </li>
         <?php } ?>

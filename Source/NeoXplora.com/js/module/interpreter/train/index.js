@@ -14,7 +14,8 @@ var MInterpreterTrainIndex_Implementation = {
         skip: '.btnSkip',
         use: '.btnUse',
         approve: '.btnApprove',
-        edit: '.btnEdit'
+        edit: '.btnEdit',
+        resplit: '.btnResplit'
     	},
       Inputs: {
       	sentenceID: '.sentenceID',
@@ -44,6 +45,7 @@ var MInterpreterTrainIndex_Implementation = {
       NeoX.Modules.InterpreterTrainIndex.hookEvent('click', NeoX.Modules.InterpreterTrainIndex.getConfig().Buttons.use, NeoX.Modules.InterpreterTrainIndex.use);
       NeoX.Modules.InterpreterTrainIndex.hookEvent('click', NeoX.Modules.InterpreterTrainIndex.getConfig().Buttons.approve, NeoX.Modules.InterpreterTrainIndex.approve);
       NeoX.Modules.InterpreterTrainIndex.hookEvent('click', NeoX.Modules.InterpreterTrainIndex.getConfig().Buttons.edit, NeoX.Modules.InterpreterTrainIndex.edit);
+      NeoX.Modules.InterpreterTrainIndex.hookEvent('click', NeoX.Modules.InterpreterTrainIndex.getConfig().Buttons.resplit, NeoX.Modules.InterpreterTrainIndex.resplit);
       NeoX.Modules.InterpreterTrainIndex.hookEvent('keypress', NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.InterpreterTrainIndex.repKeyPress);
     },
     
@@ -86,6 +88,11 @@ var MInterpreterTrainIndex_Implementation = {
     
     edit: function() {
       $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.newValue).val($(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.repGuessValue).html());
+    },
+    
+    resplit: function() {
+      var sentenceID = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.sentenceID).val();
+      NeoX.Modules.InterpreterTrainRequests.resplit(sentenceID);
     },
     
     repKeyPress: function(event) {
