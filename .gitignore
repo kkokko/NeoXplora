@@ -66,3 +66,7 @@ UpdateExternal.bat
 /Source/NeoWikiParser/Build/*.map
 /Source/NeoService/*.drc
 /Source/NeoWikiParser/Build/*.ini
+/Source/NeoService/Build/Log/*.json
+/Source/NeoService/Build/Log
+/Source/NeoServiceTests/Dcu
+/Source/NeoServiceTests/Build
