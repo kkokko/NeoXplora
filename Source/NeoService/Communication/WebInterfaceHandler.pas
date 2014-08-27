@@ -20,8 +20,7 @@ type
 implementation
 
 uses
-  AppUnit, TypesFunctions, AppHttpCommandRequestJson, AppClientSession,
-  Session, LoggerUnit;
+  AppUnit, TypesFunctions, AppHttpCommandRequestJson, AppClientSession, Session, LoggerUnit, AppHttpCommandRequestApiXml;
 
 var
   _WebInterfaceHandler: TWebInterfaceHandler = nil;
@@ -76,6 +75,7 @@ procedure TWebInterfaceHandler.RegisterHttpCommands;
 begin
   inherited;
   RegisterHttpCommand('/Request.json', TAppHttpCommandRequestJson);
+  RegisterHttpCommand('/api.xml.php', TAppHttpCommandRequestApiXml);
   RegisterHttpCommand('/', TAppHttpCommandRequestJson);
   DefaultHttpCommand := TAppHttpCommandRequestJson;
 end;

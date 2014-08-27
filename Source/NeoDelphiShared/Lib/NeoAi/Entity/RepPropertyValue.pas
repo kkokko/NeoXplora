@@ -14,11 +14,13 @@ type
       TOperatorTypes = set of TOperatorType;
   private
     FLinkObject: TEntity;
-    FLinkType: TLinkType;
     FValue: string;
     FRepPropertyKey: TEntity;
-    FRepPropertyKeyId: TId;
+    FKeyId: TId;
     FOperatorType: TOperatorType;
+    FTargetValueId: TId;
+    FTargetEntityId: TId;
+    FTargetKeyId: TId;
   public
     constructor Create(ARepPropertyKey: TEntity; AnOperatorType: TOperatorType; const AValue: string); overload;
     constructor Create(ARepPropertyKey: TEntity; AnOperatorType: TOperatorType; ALinkType: TRepPropertyValue.TLinkType; ALinkObject: TEntity); overload;
@@ -28,9 +30,11 @@ type
   published
     property Id;
     property Kids;
-    property LinkType: TLinkType read FLinkType write FLinkType;
+    property TargetEntityId: TId read FTargetEntityId write FTargetEntityId;
+    property TargetKeyId: TId read FTargetKeyId write FTargetKeyId;
+    property TargetValueId: TId read FTargetValueId write FTargetValueId;
     property OperatorType: TOperatorType read FOperatorType write FOperatorType;
-    property RepPropertyKeyId: TId read FRepPropertyKeyId write FRepPropertyKeyId;
+    property KeyId: TId read FKeyId write FKeyId;
     property Value: string read FValue write FValue;
   end;
 
@@ -50,7 +54,14 @@ constructor TRepPropertyValue.Create(ARepPropertyKey: TEntity; AnOperatorType: T
   ALinkType: TRepPropertyValue.TLinkType; ALinkObject: TEntity);
 begin
   Create;
-  FLinkType := ALinkType;
+  case ALinkType of
+    ltEntity:
+      FTargetEntityId := ALinkObject.Id;
+    ltAttrKey:
+      FTargetKeyId := ALinkObject.Id;
+    ltEventKey:
+      FTargetValueId := ALinkObject.Id;
+  end;
   FLinkObject := ALinkObject;
   FOperatorType := AnOperatorType;
   FRepPropertyKey := ARepPropertyKey;

@@ -68,7 +68,7 @@ end;
 
 procedure TPageBase.SetName(const AName: string);
 begin
-  FName := Name;
+  FName := AName;
 end;
 
 initialization

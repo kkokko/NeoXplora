@@ -9,15 +9,15 @@ type
   TRepObjectBase = class(TEntity)
   public
     type
-      TPropertyType = (ptAttribute, ptEvent);
+      TKeyPropertyType = (ptAttribute, ptEvent);
   private
     FKids: TSkyStringList;
   public
     constructor Create; override;
 
-    function GetOrCreateKid(const AName: string; APropertyType: TPropertyType): TEntity;
+    function GetOrCreateKid(const AName: string; APropertyType: TKeyPropertyType): TEntity;
   published
-    property Kids: TSkyStringList read FKids write FKids;
+    property Kids: TSkyStringList read FKids write FKids; // array of TRepObjectBase
   end;
 
 implementation
@@ -33,7 +33,7 @@ begin
   FKids.Sorted := True;
 end;
 
-function TRepObjectBase.GetOrCreateKid(const AName: string; APropertyType: TPropertyType): TEntity;
+function TRepObjectBase.GetOrCreateKid(const AName: string; APropertyType: TKeyPropertyType): TEntity;
 begin
   Result := Kids.ObjectOfValueDefault[AName, nil] as TRepPropertyKey;
   if Result = nil then

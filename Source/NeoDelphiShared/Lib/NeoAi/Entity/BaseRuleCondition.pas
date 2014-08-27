@@ -1,35 +1,33 @@
-unit IRepRuleValue;
+unit BaseRuleCondition;
 
 interface
 
 uses
-  TypesConsts, Entity, RepPropertyKey, RepPropertyValue;
+  TypesConsts, BaseRule, RepPropertyKey, RepPropertyValue;
 
 type
-  TIRepRuleValue = class(TEntity)
+  TBaseRuleCondition = class(TBaseRule)
   private
     FKey: string;
+    FGroupId: TId;
     FValue: string;
-    FRuleId: TId;
     FKeyPropertyType: TRepPropertyKey.TKeyPropertyType;
     FOperatorType: TRepPropertyValue.TOperatorType;
   published
+    property GroupId: TId read FGroupId write FGroupId;
     property Id;
     property Key: string read FKey write FKey;
     property OperatorType: TRepPropertyValue.TOperatorType read FOperatorType write FOperatorType;
+    property Order;
     property KeyPropertyType: TRepPropertyKey.TKeyPropertyType read FKeyPropertyType write FKeyPropertyType;
-    property RuleId: TId read FRuleId write FRuleId;
     property Value: string read FValue write FValue;
   end;
 
 implementation
 
-uses
-  AppConsts;
-
-{ TIRepRuleValue }
+{ TBaseRuleCondition }
 
 initialization
-  TIRepRuleValue.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'ireprulevalue');
+  TBaseRuleCondition.RegisterEntityClass;
 
 end.

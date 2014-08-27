@@ -36,7 +36,7 @@ type
 implementation
 
 uses
-  EntityMappingManager, EntityMapping;
+  EntityMappingManager, EntityMapping, AppConsts;
 
 { TProto }
 
@@ -67,7 +67,7 @@ begin
 end;
 
 initialization
-  TProto.RegisterEntityClassWithMappingToTable('proto');
+  TProto.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'proto');
   TProto.RegisterToken(TProto.Tok_Id, 'Id');
   TProto.RegisterToken(TProto.Tok_Level, 'Level');
   TProto.RegisterToken(TProto.Tok_Name, 'Name');

@@ -57,7 +57,6 @@ type
     property RepGuessB: string read FRepGuessB write FRepGuessB;
     property RepGuessC: string read FRepGuessC write FRepGuessC;
     property RepGuessD: string read FRepGuessD write FRepGuessD;
-    property CRepGuessA: string read FCRepGuessA write FCRepGuessA;
     property SRepGuessA: string read FSRepGuessA write FSRepGuessA;
     property SRepGuessB: string read FSRepGuessB write FSRepGuessB;
     property SRepGuessC: string read FSRepGuessC write FSRepGuessC;

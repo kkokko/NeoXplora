@@ -28,7 +28,6 @@ uses
   GuessObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas',
   PageBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas',
   CRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas',
-  CRepDecoder in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRepDecoder.pas',
   SentenceWithGuesses in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas',
   CacheReloadThread in 'App\CacheReloadThread.pas',
   PosTagger in '..\NeoDelphiShared\Lib\NeoAi\Classes\PosTagger.pas',
@@ -50,7 +49,18 @@ uses
   IRepRuleValue in '..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleValue.pas',
   RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas',
   BaseRule in '..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRule.pas',
-  IRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\IRep.pas';
+  IRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\IRep.pas',
+  CRepRuleGroup in '..\NeoDelphiShared\Lib\NeoAi\Entity\CRepRuleGroup.pas',
+  CRepRuleCondition in '..\NeoDelphiShared\Lib\NeoAi\Entity\CRepRuleCondition.pas',
+  CRepRule in '..\NeoDelphiShared\Lib\NeoAi\Entity\CRepRule.pas',
+  Rep in '..\NeoDelphiShared\Lib\NeoAi\Classes\Rep.pas',
+  BaseRuleCondition in '..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRuleCondition.pas',
+  BaseRuleGroup in '..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRuleGroup.pas',
+  AppHttpCommandRequestApiXml in 'Communication\AppHttpCommandRequestApiXml.pas',
+  AppEntityXmlReader2 in 'Communication\AppEntityXmlReader2.pas',
+  AppEntityXmlWriter2 in 'Communication\AppEntityXmlWriter2.pas',
+  ApiRequest in 'Requests\ApiRequest.pas',
+  ApiCommands in 'Requests\ApiCommands.pas';
 
 {$R *.res}
 
@@ -67,7 +77,7 @@ begin
   begin
     Forms.Application.Initialize;
     Forms.Application.CreateForm(TfrmDebug, frmDebug);
-    Forms.Application.Run;
+  Forms.Application.Run;
   end
   else
   begin

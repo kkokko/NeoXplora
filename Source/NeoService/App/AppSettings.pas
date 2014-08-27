@@ -32,6 +32,8 @@ type
     procedure SetServicePort(const Value: Word);
     procedure SetLogAllOperations(const Value: Boolean);
     function GetTranslationPath: string;
+    function GetUseRepValidator: Boolean;
+    procedure SetUseRepValidator(const Value: Boolean);
   public
     constructor Create;
     destructor Destroy; override;
@@ -48,6 +50,7 @@ type
     property StartTime: TDateTime read FStartTime;
     property TempFolder: string read GetTempFolder;
     property TranslationPath: string read GetTranslationPath write SetTranslationPath;
+    property UseRepValidator: Boolean read GetUseRepValidator write SetUseRepValidator;
   end;
 
 implementation
@@ -109,6 +112,11 @@ begin
   Result := IncludeTrailingPathDelimiter(FIniFile.ReadString(APP_SECTION_TRANSLATIONS, 'LanguageListPath', ''));
 end;
 
+function TAppSettings.GetUseRepValidator: Boolean;
+begin
+  Result := FIniFile.ReadBool(APP_SECTION_SETTINGS, 'UseRepValidator', True);
+end;
+
 procedure TAppSettings.ReadDBConnectionSettings;
 begin
   FDBConnectionSettings.ServerName := FIniFile.ReadString(APP_SECTION_DATABASE, 'ServerName', '127.0.0.1');
@@ -138,6 +146,11 @@ begin
   FIniFile.WriteString(APP_SECTION_TRANSLATIONS, 'LanguageListPath', Value);
 end;
 
+procedure TAppSettings.SetUseRepValidator(const Value: Boolean);
+begin
+  FIniFile.WriteBool(APP_SECTION_SETTINGS, 'UseRepValidator', Value);
+end;
+
 procedure TAppSettings.WriteDBConnectionSettings;
 begin
   FIniFile.WriteString(APP_SECTION_DATABASE, 'ServerName', FDBConnectionSettings.ServerName);
@@ -155,6 +168,7 @@ begin
   CreateGUID(TheGuid);
   FIniFile := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
   TranslationPath := TranslationPath;
+  UseRepValidator := UseRepValidator;
   SetLogAllOperations(GetLogAllOperations);
   ReadDBConnectionSettings;
   ReadTranslationFiles;

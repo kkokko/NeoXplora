@@ -1,4 +1,4 @@
-unit IRepRuleGroup;
+unit CRepRuleGroup;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   BaseRuleGroup;
 
 type
-  TIRepRuleGroup = class(TBaseRuleGroup)
+  TCRepRuleGroup = class(TBaseRuleGroup)
   published
     property ConjunctionType;
     property Id;
@@ -22,6 +22,6 @@ uses
   AppConsts;
 
 initialization
-  TIRepRuleGroup.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'ireprulegroup');
+  TCRepRuleGroup.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'creprulegroup');
 
 end.

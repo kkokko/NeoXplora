@@ -9,13 +9,11 @@ type
   TBaseRule = class(TEntity)
   private
     FOrder: Integer;
-    FRuleId: TId;
   public
     class var
       Tok_Order: TEntityFieldNamesToken;
   published
     property Order: Integer read FOrder write FOrder;
-    property RuleId: TId read FRuleId write FRuleId;
   end;
 
 implementation

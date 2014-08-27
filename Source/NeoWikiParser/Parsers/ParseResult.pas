@@ -29,7 +29,7 @@ type
 implementation
 
 uses
-  Skylists, AppUnit, Proto, TypesConsts, SentenceBase;
+  Skylists, AppUnit, Proto, TypesConsts, SentenceBase, SysUtils;
 
 { TParseResult }
 
@@ -55,6 +55,8 @@ var
   ThePageId: TId;
   I: Integer;
 begin
+  if (Trim(Page.Body) = '') or (Page.Name = '') then
+    Exit;
   ThePageId := App.SQLConnection.InsertEntity(Page);
   TheProto := TProto.Create;
   try

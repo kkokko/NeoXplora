@@ -15,7 +15,7 @@ type
     procedure ReadExpression(AParent: TRepObjectBase);
     function ReadEntity: TRepEntity;
     procedure ReadGroupChildren(AGroup: TRepGroup);
-    function ReadPropertyName(AParent: TRepObjectBase; APropertyType: TRepPropertyKey.TPropertyType): TRepPropertyKey;
+    function ReadPropertyName(AParent: TRepObjectBase; AKeyPropertyType: TRepPropertyKey.TKeyPropertyType): TRepPropertyKey;
     function ReadOperatorType: TRepPropertyValue.TOperatorType;
     function ReadPropertyValue(AnAttribute: TRepPropertyKey; AnOperatorType: TRepPropertyValue.TOperatorType): TRepPropertyValue;
     function ReadIdentifier: string;
@@ -101,12 +101,12 @@ begin
   until False;
 end;
 
-function TRepDecoder.ReadPropertyName(AParent: TRepObjectBase; APropertyType: TRepPropertyKey.TPropertyType): TRepPropertyKey;
+function TRepDecoder.ReadPropertyName(AParent: TRepObjectBase; AKeyPropertyType: TRepPropertyKey.TKeyPropertyType): TRepPropertyKey;
 var
   TheName: string;
 begin
   TheName := ReadIdentifier;
-  Result := AParent.GetOrCreateKid(TheName, APropertyType) as TRepPropertyKey;
+  Result := AParent.GetOrCreateKid(TheName, AKeyPropertyType) as TRepPropertyKey;
   if GetCurrentChar = '(' then
   begin
     Inc(FRepString^.Position);
@@ -178,34 +178,34 @@ end;
 function TRepDecoder.ReadLink(AnAttribute: TRepPropertyKey; AnOperatorType: TRepPropertyValue.TOperatorType): TRepPropertyValue;
 var
   TheObject, TheNewObject: TRepObjectBase;
-  ThePropertyType: TRepPropertyKey.TPropertyType;
+  TheKeyPropertyType: TRepPropertyKey.TKeyPropertyType;
   TheKeyName: string;
 begin
-  ThePropertyType := ptAttribute; // to prevent warning..
+  TheKeyPropertyType := ptAttribute; // to prevent warning..
   Inc(FRepString^.Position);
   TheObject := ReadEntity;
   repeat
     case GetCurrentChar of
       '.':
-        ThePropertyType := ptAttribute;
+        TheKeyPropertyType := ptAttribute;
       ':':
-        ThePropertyType := ptEvent;
-      else
-        Break;
+        TheKeyPropertyType := ptEvent;
+    else
+      Break;
     end;
     Inc(FRepString^.Position);
     TheKeyName := ReadIdentifier;
     TheNewObject := TheObject.Kids.ObjectOfValueDefault[TheKeyName, nil] as TRepObjectBase;
     if TheNewObject = nil then
     begin
-      TheNewObject := TRepPropertyKey.Create(TheObject, ThePropertyType, TheKeyName);
+      TheNewObject := TRepPropertyKey.Create(TheObject, TheKeyPropertyType, TheKeyName);
       TheObject.Kids.AddObject(TheKeyName, TheNewObject);
     end;
     TheObject := TheNewObject;
   until 1 = 0;
   if TheObject is TRepEntity then
     Result := TRepPropertyValue.Create(AnAttribute, AnOperatorType, ltEntity, TheObject)
-  else if ThePropertyType = ptAttribute then
+  else if TheKeyPropertyType = ptAttribute then
     Result := TRepPropertyValue.Create(AnAttribute, AnOperatorType, ltAttrKey, TheObject)
   else // ptEvent
     Result := TRepPropertyValue.Create(AnAttribute, AnOperatorType, ltEventKey, TheObject);
@@ -297,6 +297,7 @@ var
 begin
   if (AParent = nil) then
   begin
+    ParseSpaces;
     TheEntity := ReadEntity; // read P1123(asd)
     ReadExpression(TheEntity);
     Exit;
@@ -314,6 +315,7 @@ begin
     begin
       Inc(FRepString^.Position);
       TheAttribute := ReadPropertyName(AParent, ptAttribute); // .color(.type=asd)
+      ParseSpaces;
       TheOperator := ReadOperatorType;
       if TheOperator = otNone then
         Exit;

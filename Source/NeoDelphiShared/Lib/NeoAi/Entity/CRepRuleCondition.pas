@@ -1,4 +1,4 @@
-unit IRepRuleCondition;
+unit CRepRuleCondition;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   BaseRuleCondition;
 
 type
-  TIRepRuleCondition = class(TBaseRuleCondition)
+  TCRepRuleCondition = class(TBaseRuleCondition)
   published
     property GroupId;
     property Id;
@@ -22,9 +22,9 @@ implementation
 uses
   AppConsts;
 
-{ TIRepRuleCondition }
+{ TCRepRuleCondition }
 
 initialization
-  TIRepRuleCondition.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'ireprulecondition');
+  TCRepRuleCondition.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'creprulecondition');
 
 end.

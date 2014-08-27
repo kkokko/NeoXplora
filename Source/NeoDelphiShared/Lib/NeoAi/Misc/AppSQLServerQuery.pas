@@ -8,6 +8,7 @@ uses
 type
   TAppSQLServerQuery = class(TBaseQuery)
   public
+    class function GetCRepRules: TEntities;
     class function GetFinishedStoriesCount: Integer;
     class function GetFullSentencesForPageId(APageId: TId): TEntities;
     class function GetHypernyms: TEntities;
@@ -20,6 +21,7 @@ type
     class function GetUntrainedStories: TEntities;
     class procedure UpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer);
   private
+    class function QueryGetCRepRules: TDBSQLQuery;
     class function QueryGetFinishedStoriesCount: TDBSQLQuery;
     class function QueryGetFullSentencesForPageId(APageId: TId): TDBSQLQuery;
     class function QueryGetHypernyms: TDBSQLQuery;
@@ -37,9 +39,14 @@ implementation
 
 uses
   StringArray, AppUnit, EntityWithName, PageBase, TypesFunctions, SentenceWithGuesses, TypInfo, CountData, EntityWithId,
-  SearchPage, SysUtils, RepGroup, IRepRule;
+  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule;
 
 { TAppSQLServerQuery }
+
+class function TAppSQLServerQuery.GetCRepRules: TEntities;
+begin
+  Result := App.SQLConnection.SelectQuery([TCRepRule], QueryGetCRepRules);
+end;
 
 class function TAppSQLServerQuery.GetFinishedStoriesCount: Integer;
 var
@@ -235,6 +242,16 @@ begin
     TSentenceBase.Tok_PageId.SQLToken, '` = st.`', TPageBase.EntityToken_Id.SQLToken,
     '` where st.`', TPageBase.Tok_Status.SQLToken, '` in (:APageStatus1, :APageStatus2) and trim(se.`',
     TSentenceBase.Tok_Rep.SQLToken, '`) <> '''''
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryGetCRepRules: TDBSQLQuery;
+begin
+  Result.Name := 'QueryGetCRepRules';
+  Result.Query := TStringArray.FromArray([
+    'select * from `',
+    TCRepRule.SQLToken,
+    '` order by `', TCRepRule.Tok_Order.SQLToken, '`;'
   ]);
 end;
 

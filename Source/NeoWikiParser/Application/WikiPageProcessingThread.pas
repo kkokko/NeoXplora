@@ -83,6 +83,13 @@ begin
   try
     TheObject.Name := string(AName);
 
+    if (AName <> 'Albedo') and
+      (AName <> 'An American in Paris') and
+      (AName <> 'Academy Award for Best Production Design') and
+      (AName <> 'International Atomic Time') and
+      (AName <> 'List of Atlas Shrugged characters') then
+      Exit;
+
     TheAResult := TLevel0Prep.Execute(AText + #13#10, TheObject);
     TheAResult := TLevel1ParseComments.Execute(TheAResult, TheObject);
     TheAResult := TLevel2ParseTags.Execute(TheAResult, TheObject);

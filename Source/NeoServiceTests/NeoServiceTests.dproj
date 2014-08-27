@@ -1,15 +1,10 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{8466BCB3-FD83-4828-A943-0BAA7F65BC33}</ProjectGuid>
-			<ProjectVersion>13.4</ProjectVersion>
-			<MainSource>NasServer.dpr</MainSource>
+			<ProjectGuid>{99280144-D345-4D54-A97C-7ECFCBB8DEF3}</ProjectGuid>
+			<ProjectVersion>12.0</ProjectVersion>
+			<MainSource>NeoServiceTests.dpr</MainSource>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-			<FrameworkType>VCL</FrameworkType>
-			<Base>True</Base>
-			<Platform Condition="'$(Platform)'==''">Win32</Platform>
-			<TargetedPlatforms>3</TargetedPlatforms>
-			<AppType>Application</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -25,103 +20,45 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_DebugDCUs>true</DCC_DebugDCUs>
-			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<DCC_DependencyCheckOutputName>Build\NeoServiceTests.exe</DCC_DependencyCheckOutputName>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_DcuOutput>dcu</DCC_DcuOutput>
 			<DCC_ExeOutput>Build</DCC_ExeOutput>
-			<DCC_UnitSearchPath>$(SkyFrameworkPath)\Includes;$(SkyFrameworkPath)\Includes\Errors;$(SkyFrameworkPath)\Includes\Entity;$(SkyFrameworkPath)\Includes\Logger;$(SkyFrameworkPath)\Includes\Translations;$(SkyFrameworkPath)\Includes\Db;$(SkyFrameworkPath)\Includes\Communication;$(SkyFrameworkPath)\Includes\Compatibility;$(SkyFrameworkPath)\Includes\Communication\HttpCommands;$(SkyFrameworkPath)\Includes\Communication\Async;$(SkyFrameworkPath)\Includes\Entity\Streaming;$(SkyFrameworkPath)\Includes\Communication\Requests;$(SkyFrameworkPath)\Includes\Windows;$(SkyFrameworkPath)\Includes\DataTypes;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<DCC_UsePackage>vcl;rtl;vclx;vclimg;vclactnband;dbrtl;vcldb;vcldbx;bdertl;vcltouch;xmlrtl;dsnap;dsnapcon;TeeUI;TeeDB;Tee;vclib;ibxpress;adortl;IndyCore;IndySystem;IndyProtocols;inet;intrawebdb_100_140;Intraweb_100_140;VclSmp;vclie;websnap;webdsnap;inetdb;inetdbbde;inetdbxpress;soaprtl;vclribbon;dbexpress;DbxCommonDriver;DataSnapIndy10ServerTransport;DataSnapProviderClient;DbxClientDriver;DataSnapServer;DBXInterBaseDriver;DBXMySQLDriver;dbxcds;DBXFirebirdDriver;DBXSybaseASEDriver;DBXSybaseASADriver;DBXOracleDriver;DBXMSSQLDriver;DBXInformixDriver;DBXDb2Driver;dxCoreD14;cxLibraryD14;cxEditorsD14;cxExtEditorsD14;dxBarD14;dxBarDBNavD14;dxBarExtDBItemsD14;dxBarExtItemsD14;dxRibbonD14;cxBarEditItemD14;dxdbtrD14;dxtrmdD14;dxmdsD14;dxDockingD14;dxFlowChartD14;cxPageControlD14;dxLayoutControlD14;dxNavBarD14;dxorgcD14;dxdborD14;cxGridD14;cxPivotGridD14;cxPivotGridChartD14;cxPivotGridOLAPD14;cxTreeListD14;cxTreeListdxBarPopupMenuD14;cxSchedulerD14;cxSchedulerGridD14;dxComnD14;dxsbD14;dcldxSkinsCoreD14;dxSkinsCoreD14;dxSkinscxPCPainterD14;dxSkinscxScheduler3PainterD14;dxSkinsdxDLPainterD14;dxSkinsdxBarPainterD14;dxSkinsdxNavBar2PainterD14;dxSpellCheckerD14;cxSpreadSheetD14;cxVerticalGridD14;dxPSCoreD14;dxPSLnksD14;dxPScxCommonD14;dxPScxExtCommonD14;dxPScxGrid6LnkD14;dxPScxPivotGrid2LnkD14;dxPScxScheduler3LnkD14;dxPScxSSLnkD14;dxPScxTL5LnkD14;dxPScxVGridLnkD14;dxPSTeeChartD14;dxPSDBTeeChartD14;dxPSdxOCLnkD14;dxPSdxDBOCLnkD14;dxPSdxDBTVLnkD14;dxPSdxFCLnkD14;dxPSdxLC2LnkD14;dxPScxPCProdD14;dxPsPrVwAdvD14;dxPSPrVwRibbonD14;dxSkinsdxRibbonPainterD14;dxSkinXmas2008BlueD14;dxSkinBlackD14;dxSkinBlueD14;dxSkinCaramelD14;dxSkinCoffeeD14;dxSkinDarkRoomD14;dxSkinDarkSideD14;dxSkinFoggyD14;dxSkinGlassOceansD14;dxSkiniMaginaryD14;dxSkinLilianD14;dxSkinLiquidSkyD14;dxSkinLondonLiquidSkyD14;dxSkinMcSkinD14;dxSkinMoneyTwinsD14;dxSkinOffice2007BlackD14;dxSkinOffice2007BlueD14;dxSkinOffice2007GreenD14;dxSkinOffice2007PinkD14;dxSkinOffice2007SilverD14;dxSkinOffice2010BlackD14;dxSkinOffice2010BlueD14;dxSkinOffice2010SilverD14;dxSkinPumpkinD14;dxSkinSevenD14;dxSkinSharpD14;dxSkinSilverD14;dxSkinSpringTimeD14;dxSkinStardustD14;dxSkinSummer2008D14;dxSkinValentineD14;JclDeveloperTools;Jcl;JclVcl;JclContainers;JvCore;JvSystem;JvStdCtrls;JvAppFrm;JvBands;JvDB;JvDlgs;JvBDE;JvControls;JvCmp;JvCrypt;JvCustom;JvDocking;JvDotNetCtrls;JvGlobus;JvHMI;JvJans;JvManagedThreads;JvMM;JvNet;JvPageComps;JvPascalInterpreter;JvPluginSystem;JvPrintPreview;JvRuntimeDesign;JvTimeFramework;JvWizards;JvXPCtrls;crcontrols140;dacvcl140;dac140;unidacvcl140;unidac140;AbbreviaVCL;DCEF_2010;OmniThreadLibraryRuntime2010;TSVNWizardProj;SkyClientPackage;$(DCC_UsePackage)</DCC_UsePackage>
-			<DCC_DependencyCheckOutputName>Build\NasServer.exe</DCC_DependencyCheckOutputName>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_UnitSearchPath>$(SkyFrameworkPath)\Includes;$(SkyFrameworkPath)\Includes\Errors;$(SkyFrameworkPath)\Includes\Entity;$(SkyFrameworkPath)\Includes\Logger;$(SkyFrameworkPath)\Includes\Translations;$(SkyFrameworkPath)\Includes\Db;$(SkyFrameworkPath)\Includes\Communication;$(SkyFrameworkPath)\Includes\Compatibility;$(SkyFrameworkPath)\Lib\PerlRegEx;$(SkyFrameworkPath)\Includes\Communication\HttpCommands;$(SkyFrameworkPath)\Includes\Communication\Async;$(SkyFrameworkPath)\Includes\Entity\Streaming;$(SkyFrameworkPath)\Includes\DataTypes;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_SYMBOL_PLATFORM>false</DCC_SYMBOL_PLATFORM>
 			<DCC_Platform>x86</DCC_Platform>
-			<DCC_E>false</DCC_E>
-			<DCC_N>false</DCC_N>
-			<DCC_S>false</DCC_S>
-			<DCC_F>false</DCC_F>
-			<DCC_K>false</DCC_K>
+			<DCC_UNIT_PLATFORM>false</DCC_UNIT_PLATFORM>
+			<DCC_DcuOutput>Dcu</DCC_DcuOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_MapFile>3</DCC_MapFile>
-			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
-			<DCC_Define>RELEASE;EUREKALOG;EUREKALOG_VER6;$(DCC_Define)</DCC_Define>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<DCC_MapFile>3</DCC_MapFile>
-			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-			<DCC_DebugDCUs>true</DCC_DebugDCUs>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="NasServer.dpr">
+			<DelphiCompile Include="NeoServiceTests.dpr">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="Forms\ServMain.pas">
-				<Form>NasService</Form>
-			</DCCReference>
-			<DCCReference Include="Forms\DebugForm.pas">
-				<Form>frmDebug</Form>
-			</DCCReference>
-			<DCCReference Include="App\AppSettings.pas"/>
-			<DCCReference Include="App\AppUnit.pas"/>
-			<DCCReference Include="App\ServerCore.pas"/>
-			<DCCReference Include="App\ServiceThread.pas"/>
-			<DCCReference Include="Communication\AppClientSession.pas"/>
-			<DCCReference Include="Communication\AppHttpCommandRequestJson.pas"/>
-			<DCCReference Include="Communication\WebInterfaceHandler.pas"/>
-			<DCCReference Include="App\AppTranslations.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas"/>
-			<DCCReference Include="Requests\ClientCommands.pas"/>
-			<DCCReference Include="Requests\ClientRequest.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppSQLServerQuery.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceList.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\NasTypes.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceAlgorithm.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceListElement.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\Hypernym.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas"/>
-			<DCCReference Include="App\CacheReloadThread.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\PosTagger.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\LexiconLine.pas"/>
+			<DCCReference Include="App\TestRunner.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\RepDecoder.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepRecord.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\StringExpression.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SearchPage.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepEntity.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyKey.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObjectBase.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepGroup.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObjectBase.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyKey.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPropertyValue.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepRecord.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepEntity.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepPerson.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppConsts.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleGroup.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRule.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleCondition.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\IRepRuleValue.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRule.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\IRep.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\CRepRuleGroup.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\CRepRuleCondition.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\CRepRule.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\Rep.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRuleCondition.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\BaseRuleGroup.pas"/>
-			<DCCReference Include="Communication\AppHttpCommandRequestApiXml.pas"/>
-			<DCCReference Include="Communication\AppEntityXmlReader2.pas"/>
-			<DCCReference Include="Communication\AppEntityXmlWriter2.pas"/>
-			<DCCReference Include="Requests\ApiRequest.pas"/>
-			<DCCReference Include="Requests\ApiCommands.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\StringExpression.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas"/>
+			<DCCReference Include="Includes\RepSerializeTest.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -141,16 +78,16 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">NasServer.dpr</Source>
+						<Source Name="MainSource">NeoServiceTests.dpr</Source>
 					</Source>
 					<Parameters>
+						<Parameters Name="RunParams">/debug</Parameters>
 						<Parameters Name="UseLauncher">False</Parameters>
 						<Parameters Name="LoadAllSymbols">True</Parameters>
 						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
-						<Parameters Name="RunParams">/debug</Parameters>
 					</Parameters>
 					<VersionInfo>
-						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
@@ -160,7 +97,7 @@
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
 						<VersionInfo Name="Private">False</VersionInfo>
-						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="DLL">True</VersionInfo>
 						<VersionInfo Name="Locale">1033</VersionInfo>
 						<VersionInfo Name="CodePage">1252</VersionInfo>
 					</VersionInfo>
@@ -175,18 +112,12 @@
 						<VersionInfoKeys Name="ProductName"/>
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
+						<VersionInfoKeys Name="OleSelfRegister">1</VersionInfoKeys>
 					</VersionInfoKeys>
 					<Excluded_Packages>
-						<Excluded_Packages Name="%BDSBIN%\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="%BDSBIN%\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="%BDSBIN%\bcboffice2k160.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-						<Excluded_Packages Name="%BDSBIN%\bcbofficexp160.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+						<Excluded_Packages Name="d:\work\Framework\Lib\LockBox2.0.7\BPL\L207vd70.bpl">TurboPower LockBox 2.07 Design-time package - VCL60</Excluded_Packages>
 					</Excluded_Packages>
 				</Delphi.Personality>
-				<Platforms>
-					<Platform value="Win64">True</Platform>
-					<Platform value="Win32">True</Platform>
-				</Platforms>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>
@@ -200,7 +131,7 @@ Activate Handle=1
 Save Log File=1
 Foreground Tab=0
 Freeze Activate=0
-Freeze Timeout=0
+Freeze Timeout=60
 SMTP From=eurekalog@email.com
 SMTP Host=
 SMTP Port=25
@@ -347,7 +278,7 @@ boSaveCompressedCopyInCaseOfError=0
 boHandleSafeCallExceptions=1
 boCallRTLExceptionEvent=0
 boCatchHandledExceptions=0
-loCatchLeaks=0
+loCatchLeaks=1
 loGroupsSonLeaks=1
 loHideBorlandLeaks=1
 loFreeAllLeaks=1
@@ -673,5 +604,5 @@ Count mtException_AntiFreeze=1
 mtException_AntiFreeze0="The application seems to be frozen."
 Count mtInvalidEmailMsg=1
 mtInvalidEmailMsg0="Invalid email."
-TextsCollection=English
+TextsCollection=
 EurekaLog Last Line -->

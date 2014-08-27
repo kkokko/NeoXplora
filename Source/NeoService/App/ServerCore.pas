@@ -18,6 +18,7 @@ type
   private
     FHypernym: THypernym;
     FIRepList: TEntityList;
+    FCRepList: TEntityList;
     FLock: TRTLCriticalSection;
     FLockCount: Integer;
     FTimedLock: TTimedLock;
@@ -32,6 +33,10 @@ type
     function LoadIRepRuleGroups(ARuleList: TSkyIdList): TSkyIdList;
     procedure LoadIRepRuleConditions(AGroupList: TSkyIdList);
     procedure LoadIRepRuleValues(ARuleList: TSkyIdList);
+
+    function LoadCRepRules: TSkyIdList;
+    function LoadCRepRuleGroups(ARuleList: TSkyIdList): TSkyIdList;
+    procedure LoadCRepRuleConditions(AGroupList: TSkyIdList);
 
     procedure SentenceLockAquire(ALockType: TLockType);
     procedure SentenceLockRelease(ALockType: TLockType);
@@ -50,6 +55,9 @@ type
     // on next cache reload
     property RuleCacheStatus: TRuleCacheStatus read GetRuleCacheStatus;
     property MainThreadHandle: HWND read FMainThreadHandle write FMainThreadHandle;
+
+    // api commands - please keep sorted
+    function ApiGenerateRep(const ASentenceText, AnApiKey: string): string;
 
     // user commands - please keep sorted
     function GetFullSentencesForPageId(APageId: TId): TEntities;
@@ -75,7 +83,7 @@ implementation
 uses
   SysUtils, AppUnit, AppSQLServerQuery, BaseConnection, EntityWithName, TypesFunctions, SentenceBase,
   SentenceSplitter, CRep, RepDecoder, SearchPage, SkyLists, RepGroup, IRepRuleGroup, LoggerUnit, 
-  IRepRule, IRepRuleValue, IRepRuleCondition;
+  IRepRule, IRepRuleValue, IRepRuleCondition, CRepRule, CRepRuleCondition, CRepRuleGroup;
 
 var
   _Core: TServerCore;
@@ -90,6 +98,30 @@ begin
   TServerCore.EndInstance;
 end;
 
+function TServerCore.ApiGenerateRep(const ASentenceText, AnApiKey: string): string;
+var
+  TheGuessObject: TGuessObject;
+  TheSplitter: TSentenceSplitter;
+begin
+  TheGuessObject := nil;
+  TheSplitter := TSentenceSplitter.Create;
+  try
+    TheSplitter.SentenceSplitWords(ASentenceText);
+    TheGuessObject := TGuessObject.Create;
+    SentenceLockAquire(ltRead);
+    try
+      FSentenceList.GetRepGuess(TheSplitter.WordList, ASentenceText,
+        FPosTagger.GetTagsForString(ASentenceText), 1, False, TheGuessObject);
+    finally
+      SentenceLockRelease(ltRead);
+    end;
+    Result := TheGuessObject.RepGuessD;
+  finally
+    TheGuessObject.Free;
+    TheSplitter.Free;
+  end;
+end;
+
 procedure TServerCore.CacheReload;
 var
   TheCount: Integer;
@@ -100,13 +132,38 @@ begin
     ReloadSentences;
   TheStatus := RuleCacheStatus;
   if TheStatus.IRepRulesChanged then
-    ReloadIRepRules;
+//    ReloadIRepRules;
   if TheStatus.CRepRulesChanged then
-    ReloadCRepRules;
+//    ReloadCRepRules;
 end;
 
 procedure TServerCore.ReloadCRepRules;
+var
+  TheGroupList: TSkyIdList;
+  TheCRepList: TSkyIdList;
 begin
+  TheCRepList := LoadCRepRules;
+  try
+    TheGroupList := LoadCRepRuleGroups(TheCRepList);
+    try
+      LoadCRepRuleConditions(TheGroupList);
+    finally
+      TheGroupList.Free;
+    end;
+    SentenceLockAquire(ltWrite);
+    try
+      FCRepList.Sorted := False;
+      FCRepList.Clear;
+      FCRepList.AddMultiple(TheCRepList.GetAllObjects, nil);
+      TheCRepList.OwnsObjects := False;
+      FCRepList.Sort(TCRepRule.Tok_Order);
+      FCRepRulesChanged := False;
+    finally
+      SentenceLockRelease(ltWrite);
+    end;
+  finally
+    TheCRepList.Free;
+  end;
 end;
 
 procedure TServerCore.ReloadSentences;
@@ -157,7 +214,9 @@ begin
   FTimedLock.LockInterval := 10000; // 10 seconds
   FLockCount := 0;
   FIRepRulesChanged := True;
-  FIRepList := TEntityList.Create;
+  FCRepRulesChanged := True;
+  FIRepList := TEntityList.Create(False, True);
+  FCRepList := TEntityList.Create(False, True);
   InitializeCriticalSection(FLock);
 end;
 
@@ -169,6 +228,7 @@ begin
   FSentenceList.Free;
   FPosTagger.Free;
   FIRepList.Free;
+  FCRepList.Free;
   App.RemoveDefaultDatabaseConnection;
   inherited;
 end;
@@ -304,7 +364,8 @@ end;
 
 procedure TServerCore.ValidateRep(const ARep: string);
 begin
-  TRepDecoder.DecodeRep(ARep).Free;
+  if App.Settings.UseRepValidator then
+    TRepDecoder.DecodeRep(ARep).Free;
 end;
 
 class function TServerCore.GetInstance: TServerCore;
@@ -316,11 +377,8 @@ end;
 
 function TServerCore.GuessRepsForSentenceId(ASentenceId: TId; AGuessCRep: Boolean): TGuessObject;
 var
-  TheEntities: TEntities;
-  TheTCRep: TCRep;
   TheSentence: TSentenceBase;
   TheSplitter: TSentenceSplitter;
-  I: Integer;
 begin
   TheSplitter := nil;
   TheSentence := TAppSQLServerQuery.GetSentenceBaseById(ASentenceId);
@@ -337,21 +395,6 @@ begin
       finally
         SentenceLockRelease(ltRead);
       end;
-
-      if (AGuessCRep) and (Trim(TheSentence.Rep) <> '') then
-      begin
-        TheTCRep := nil;
-        TheEntities := TAppSQLServerQuery.GetPageReps(TheSentence.PageId, TheSentence.Id);
-        try
-          TheTCRep := TCRep.Create;
-          for I := 0 to High(TheEntities) do
-            TheTCRep.AddSentence(TheEntities[I].Name);
-          Result.CRepGuessA := TheTCRep.AddSentence(TheSentence.Rep);
-        finally
-          TEntity.FreeEntities(TheEntities);
-          TheTCRep.Free;
-        end;
-      end;
       App.SQLConnection.UpdateEntity(Result);
     except
       Result.Free;
@@ -360,6 +403,103 @@ begin
   finally
     TheSplitter.Free;
     TheSentence.Free;
+  end;
+end;
+
+function TServerCore.LoadCRepRules: TSkyIdList;
+var
+  TheEntities: TEntities;
+  I: Integer;
+begin
+  Result := TSkyIdList.Create;
+  try
+    Result.Sorted := False;
+    TheEntities := TAppSQLServerQuery.GetCRepRules;
+    for I := 0 to High(TheEntities) do
+      Result.AddObject(TheEntities[I].Id, TheEntities[I]);
+    Result.Sorted := True;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+function TServerCore.LoadCRepRuleGroups(ARuleList: TSkyIdList): TSkyIdList;
+var
+  TheEntities: TEntities;
+  TheGroup: TCRepRuleGroup;
+  TheParentGroup: TCRepRuleGroup;
+  TheRule: TCRepRule;
+  I: Integer;
+begin
+  Result := TSkyIdList.Create(False);
+  try
+    Result.Sorted := False;
+    TheEntities := App.SQLConnection.SelectAll(TCRepRuleGroup);
+    for I := 0 to High(TheEntities) do
+      Result.AddObject(TheEntities[I].Id, TheEntities[I]);
+    Result.Sorted := True;
+    I := 0;
+    while I < Result.Count do
+    begin
+      TheGroup := Result.Objects[I] as TCRepRuleGroup;
+      if (TheGroup.ParentId = IdNil) or (TheGroup.ParentId = TheGroup.Id) then
+      begin
+        TheRule := ARuleList.ObjectOfValueDefault[TheGroup.RuleId, nil] as TCRepRule;
+        if TheRule = nil then
+        begin
+          TLogger.Warn(Self, ['LoadCRepRuleGroups', 'Orpaned CRepRuleGroup', IdToStr(TheGroup.Id)]);
+          TheGroup.Free;
+          Result.DeleteFromIndex(I);
+          Continue;
+        end;
+        if TheRule.MainRuleGroup <> nil then
+        begin
+          TLogger.Warn(Self, ['LoadCRepRuleGroups', 'Duplicate main CRepRuleGroup for CRepRule', IdToStr(TheRule.Id)]);
+          TheGroup.Free;
+          Result.DeleteFromIndex(I);
+          Continue;
+        end;
+        TheRule.MainRuleGroup := TheGroup
+      end else
+      begin
+        TheParentGroup := Result.ObjectOfValueDefault[TheGroup.ParentId, nil] as TCRepRuleGroup;
+        if TheParentGroup = nil then
+        begin
+          TLogger.Warn(Self, ['LoadCRepRuleGroups', 'Orpaned CRepRuleGroup', IdToStr(TheGroup.Id)]);
+          TheGroup.Free;
+          Result.DeleteFromIndex(I);
+          Continue;
+        end;
+        TheParentGroup.Members.Add(TheGroup);
+      end;
+      Inc(I);
+    end;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+procedure TServerCore.LoadCRepRuleConditions(AGroupList: TSkyIdList);
+var
+  TheCondition: TCRepRuleCondition;
+  TheGroup: TCRepRuleGroup;
+  TheEntities: TEntities;
+  I: Integer;
+begin
+  TheEntities := App.SQLConnection.SelectAll(TCRepRuleCondition);
+  for I := 0 to High(TheEntities) do
+  begin
+    TheCondition := TheEntities[I] as TCRepRuleCondition;
+    TheGroup := AGroupList.ObjectOfValueDefault[TheCondition.GroupId, nil] as TCRepRuleGroup;
+    if TheGroup = nil then
+    begin
+      TLogger.Warn(Self, ['LoadCRepRuleConditions', 'Orpaned CRepRuleCondition', IdToStr(TheCondition.Id)]);
+      TheCondition.Free;
+      Continue;
+    end;
+    TheGroup.Members.Add(TheCondition);
   end;
 end;
 
@@ -610,7 +750,7 @@ begin
         TheResults := nil;
         TheWordsSplitter := TSentenceSplitter.Create;
         try
-          TheResults := TEntityList.Create;
+          TheResults := TEntityList.Create(False, True);
           for I := 0 to TheSplitter.WordList.Count - 1 do
           begin
             TheNewSentence := TheSentence.CreateACopy as TSentenceBase;
