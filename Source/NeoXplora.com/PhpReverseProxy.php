@@ -35,8 +35,12 @@ class PhpReverseProxy{
 		$this->enableLog=false;
 	}
 	function translateURL($serverName) {
-		$this->path=$this->forward_path.$_SERVER['REQUEST_URI'];
-		return $this->translateServer($serverName).$this->path;
+		$pieces = explode("/", $_SERVER['REQUEST_URI']);
+		$this->path=$this->forward_path."/".$pieces[count($pieces)-1];
+		if($_SERVER['QUERY_STRING']=="")
+			return $this->translateServer($serverName).$this->path;
+		else
+		return $this->translateServer($ServerName).$this->path."?".$_SERVER['QUERY_STRING'];
 	}
 	function translateServer($serverName) {
 		$s = empty($_SERVER["HTTPS"]) ? ''

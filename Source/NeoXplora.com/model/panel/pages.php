@@ -21,7 +21,7 @@
           p.[[page.title]],
           p.[[page.body]]
         FROM [[page]] p  
-        ORDER BY p.[[page.title]] ASC 
+        ORDER BY TRIM(p.[[page.title]]) ASC 
         LIMIT :1, :2
       ", intval($offset), intval($limit));
       

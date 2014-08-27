@@ -34,6 +34,34 @@
     
     public function deleteWithData($pageId) {
       $query = $this->query("
+        UPDATE [[sentence]] s1
+        INNER JOIN [[sentence]] s2 ON s1.[[sentence.guessaid]] = s2.[[sentence.id]]
+        SET s1.[[guessaid]] = null
+        WHERE s2.[[sentence.pageid]] = :1
+      ", intval($pageId));
+      
+      $query = $this->query("
+        UPDATE [[sentence]] s1
+        INNER JOIN [[sentence]] s2 ON s1.[[sentence.guessbid]] = s2.[[sentence.id]]
+        SET s1.[[guessbid]] = null
+        WHERE s2.[[sentence.pageid]] = :1
+      ", intval($pageId));
+      
+      $query = $this->query("
+        UPDATE [[sentence]] s1
+        INNER JOIN [[sentence]] s2 ON s1.[[sentence.guesscid]] = s2.[[sentence.id]]
+        SET s1.[[guesscid]] = null
+        WHERE s2.[[sentence.pageid]] = :1
+      ", intval($pageId));
+      
+      $query = $this->query("
+        UPDATE [[sentence]] s1
+        INNER JOIN [[sentence]] s2 ON s1.[[sentence.guessdid]] = s2.[[sentence.id]]
+        SET s1.[[guessdid]] = null
+        WHERE s2.[[sentence.pageid]] = :1
+      ", intval($pageId));
+      
+      $query = $this->query("
         DELETE s.*, pr.*
         FROM [[sentence]] s
         INNER JOIN [[proto]] pr ON s.[[sentence.pageid]] = pr.[[proto.pageid]]
