@@ -109,6 +109,7 @@ var MSplitterTrainRequests_Implementation = {
     
     loadCallback: function(json) {
     	$(NeoX.Modules.SplitterTrainIndex.getConfig().dataContainer).html(json['data']);
+    	NeoX.Modules.SplitterTrainIndex.splitValChangedInit();
       //$('.newRepValue').focus();
     },
     
@@ -144,8 +145,10 @@ var MSplitterTrainRequests_Implementation = {
               //if(json['newSentenceIDs'][$(this).val()]) $(this).val(json['newSentenceIDs'][$(this).val()]); 
             }); 
           }
+          
+          NeoX.Modules.SplitterTrainIndex.splitValChangedInit();
         }
-    	}
+    	};
     },
     
     dontSplitCallback: function(json) {

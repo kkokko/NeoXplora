@@ -43,6 +43,8 @@ var MSplitterTrainIndex_Implementation = {
       NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit, NeoX.Modules.SplitterTrainIndex.dontSplit);
       NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.approve, NeoX.Modules.SplitterTrainIndex.approve);
       NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.reset, NeoX.Modules.SplitterTrainIndex.reset);
+      NeoX.Modules.SplitterTrainIndex.hookEvent('change', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitValChanged);
+      NeoX.Modules.SplitterTrainIndex.hookEvent('keyup', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitValChanged);
       NeoX.Modules.SplitterTrainIndex.hookEvent('keypress', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitKeyPress);
     },
     
@@ -129,7 +131,27 @@ var MSplitterTrainIndex_Implementation = {
         var level = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).val();
         NeoX.Modules.SplitterTrainRequests.split(sentenceID, newSplitValue, level);
       }
-    }
+    },
+    
+    splitValChanged: function() {
+    	var originalHTML = $(this).parent().html();
+    	var newValue = $(this).val();
+    	$(this).parent().append("<div class='newSplitValueContainer'>" + newValue + "</div>");
+    	var height = $(".newSplitValueContainer").height();
+    	$(".newSplitValueContainer").remove();
+    	$(this).height(height);
+    },   
+    
+    splitValChangedInit: function() {
+    	$(".newSplitValue").each(function(index) {
+      	var originalHTML = $(this).parent().html();
+        var newValue = $(this).val();
+        $(this).parent().append("<div class='newSplitValueContainer'>" + newValue + "</div>");
+        var height = $(".newSplitValueContainer").height();
+        $(".newSplitValueContainer").remove();
+        $(this).height(height);
+    	}); 
+    }   
     
   }
   

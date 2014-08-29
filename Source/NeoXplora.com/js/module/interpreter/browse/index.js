@@ -14,7 +14,8 @@ var MInterpreterBrowseIndex_Implementation = {
         firstPage: '.firstBtn',
         previousPage: '.previousBtn',
         nextPage: '.nextBtn',
-        lastPage: '.lastBtn'  
+        lastPage: '.lastBtn',
+        resplitBtn: '.resplitBtn'
     	},
       Inputs: {
       	newValue: '.newValue',
@@ -45,6 +46,7 @@ var MInterpreterBrowseIndex_Implementation = {
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.previousPage, NeoX.Modules.InterpreterBrowseIndex.goToPrevious);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.nextPage, NeoX.Modules.InterpreterBrowseIndex.goToNext);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', NeoX.Modules.InterpreterBrowseIndex.getConfig().Buttons.lastPage, NeoX.Modules.InterpreterBrowseIndex.goToLast);
+      NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', '.resplitBtn', NeoX.Modules.InterpreterBrowseIndex.resplit);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', '.areviewedsentence td', NeoX.Modules.InterpreterBrowseIndex.edit);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('click', '.saveRep', NeoX.Modules.InterpreterBrowseIndex.saveRep);
       NeoX.Modules.InterpreterBrowseIndex.hookEvent('keydown', '.newRep', NeoX.Modules.InterpreterBrowseIndex.saveRepKey);
@@ -103,6 +105,10 @@ var MInterpreterBrowseIndex_Implementation = {
     	if(e.which == 13) {
         NeoX.Modules.InterpreterBrowseRequests.save(parseInt($(this).parent().parent().attr('data-id'), 10), $(this).val(), $(this).parent());
     	}
+    },
+    
+    resplit: function() {
+    	NeoX.Modules.InterpreterBrowseRequests.resplit(parseInt($(this).parent().parent().attr('data-id'), 10), $(this).parent().parent());
     }
     
   }

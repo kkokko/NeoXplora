@@ -44,6 +44,20 @@ var MInterpreterBrowseRequests_Implementation = {
       });
     },
     
+    resplit: function(id, container) {
+    	$.ajax({
+        type: "POST",
+        url: NeoX.Modules.InterpreterBrowseIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.InterpreterBrowseIndex.getConfig().moduleType,
+          'action': 'resplit',
+          'sentenceID': id
+        },
+        success: NeoX.Modules.InterpreterBrowseRequests.resplitCallback(container)
+      });
+    },
+    
     /*
      * AJAX SUCCESS CALLBACKS
      */
@@ -68,6 +82,13 @@ var MInterpreterBrowseRequests_Implementation = {
           container.html(newValue);
         }
       };
+    },
+    
+    resplitCallback: function(container) {
+      return function(json) {
+      	container.nextUntil(".aproto").remove();
+      	container.remove();
+      }
     }
        
     

@@ -46,14 +46,8 @@ class TTrainLinker extends TTrain {
       }
       
       $linkerModel = $this->core->model("linker", "train");
-      $category_data = $linkerModel->getCategory($ignoreIDs)->fetch_array();
-      $categoryID = $category_data[Entity\TCategory::$tok_id];
       
-      $pageCount = $category_data['pageCount'];
-      $max_offset = min(array($pageCount, 5));
-      $offset = rand(0, $max_offset - 1);
-      
-      $pageData = $linkerModel->getPageByCategoryID($categoryID, $offset, $ignoreIDs);
+      $pageData = $linkerModel->getPage($ignoreIDs);
     } else {
       $pageData = $this->core->entity("page")->select(array("id" => $_SESSION['pageID']), "*"); 
     }

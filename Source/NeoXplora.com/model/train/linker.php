@@ -63,6 +63,34 @@
       return $this->result($query);
     }
     
+    public function getPage($ignoreIDs = array()) {
+      $ignore = '';
+      if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $ignore .= " AND p.[[page.id]] NOT IN (";
+        for($i = 0; $i < count($ignoreIDs); $i++) {
+          $ignore .= "'" . $ignoreIDs[$i] . "'";
+          if($i != count($ignoreIDs) - 1) $ignore .= ', ';
+        }
+        $ignore .= ") ";
+      }  
+      
+      $query = $this->query("
+        SELECT p.[[page.id]], p.[[page.status]], p.[[page.title]] 
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssReviewedRep' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        WHERE a1.total = a2.totalR
+        AND p.[[page.status]] <> 'psReviewedCRep'
+        " . $ignore . "
+        GROUP BY p.[[page.id]]");
+        
+      return $this->result($query);
+    }
+    
     public function getCReps($pageid) {
       $query = $this->query("
         SELECT cr.[[crep.id]] AS `CRepId`, s.[[sentence.id]] AS `SentenceId`, s.[[sentence.rep]] AS `Rep`, s.[[sentence.name]] AS `Sentence`

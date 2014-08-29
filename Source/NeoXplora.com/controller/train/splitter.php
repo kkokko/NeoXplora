@@ -17,6 +17,7 @@ class TTrainSplitter extends TTrain {
       "NeoX.Modules.SplitterTrainRequests" => "js/module/splitter/train/requests.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
+    $this->template->addStyle("style/train.css");
     $this->template->load("index", "train/splitter");
     $this->template->pageTitle = "Splitter";
     $this->template->page = "trainsplit";
