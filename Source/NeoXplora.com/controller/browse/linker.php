@@ -36,6 +36,7 @@ class TBrowseLinker extends TTrain {
     
     $linkerModel = $this->core->model("linker", "browse");
     $count_data = $linkerModel->countPages()->fetch_array();
+    $pageId = -1;
     
     $data = array();
     

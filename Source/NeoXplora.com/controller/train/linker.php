@@ -37,12 +37,12 @@ class TTrainLinker extends TTrain {
   
   public function loadPage() {
     $pageData = null;
-    //unset($_SESSION['ignoredPageIDs']);
+    //unset($_SESSION['ignoredLinkerPageIDs']);
     if(!isset($_SESSION['pageID']) || $_SESSION['pageID'] == -1) {
       $ignoreIDs = array();
       
-      if(isset($_SESSION['ignoredPageIDs']) && is_array($_SESSION['ignoredPageIDs'])) {
-        $ignoreIDs = array_values($_SESSION['ignoredPageIDs']);
+      if(isset($_SESSION['ignoredLinkerPageIDs']) && is_array($_SESSION['ignoredLinkerPageIDs'])) {
+        $ignoreIDs = array_values($_SESSION['ignoredLinkerPageIDs']);
       }
       
       $linkerModel = $this->core->model("linker", "train");
@@ -69,8 +69,6 @@ class TTrainLinker extends TTrain {
       );
       
       $query = $this->core->model("linker", "train")->getCReps($_SESSION['pageID']);
-      
-      
       
       if($query->num_rows > 0) {
         
@@ -171,23 +169,23 @@ class TTrainLinker extends TTrain {
   public function skip() {
     if(!isset($_SESSION['pageID'])) return;
     
-    if(!isset($_SESSION['ignoredPageIDs'])) { 
-      $_SESSION['ignoredPageIDs'] = array();
+    if(!isset($_SESSION['ignoredLinkerPageIDs'])) { 
+      $_SESSION['ignoredLinkerPageIDs'] = array();
     }
-    if(!in_array($_SESSION['pageID'], $_SESSION['ignoredPageIDs']) && $_SESSION['pageID'] != -1) {
-      $_SESSION['ignoredPageIDs'][] = $_SESSION['pageID'];
+    if(!in_array($_SESSION['pageID'], $_SESSION['ignoredLinkerPageIDs']) && $_SESSION['pageID'] != -1) {
+      $_SESSION['ignoredLinkerPageIDs'][] = $_SESSION['pageID'];
     }
     
-    if(count($_SESSION['ignoredPageIDs']) > 10) { 
-      unset($_SESSION['ignoredPageIDs'][0]);
+    if(count($_SESSION['ignoredLinkerPageIDs']) > 10) { 
+      $_SESSION['ignoredLinkerPageIDs'] = array_values(array_slice($_SESSION['ignoredLinkerPageIDs'], 1));
     }
     
     $query = $this->core->entity("page")->select(
       array("status" => array("psReviewedRep", "psTrainingCRep"))
     );
     
-    if($query->num_rows == count($_SESSION['ignoredPageIDs'])) {
-      unset($_SESSION['ignoredPageIDs']);
+    if($query->num_rows == count($_SESSION['ignoredLinkerPageIDs'])) {
+      unset($_SESSION['ignoredLinkerPageIDs']);
     }
     
     $this->core->entity("page")->update(

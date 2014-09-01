@@ -85,7 +85,6 @@ class TPanelTests extends TPanel {
       /*$result = simplexml_load_string($requestxml);
       $this->template->requestxml = $this->formatXML($result);*/
       
-      
       $responsexml = $this->postRequest($this->template->site_url . "api.xml.php", $requestxml);
       
       if($responsexml != false) {

@@ -100,8 +100,8 @@ class TTrainSplitter extends TTrain {
       $_SESSION['ignoredSplitPageIDs'][] = $sentenceID;
     }
     
-    if(count($_SESSION['ignoredSplitPageIDs']) > 10) { 
-      unset($_SESSION['ignoredSplitPageIDs'][0]);
+    if(count($_SESSION['ignoredSplitPageIDs']) > 10) {
+      $_SESSION['ignoredSplitPageIDs'] = array_values(array_slice($_SESSION['ignoredSplitPageIDs'], 1));
     }
     
     $this->core->entity("sentence")->update(
@@ -171,7 +171,7 @@ class TTrainSplitter extends TTrain {
     $level = $_POST['level'];
     $sentenceID = $_POST['sentenceID'];
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
-    $approved=  $_POST['approved'];
+    $approved =  $_POST['approved'];
     
     $originalValue = $this->core->entity("sentence")->select($sentenceID, "name")->fetch_array();
     $originalValue = $originalValue[Entity\TSentence::$tok_name];
@@ -182,7 +182,7 @@ class TTrainSplitter extends TTrain {
     $data = '';
         
     if($newSentencesCount == 1) {
-      if($approved) {
+      if($approved == "true") {
         $this->core->entity("sentence")->update(
           $sentenceID,
           array(
@@ -207,7 +207,7 @@ class TTrainSplitter extends TTrain {
       for($i = 0; $i < $newSentencesCount; $i++) {
         $sentenceID = $result->Item($i)->GetProperty("Id");
         
-        if($approved) {
+        if($approved == "true") {
           $this->core->entity("sentence")->update(
             $sentenceID,
             array(

@@ -29,6 +29,7 @@ class TTrainInterpreter extends TTrain {
     if(isset($_SESSION['ignoredInterpreterPageIDs']) && is_array($_SESSION['ignoredInterpreterPageIDs'])) {
       $ignoreIDs = array_values($_SESSION['ignoredInterpreterPageIDs']);
     }
+    
     $trainModel = $this->core->model("train");
     $sentence_data = null;
     
@@ -94,7 +95,7 @@ class TTrainInterpreter extends TTrain {
     }
     
     if(count($_SESSION['ignoredInterpreterPageIDs']) > 10) { 
-      unset($_SESSION['ignoredInterpreterPageIDs'][0]);
+      $_SESSION['ignoredInterpreterPageIDs'] = array_values(array_slice($_SESSION['ignoredInterpreterPageIDs'], 1));
     }
     
     $this->core->entity("sentence")->update(
@@ -120,7 +121,7 @@ class TTrainInterpreter extends TTrain {
     
     $validator = $this->Delphi()->ValidateRep($newValue);
     $status = 'ssTrainedRep';
-    if($approved) $status = 'ssReviewedRep';
+    if($approved == "true") $status = 'ssReviewedRep';
     
     if($validator === true) {      
       $this->core->entity("sentence")->update(
@@ -144,13 +145,13 @@ class TTrainInterpreter extends TTrain {
   public function approveGuess() {
     if(!isset($_POST['sentenceID'])) return;
     $sentenceID = (int) $_POST['sentenceID'];
-    $approved =  $_POST['approved'];
+    $approved = $_POST['approved'];
     
     $repguess = $this->Delphi()->GuessRepsForSentenceId($sentenceID)->GetProperty("RepGuessA");
     
     $validator = $this->Delphi()->ValidateRep($repguess);
     $status = 'ssTrainedRep';
-    if($approved) $status = 'ssReviewedRep';
+    if($approved == "true") $status = 'ssReviewedRep';
     
     if($validator === true) {
       $this->core->entity("sentence")->update(

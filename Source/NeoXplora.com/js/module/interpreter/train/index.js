@@ -66,7 +66,7 @@ var MInterpreterTrainIndex_Implementation = {
     
     skip: function() {
     	var sentenceID = $(NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.sentenceID).val();
-      NeoX.Modules.InterpreterTrainRequests.load(sentenceID);
+      NeoX.Modules.InterpreterTrainRequests.skip(sentenceID);
     },
       
     use: function() {
