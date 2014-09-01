@@ -79,7 +79,7 @@
       return $this->result($query);
     }
     
-    public function getSentenceNotRandom($sStatus, $ignoreIDs = array()) {
+    public function getSentenceNotRandom($sStatus, $ignoreIDs = array(), $categoryId = -1) {
       $ignore_se = '';
       if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
         $ignore = '(';
@@ -92,12 +92,19 @@
         $ignore_se = ' AND se.[[sentence.id]] NOT IN ' . $ignore;
       }
       
+      $category_cnd = '';
+      if($categoryId > -1) {
+        $category_cnd = ' INNER JOIN [[page]] p ON se.[[sentence.pageid]] = p.[[page.id]] AND p.[[page.categoryid]] = ' . $categoryId;;
+      }    
+         
+      
       $query = $this->query("
         SELECT
           se.[[sentence.id]],
           se.[[sentence.name]],
           se.[[sentence.rep]]
         FROM [[sentence]] se 
+        " . $category_cnd . "
         WHERE se.[[sentence.status]] = :1
         " . $ignore_se . "
         ORDER BY se.[[sentence.assigneddate]] ASC, se.[[sentence.id]] DESC

@@ -14,6 +14,18 @@
             <td><input type="text" name="pageTitle" value ="<?php echo $this->pageData['Title']; ?>" /></td>
           </tr>
           <tr>
+            <td>Category:</td> 
+            <td>
+              <select name="categoryId" style="width: 304px;padding: 5px;">
+                <?php foreach($this->categoryList AS $key => $value) { ?>
+                  <option value="<?php echo $key; ?>" <?php if($this->pageData['CategoryId'] == $key) echo "selected='selected'"; ?>>
+                    <?php echo $value; ?>
+                  </option> 
+                <?php } ?>
+              </select>
+            </td>
+          </tr>
+          <tr>
             <td>Body:</td>
             <td><textarea name="pageBody"><?php echo $this->pageData['Body']; ?></textarea></td>
           </tr>

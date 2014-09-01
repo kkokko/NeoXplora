@@ -46,6 +46,7 @@ var MSplitterTrainIndex_Implementation = {
       NeoX.Modules.SplitterTrainIndex.hookEvent('change', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitValChanged);
       NeoX.Modules.SplitterTrainIndex.hookEvent('keyup', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitValChanged);
       NeoX.Modules.SplitterTrainIndex.hookEvent('keypress', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitKeyPress);
+      NeoX.Modules.SplitterTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.SplitterTrainIndex.catChanged);
     },
     
     load: function() {
@@ -66,6 +67,10 @@ var MSplitterTrainIndex_Implementation = {
       NeoX.Modules.SplitterTrainRequests.split(sentenceID, newSplitValue, level, approved);
     },
       
+    catChanged: function() {
+      NeoX.Modules.SplitterTrainRequests.catChanged($(this).val());
+    },
+    
     dontSplit: function() {
     	var parent = $(this).parent().parent();
       var sentenceID = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();

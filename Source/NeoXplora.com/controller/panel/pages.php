@@ -67,19 +67,29 @@ class TPanelPages extends TPanel {
     
     $pageTitle = '';
     $pageBody = '';
+    $categoryId = 0;
     
     if(isset($_POST['submit'])) {
       $pageTitle = $_POST['pageTitle'];
       $pageBody = $_POST['pageBody'];
+      $categoryId = $_POST['categoryId'];
       
-      if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "") {
-        $this->Delphi()->PageAdd($pageTitle, $pageBody);
+      if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "" && intval($_POST['categoryId']) > -1) {
+        $this->Delphi()->PageAdd($pageTitle, $pageBody, $categoryId);
         $this->template->redirect = "panel.php?type=pages";
       }
     }
     
+    $categoryData = $this->core->entity("category")->select();
+    $categoryList = array();
+    while($result = $categoryData->fetch_array()) {
+      $categoryList[$result[Entity\TCategory::$tok_id]] = $result[Entity\TCategory::$tok_name]; 
+    }
+    $this->template->categoryList = $categoryList;
+    
     $this->template->pageData = array(
       'Title' => $pageTitle,
+      'CategoryId' => $categoryId,
       'Body' => $pageBody
     );
     
@@ -104,14 +114,23 @@ class TPanelPages extends TPanel {
     if($pageData->num_rows == 0) {
       $this->template->redirect = "panel.php?type=pages&page=" . $page;
     } else {
+      $categoryData = $this->core->entity("category")->select();
+      $categoryList = array();
+      while($result = $categoryData->fetch_array()) {
+        $categoryList[$result[Entity\TCategory::$tok_id]] = $result[Entity\TCategory::$tok_name]; 
+      }
+      $this->template->categoryList = $categoryList;
+      
       $pageData = $pageData->fetch_array();
       $pageTitle = $pageData[Entity\TPage::$tok_title];
       $pageBody = $pageData[Entity\TPage::$tok_body];
-      
+      $categoryId = $pageData[Entity\TPage::$tok_categoryid];
+    
       $this->template->pageData = array(
         'Id' => $pageId,
         'Title' => $pageTitle,
-        'Body' => $pageBody
+        'Body' => $pageBody,
+        'CategoryId' => $categoryId
       );
       
       $this->template->addStyle("style/admin.pages.css");
@@ -123,9 +142,12 @@ class TPanelPages extends TPanel {
       $this->template->page = "edit_pages_panel";
       
       if(isset($_POST['submit'])) {
-        if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "") {
+        if($_POST['pageTitle'] == $pageTitle && $_POST['pageBody'] == $pageBody) {
+          $this->core->entity("page")->update($pageId, array("categoryid" => intval($_POST['categoryId'])));
+          $this->template->redirect = "panel.php?type=pages&page=" . $page;
+        } else if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "" && intval($_POST['categoryId']) > -1) {
           //edit request to delphi
-          $this->Delphi()->PageAdd($pageId, $pageTitle, $pageBody);
+          $this->Delphi()->PageEdit($pageId, $_POST['pageTitle'], $_POST['pageBody'], $_POST['categoryId']);
           $this->template->redirect = "panel.php?type=pages&page=" . $page;
         }
       }

@@ -44,6 +44,20 @@ var MInterpreterTrainRequests_Implementation = {
       });
     },
     
+    catChanged: function(categoryId) {
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.InterpreterTrainIndex.getConfig().moduleType,
+          'action': 'catChanged',
+          'categoryId': categoryId
+        },
+        success: NeoX.Modules.InterpreterTrainIndex.load
+      });
+    },
+    
     skip: function(sentenceID) {
       $.ajax({
         type: "POST",

@@ -42,6 +42,20 @@ var MSplitterTrainRequests_Implementation = {
       });
     },
     
+    catChanged: function(categoryId) {
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
+          'action': 'catChanged',
+          'categoryId': categoryId
+        },
+        success: NeoX.Modules.SplitterTrainIndex.load
+      });
+    },
+    
     split: function(sentenceID, newSplitValue, level, approved) {
       $.ajax({
         type: "POST",

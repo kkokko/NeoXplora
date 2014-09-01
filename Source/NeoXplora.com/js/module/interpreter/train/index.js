@@ -47,6 +47,7 @@ var MInterpreterTrainIndex_Implementation = {
       NeoX.Modules.InterpreterTrainIndex.hookEvent('click', NeoX.Modules.InterpreterTrainIndex.getConfig().Buttons.edit, NeoX.Modules.InterpreterTrainIndex.edit);
       NeoX.Modules.InterpreterTrainIndex.hookEvent('click', NeoX.Modules.InterpreterTrainIndex.getConfig().Buttons.resplit, NeoX.Modules.InterpreterTrainIndex.resplit);
       NeoX.Modules.InterpreterTrainIndex.hookEvent('keypress', NeoX.Modules.InterpreterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.InterpreterTrainIndex.repKeyPress);
+      NeoX.Modules.InterpreterTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.InterpreterTrainIndex.catChanged);
     },
     
     load: function() {
@@ -62,6 +63,10 @@ var MInterpreterTrainIndex_Implementation = {
         var approved = ($(".checkApproved").length > 0) && $(".checkApproved").is(":checked");
         NeoX.Modules.InterpreterTrainRequests.save(sentenceID, newValue, approved);
       }
+    },
+    
+    catChanged: function() {
+      NeoX.Modules.InterpreterTrainRequests.catChanged($(this).val());
     },
     
     skip: function() {

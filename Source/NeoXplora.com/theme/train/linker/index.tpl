@@ -17,6 +17,19 @@
           </ul>
         </div>
         <div class="clear"></div>
+        <div style="display: inline-block; padding-top: 5px; margin-bottom: 10px; padding-left: 5px;">
+          Category: 
+          <select id="categoryId">
+            <option value="-1">
+              All
+            </option>
+            <?php foreach($this->categoryList AS $key => $value) { ?>
+              <option value="<?php echo $key; ?>" <?php if($this->currentCategory == $key) echo "selected='selected'"; ?>>
+                <?php echo $value; ?>
+              </option> 
+            <?php } ?>
+          </select>
+        </div>
         <div class="buttons smaller">
           <a href="javascript:void(0)" class="saveBtn">Save Progress</a>
           <a href="javascript:void(0)" class="finishBtn">Finish Training</a>

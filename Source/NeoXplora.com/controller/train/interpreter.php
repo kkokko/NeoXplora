@@ -17,6 +17,21 @@ class TTrainInterpreter extends TTrain {
       "NeoX.Modules.InterpreterTrainRequests" => "js/module/interpreter/train/requests.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
+    
+    if(!isset($_SESSION['interpreterCategoryId'])) {
+      $_SESSION['interpreterCategoryId'] = -1;
+    }
+    
+    $categoryData = $this->core->entity("category")->select();
+    $categoryList = array();
+    
+    while($result = $categoryData->fetch_array()) {
+      $categoryList[$result[Entity\TCategory::$tok_id]] = $result[Entity\TCategory::$tok_name]; 
+    }
+    
+    $this->template->currentCategory = $_SESSION['interpreterCategoryId'];
+    $this->template->categoryList = $categoryList;
+    
     $this->template->load("index", "train/interpreter");
     $this->template->pageTitle = "Interpreter";
     $this->template->page = "trainsplit";
@@ -28,6 +43,10 @@ class TTrainInterpreter extends TTrain {
     $ignoreIDs = array();
     if(isset($_SESSION['ignoredInterpreterPageIDs']) && is_array($_SESSION['ignoredInterpreterPageIDs'])) {
       $ignoreIDs = array_values($_SESSION['ignoredInterpreterPageIDs']);
+    }
+    
+    if(!isset($_SESSION['interpreterCategoryId'])) {
+      $_SESSION['interpreterCategoryId'] = -1;
     }
     
     $trainModel = $this->core->model("train");
@@ -47,7 +66,7 @@ class TTrainInterpreter extends TTrain {
         
       $sentence_data = $trainModel->getSentence($categoryID, $offset, $sentence_offset, "ssReviewedSplit", $ignoreIDs);
     } else {
-      $sentence_data = $trainModel->getSentenceNotRandom("ssReviewedSplit", $ignoreIDs);
+      $sentence_data = $trainModel->getSentenceNotRandom("ssReviewedSplit", $ignoreIDs, $_SESSION['interpreterCategoryId']);
     }
     
     $data = 'No sentence to display';
@@ -80,6 +99,14 @@ class TTrainInterpreter extends TTrain {
     );
     
     echo json_encode($response);
+  }
+
+  public function catChanged() {
+    if(!isset($_POST['categoryId'])) return;
+    
+    $_SESSION['interpreterCategoryId'] = intval($_POST['categoryId']);
+    
+    echo json_encode("");
   }
 
   public function skip() {

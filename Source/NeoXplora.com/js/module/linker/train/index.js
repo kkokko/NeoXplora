@@ -45,6 +45,7 @@ var MLinkerTrainIndex_Implementation = {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.skipBtn, NeoX.Modules.LinkerTrainIndex.skip);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.finishBtn, NeoX.Modules.LinkerTrainIndex.finish);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().charSelector, NeoX.Modules.LinkerTrainIndex.charClicked);
+      NeoX.Modules.LinkerTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.LinkerTrainIndex.catChanged);
       $(document).on("keydown", NeoX.Modules.LinkerTrainIndex.onKeyDown);
       $(document).on("keyup", NeoX.Modules.LinkerTrainIndex.onKeyUp);
     },
@@ -74,6 +75,10 @@ var MLinkerTrainIndex_Implementation = {
         $("head").append(styles);
     	});
       NeoX.Modules.LinkerTrainRequests.load();    	
+    },
+    
+    catChanged: function() {
+    	NeoX.Modules.LinkerTrainRequests.catChanged($(this).val());
     },
     
     save: function() {

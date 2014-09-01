@@ -63,7 +63,7 @@
       return $this->result($query);
     }
     
-    public function getPage($ignoreIDs = array()) {
+    public function getPage($ignoreIDs = array(), $categoryId) {
       $ignore = '';
       if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
         $ignore .= " AND p.[[page.id]] NOT IN (";
@@ -72,7 +72,12 @@
           if($i != count($ignoreIDs) - 1) $ignore .= ', ';
         }
         $ignore .= ") ";
-      }  
+      }
+      
+      $category_cnd = '';
+      if($categoryId > -1) {
+        $category_cnd = ' AND p.[[page.categoryid]] = ' . $categoryId;
+      }
       
       $query = $this->query("
         SELECT p.[[page.id]], p.[[page.status]], p.[[page.title]] 
@@ -85,6 +90,7 @@
         ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
         WHERE a1.total = a2.totalR
         AND p.[[page.status]] <> 'psReviewedCRep'
+        " . $category_cnd . "
         " . $ignore . "
         GROUP BY p.[[page.id]]");
         

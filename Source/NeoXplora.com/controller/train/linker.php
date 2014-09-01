@@ -27,12 +27,36 @@ class TTrainLinker extends TTrain {
       "NeoX.Modules.LinkerTrainRequests" => "js/module/linker/train/requests.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
+    
+    if(!isset($_SESSION['linkerCategoryId'])) {
+      $_SESSION['linkerCategoryId'] = -1;
+    }
+    
+    $categoryData = $this->core->entity("category")->select();
+    $categoryList = array();
+    
+    while($result = $categoryData->fetch_array()) {
+      $categoryList[$result[Entity\TCategory::$tok_id]] = $result[Entity\TCategory::$tok_name]; 
+    }
+    
+    $this->template->currentCategory = $_SESSION['linkerCategoryId'];
+    $this->template->categoryList = $categoryList;
+    
     $this->template->addStyle("style/train/linker.css");
     $this->template->load("index", "train/linker");
     $this->template->pageTitle = "Train CRep";
     $this->template->page = "traincrep";
     $this->template->hide_right_box = true;
     $this->template->render();
+  }
+  
+  public function catChanged() {
+    if(!isset($_POST['categoryId'])) return;
+    
+    $_SESSION['linkerCategoryId'] = intval($_POST['categoryId']);
+    $_SESSION['pageID'] = -1;
+    
+    echo json_encode("");
   }
   
   public function loadPage() {
@@ -47,7 +71,7 @@ class TTrainLinker extends TTrain {
       
       $linkerModel = $this->core->model("linker", "train");
       
-      $pageData = $linkerModel->getPage($ignoreIDs);
+      $pageData = $linkerModel->getPage($ignoreIDs, $_SESSION['linkerCategoryId']);
     } else {
       $pageData = $this->core->entity("page")->select(array("id" => $_SESSION['pageID']), "*"); 
     }

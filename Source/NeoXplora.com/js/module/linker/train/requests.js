@@ -42,6 +42,20 @@ var MLinkerTrainRequests_Implementation = {
       });
     },
     
+    catChanged: function(categoryId) {
+    	$.ajax({
+        type: "POST",
+        url: NeoX.Modules.LinkerTrainIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
+          'action': 'catChanged',
+          'categoryId': categoryId
+        },
+        success: NeoX.Modules.LinkerTrainRequests.load
+      });
+    },
+    
     finish: function(data) {
       $.ajax({
         type: "POST",
