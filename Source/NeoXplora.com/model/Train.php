@@ -80,8 +80,10 @@
     }
     
     public function getSentenceNotRandom($sStatus, $ignoreIDs = array(), $categoryId = -1) {
-      $ignore_se = '';
+      $query = null;
+      
       if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $ignore_se = '';
         $ignore = '(';
         for($i = 0; $i < count($ignoreIDs); $i++) {
           $ignore .= "'" . $ignoreIDs[$i] . "'";
@@ -89,29 +91,56 @@
         }
         $ignore .= ") ";
         
-        $ignore_se = ' AND se.[[sentence.id]] NOT IN ' . $ignore;
+        $ignore_se = 'WHERE se.[[sentence.id]] NOT IN ' . $ignore;
+        
+        $query = $this->query("
+        SELECT 
+          se.[[sentence.id]],
+          se.[[sentence.name]],
+          se.[[sentence.rep]]
+        FROM [[sentence]] se
+        INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = :1
+        " . $ignore_se . "
+        ", $ignoreIDs[0]);
+        
+      } else {
+        $category_cnd = '';
+        if($categoryId > -1) {
+          $category_cnd = ' INNER JOIN [[page]] p ON se.[[sentence.pageid]] = p.[[page.id]] AND p.[[page.categoryid]] = ' . $categoryId;;
+        }    
+        
+        $query = $this->query("
+          SELECT
+            se.[[sentence.id]],
+            se.[[sentence.name]],
+            se.[[sentence.rep]]
+          FROM [[sentence]] se 
+          " . $category_cnd . "
+          WHERE se.[[sentence.status]] = :1
+          ORDER BY se.[[sentence.assigneddate]] ASC, se.[[sentence.id]] DESC
+        ", $sStatus);
+        
       }
       
+      return $this->result($query);
+    }
+
+    public function countSentenceNotRandom($sStatus, $categoryId = -1) {
       $category_cnd = '';
       if($categoryId > -1) {
         $category_cnd = ' INNER JOIN [[page]] p ON se.[[sentence.pageid]] = p.[[page.id]] AND p.[[page.categoryid]] = ' . $categoryId;;
       }    
-         
-      
+
       $query = $this->query("
         SELECT
-          se.[[sentence.id]],
-          se.[[sentence.name]],
-          se.[[sentence.rep]]
+          COUNT(se.[[sentence.id]]) AS `total`
         FROM [[sentence]] se 
         " . $category_cnd . "
         WHERE se.[[sentence.status]] = :1
-        " . $ignore_se . "
-        ORDER BY se.[[sentence.assigneddate]] ASC, se.[[sentence.id]] DESC
       ", $sStatus);
       
       return $this->result($query);
-    }
+    } 
     
     public function countSentences($categoryID, $offset, $sStatus, $ignoreIDs = array()) {
       $ignore_s = '';

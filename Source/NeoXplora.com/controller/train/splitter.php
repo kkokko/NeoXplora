@@ -67,7 +67,7 @@ class TTrainSplitter extends TTrain {
         
       $sentence_data = $trainModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs);
     } else {
-      $sentence_data = $trainModel->getSentenceNotRandom("ssFinishedGenerate", $ignoreIDs, $_SESSION['splitCategoryId']);
+      $sentence_data = $trainModel->getSentenceNotRandom("ssFinishedGenerate", $ignoreIDs, $_SESSION['splitCategoryId']);    
     }
     
     $data = 'No sentence to display';
@@ -123,6 +123,12 @@ class TTrainSplitter extends TTrain {
       $_SESSION['ignoredSplitPageIDs'] = array_values(array_slice($_SESSION['ignoredSplitPageIDs'], 1));
     }
     
+    $count_data = $this->core->model("train")->countSentenceNotRandom("ssFinishedGenerate", $_SESSION['splitCategoryId'])->fetch_array();
+    
+    if($count_data['total'] == count($_SESSION['ignoredSplitPageIDs'])) {
+      $_SESSION['ignoredSplitPageIDs'] = array();
+    }
+    
     $this->core->entity("sentence")->update(
       $sentenceID, 
       array(
@@ -137,6 +143,7 @@ class TTrainSplitter extends TTrain {
     if(!isset($_POST['categoryId'])) return;
     
     $_SESSION['splitCategoryId'] = intval($_POST['categoryId']);
+    $_SESSION['ignoredSplitPageIDs'] = array();
     
     echo json_encode("");
   }

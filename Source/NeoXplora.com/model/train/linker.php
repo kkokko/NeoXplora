@@ -96,6 +96,29 @@
         
       return $this->result($query);
     }
+
+    public function countPages($categoryId) {
+      $category_cnd = '';
+      if($categoryId > -1) {
+        $category_cnd = ' AND p.[[page.categoryid]] = ' . $categoryId;
+      }
+      
+      $query = $this->query("
+        SELECT COUNT(p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssReviewedRep' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        WHERE a1.total = a2.totalR
+        AND p.[[page.status]] <> 'psReviewedCRep'
+        " . $category_cnd . "
+        GROUP BY p.[[page.id]]");
+        
+      return $this->result($query);
+    }
     
     public function getCReps($pageid) {
       $query = $this->query("

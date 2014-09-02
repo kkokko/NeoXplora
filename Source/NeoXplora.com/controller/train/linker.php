@@ -55,6 +55,7 @@ class TTrainLinker extends TTrain {
     
     $_SESSION['linkerCategoryId'] = intval($_POST['categoryId']);
     $_SESSION['pageID'] = -1;
+    $_SESSION['ignoredLinkerPageIDs'] = array();
     
     echo json_encode("");
   }
@@ -204,12 +205,14 @@ class TTrainLinker extends TTrain {
       $_SESSION['ignoredLinkerPageIDs'] = array_values(array_slice($_SESSION['ignoredLinkerPageIDs'], 1));
     }
     
-    $query = $this->core->entity("page")->select(
-      array("status" => array("psReviewedRep", "psTrainingCRep"))
-    );
+    $linkerModel = $this->core->model("linker", "train");
+      
+    $pageData = $linkerModel->getPage($ignoreIDs, $_SESSION['linkerCategoryId']);
     
-    if($query->num_rows == count($_SESSION['ignoredLinkerPageIDs'])) {
-      unset($_SESSION['ignoredLinkerPageIDs']);
+    $count_data = $this->core->model("linker", "train")->countPages($_SESSION['interpreterCategoryId'])->fetch_array();
+    
+    if($count_data['total'] == count($_SESSION['ignoredInterpreterPageIDs'])) {
+      $_SESSION['ignoredInterpreterPageIDs'] = array();
     }
     
     $this->core->entity("page")->update(

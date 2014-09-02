@@ -105,6 +105,7 @@ class TTrainInterpreter extends TTrain {
     if(!isset($_POST['categoryId'])) return;
     
     $_SESSION['interpreterCategoryId'] = intval($_POST['categoryId']);
+    $_SESSION['ignoredInterpreterPageIDs'] = array();
     
     echo json_encode("");
   }
@@ -123,6 +124,12 @@ class TTrainInterpreter extends TTrain {
     
     if(count($_SESSION['ignoredInterpreterPageIDs']) > 10) { 
       $_SESSION['ignoredInterpreterPageIDs'] = array_values(array_slice($_SESSION['ignoredInterpreterPageIDs'], 1));
+    }
+    
+    $count_data = $this->core->model("train")->countSentenceNotRandom("ssReviewedSplit", $_SESSION['interpreterCategoryId'])->fetch_array();
+    
+    if($count_data['total'] == count($_SESSION['ignoredInterpreterPageIDs'])) {
+      $_SESSION['ignoredInterpreterPageIDs'] = array();
     }
     
     $this->core->entity("sentence")->update(
