@@ -38,13 +38,13 @@ var MSplitterReviewIndex_Implementation = {
     },
     
     hookEvents: function() {
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.goToPage, NeoX.Modules.SplitterReviewIndex.goToPage);
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.revert, NeoX.Modules.SplitterReviewIndex.revert);
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.modify, NeoX.Modules.SplitterReviewIndex.modify);
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approve, NeoX.Modules.SplitterReviewIndex.approve);
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismiss, NeoX.Modules.SplitterReviewIndex.dismiss);
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approveAll, NeoX.Modules.SplitterReviewIndex.approveAll);
-    	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismissAll, NeoX.Modules.SplitterReviewIndex.dismissAll);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.goToPage, NeoX.Modules.SplitterReviewIndex.goToPage);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.revert, NeoX.Modules.SplitterReviewIndex.revert);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.modify, NeoX.Modules.SplitterReviewIndex.modify);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approve, NeoX.Modules.SplitterReviewIndex.approve);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismiss, NeoX.Modules.SplitterReviewIndex.dismiss);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approveAll, NeoX.Modules.SplitterReviewIndex.approveAll);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismissAll, NeoX.Modules.SplitterReviewIndex.dismissAll);
     },
     
     load: function() {

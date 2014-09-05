@@ -27,6 +27,9 @@
       <option value="-1">
         All
       </option>
+      <option value="0">
+        Uncategorized
+      </option>
       <?php foreach($this->categoryList AS $key => $value) { ?>
         <option value="<?php echo $key; ?>" <?php if($this->currentCategory == $key) echo "selected='selected'"; ?>>
           <?php echo $value; ?>

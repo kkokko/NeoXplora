@@ -4,21 +4,36 @@
   require_once __DIR__ . "/../Train.php";
   class TReviewSplitter extends TTrain {
     
-    public function countProtos() {
+    public function countProtos($pageId) {
+      $condition = '';
+      $status = "s.[[sentence.status]] = 'ssTrainedSplit'";
+      if($pageId) {
+        $condition = "AND s.[[sentence.pageid]] = " . intval($pageId);
+        $status = "s.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
+      }
+      
       $query = $this->query("
         SELECT COUNT(a.[[proto.id]]) AS total
         FROM (
           SELECT DISTINCT p.[[proto.id]]
           FROM [[proto]] p
           INNER JOIN [[sentence]] s ON p.[[proto.id]] = s.[[sentence.protoid]]
-          WHERE s.[[sentence.status]] = :1
+          WHERE " . $status ."
+          " . $condition . "
         ) a
-      ", 'ssTrainedSplit');
+      ");
       
       return $this->result($query);
     }
     
-    public function getSentences($offset, $limit) {
+    public function getSentences($pageId, $offset, $limit) {
+      $condition = '';
+      $status = "s.[[sentence.status]] = 'ssTrainedSplit'";
+      if($pageId) {
+        $condition = "AND s.[[sentence.pageid]] = " . intval($pageId);
+        $status = "s.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
+      }
+      
       $query = $this->query("
         SELECT 
           se.[[sentence.id]] as sentenceId, 
@@ -31,12 +46,13 @@
           SELECT DISTINCT pr.*
            FROM [[proto]] pr
            INNER JOIN [[sentence]] s ON pr.[[proto.id]] = s.[[sentence.protoid]]
-           WHERE s.[[sentence.status]] = :1
+           WHERE " . $status . "
+           " . $condition . "
            ORDER BY s.[[sentence.pageid]] ASC, pr.[[proto.order]] ASC, s.[[sentence.order]] ASC  
-           LIMIT :2, :3
+           LIMIT :1, :2
         ) a ON a.[[proto.id]] = se.[[sentence.protoid]]
         ORDER BY a.[[proto.order]] ASC, se.[[sentence.order]] ASC
-      ", 'ssTrainedSplit', intval($offset), intval($limit));
+      ", intval($offset), intval($limit));
       
       return $this->result($query);
     }

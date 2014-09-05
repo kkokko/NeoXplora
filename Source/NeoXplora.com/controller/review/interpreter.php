@@ -18,6 +18,9 @@ class TReviewInterpreter extends TTrain {
       "NeoX.Modules.InterpreterReviewRequests" => "js/module/interpreter/review/requests.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
+    
+    $this->template->thePageId = (isset($_GET['pageId']) && $_GET['pageId'] != "")?$_GET['pageId']:"";
+    
     $this->template->load("index", "review/interpreter");
     $this->template->pageTitle = "Interpreter Review";
     $this->template->hide_right_box = true;
@@ -28,30 +31,33 @@ class TReviewInterpreter extends TTrain {
     $page = isset($_POST['page'])?$_POST['page']:1;
     $per_page = 10;
     $pagination = array();
+    $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
     
     $interpreterModel = $this->core->model("interpreter", "review");
-    $count_data = $interpreterModel->countSentences('ssTrainedRep')->fetch_array();
+    $count_data = $interpreterModel->countSentences('ssTrainedRep', $pageId)->fetch_array();
     
     if($count_data['total'] > 0) {
       $pages = ceil($count_data['total'] / $per_page);
       $start = ($page - 1) * $per_page;
       
-      $query = $interpreterModel->getSentences('ssTrainedRep', $start, $per_page);
+      $query = $interpreterModel->getSentences('ssTrainedRep', $pageId, $start, $per_page);
       
       if(!$query) {
-        $query = $interpreterModel->getSentences('ssTrainedRep', 0, $per_page);
+        $query = $interpreterModel->getSentences('ssTrainedRep', $pageId, 0, $per_page);
         $page = 1;
       }
       
       $sentences = array();
       $rowclass = '';
       while($sentence_data = $query->fetch_array()) {
+        $rep = $sentence_data[Entity\TSentence::$tok_rep];
+        if($rep == "") $rep = $this->Delphi()->GuessRepsForSentenceId(intval($sentence_data[Entity\TSentence::$tok_id]))->GetProperty("RepGuessA");
         
         $sentences[] = array(
           "id" => $sentence_data[Entity\TSentence::$tok_id],
           "rowclass" => "row1",
           "name" => $sentence_data[Entity\TSentence::$tok_name],
-          "rep" => $sentence_data[Entity\TSentence::$tok_rep],
+          "rep" => $rep
         );
       }
       

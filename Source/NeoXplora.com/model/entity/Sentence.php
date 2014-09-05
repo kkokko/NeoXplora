@@ -20,7 +20,7 @@
     public static $tok_guessbid = "GuessBId";
     public static $tok_guesscid = "GuessCId";
     public static $tok_guessdid = "GuessDId";
-    public static $tok_status = "Status";
+    public static $tok_status = "Status"; // ssFinishedGenerate, ssTrainedSplit, ssReviewedSplit, ssTrainedRep, ssReviewedRep, ssReviewedCRep
     public static $tok_assigneddate = "AssignedDate";
     public static $tok_order = "Order";
     

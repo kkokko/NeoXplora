@@ -6,13 +6,6 @@ require_once __DIR__ . "/../train.php";
 class TTrainLinker extends TTrain {
   
   public $accessLevel = 'user';
-  private $entityList;
-  private $sentenceList;
-  private $colorList = array(
-    "#346799",
-    "#990000",
-    "#ff8000"
-  );
   
   public function index() {
     $this->template->addScripts(array(
@@ -39,6 +32,8 @@ class TTrainLinker extends TTrain {
       $categoryList[$result[Entity\TCategory::$tok_id]] = $result[Entity\TCategory::$tok_name]; 
     }
     
+    $this->template->thePageId = (isset($_GET['pageId']) && $_GET['pageId'] != "")?$_GET['pageId']:"";
+    
     $this->template->currentCategory = $_SESSION['linkerCategoryId'];
     $this->template->categoryList = $categoryList;
     
@@ -62,26 +57,34 @@ class TTrainLinker extends TTrain {
   
   public function loadPage() {
     $pageData = null;
-    //unset($_SESSION['ignoredLinkerPageIDs']);
-    if(!isset($_SESSION['pageID']) || $_SESSION['pageID'] == -1) {
-      $ignoreIDs = array();
-      
-      if(isset($_SESSION['ignoredLinkerPageIDs']) && is_array($_SESSION['ignoredLinkerPageIDs'])) {
-        $ignoreIDs = array_values($_SESSION['ignoredLinkerPageIDs']);
-      }
-      
-      $linkerModel = $this->core->model("linker", "train");
-      
-      $pageData = $linkerModel->getPage($ignoreIDs, $_SESSION['linkerCategoryId']);
+    $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
+    
+    if($pageId) {
+      $pageData = $this->core->entity("page")->select(array("id" => $pageId), "*");
     } else {
-      $pageData = $this->core->entity("page")->select(array("id" => $_SESSION['pageID']), "*"); 
+      if(!isset($_SESSION['pageID']) || $_SESSION['pageID'] == -1) {
+        $ignoreIDs = array();
+        
+        if(isset($_SESSION['ignoredLinkerPageIDs']) && is_array($_SESSION['ignoredLinkerPageIDs'])) {
+          $ignoreIDs = array_values($_SESSION['ignoredLinkerPageIDs']);
+        }
+        
+        $linkerModel = $this->core->model("linker", "train");
+        
+        $pageData = $linkerModel->getPage($ignoreIDs, $_SESSION['linkerCategoryId']);
+      } else {
+        $pageData = $this->core->entity("page")->select(array("id" => $_SESSION['pageID']), "*"); 
+      }
     }
     
     $data = array();
     
     if($pageData->num_rows) {
       $page_data = $pageData->fetch_array();
-      $_SESSION['pageID'] = $page_data[Entity\TPage::$tok_id];
+      if(!$pageId) {
+        $_SESSION['pageID'] = $page_data[Entity\TPage::$tok_id];
+        $pageId = $_SESSION['pageID'];
+      }
       $pagetitle = $page_data[Entity\TPage::$tok_title];
       
       require_once __DIR__ . "/../../model/entity/sentence.php";
@@ -93,7 +96,7 @@ class TTrainLinker extends TTrain {
         )
       );
       
-      $query = $this->core->model("linker", "train")->getCReps($_SESSION['pageID']);
+      $query = $this->core->model("linker", "train")->getCReps($pageId);
       
       if($query->num_rows > 0) {
         
@@ -140,7 +143,7 @@ class TTrainLinker extends TTrain {
         
         
       } else {
-        $query = $this->core->entity("sentence")->select(array("pageid" => $_SESSION['pageID']), "*", array("id" => "ASC"));
+        $query = $this->core->entity("sentence")->select(array("pageid" => $pageId), "*", array("id" => "ASC"));
         
         while($sentence_data = $query->fetch_array()) {
           $data[] = (object) array(
@@ -160,10 +163,10 @@ class TTrainLinker extends TTrain {
   }
 
   public function save() {
-    if(!isset($_SESSION['pageID'])) return;
+    if(!isset($_SESSION['pageID']) && !isset($_REQUEST['pageId'])) return;
     
     $data = $_POST['data'];
-    $pageId = $_SESSION['pageID'];
+    $pageId = isset($_REQUEST['pageId'])?$_REQUEST['pageId']:$_SESSION['pageID'];
     
     $this->saveData($data, $pageId);
     
@@ -171,10 +174,10 @@ class TTrainLinker extends TTrain {
   }
 
   public function finish() {
-    if(!isset($_SESSION['pageID'])) return;
+    if(!isset($_SESSION['pageID']) && !isset($_REQUEST['pageId'])) return;
     
     $data = $_POST['data'];
-    $pageId = $_SESSION['pageID'];
+    $pageId = isset($_REQUEST['pageId'])?$_REQUEST['pageId']:$_SESSION['pageID'];
     
     $this->saveData($data, $pageId);
     

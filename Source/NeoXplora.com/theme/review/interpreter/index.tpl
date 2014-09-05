@@ -26,6 +26,7 @@
   </div>
   <div class="clear"></div>
   <br/>
+  <input type="hidden" id="pageId" value="<?php echo $this->thePageId; ?>" />
   <div class="boxContent">
     
   </div>

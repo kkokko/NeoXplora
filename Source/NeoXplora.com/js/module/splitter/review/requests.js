@@ -16,6 +16,8 @@ var MSplitterReviewRequests_Implementation = {
      */
     
     load: function(page) {
+    	var pageId = NeoX.Modules.SplitterReviewIndex.getParameterByName("pageId");
+
       $.ajax({
         type: "POST",
         url: NeoX.Modules.SplitterReviewIndex.getConfig().moduleScript,
@@ -23,7 +25,8 @@ var MSplitterReviewRequests_Implementation = {
         data: {
           'type': NeoX.Modules.SplitterReviewIndex.getConfig().moduleType,
           'action': 'load',
-          'page': page
+          'page': page,
+          'pageId': pageId
         },
         success: NeoX.Modules.SplitterReviewRequests.loadCallback
       });

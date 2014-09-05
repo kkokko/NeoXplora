@@ -16,6 +16,8 @@ var MInterpreterReviewRequests_Implementation = {
      */
     
     load: function(page) {
+    	var pageId = NeoX.Modules.InterpreterReviewIndex.getParameterByName("pageId");
+    	
       $.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterReviewIndex.getConfig().moduleScript,
@@ -23,7 +25,8 @@ var MInterpreterReviewRequests_Implementation = {
         data: {
           'type': NeoX.Modules.InterpreterReviewIndex.getConfig().moduleType,
           'action': 'load',
-          'page': page
+          'page': page,
+          'pageId': pageId
         },
         success: NeoX.Modules.InterpreterReviewRequests.loadCallback
       });

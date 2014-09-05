@@ -16,19 +16,24 @@ var MLinkerTrainRequests_Implementation = {
      */
     
     load: function() {
+    	var pageId = NeoX.Modules.LinkerTrainIndex.getParameterByName("pageId");
+    	
       $.ajax({
         type: "POST",
         url: NeoX.Modules.LinkerTrainIndex.getConfig().moduleScript,
         dataType: 'json',
         data: {
           'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
-          'action': 'loadPage'
+          'action': 'loadPage',
+          'pageId': pageId
         },
         success: NeoX.Modules.LinkerTrainRequests.loadCallback
       });
     },
     
     save: function(data) {
+    	var pageId = NeoX.Modules.LinkerTrainIndex.getParameterByName("pageId");
+    	
       $.ajax({
         type: "POST",
         url: NeoX.Modules.LinkerTrainIndex.getConfig().moduleScript,
@@ -36,27 +41,34 @@ var MLinkerTrainRequests_Implementation = {
         data: {
           'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
           'action': 'save',
-          'data': data
+          'data': data,
+          'pageId': pageId
         },
         success: NeoX.Modules.LinkerTrainRequests.saveCallback
       });
     },
     
     catChanged: function(categoryId) {
-    	$.ajax({
-        type: "POST",
-        url: NeoX.Modules.LinkerTrainIndex.getConfig().moduleScript,
-        dataType: 'json',
-        data: {
-          'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
-          'action': 'catChanged',
-          'categoryId': categoryId
-        },
-        success: NeoX.Modules.LinkerTrainRequests.load
-      });
+    	var pageId = NeoX.Modules.LinkerTrainIndex.getParameterByName("pageId");
+    	
+    	if(!pageId) {
+      	$.ajax({
+          type: "POST",
+          url: NeoX.Modules.LinkerTrainIndex.getConfig().moduleScript,
+          dataType: 'json',
+          data: {
+            'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
+            'action': 'catChanged',
+            'categoryId': categoryId
+          },
+          success: NeoX.Modules.LinkerTrainRequests.load
+        });
+      }
     },
     
     finish: function(data) {
+    	var pageId = NeoX.Modules.LinkerTrainIndex.getParameterByName("pageId");
+    	
       $.ajax({
         type: "POST",
         url: NeoX.Modules.LinkerTrainIndex.getConfig().moduleScript,
@@ -64,7 +76,8 @@ var MLinkerTrainRequests_Implementation = {
         data: {
           'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
           'action': 'finish',
-          'data': data
+          'data': data,
+          'pageId': pageId
         },
         success: NeoX.Modules.LinkerTrainRequests.finishCallback
       });

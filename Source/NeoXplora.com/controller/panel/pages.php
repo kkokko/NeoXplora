@@ -15,27 +15,44 @@ class TPanelPages extends TPanel {
     $this->template->addStyle("style/admin.pages.css");
     $this->template->addStyle("style/train/linker.css");
     $this->template->addScripts(array("js/system/object.js"));
+    $this->template->addJSModules(array(
+      "NeoX.Modules.Pages.Controls" => "js/module/pages/controls.js"
+    ));
 
     $this->template->load("index", "panel/pages");
     $this->template->pageTitle = "Manage Pages | Admin Panel";
     $this->template->page = "pages_panel";
     
     $page = isset($_GET['page'])?$_GET['page']:1;
+    $categoryId = isset($_GET['categoryId'])?intval($_GET['categoryId']):-1;
+    $status = isset($_GET['status'])?intval($_GET['status']):-1;
+    
     $per_page = 15;
     $pagination = "";
     $pageData = array();
     
+    $categoryData = $this->core->entity("category")->select();
+    $categoryList = array();
+    
+    while($result = $categoryData->fetch_array()) {
+      $categoryList[$result[Entity\TCategory::$tok_id]] = $result[Entity\TCategory::$tok_name]; 
+    }
+    
+    $this->template->currentCategory = $categoryId;
+    $this->template->currentStatus = $status;
+    $this->template->categoryList = $categoryList;
+    
     $linkerModel = $this->core->model("pages", "panel");
-    $count_data = $linkerModel->countPages()->fetch_array();
+    $count_data = $linkerModel->countPages($categoryId, $status)->fetch_array();
     
     if($count_data['total'] > 0) {
       $pages = ceil($count_data['total'] / $per_page);
       $start = ($page - 1) * $per_page;
       
-      $query = $linkerModel->getPages($start, $per_page);
+      $query = $linkerModel->getPages($start, $per_page, $categoryId, $status);
       
       if(!$query || $query->num_rows < 1) {
-        $query = $linkerModel->getPages(0, $per_page);
+        $query = $linkerModel->getPages(0, $per_page, $categoryId, $status);
       }
       
       while($result = $query->fetch_array()) {

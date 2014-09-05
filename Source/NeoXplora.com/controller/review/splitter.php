@@ -18,6 +18,9 @@ class TReviewSplitter extends TTrain {
       "NeoX.Modules.SplitterReviewRequests" => "js/module/splitter/review/requests.js",
       "NeoX.Modules.ButtonComponent" => "js/module/button.js"
     ));
+    
+    $this->template->thePageId = (isset($_GET['pageId']) && $_GET['pageId'] != "")?$_GET['pageId']:"";
+    
     $this->template->load("index", "review/splitter");
     $this->template->pageTitle = "Splitter Review";
     $this->template->page = "trainsplit";
@@ -29,18 +32,19 @@ class TReviewSplitter extends TTrain {
     $page = isset($_POST['page'])?$_POST['page']:1;
     $per_page = 5;
     $pagination = array();
+    $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
     
     $splitterModel = $this->core->model("splitter", "review");
-    $count_data = $splitterModel->countProtos()->fetch_array();
+    $count_data = $splitterModel->countProtos($pageId)->fetch_array();
     
     if($count_data['total'] > 0) {
       $pages = ceil($count_data['total'] / $per_page);
       $start = ($page - 1) * $per_page;
       
-      $query = $splitterModel->getSentences($start, $per_page);
+      $query = $splitterModel->getSentences($pageId, $start, $per_page);
       
       if(!$query) {
-        $query = $splitterModel->getSentences(0, $per_page);
+        $query = $splitterModel->getSentences($pageId, 0, $per_page);
         $page = 1;
       }
       
