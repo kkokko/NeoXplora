@@ -92,7 +92,8 @@
         AND p.[[page.status]] <> 'psReviewedCRep'
         " . $category_cnd . "
         " . $ignore . "
-        GROUP BY p.[[page.id]]");
+        GROUP BY p.[[page.id]]
+        ORDER BY p.[[page.id]]");
         
       return $this->result($query);
     }

@@ -78,9 +78,15 @@ class TTrainLinker extends TTrain {
     }
     
     $data = array();
+    $pageTitle = "-";
     
     if($pageData->num_rows) {
       $page_data = $pageData->fetch_array();
+      
+      $query = $this->core->entity("page")->select(array("id" => $page_data[Entity\TPage::$tok_id]), "title");
+      $res = $query->fetch_array();
+      $pageTitle = $res[Entity\TPage::$tok_title];
+      
       if(!$pageId) {
         $_SESSION['pageID'] = $page_data[Entity\TPage::$tok_id];
         $pageId = $_SESSION['pageID'];
@@ -155,11 +161,16 @@ class TTrainLinker extends TTrain {
           );
         }
       }
-      
-      
+            
     }
 
-    echo json_encode($data);
+
+    $response = array(
+      'data' => $data,
+      'pageTitle' => $pageTitle
+    );
+    
+    echo json_encode($response);
   }
 
   public function save() {
@@ -210,11 +221,11 @@ class TTrainLinker extends TTrain {
     
     $linkerModel = $this->core->model("linker", "train");
       
-    $pageData = $linkerModel->getPage($ignoreIDs, $_SESSION['linkerCategoryId']);
+    $pageData = $linkerModel->getPage($_SESSION['ignoredLinkerPageIDs'], $_SESSION['linkerCategoryId']);
     
     $count_data = $this->core->model("linker", "train")->countPages($_SESSION['interpreterCategoryId'])->fetch_array();
     
-    if($count_data['total'] == count($_SESSION['ignoredInterpreterPageIDs'])) {
+    if($count_data['total'] == count($_SESSION['ignoredLinkerPageIDs'])) {
       $_SESSION['ignoredInterpreterPageIDs'] = array();
     }
     

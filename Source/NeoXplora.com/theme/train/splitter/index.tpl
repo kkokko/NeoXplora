@@ -37,6 +37,9 @@
       <?php } ?>
     </select>
   </div>
+  <div style="display: inline-block; padding-top: 5px; margin-bottom: 10px; padding-left: 5px;">
+    Story Title: <span class="storyTitle">-</span>
+  </div>
   <br/>
   <?php if($this->userlevel == 'admin') { ?>
     <div style="display: inline-block; padding-top: 5px; margin-bottom: 10px; padding-left: 5px;"><input type="checkbox" class="checkApproved" checked /> Approve</div> 

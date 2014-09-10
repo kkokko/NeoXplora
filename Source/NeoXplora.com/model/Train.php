@@ -97,11 +97,12 @@
         SELECT 
           se.[[sentence.id]],
           se.[[sentence.name]],
-          se.[[sentence.rep]]
+          se.[[sentence.rep]],
+          se.[[sentence.pageid]]
         FROM [[sentence]] se
         INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = :1
         " . $ignore_se . "
-        ", $ignoreIDs[0]);
+        ORDER BY se.[[sentence.pageid]], se.[[sentence.id]] ", $ignoreIDs[0]);
         
       } else {
         $category_cnd = '';
@@ -113,11 +114,12 @@
           SELECT
             se.[[sentence.id]],
             se.[[sentence.name]],
-            se.[[sentence.rep]]
+            se.[[sentence.rep]],
+            se.[[sentence.pageid]]
           FROM [[sentence]] se 
           " . $category_cnd . "
           WHERE se.[[sentence.status]] = :1
-          ORDER BY se.[[sentence.assigneddate]] ASC, se.[[sentence.id]] DESC
+          ORDER BY se.[[sentence.pageid]] ASC, se.[[sentence.id]] DESC
         ", $sStatus);
         
       }

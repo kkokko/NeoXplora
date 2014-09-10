@@ -70,9 +70,15 @@ class TTrainInterpreter extends TTrain {
     }
     
     $data = 'No sentence to display';
+    $pageTitle = '-';
     
     if($sentence_data && $sentence_data->num_rows) {
       $sentence_data = $sentence_data->fetch_array();
+      
+      $query = $this->core->entity("page")->select(array("id" => $sentence_data[Entity\TSentence::$tok_pageid]), "title");
+      $res = $query->fetch_array();
+      $pageTitle = $res[Entity\TPage::$tok_title];
+      
       $this->core->entity("sentence")->update(
         $sentence_data[Entity\TSentence::$tok_id], 
         array(
@@ -95,7 +101,8 @@ class TTrainInterpreter extends TTrain {
     }
     
     $response = array(
-      'data' => $data
+      'data' => $data,
+      'pageTitle' => $pageTitle
     );
     
     echo json_encode($response);

@@ -123,6 +123,7 @@ var MSplitterTrainRequests_Implementation = {
     
     loadCallback: function(json) {
     	$(NeoX.Modules.SplitterTrainIndex.getConfig().dataContainer).html(json['data']);
+    	$(".storyTitle").html(json['pageTitle']);
     	NeoX.Modules.SplitterTrainIndex.splitValChangedInit();
       //$('.newRepValue').focus();
     },

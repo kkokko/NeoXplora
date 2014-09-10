@@ -122,6 +122,7 @@ var MInterpreterTrainRequests_Implementation = {
     
     loadCallback: function(json) {
     	$(NeoX.Modules.InterpreterTrainIndex.getConfig().dataContainer).html(json['data']);
+    	$(".storyTitle").html(json['pageTitle']);
     },
     
     saveCallback: function(newValue) {
