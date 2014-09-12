@@ -95,13 +95,19 @@ var MInterpreterReviewRequests_Implementation = {
      */
     
     loadCallback: function(json) {
-    	$(NeoX.Modules.InterpreterReviewIndex.getConfig().dataContainer).html(json['data']);
-    	$(NeoX.Modules.InterpreterReviewIndex.getConfig().paginationContainer).html(json['pagination']);
+    	if(json['exception']) {
+        $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+      } else {
+      	$(NeoX.Modules.InterpreterReviewIndex.getConfig().dataContainer).html(json['data']);
+      	$(NeoX.Modules.InterpreterReviewIndex.getConfig().paginationContainer).html(json['pagination']);
+      }
     },
     
     approveCallback: function(sentenceID, newValue) {
       return function(json) {
-      	if(json && json['StrIndex']) {
+      	if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+        } else if(json && json['StrIndex']) {
         	var near = newValue.substr(json['StrIndex'], newValue.length);
           $("#s" + sentenceID).find('.rep-error').remove();
           $("#s" + sentenceID).find(NeoX.Modules.InterpreterReviewIndex.getConfig().Inputs.newValue).after("<div class='rep-error' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
@@ -145,7 +151,9 @@ var MInterpreterReviewRequests_Implementation = {
     },
     
     approveAllCallback: function(json) {
-    	if(json['flag'] == false) {
+    	if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+      } else if(json['flag'] == false) {
         var page = parseInt($('.currentPage').html(), 10);
         if(!page) page = 1;
         NeoX.Modules.InterpreterReviewRequests.load(page);

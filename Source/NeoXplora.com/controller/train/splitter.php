@@ -215,38 +215,15 @@ class TTrainSplitter extends TTrain {
     
     $originalValue = $this->core->entity("sentence")->select($sentenceID, "name")->fetch_array();
     $originalValue = $originalValue[Entity\TSentence::$tok_name];
-    
-    $result = $this->Delphi()->SplitSentence($sentenceID, $newValue);
-
-    $newSentencesCount = $result->Count();    
+    $exception = '';
     $data = '';
-        
-    if($newSentencesCount == 1) {
-      if($approved == "true") {
-        $this->core->entity("sentence")->update(
-          $sentenceID,
-          array(
-            'status' => 'ssReviewedSplit'
-          )
-        );
-      }
-      
-      $this->template->sentence = array(
-        "id" => $sentenceID,
-        "level" => (intval($level) + 1),
-        "name" =>  $originalValue,
-        "newName" => $newValue,
-        "index" => intval($level) + 2,
-        "indentation" => 0,
-        "splitBtn" => true,
-        "dontSplitBtn" => true
-      );
-      
-      $data = $this->template->fetch("row", "train/splitter");
-    } elseif($newSentencesCount > 1) {
-      for($i = 0; $i < $newSentencesCount; $i++) {
-        $sentenceID = $result->Item($i)->GetProperty("Id");
-        
+    $newSentencesCount = 0;
+    
+    try {
+      $result = $this->Delphi()->SplitSentence($sentenceID, $newValue);
+      $newSentencesCount = $result->Count();    
+          
+      if($newSentencesCount == 1) {
         if($approved == "true") {
           $this->core->entity("sentence")->update(
             $sentenceID,
@@ -257,23 +234,52 @@ class TTrainSplitter extends TTrain {
         }
         
         $this->template->sentence = array(
-          "id" => $result->Item($i)->GetProperty("Id"),
-          "level" => intval($level) + 1,
-          "name" =>  $result->Item($i)->GetProperty("Name"),
-          "newName" => $result->Item($i)->GetProperty("Name"),
-          "index" => (intval($level) + 2) . '.' . ($i +1),
-          "indentation" => 8 * (intval($level) + 2),
+          "id" => $sentenceID,
+          "level" => (intval($level) + 1),
+          "name" =>  $originalValue,
+          "newName" => $newValue,
+          "index" => intval($level) + 2,
+          "indentation" => 0,
           "splitBtn" => true,
           "dontSplitBtn" => true
         );
         
-        $data .= $this->template->fetch("row", "train/splitter");
+        $data = $this->template->fetch("row", "train/splitter");
+      } elseif($newSentencesCount > 1) {
+        for($i = 0; $i < $newSentencesCount; $i++) {
+          $sentenceID = $result->Item($i)->GetProperty("Id");
+          
+          if($approved == "true") {
+            $this->core->entity("sentence")->update(
+              $sentenceID,
+              array(
+                'status' => 'ssReviewedSplit'
+              )
+            );
+          }
+          
+          $this->template->sentence = array(
+            "id" => $result->Item($i)->GetProperty("Id"),
+            "level" => intval($level) + 1,
+            "name" =>  $result->Item($i)->GetProperty("Name"),
+            "newName" => $result->Item($i)->GetProperty("Name"),
+            "index" => (intval($level) + 2) . '.' . ($i +1),
+            "indentation" => 8 * (intval($level) + 2),
+            "splitBtn" => true,
+            "dontSplitBtn" => true
+          );
+          
+          $data .= $this->template->fetch("row", "train/splitter");
+        }
       }
+  
+      $this->updatePageStatus($sentenceID);
+    } catch(\Exception $e) {
+      $exception = $e->getMessage();
     }
-
-    $this->updatePageStatus($sentenceID);
     
     $response = array(
+      'exception' => $exception,
       'data' => $data,
       'level' => ((int) $level) + 1,
       'newSentencesCount' => $newSentencesCount

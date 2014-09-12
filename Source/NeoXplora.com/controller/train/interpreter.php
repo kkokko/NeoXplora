@@ -71,38 +71,45 @@ class TTrainInterpreter extends TTrain {
     
     $data = 'No sentence to display';
     $pageTitle = '-';
+    $exception = '';
     
-    if($sentence_data && $sentence_data->num_rows) {
-      $sentence_data = $sentence_data->fetch_array();
-      
-      $query = $this->core->entity("page")->select(array("id" => $sentence_data[Entity\TSentence::$tok_pageid]), "title");
-      $res = $query->fetch_array();
-      $pageTitle = $res[Entity\TPage::$tok_title];
-      
-      $this->core->entity("sentence")->update(
-        $sentence_data[Entity\TSentence::$tok_id], 
-        array(
-          "assigneddate" => date("Y-m-d H:i:s")
-        )
-      );
-
-      $request = $this->Delphi()->GuessRepsForSentenceId(intval($sentence_data[Entity\TSentence::$tok_id]));
-
-      $this->template->sentence = array(
-        "id" => $sentence_data[Entity\TSentence::$tok_id],
-        "name" =>  $sentence_data[Entity\TSentence::$tok_name],
-        "representation" => $sentence_data[Entity\TSentence::$tok_rep],
-        "guess" => $request->GetProperty("RepGuessA")
-      );
-      
-      $this->template->load("table", "train/interpreter");
-      
-      $data = $this->template->parse();
+    try {
+      if($sentence_data && $sentence_data->num_rows) {
+        $sentence_data = $sentence_data->fetch_array();
+        
+        $query = $this->core->entity("page")->select(array("id" => $sentence_data[Entity\TSentence::$tok_pageid]), "title");
+        $res = $query->fetch_array();
+        $pageTitle = $res[Entity\TPage::$tok_title];
+        
+        $this->core->entity("sentence")->update(
+          $sentence_data[Entity\TSentence::$tok_id], 
+          array(
+            "assigneddate" => date("Y-m-d H:i:s")
+          )
+        );
+  
+        $request = $this->Delphi()->GuessRepsForSentenceId(intval($sentence_data[Entity\TSentence::$tok_id]));
+  
+        $this->template->sentence = array(
+          "id" => $sentence_data[Entity\TSentence::$tok_id],
+          "name" =>  $sentence_data[Entity\TSentence::$tok_name],
+          "representation" => $sentence_data[Entity\TSentence::$tok_rep],
+          "guess" => $request->GetProperty("RepGuessA")
+        );
+        
+        $this->template->load("table", "train/interpreter");
+        
+        $data = $this->template->parse();
+      }
+    
+    } catch(\Exception $e) {
+      $exception = $e->getMessage();
     }
-    
+
     $response = array(
       'data' => $data,
-      'pageTitle' => $pageTitle
+      'pageTitle' => $pageTitle,
+      'exception' => $exception
     );
     
     echo json_encode($response);
@@ -160,26 +167,32 @@ class TTrainInterpreter extends TTrain {
       return;
     }
     
-    $validator = $this->Delphi()->ValidateRep($newValue);
-    $status = 'ssTrainedRep';
-    if($approved == "true") $status = 'ssReviewedRep';
-    
-    if($validator === true) {      
-      $this->core->entity("sentence")->update(
-        $sentenceID, 
-        array(
-          "rep" => $newValue,
-          "status" => $status
-        )
-      );
-      $this->updatePageStatus($sentenceID);
-      echo json_encode("");
-    } else {
-      $response = array(
-        "ErrorString" => $validator['ErrorString'],
-        "StrIndex" => $validator['StrIndex']
-      ); 
-      echo json_encode($response);
+    try {
+      
+      $validator = $this->Delphi()->ValidateRep($newValue);
+      $status = 'ssTrainedRep';
+      if($approved == "true") $status = 'ssReviewedRep';
+      
+      if($validator === true) {      
+        $this->core->entity("sentence")->update(
+          $sentenceID, 
+          array(
+            "rep" => $newValue,
+            "status" => $status
+          )
+        );
+        $this->updatePageStatus($sentenceID);
+        echo json_encode("");
+      } else {
+        $response = array(
+          "ErrorString" => $validator['ErrorString'],
+          "StrIndex" => $validator['StrIndex']
+        ); 
+        echo json_encode($response);
+      }
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
     }
   }
   
@@ -188,28 +201,34 @@ class TTrainInterpreter extends TTrain {
     $sentenceID = (int) $_POST['sentenceID'];
     $approved = $_POST['approved'];
     
-    $repguess = $this->Delphi()->GuessRepsForSentenceId($sentenceID)->GetProperty("RepGuessA");
+    try {
     
-    $validator = $this->Delphi()->ValidateRep($repguess);
-    $status = 'ssTrainedRep';
-    if($approved == "true") $status = 'ssReviewedRep';
-    
-    if($validator === true) {
-      $this->core->entity("sentence")->update(
-        $sentenceID, 
-        array(
-          "rep" => $repguess,
-          "status" => $status
-        )
-      );
-      $this->updatePageStatus($sentenceID);
-      echo json_encode("");
-    } else {
-      $response = array(
-        "ErrorString" => $validator['ErrorString'],
-        "StrIndex" => $validator['StrIndex']
-      ); 
-      echo json_encode($response);
+      $repguess = $this->Delphi()->GuessRepsForSentenceId($sentenceID)->GetProperty("RepGuessA");
+      
+      $validator = $this->Delphi()->ValidateRep($repguess);
+      $status = 'ssTrainedRep';
+      if($approved == "true") $status = 'ssReviewedRep';
+      
+      if($validator === true) {
+        $this->core->entity("sentence")->update(
+          $sentenceID, 
+          array(
+            "rep" => $repguess,
+            "status" => $status
+          )
+        );
+        $this->updatePageStatus($sentenceID);
+        echo json_encode("");
+      } else {
+        $response = array(
+          "ErrorString" => $validator['ErrorString'],
+          "StrIndex" => $validator['StrIndex']
+        ); 
+        echo json_encode($response);
+      }
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
     }
   }
 
@@ -223,23 +242,28 @@ class TTrainInterpreter extends TTrain {
       return;
     }
     
-    $validator = $this->Delphi()->ValidateRep($newValue);
-    if($validator === true) {      
-      $this->core->entity("sentence")->update(
-        $sentenceID, 
-        array(
-          "rep" => $newValue,
-          "status" => 'ssReviewedRep'
-        )
-      );
-      $this->updatePageStatus($sentenceID);
-      echo json_encode("");
-    } else {
-      $response = array(
-        "ErrorString" => $validator['ErrorString'],
-        "StrIndex" => $validator['StrIndex']
-      ); 
-      echo json_encode($response);
+    try {
+      $validator = $this->Delphi()->ValidateRep($newValue);
+      if($validator === true) {      
+        $this->core->entity("sentence")->update(
+          $sentenceID, 
+          array(
+            "rep" => $newValue,
+            "status" => 'ssReviewedRep'
+          )
+        );
+        $this->updatePageStatus($sentenceID);
+        echo json_encode("");
+      } else {
+        $response = array(
+          "ErrorString" => $validator['ErrorString'],
+          "StrIndex" => $validator['StrIndex']
+        ); 
+        echo json_encode($response);
+      }
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
     }
   }
   

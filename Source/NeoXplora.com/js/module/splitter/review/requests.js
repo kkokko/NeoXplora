@@ -147,7 +147,9 @@ var MSplitterReviewRequests_Implementation = {
     
     modifyCallback: function(sentenceID, newValue) {
     	return function(json) {
-        if(json['error']) {
+    		if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+        } else if(json['error']) {
          alert(json['error']);
         } else {
         	$("#s" + sentenceID).prevAll(".aproto:first").removeClass("approved").removeClass("dismissed");

@@ -174,10 +174,10 @@ class TTrainLinker extends TTrain {
   }
 
   public function save() {
-    if(!isset($_SESSION['pageID']) && !isset($_REQUEST['pageId'])) return;
+    if(!isset($_SESSION['pageID']) && !isset($_POST['pageId'])) return;
     
     $data = $_POST['data'];
-    $pageId = isset($_REQUEST['pageId'])?$_REQUEST['pageId']:$_SESSION['pageID'];
+    $pageId = (isset($_POST['pageId']) && $_POST['pageId'] != "")?$_POST['pageId']:$_SESSION['pageID'];
     
     $this->saveData($data, $pageId);
     
@@ -188,7 +188,7 @@ class TTrainLinker extends TTrain {
     if(!isset($_SESSION['pageID']) && !isset($_REQUEST['pageId'])) return;
     
     $data = $_POST['data'];
-    $pageId = isset($_REQUEST['pageId'])?$_REQUEST['pageId']:$_SESSION['pageID'];
+    $pageId = (isset($_POST['pageId']) && $_POST['pageId'] != "")?$_POST['pageId']:$_SESSION['pageID'];
     
     $this->saveData($data, $pageId);
     

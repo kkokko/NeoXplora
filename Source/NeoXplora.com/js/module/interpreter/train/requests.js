@@ -121,13 +121,19 @@ var MInterpreterTrainRequests_Implementation = {
      */
     
     loadCallback: function(json) {
-    	$(NeoX.Modules.InterpreterTrainIndex.getConfig().dataContainer).html(json['data']);
-    	$(".storyTitle").html(json['pageTitle']);
+    	if(json['exception']) {
+        $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+      } else {
+      	$(NeoX.Modules.InterpreterTrainIndex.getConfig().dataContainer).html(json['data']);
+      	$(".storyTitle").html(json['pageTitle']);
+      }
     },
     
     saveCallback: function(newValue) {
     	return function(json) {
-      	if(json && json['ErrorString'] && json['StrIndex']) {
+    		if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+        } else if(json && json['ErrorString'] && json['StrIndex']) {
           var near = newValue.substr(json['StrIndex'], newValue.length);
           $(NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error).remove();
           $(NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.table).after("<div class='" + NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error.substr(1, NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error.length)  + "' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
@@ -143,7 +149,9 @@ var MInterpreterTrainRequests_Implementation = {
     
     useCallback: function(newValue) {
       return function(json) {
-        if(json && json['ErrorString'] && json['StrIndex']) {
+      	if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+        } else if(json && json['ErrorString'] && json['StrIndex']) {
           var near = newValue.substr(json['StrIndex'], newValue.length);
           $(NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error).remove();
           $(NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.table).after("<div class='" + NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error.substr(1, NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error.length)  + "' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
@@ -159,7 +167,9 @@ var MInterpreterTrainRequests_Implementation = {
     
     approveCallback: function(newValue) {
       return function(json) {
-        if(json && json['ErrorString'] && json['StrIndex']) {
+      	if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+        } else if(json && json['ErrorString'] && json['StrIndex']) {
           var near = newValue.substr(json['StrIndex'], newValue.length);
           $(NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error).remove();
           $(NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.table).after("<div class='" + NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error.substr(1, NeoX.Modules.InterpreterTrainIndex.getConfig().Containers.error.length)  + "' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");

@@ -134,7 +134,10 @@ var MSplitterTrainRequests_Implementation = {
     
     splitCallback: function(sentenceID, level) {
     	return function(json) {
-        if(json['error']) {
+    		
+    		if(json['exception']) {
+    		  $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+    		} else if(json['error']) {
           alert(json['error']);
         } else {
           var row = $("input[value='" + sentenceID + "']").parent().parent();

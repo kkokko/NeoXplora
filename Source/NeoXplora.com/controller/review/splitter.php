@@ -131,8 +131,14 @@ class TReviewSplitter extends TTrain {
     $protoId = $this->core->entity("sentence")->select($sentenceId, "protoid")->fetch_array();
     $protoId = $protoId[Entity\TSentence::$tok_protoid];
     
-    $result = $this->Delphi()->SplitSentence($sentenceId, $newValue);
-
+    $result;
+    try {
+      $result = $this->Delphi()->SplitSentence($sentenceId, $newValue);
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
+    }
+    
     $newSentencesCount = $result->Count();    
     $data = '';
     
@@ -206,7 +212,12 @@ class TReviewSplitter extends TTrain {
       $sentenceIDs[] = $sentence_data[Entity\TSentence::$tok_id]; 
     }
     
-    $this->Delphi()->PredictAfterSplit($sentenceIDs);
+    try {
+      $this->Delphi()->PredictAfterSplit($sentenceIDs);
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
+    }
     
     echo json_encode("");
   }

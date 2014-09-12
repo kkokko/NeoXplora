@@ -51,8 +51,12 @@ class TReviewInterpreter extends TTrain {
       $rowclass = '';
       while($sentence_data = $query->fetch_array()) {
         $rep = $sentence_data[Entity\TSentence::$tok_rep];
-        if($rep == "") $rep = $this->Delphi()->GuessRepsForSentenceId(intval($sentence_data[Entity\TSentence::$tok_id]))->GetProperty("RepGuessA");
-        
+        try {
+         if($rep == "") $rep = $this->Delphi()->GuessRepsForSentenceId(intval($sentence_data[Entity\TSentence::$tok_id]))->GetProperty("RepGuessA");
+        } catch(\Exception $e) {
+          echo json_encode(array("exception" => $e->getMessage()));
+          exit;
+        }
         $sentences[] = array(
           "id" => $sentence_data[Entity\TSentence::$tok_id],
           "rowclass" => "row1",
@@ -88,8 +92,13 @@ class TReviewInterpreter extends TTrain {
     if(!isset($_POST['newValue']) || !isset($_POST['sentenceID'])) return;
     $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
     $sentenceID = (int) $_POST['sentenceID'];
-    
-    $validator = $this->Delphi()->ValidateRep($newValue);
+    $validator;
+    try {
+      $validator = $this->Delphi()->ValidateRep($newValue);
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
+    }
     if($validator === true) {
       $this->core->entity("sentence")->update(
         $sentenceID,
@@ -137,7 +146,13 @@ class TReviewInterpreter extends TTrain {
     $flag = false;
     for($i = 0; $i < count($sentenceIDs); $i++) {
       $newValue = htmlspecialchars_decode($newValues[$i], ENT_QUOTES);
-      $validator = $this->Delphi()->ValidateRep($newValue);
+      $validator;
+      try {
+        $validator = $this->Delphi()->ValidateRep($newValue);
+      } catch(\Exception $e) {
+        echo json_encode(array("exception" => $e->getMessage()));
+        exit;
+      }
       if($validator === true) {
         $this->core->entity("sentence")->update(
           $sentenceIDs[$i],
