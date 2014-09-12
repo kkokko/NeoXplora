@@ -128,8 +128,8 @@ var
   TheDiagonalScore: Double;
   TheLeftScore: Double;
   TheUpScore: Double;
-  TheScore: array [0 .. 50, 0 .. 50] of Double;
-  TheDirection: array [0 .. 50, 0 .. 50] of TDirection;
+  TheScore: array [0 .. 100, 0 .. 100] of Double;
+  TheDirection: array [0 .. 100, 0 .. 100] of TDirection;
   TheCountX, TheCountY: Integer;
   TheCheckI, TheCheckJ: Boolean;
   TheMatchScore: Double;
@@ -142,10 +142,10 @@ begin
 
   TheCountX := Element1.SentenceWords.Count + 4;
   TheCountY := Element2.SentenceWords.Count + 4;
-  if TheCountX > 50 then
-    TheCountX := 50;
-  if TheCountY > 50 then
-    TheCountX := 50;
+  if TheCountX > 100 then
+    TheCountX := 100;
+  if TheCountY > 100 then
+    TheCountY := 100;
 
   for I := 0 to TheCountX do
     for J := 0 to TheCountY do

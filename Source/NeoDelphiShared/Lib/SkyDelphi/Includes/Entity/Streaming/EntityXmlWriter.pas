@@ -3,13 +3,14 @@ unit EntityXmlWriter;
 interface
 
 uses
-  Classes, Entity, EntityWriter, TypesConsts, EntityList, OmniXML, SkyException, SkyIdList;
+  Classes, Entity, EntityWriter, TypesConsts, EntityList, OmniXML, SkyException, SkyIdList, SkyLists;
 
 type
   TEntityXmlWriter = class(TEntityWriter)
   private
     class procedure WriteEntityContent(AnEntity: TEntity; AContext: TEntityWriterContext);
   protected
+    class function GetClassNameForEntity(AnEntity: TEntity): string; virtual;
     class procedure WriteProperty(AFieldInfo: TFieldInfo; AValue: Variant;
       AContext: TEntityWriterContext); override;
     class procedure WriteBlobProperty(AFieldInfo: TFieldInfo;  ABlob: TBlobType;
@@ -51,7 +52,7 @@ var
   TheContext: TEntityXmlWriterContext;
 begin
   TheXmlDoc := CreateXMLDoc;
-  TheXmlDoc.DocumentElement := TheXmlDoc.CreateElement(AnEntity.ClassName);
+  TheXmlDoc.DocumentElement := TheXmlDoc.CreateElement(GetClassNameForEntity(AnEntity));
   TheContext := TEntityXmlWriterContext.Create(AStream, TheXmlDoc);
   try
     AddEntity(AnEntity, TheContext);
@@ -59,6 +60,11 @@ begin
     TheContext.Free;
   end;
   TheXmlDoc.SaveToStream(AStream);
+end;
+
+class function TEntityXmlWriter.GetClassNameForEntity(AnEntity: TEntity): string;
+begin
+  Result := AnEntity.ClassName;
 end;
 
 class procedure TEntityXmlWriter.WriteBlobProperty(AFieldInfo: TFieldInfo;
@@ -141,7 +147,7 @@ begin
       if (TheObject <> nil) and (TheObject is TEntity) then
       begin
         TheFieldInfo.FieldName := 'Object';
-        TheFieldInfo.FieldType := TheObject.ClassName;
+        TheFieldInfo.FieldType := GetClassNameForEntity(TheObject as TEntity);
         TheFieldInfo.FieldKind := tkClass;
         WriteEntityProperty(TheFieldInfo, TheObject as TEntity, TheContext);
       end;
@@ -186,7 +192,7 @@ begin
       if (TheObject <> nil) and (TheObject is TEntity) then
       begin
         TheFieldInfo.FieldName := 'Object';
-        TheFieldInfo.FieldType := TheObject.ClassName;
+        TheFieldInfo.FieldType := GetClassNameForEntity(TheObject as TEntity);
         TheFieldInfo.FieldKind := tkClass;
         WriteEntityProperty(TheFieldInfo, TheObject as TEntity, TheContext);
       end;
@@ -245,7 +251,7 @@ var
 begin
   TheContext := AContext as TEntityXmlWriterContext;
   TheOldRoot := TheContext.XmNode;
-  ThePropNode := TheContext.XmlDoc.CreateElement(AnEntity.ClassName);
+  ThePropNode := TheContext.XmlDoc.CreateElement(GetClassNameForEntity(AnEntity));
   TheOldRoot.AppendChild(ThePropNode);
   try
     TheContext.XmNode := ThePropNode;

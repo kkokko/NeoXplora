@@ -28,11 +28,12 @@ uses
 class function TApiCommandGenerateRep.DoExecute(ARequest: TRequest): TGenericResponse;
 var
   TheRep: string;
+  TheSentence: string;
   TheRequest: TApiRequestGenerateRep;
 begin
   TheRequest := ARequest as TApiRequestGenerateRep;
-  TheRep := Core.ApiGenerateRep(TheRequest.SentenceText, TheRequest.ApiKey);
-  Result := TApiResponseGenerateRep.Create(TheRep);
+  Core.ApiGenerateRep(TheRequest.SentenceText, TheRequest.ApiKey, TheRequest.OutputSentence, TheRep, TheSentence);
+  Result := TApiResponseGenerateRep.Create(TheRep, TheSentence);
 end;
 
 { TApiCommand }

@@ -1,10 +1,11 @@
 program NasServer;
 
 uses
+  ExceptionLog,
   Forms,
   SvcMgr,
   Windows,
-  ServMain in 'Forms\ServMain.pas' {NasService},
+  ServMain in 'Forms\ServMain.pas' {NeoXploraService},
   DebugForm in 'Forms\DebugForm.pas' {frmDebug},
   AppSettings in 'App\AppSettings.pas',
   AppUnit in 'App\AppUnit.pas',
@@ -77,12 +78,12 @@ begin
   begin
     Forms.Application.Initialize;
     Forms.Application.CreateForm(TfrmDebug, frmDebug);
-  Forms.Application.Run;
+    Forms.Application.Run;
   end
   else
   begin
     SvcMgr.Application.Initialize;
-    SvcMgr.Application.CreateForm(TNasService, ServMain.NasService);
+    SvcMgr.Application.CreateForm(TNeoXploraService, ServMain.NeoXploraService);
     SvcMgr.Application.Run;
   end;
 end.

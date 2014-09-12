@@ -25,7 +25,7 @@ implementation
 
 uses
   SysUtils, LoggerUnit, AppUnit, SkyException, ActiveX, TypesFunctions, Languages,
-  AppExceptionClasses, ServMain, CacheReloadThread;
+  AppExceptionClasses, ServMain, CacheReloadThread, AppConsts;
 
 var
   _ServiceThread: TServiceThread;
@@ -84,7 +84,7 @@ var
   TheStartSuccessFull: Boolean;
   TheTranslationPath: string;
 begin
-  NameThreadForDebugging('NasServiceThread');
+  NameThreadForDebugging(ConstAppName + 'ServiceThread');
   // create the objects
   TApp.GetInstance;
   TServerCore.GetInstance;
@@ -94,7 +94,7 @@ begin
   Core.MainThreadHandle := FHwndHandle;
   CoInitialize(nil);
   try
-    FCloseMessage := RegisterWindowMessage('NasServiceClose');
+    FCloseMessage := RegisterWindowMessage(ConstAppName + 'ServiceClose');
     try
       TheTranslationPath := App.Settings.TranslationPath;
       // if the application if run from delphi use the debug path
@@ -121,7 +121,7 @@ begin
     end;
     if (ParamCount = 1) and (ParamStr(1) = '/debug') then
       Exit;
-    ServMain.NasService.StartFinished(TheStartSuccessFull);
+    ServMain.NeoXploraService.StartFinished(TheStartSuccessFull);
     while GetMessage(Msg, FHwndHandle, 0, 0) and (Msg.Message <> FCloseMessage) do
     begin
       TranslateMessage(Msg);

@@ -1,7 +1,7 @@
-object NasService: TNasService
+object NeoXploraService: TNeoXploraService
   OldCreateOrder = False
   AllowPause = False
-  DisplayName = 'Nas Server Service'
+  DisplayName = 'NeoXplora Service'
   ErrorSeverity = esIgnore
   OnShutdown = ServiceShutdown
   OnStart = ServiceStart

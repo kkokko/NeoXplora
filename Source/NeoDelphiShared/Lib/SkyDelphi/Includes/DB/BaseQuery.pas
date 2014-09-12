@@ -18,7 +18,7 @@ type
     class procedure DeleteOneToMany(AConnection: TObject; ADeleteFromClass: TEntityClass;
       AManyLinkField: string; AnId: TId);
     class procedure DoExecuteQuery(AConnection: TObject; const ASql: string);
-    class procedure ExecuteQuery(AConnection: TObject; AQuery: TDBSQLQuery);
+    class procedure ExecuteQuery(AConnection: TObject; const AQuery: TDBSQLQuery);
     class function LoadOneToMany(AConnection: TObject; AResultClass: TEntityClass;
       AManyLinkField: string; AnId: TId): TEntities; overload;
     class function LoadOneToMany(AConnection: TObject; SomeResultClasses: array of TEntityClass;
@@ -30,14 +30,14 @@ type
     class function LoadAllOrderByName(AConnection: TObject; AResultClass: TEntityClass): TEntities;
     class function SelectAll(AConnection: TObject; SomeEntityClasses: array of TEntityClass): TEntities;
     class function SelectById(AConnection: TObject; AnEntityClass: TEntityClass; AnId: TId): TEntity;
-    class function SelectField(AConnection: TObject; AQuery: TDBSQLQuery; const AFieldName: string): Variant;
-    class function SelectCount(AConnection: TObject; AQuery: TDBSQLQuery): Integer;
+    class function SelectField(AConnection: TObject; const AQuery: TDBSQLQuery; const AFieldName: string): Variant;
+    class function SelectCount(AConnection: TObject; const AQuery: TDBSQLQuery): Integer;
     // be carefull that the values are escaped properly in AQuery
     class function SelectQuery(AConnection: TObject; SomeEntityClasses: array of TEntityClass;
-      AQuery: TDBSQLQuery): TEntities; overload;
+      const AQuery: TDBSQLQuery): TEntities; overload;
     class function SelectQuerySingle(AConnection: TObject; SomeEntityClasses: array of TEntityClass;
-      AQuery: TDBSQLQuery; AllowNullResult: Boolean): TEntity;
-    class function TranslateDBSQLQuery(AConnection: TObject; AQuery: TDBSQLQuery): TBaseQuery;
+      const AQuery: TDBSQLQuery; AllowNullResult: Boolean): TEntity;
+    class function TranslateDBSQLQuery(AConnection: TObject; const AQuery: TDBSQLQuery): TBaseQuery;
 
     procedure Execute; override;
     function ParamByName(const AName: WideString): TUniParam;
@@ -189,7 +189,7 @@ begin
   end;
 end;
 
-class procedure TBaseQuery.ExecuteQuery(AConnection: TObject; AQuery: TDBSQLQuery);
+class procedure TBaseQuery.ExecuteQuery(AConnection: TObject; const AQuery: TDBSQLQuery);
 var
   TheQuery: TBaseQuery;
 begin
@@ -480,7 +480,7 @@ begin
   end;
 end;
 
-class function TBaseQuery.SelectCount(AConnection: TObject; AQuery: TDBSQLQuery): Integer;
+class function TBaseQuery.SelectCount(AConnection: TObject; const AQuery: TDBSQLQuery): Integer;
 var
   TheQuery: TBaseQuery;
 begin
@@ -493,7 +493,7 @@ begin
   end;
 end;
 
-class function TBaseQuery.SelectField(AConnection: TObject; AQuery: TDBSQLQuery; const AFieldName: string): Variant;
+class function TBaseQuery.SelectField(AConnection: TObject; const AQuery: TDBSQLQuery; const AFieldName: string): Variant;
 var
   TheQuery: TBaseQuery;
 begin
@@ -509,7 +509,7 @@ begin
 end;
 
 class function TBaseQuery.SelectQuery(AConnection: TObject; SomeEntityClasses: array of TEntityClass;
-  AQuery: TDBSQLQuery): TEntities;
+  const AQuery: TDBSQLQuery): TEntities;
 var
   TheQuery: TBaseQuery;
 begin
@@ -523,7 +523,7 @@ begin
 end;
 
 class function TBaseQuery.SelectQuerySingle(AConnection: TObject; SomeEntityClasses: array of TEntityClass;
-  AQuery: TDBSQLQuery; AllowNullResult: Boolean): TEntity;
+  const AQuery: TDBSQLQuery; AllowNullResult: Boolean): TEntity;
 var
   TheQuery: TBaseQuery;
 begin
@@ -624,7 +624,7 @@ begin
   end;
 end;
 
-class function TBaseQuery.TranslateDBSQLQuery(AConnection: TObject; AQuery: TDBSQLQuery): TBaseQuery;
+class function TBaseQuery.TranslateDBSQLQuery(AConnection: TObject; const AQuery: TDBSQLQuery): TBaseQuery;
 var
   TheEntityStrings: TStrings;
   TheSQL, TheText, TheEntityName, TheFieldName: string;
@@ -693,8 +693,5 @@ begin
 end;
 
 initialization
-  RegisterDBSQLQuery(QuerySelectOneToManyForId);
-  RegisterDBSQLQuery(QuerySelectOneToManyCountForId);
-  RegisterDBSQLQuery(QuerySelectManyToManyForId);
 
 end.

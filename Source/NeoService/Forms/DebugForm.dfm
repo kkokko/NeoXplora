@@ -58,12 +58,8 @@ object frmDebug: TfrmDebug
     Lines.Strings = (
       '!Request.php'
       
-        '!{"ClassName":"TRequestGetPosForSentences","Properties":{"Senten' +
-        'ces":[{"ClassName":"TEntityWithName","Properties":{"Id":"0","Nam' +
-        'e":"At first he was running","Version":""}},{"ClassName":"TEntit' +
-        'yWithName","Properties":{"Id":"1","Name":"The running hurt him",' +
-        '"Version":""}},{"ClassName":"TEntityWithName","Properties":{"Id"' +
-        ':"2","Name":"His legs hurt","Version":""}}]}}')
+        '!{"ClassName":"TRequestSplitSentence","Properties":{"Id":"8347",' +
+        '"NewText":"Hi. My name is Eric"}}')
     ScrollBars = ssBoth
     TabOrder = 2
     WordWrap = False
@@ -88,5 +84,14 @@ object frmDebug: TfrmDebug
     Caption = 'Recreate Tables'
     TabOrder = 4
     OnClick = btnRecreateTablesClick
+  end
+  object btnLoadScriptsFromFolder: TButton
+    Left = 754
+    Top = 117
+    Width = 145
+    Height = 25
+    Caption = 'Load scripts from folder'
+    TabOrder = 5
+    OnClick = btnLoadScriptsFromFolderClick
   end
 end

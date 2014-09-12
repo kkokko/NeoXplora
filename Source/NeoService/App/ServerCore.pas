@@ -57,7 +57,7 @@ type
     property MainThreadHandle: HWND read FMainThreadHandle write FMainThreadHandle;
 
     // api commands - please keep sorted
-    function ApiGenerateRep(const ASentenceText, AnApiKey: string): string;
+    procedure ApiGenerateRep(const ASentenceText, AnApiKey: string; BOutputSentence: Boolean; out ARep, ASentence: string);
 
     // user commands - please keep sorted
     function GetFullSentencesForPageId(APageId: TId): TEntities;
@@ -83,7 +83,7 @@ implementation
 uses
   SysUtils, AppUnit, AppSQLServerQuery, BaseConnection, EntityWithName, TypesFunctions, SentenceBase,
   SentenceSplitter, CRep, RepDecoder, SearchPage, SkyLists, RepGroup, IRepRuleGroup, LoggerUnit, 
-  IRepRule, IRepRuleValue, IRepRuleCondition, CRepRule, CRepRuleCondition, CRepRuleGroup;
+  IRepRule, IRepRuleValue, IRepRuleCondition, CRepRule, CRepRuleCondition, CRepRuleGroup, AppConsts;
 
 var
   _Core: TServerCore;
@@ -98,7 +98,7 @@ begin
   TServerCore.EndInstance;
 end;
 
-function TServerCore.ApiGenerateRep(const ASentenceText, AnApiKey: string): string;
+procedure TServerCore.ApiGenerateRep(const ASentenceText, AnApiKey: string; BOutputSentence: Boolean; out ARep, ASentence: string);
 var
   TheGuessObject: TGuessObject;
   TheSplitter: TSentenceSplitter;
@@ -115,7 +115,11 @@ begin
     finally
       SentenceLockRelease(ltRead);
     end;
-    Result := TheGuessObject.RepGuessD;
+    if BOutputSentence then
+      ASentence := TheGuessObject.MatchSentenceD
+    else
+      ASentence := '';
+    ARep := TheGuessObject.RepGuessD;
   finally
     TheGuessObject.Free;
     TheSplitter.Free;
@@ -142,6 +146,7 @@ var
   TheGroupList: TSkyIdList;
   TheCRepList: TSkyIdList;
 begin
+  Exit;
   TheCRepList := LoadCRepRules;
   try
     TheGroupList := LoadCRepRuleGroups(TheCRepList);
@@ -210,7 +215,7 @@ begin
   FSentenceList.Hypernym := FHypernym;
   FPosTagger := TPosTagger.Create;
   FStartDate := Now();
-  FTimedLock := TTimedLock.Create('NasServerSentenceUpdate');
+  FTimedLock := TTimedLock.Create(ConstAppName + 'SentenceUpdate');
   FTimedLock.LockInterval := 10000; // 10 seconds
   FLockCount := 0;
   FIRepRulesChanged := True;
@@ -627,6 +632,7 @@ var
   TheGroupList: TSkyIdList;
   TheIRepList: TSkyIdList;
 begin
+  Exit;
   TheIRepList := LoadIRepRules;
   try
     TheGroupList := LoadIRepRuleGroups(TheIRepList);
@@ -783,4 +789,3 @@ begin
 end;
 
 end.
-

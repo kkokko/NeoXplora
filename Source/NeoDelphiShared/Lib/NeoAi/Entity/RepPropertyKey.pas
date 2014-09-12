@@ -85,8 +85,6 @@ procedure TRepPropertyKey.GetAsString(AStringBuilder: TStringBuilder);
 var
   TheCount: Integer;
   TheEntities: TEntities;
-  TheValue: TRepPropertyValue;
-  I: Integer;
 begin
   TheEntities := GetValuesWithOperatorTypes([otEquals]);
   TheCount := Length(TheEntities);

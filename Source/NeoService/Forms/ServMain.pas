@@ -6,7 +6,7 @@ uses
   Windows, Classes, SvcMgr;
 
 type
-  TNasService = class(TService)
+  TNeoXploraService = class(TService)
     procedure ServiceStart(Sender: TService; var Started: Boolean);
     procedure ServiceStop(Sender: TService; var Stopped: Boolean);
     procedure ServiceShutdown(Sender: TService);
@@ -24,7 +24,7 @@ type
   end;
 
 var
-  NasService: TNasService;
+  NeoXploraService: TNeoXploraService;
 
 procedure ServiceController(CtrlCode: DWord); stdcall;
 
@@ -44,21 +44,21 @@ type
 
 procedure ServiceController(CtrlCode: DWord); stdcall;
 begin
-  NasService.Controller(CtrlCode);
+  NeoXploraService.Controller(CtrlCode);
 end;
 
-destructor TNasService.Destroy;
+destructor TNeoXploraService.Destroy;
 begin
   FreeAndNil(FServiceThread);
   inherited;
 end;
 
-function TNasService.GetServiceController: TServiceController;
+function TNeoXploraService.GetServiceController: TServiceController;
 begin
   Result := ServiceController;
 end;
 
-procedure TNasService.ServiceAfterInstall(Sender: TService);
+procedure TNeoXploraService.ServiceAfterInstall(Sender: TService);
 var
   SvcMgr, Svc: SC_HANDLE;
   desc: SERVICE_DESCRIPTION;
@@ -81,17 +81,17 @@ begin
   end;
 end;
 
-procedure TNasService.ServiceBeforeInstall(Sender: TService);
+procedure TNeoXploraService.ServiceBeforeInstall(Sender: TService);
 begin
   ServiceLoadInfo(Sender);
 end;
 
-procedure TNasService.ServiceCreate(Sender: TObject);
+procedure TNeoXploraService.ServiceCreate(Sender: TObject);
 begin
   ServiceLoadInfo(Sender);
 end;
 
-procedure TNasService.ServiceLoadInfo(Sender : TObject);// new method, not an override
+procedure TNeoXploraService.ServiceLoadInfo(Sender : TObject);// new method, not an override
 var
   TheFirstParam: Integer;
 begin
@@ -110,7 +110,7 @@ begin
     DisplayName := Name + ' software by Sky Project';
 end;
 
-procedure TNasService.ServiceStart(Sender: TService; var Started: Boolean);
+procedure TNeoXploraService.ServiceStart(Sender: TService; var Started: Boolean);
 begin
   CoInitialize(nil);
   try
@@ -122,19 +122,19 @@ begin
   end;
 end;
 
-procedure TNasService.ServiceStop(Sender: TService;
+procedure TNeoXploraService.ServiceStop(Sender: TService;
   var Stopped: Boolean);
 begin
   TServiceThread.ForceClose;
   Stopped := True;
 end;
 
-procedure TNasService.StartFinished(SuccessFull: Boolean);
+procedure TNeoXploraService.StartFinished(SuccessFull: Boolean);
 begin
   FServerStartOk := SuccessFull;
 end;
 
-procedure TNasService.ServiceShutdown(Sender: TService);
+procedure TNeoXploraService.ServiceShutdown(Sender: TService);
 begin
   TServiceThread.ForceClose;
 end;

@@ -44,16 +44,23 @@ uses
 { TAppSQLServerQuery }
 
 class function TAppSQLServerQuery.GetCRepRules: TEntities;
+var
+  TheQuery: TDBSQLQuery;
 begin
-  Result := App.SQLConnection.SelectQuery([TCRepRule], QueryGetCRepRules);
+  TheQuery := QueryGetCRepRules;
+  Result := App.SQLConnection.SelectQuery([TCRepRule], TheQuery);
+  TheQuery.Query.Count := 0;
 end;
 
 class function TAppSQLServerQuery.GetFinishedStoriesCount: Integer;
 var
   TheQuery: TBaseQuery;
+  TheDbQuery: TDBSQLQuery;
 begin
-  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetFinishedStoriesCount);
+  TheDbQuery := QueryGetFinishedStoriesCount;
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
+    TheDbQuery.Query.Count := 0;
     TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedRep));
     TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedCRep));
     TheQuery.Open;
@@ -64,21 +71,32 @@ begin
 end;
 
 class function TAppSQLServerQuery.GetFullSentencesForPageId(APageId: TId): TEntities;
+var
+  TheDbQuery: TDBSQLQuery;
 begin
-  Result := App.SQLConnection.SelectQuery([TSentenceWithGuesses], QueryGetFullSentencesForPageId(APageId));
+  TheDbQuery := QueryGetFullSentencesForPageId(APageId);
+  Result := App.SQLConnection.SelectQuery([TSentenceWithGuesses], TheDbQuery);
+  TheDbQuery.Query.Count := 0;
 end;
 
 class function TAppSQLServerQuery.GetIRepRules: TEntities;
+var
+  TheDbQuery: TDBSQLQuery;
 begin
-  Result := App.SQLConnection.SelectQuery([TIRepRule], QueryGetIRepRules);
+  TheDbQuery := QueryGetIRepRules;
+  Result := App.SQLConnection.SelectQuery([TIRepRule], TheDbQuery);
+  TheDbQuery.Query.Count := 0;
 end;
 
 class function TAppSQLServerQuery.GetHypernyms: TEntities;
 var
   TheQuery: TBaseQuery;
+  TheDbQuery: TDBSQLQuery;
 begin
-  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetHypernyms);
+  TheDbQuery := QueryGetHypernyms;
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
+    TheDbQuery.Query.Count := 0;
     TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedRep));
     TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedCRep));
     TheQuery.Open;
@@ -91,9 +109,12 @@ end;
 class function TAppSQLServerQuery.GetSearchPagesByOffset(ASearch: string; AnOffset: Integer): TEntities;
 var
   TheQuery: TBaseQuery;
+  TheDbQuery: TDBSQLQuery;
 begin
-  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetSearchPagesByOffset(AnOffset));
+  TheDbQuery := QueryGetSearchPagesByOffset(AnOffset);
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
+    TheDbQuery.Query.Count := 0;
     TheQuery.ParamByName('ASearch').AsString := '%' + ASearch + '%';
     TheQuery.Open;
     Result := TheQuery.ReadMappedEntities([TSearchPage]);
@@ -103,16 +124,23 @@ begin
 end;
 
 class function TAppSQLServerQuery.GetSentenceBaseById(AnId: TId): TSentenceBase;
+var
+  TheDbQuery: TDBSQLQuery;
 begin
-  Result := App.SQLConnection.SelectQuerySingle([TSentenceBase], QueryGetSentenceBaseById(AnId), False) as TSentenceBase;
+  TheDbQuery := QueryGetSentenceBaseById(AnId);
+  Result := App.SQLConnection.SelectQuerySingle([TSentenceBase], TheDbQuery, False) as TSentenceBase;
+  TheDbQuery.Query.Count := 0;
 end;
 
 class function TAppSQLServerQuery.GetSplitSentences: TEntities;
 var
   TheQuery: TBaseQuery;
+  TheDbQuery: TDBSQLQuery;
 begin
-  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetSplitSentences);
+  TheDbQuery := QueryGetSplitSentences;
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
+    TheDbQuery.Query.Count := 0;
     TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedRep));
     TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedCRep));
     TheQuery.Open;
@@ -123,18 +151,25 @@ begin
 end;
 
 class function TAppSQLServerQuery.GetPageReps(APageId, ASentenceId: TId): TEntities;
+var
+  TheDbQuery: TDBSQLQuery;
 begin
-  Result := App.SQLConnection.SelectQuery([TEntityWithName], QueryGetPageReps(APageId, ASentenceId));
+  TheDbQuery := QueryGetPageReps(APageId, ASentenceId);
+  Result := App.SQLConnection.SelectQuery([TEntityWithName], TheDbQuery);
+  TheDbQuery.Query.Count := 0;
 end;
 
 class function TAppSQLServerQuery.GetTotalPageCount(const ASearch: string): Integer;
 var
+  TheDbQuery: TDBSQLQuery;
   TheQuery: TBaseQuery;
   TheCountData: TCountData;
 begin
   TheCountData := nil;
-  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, QueryGetTotalPageCount);
+  TheDbQuery := QueryGetTotalPageCount;
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
+    TheDbQuery.Query.Count := 0;
     TheQuery.ParamByName('ASearch').AsString := '%' + ASearch + '%';
     TheQuery.Open;
     TheCountData := TheQuery.ReadSingleValue([TCountData], False) as TCountData;
@@ -146,16 +181,21 @@ begin
 end;
 
 class function TAppSQLServerQuery.GetUntrainedStories: TEntities;
+var
+  TheDbQuery: TDBSQLQuery;
 begin
-  Result := App.SQLConnection.SelectQuery([TEntityWithId], QueryGetUntrainedStories);
+  TheDbQuery := QueryGetUntrainedStories;
+  Result := App.SQLConnection.SelectQuery([TEntityWithId], TheDbQuery);
+  TheDbQuery.Query.Count := 0;
 end;
 
 class procedure TAppSQLServerQuery.UpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer);
 var
-  TheQuery: TDBSQLQuery;
+  TheDbQuery: TDBSQLQuery;
 begin
-  TheQuery := QueryUpdateSentenceOrderForPage(APageId, AnOrder, ACount);
-  App.SQLConnection.ExecuteQuery(TheQuery);
+  TheDbQuery := QueryUpdateSentenceOrderForPage(APageId, AnOrder, ACount);
+  App.SQLConnection.ExecuteQuery(TheDbQuery);
+  TheDbQuery.Query.Count := 0;
 end;
 
 class function TAppSQLServerQuery.QueryGetUntrainedStories: TDBSQLQuery;

@@ -155,6 +155,7 @@ begin
     TheQuery.SQL.Add('insert into `' + GetTableMapping(AnEntity.ClassType) + '`(' + DBFieldList(AnEntity.ClassType, not AForceId) + ')');
     TheQuery.SQL.Add(' values ( ' + DBValueList(AnEntity, not AForceId, TheFieldInfos) + ');');
     TheQuery.SetQueryParams(TheFieldInfos, AnEntity);
+
     TheQuery.ExecSQL;
     if AnEntity.HasField('Id') then
     begin
@@ -182,7 +183,7 @@ end;
 
 class function TMySQLServerConnection.PwdEncryptMethod(const AString: string): string;
 begin
-  Result := 'PWDENCRYPT(' + AString + ')';
+  Result := 'MD5(' + AString + ')';
 end;
 
 class function TMySQLServerConnection.TableExistsSQL(ATableName: string): string;

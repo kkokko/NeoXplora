@@ -24,7 +24,7 @@ type
   THyperNym = class
   private
     FSearch1, FSearch2: TSkyObjectList;
-    FWordList: TStringList;
+    FWordList: TSkyStringList;
     function CalculateNodeDistance(ANode1, ANode2: PHyperNode): Integer;
     function CheckNodeHasParent(ANode, AParent: PHyperNode): Boolean;
     function CreateLevelNode(AHyperNode: PHyperNode; ALevel: Integer): PLevelNode;
@@ -59,6 +59,8 @@ var
   TheWordNode: PHyperNode;
   TheIndex: Integer;
 begin
+  if AnsiCompareText(AWord, AParent) = 0 then
+    Exit;
   if FWordList.Find(AWord, TheIndex) then
     TheWordNode := PHyperNode(FWordList.Objects[TheIndex])
   else
@@ -224,7 +226,6 @@ begin
   New(Result);
   Result^.Brother := ANode^.Brother;
   ANode^.Brother := Result;
-  Result^.Parent := nil;
 end;
 
 function THyperNym.CreateLevelNode(AHyperNode: PHyperNode; ALevel: Integer): PLevelNode;
@@ -246,8 +247,7 @@ end;
 
 constructor THyperNym.Create;
 begin
-  FWordList := TStringList.Create;
-  FWordList.OwnsObjects := False;
+  FWordList := TSkyStringList.Create;
   FWordList.Sorted := True;
   FSearch1 := TSkyObjectList.Create;
   FSearch1.OwnsObjects := False;

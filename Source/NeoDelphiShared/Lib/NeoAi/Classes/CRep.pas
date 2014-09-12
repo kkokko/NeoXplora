@@ -68,7 +68,7 @@ end;
 
 function TCRep.GetGlobalRepRecordWithIReps: TRepRecord;
 begin
-
+  Result := nil; //todo: fix
 end;
 
 procedure TCRep.GuessSentence(ARepRecord: TRepRecord);

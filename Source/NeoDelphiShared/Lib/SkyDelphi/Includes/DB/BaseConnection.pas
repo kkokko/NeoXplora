@@ -59,7 +59,7 @@ type
     procedure DropDBTable(const ATableName: string); overload; virtual; abstract;
     procedure DropTableDependencies(AnEntityClass: TEntityClass); overload;
     function EstimateSQLDataType(AFieldInfo: TFieldInfo): string; virtual;
-    procedure ExecuteQuery(AQuery: TDBSQLQuery);
+    procedure ExecuteQuery(const AQuery: TDBSQLQuery);
     function GetQuotedTableMapping(AnEntityClass: TClass): string;
     class function GetTableMapping(AnEntityClass: TClass): string; overload;
     class function GetTableMapping(const AnEntityClassName: string): string; overload;
@@ -69,9 +69,9 @@ type
     function SelectAll(AnEntityClass: TEntityClass): TEntities; overload;
     function SelectAll(SomeEntityClasses: array of TEntityClass): TEntities; overload;
     function SelectById(AnEntityClass: TEntityClass; AnId: TId): TEntity;
-    function SelectCount(AQuery: TDBSQLQuery): Integer;
-    function SelectQuery(SomeEntityClasses: array of TEntityClass; AQuery: TDBSQLQuery): TEntities;
-    function SelectQuerySingle(SomeEntityClasses: array of TEntityClass; AQuery: TDBSQLQuery;
+    function SelectCount(const AQuery: TDBSQLQuery): Integer;
+    function SelectQuery(SomeEntityClasses: array of TEntityClass; const AQuery: TDBSQLQuery): TEntities;
+    function SelectQuerySingle(SomeEntityClasses: array of TEntityClass; const AQuery: TDBSQLQuery;
       AllowNullResult: Boolean): TEntity; overload;
     procedure StartTransaction(AnIsolationLevel: TTransactionIsolationLevel); virtual;
     procedure UpdateEntity(AnEntity: TEntity); virtual;
@@ -393,7 +393,7 @@ begin
     Result := GetFieldTypeUnicode;
 end;
 
-procedure TBaseConnection.ExecuteQuery(AQuery: TDBSQLQuery);
+procedure TBaseConnection.ExecuteQuery(const AQuery: TDBSQLQuery);
 begin
   TBaseQuery.ExecuteQuery(Self, AQuery);
 end;
@@ -545,17 +545,17 @@ begin
   Result := TBaseQuery.SelectById(Self, AnEntityClass, AnId);
 end;
 
-function TBaseConnection.SelectCount(AQuery: TDBSQLQuery): Integer;
+function TBaseConnection.SelectCount(const AQuery: TDBSQLQuery): Integer;
 begin
   Result := TBaseQuery.SelectCount(Self, AQuery);
 end;
 
-function TBaseConnection.SelectQuery(SomeEntityClasses: array of TEntityClass; AQuery: TDBSQLQuery): TEntities;
+function TBaseConnection.SelectQuery(SomeEntityClasses: array of TEntityClass; const AQuery: TDBSQLQuery): TEntities;
 begin
   Result := TBaseQuery.SelectQuery(Self, SomeEntityClasses, AQuery);
 end;
 
-function TBaseConnection.SelectQuerySingle(SomeEntityClasses: array of TEntityClass; AQuery: TDBSQLQuery;
+function TBaseConnection.SelectQuerySingle(SomeEntityClasses: array of TEntityClass; const AQuery: TDBSQLQuery;
   AllowNullResult: Boolean): TEntity;
 begin
   Result := TBaseQuery.SelectQuerySingle(Self, SomeEntityClasses, AQuery, AllowNullResult);

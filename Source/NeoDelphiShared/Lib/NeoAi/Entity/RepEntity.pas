@@ -51,7 +51,6 @@ procedure TRepEntity.GetAsString(AStringBuilder: TStringBuilder);
 var
   TheKeyCount: Integer;
   TheRepPropertyKey: TRepPropertyKey;
-  I: Integer;
 begin
   TheKeyCount := Kids.Count;
   if TheKeyCount = 0 then

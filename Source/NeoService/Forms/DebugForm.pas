@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, JvBaseDlg, JvBrowseFolder;
 
 type
   TfrmDebug = class(TForm)
@@ -15,11 +15,13 @@ type
     lblScript: TLabel;
     lblResult: TLabel;
     btnRecreateTables: TButton;
+    btnLoadScriptsFromFolder: TButton;
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnRunScriptClick(Sender: TObject);
     procedure btnRecreateTablesClick(Sender: TObject);
+    procedure btnLoadScriptsFromFolderClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,11 +36,57 @@ implementation
 {$R *.dfm}
 
 uses
-  ServiceThread, AppUnit, SkyHttpClient, DateUtils;
+  ServiceThread, AppUnit, SkyHttpClient, DateUtils, SkyLists;
 
 procedure TfrmDebug.btnCloseClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfrmDebug.btnLoadScriptsFromFolderClick(Sender: TObject);
+var
+  TheDlg: TJvBrowseForFolderDialog;
+  TheFolder: string;
+  TheList: TSkyStringList;
+  TheRec: TSearchRec;
+  I: Integer;
+begin
+  TheDlg := TJvBrowseForFolderDialog.Create(nil);
+  try
+    TheDlg.Directory := 'C:\Users\Test\Desktop\log';
+    if not TheDlg.Execute then
+      Exit;
+    TheFolder := IncludeTrailingPathDelimiter(TheDlg.Directory);
+    if not DirectoryExists(TheFolder) then
+      Exit;
+  finally
+    TheDlg.Free;
+  end;
+  TheList := TSkyStringList.Create;
+  try
+    TheList.Sorted := True;
+    if FindFirst(TheFolder + '*_Request_*.json', faAnyFile, TheRec) <> 0 then
+      Exit;
+    try
+      repeat
+        TheList.Add(TheFolder + TheRec.Name);
+      until FindNext(TheRec) <> 0;
+    finally
+      FindClose(TheRec);
+    end;
+
+    memoInputScript.Text := '';
+    for I := 0 to TheList.Count - 1 do
+    begin
+      memoResult.Lines.LoadFromFile(TheList[I]);
+      memoInputScript.Lines.Add('!Request.php');
+      memoInputScript.Lines.Add('!' + memoResult.Text);
+      memoInputScript.Lines.Add('');
+    end;
+  finally
+    memoResult.Text := '';
+    TheList.Free;
+  end;
 end;
 
 procedure TfrmDebug.btnRecreateTablesClick(Sender: TObject);

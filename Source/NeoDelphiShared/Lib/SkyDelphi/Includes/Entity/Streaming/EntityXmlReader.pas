@@ -3,7 +3,7 @@ unit EntityXmlReader;
 interface
 
 uses
-  Classes, Entity, OmniXML, EntityReader, EntityList, SkyIdList, SkyStringList;
+  Classes, Entity, OmniXML, EntityReader, EntityList, SkyIdList, SkyLists;
 
 type
   TEntityXmlReaderContext = class;
@@ -15,6 +15,8 @@ type
     class function InternalLoadEntityList(AContext: TEntityXmlReaderContext): TEntityList;
     class function InternalLoadSkyIdList(AContext: TEntityXmlReaderContext): TSkyIdList;
     class function InternalLoadSkyStringList(AContext: TEntityXmlReaderContext): TSkyStringList;
+  protected
+    class function GetClassNameFromXmlNode(ANode: IXmlNode): string; virtual;
   public
     class function ReadEntity(AStream: TStream; AnExpectedClassType: TEntityClass = nil): TEntity; override; deprecated;
   end;
@@ -144,16 +146,13 @@ begin
       if (TheRowNode.NodeName <> 'Row') or (not TheRowNode.HasChildNodes) then
         raise ESkyInvalidValueForField.Create(nil, 'TEntityXmlReader.InternalLoadSkyStringList',
           TheRowNode.NodeName, TheRowNode.Text);
-      TheString := StringNil;
+      TheString := '';
       TheEntity := nil;
       for J := 0 to TheRowNode.ChildNodes.Count - 1 do
       begin
         TheNode := TheRowNode.ChildNodes.Item[J];
         if TheNode.NodeName = 'Key' then
-        begin
-          if not XMLStrToInt64(TheNode.Text, Int64(TheString)) then
-            raise ESkyInvalidValueForField.Create(nil, 'TEntityXmlReader.InternalLoadSkyStringList', TheNode.NodeName, TheNode.Text)
-        end
+          TheString := TheNode.Text
         else if (TheNode.NodeName = 'Object') and (TheNode.HasChildNodes) then
         begin
           TheOldRoot := AContext.XmNode;
@@ -180,6 +179,11 @@ begin
   end;
 end;
 
+class function TEntityXmlReader.GetClassNameFromXmlNode(ANode: IXmlNode): string;
+begin
+  Result := ANode.NodeName;
+end;
+
 class function TEntityXmlReader.InternalReadEntity(AContext: TEntityXmlReaderContext;
   AnExpectedClassType: TEntityClass = nil): TEntity;
 var
@@ -200,7 +204,8 @@ begin
   Result := nil;
   if AContext.XmNode = nil then
     Exit;
-  Result := TEntity.CreateEntityOfClass(AContext.XmNode.NodeName, AnExpectedClassType);
+
+  Result := TEntity.CreateEntityOfClass(GetClassNameFromXmlNode(AContext.XmNode), AnExpectedClassType);
   if not AContext.XmNode.HasChildNodes then
     Exit;
   try
