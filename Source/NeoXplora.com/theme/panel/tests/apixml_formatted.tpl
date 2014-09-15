@@ -10,6 +10,8 @@
   <button id="generateRep2" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only apiXMLRequest" role="button">
     <span class="ui-button-text">Generate Rep 2</span>
   </button><br/>
-  
+  <button id="guessProto" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only apiXMLRequest" role="button">
+    <span class="ui-button-text">Generate Proto Guess</span>
+  </button><br/>
 </div>
 <div style="clear:both"></div>

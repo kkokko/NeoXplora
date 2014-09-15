@@ -113,7 +113,7 @@ class PhpReverseProxy{
 			if(count($resultHeaderLines) > 0 ){
 				$this->http_code_with_description=trim(str_replace("HTTP/1.1", "", $resultHeaderLines[0]));
 			}else{
-				$this->http_code_with_description="200 OK";
+				$this->http_code_with_description="";
 			}      
 			$content=substr($output,$info['header_size']);
 			$this->content=$content;		

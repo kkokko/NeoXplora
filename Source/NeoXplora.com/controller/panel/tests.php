@@ -80,6 +80,9 @@ class TPanelTests extends TPanel {
         case "generateRep2":
           $requestxml = '<ApiRequestGenerateRep><ApiKey>abc</ApiKey><SentenceText>My name is Mimi</SentenceText><OutputSentence>True</OutputSentence></ApiRequestGenerateRep>';
           break; 
+        case "guessProto":
+          $requestxml = '<ApiRequestGenerateProtoGuess><ApiKey>abc</ApiKey><SentenceText>My name is Mimi</SentenceText><OutputSentence>True</OutputSentence></ApiRequestGenerateProtoGuess>';
+          break; 
       }
       
       /*$result = simplexml_load_string($requestxml);
@@ -93,6 +96,42 @@ class TPanelTests extends TPanel {
         $this->apixml_format($result);
         
         $this->template->responsexml = $this->formatted_xml;
+      }
+    }
+
+    $this->template->hide_right_box = true;
+    $this->template->render();
+  }
+
+  public function apixml_xml() {
+    $this->template->load("apixml_xml", "panel/tests");
+    $this->template->requestxml = '';
+    
+    if(isset($_POST['submit']) && isset($_POST['req']) && $_POST['req'] != "") {
+      libxml_use_internal_errors(true);
+      
+      $request = $_POST['req'];
+      
+      $requestxml = $request;
+      
+      $result = simplexml_load_string($requestxml);
+      
+      if(!$result) {
+        $this->template->requestxml = $requestxml;
+      } else {    
+        $this->template->requestxml = $this->formatXML($result);
+      }
+      
+      $responsexml = $this->postRequest($this->template->site_url . "api.xml.php", $requestxml);
+      
+      if($responsexml != false) {
+        $result = simplexml_load_string($responsexml);
+        
+        if(strstr($responsexml, "<HTML>") != false || !$result) {
+          $this->template->responsexml = "Invalid API Request";
+        } else {
+          $this->template->responsexml = $this->formatXML($result);
+        }
       }
     }
 

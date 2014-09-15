@@ -185,7 +185,6 @@ var MSplitterReviewRequests_Implementation = {
               }
             });
           }, 600);
-          
         }
     	};
     },

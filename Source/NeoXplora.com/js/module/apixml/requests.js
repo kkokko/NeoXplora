@@ -29,6 +29,19 @@ var MAPIXMLRequests_Implementation = {
       }); 
     },
     
+    runReq: function(request, container) {
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.APIXMLIndex.getConfig().moduleScript,
+        data: {
+          'type': NeoX.Modules.APIXMLIndex.getConfig().moduleType,
+          'action': 'apixml_xml',
+          'req': request,
+          'submit': 1
+        },
+        success: NeoX.Modules.APIXMLRequests.loadReqCallback(container)
+      }); 
+    },
     
     /*
      * AJAX SUCCESS CALLBACKS
@@ -38,7 +51,15 @@ var MAPIXMLRequests_Implementation = {
     	return function(data) {
     		container.html(data);
     	}; 
+    },
+    
+    loadReqCallback: function(container) {
+      return function(data) {
+        container.html(data);
+      }; 
     }
+    
+    
   }
 
 };

@@ -17,11 +17,8 @@ class TPanel extends \SkyCore\TObject {
   }
   
   public function stats() {
-    $pageCounts = $this->core->entity("page")->advancedCount();
-    $sentenceCounts = $this->core->entity("sentence")->advancedCount();
-    
-    $this->template->pageCounts = $pageCounts->fetch_array();
-    $this->template->sentenceCounts = $sentenceCounts->fetch_array();
+    $this->template->pageCounts = $this->core->entity("page")->advancedCount();
+    $this->template->sentenceCounts = $this->core->entity("sentence")->advancedCount();
     
     $this->template->addStyle("style/admin.css");
     $this->template->load("stats", "panel");

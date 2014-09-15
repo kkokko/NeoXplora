@@ -17,19 +17,143 @@
     public static $tok_assigneddate = "AssignedDate";
 
     public function advancedCount() {
+      return array(
+        "total" => $this->countTotal(),
+        "pendingTraining" => $this->countPending(),
+        "splitTrained" => $this->countSplitTrained(),
+        "splitReviewed" => $this->countSplitReviewed(),
+        "repTrained" => $this->countRepTrained(),
+        "repReviewed" => $this->countRepReviewed(),
+        "crepReviewed" => $this->countCRepReviewed()
+      );
+    }
+    
+    public function countTotal() {
       $query = $this->query("
         SELECT 
-          COUNT(p1.[[page.id]]) AS totalPages, 
-          COUNT(p2.[[page.id]]) AS totalPagesSplitTrained, 
-          COUNT(p3.[[page.id]]) AS totalPagesRepTrained, 
-          COUNT(p4.[[page.id]]) AS totalPagesCRepTrained
-        FROM [[page]] p1
-        LEFT JOIN [[page]] p2 ON p1.[[page.id]] = p2.[[page.id]] AND p2.[[page.status]] IN (:1, :2)
-        LEFT JOIN [[page]] p3 ON p1.[[page.id]] = p3.[[page.id]] AND p3.[[page.status]] IN (:3, :4)
-        LEFT JOIN [[page]] p4 ON p1.[[page.id]] = p4.[[page.id]] AND p4.[[page.status]] IN (:5, :6)
-      ", 'psTrainedSplit', 'psReviewedSplit', 'psTrainedRep', 'psReviewedRep', 'psTrainedCRep', 'psReviewedCRep');
+          COUNT([[page.id]]) AS `total`
+        FROM [[page]]
+      ");
       
-      return $this->result($query);
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
+    }
+    
+    public function countPending() {
+      $query = $this->query("
+        SELECT COUNT(p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssFinishedGenerate' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        WHERE a1.total = a2.totalR
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
+    }
+    
+    public function countSplitTrained() {
+      $query = $this->query("
+        SELECT COUNT(p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssTrainedSplit' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s3.[[sentence.pageid]] FROM [[sentence]] s3 WHERE s3.[[sentence.status]] = 'ssFinishedGenerate' GROUP BY s3.[[sentence.pageid]]
+        ) a3 ON p.[[page.id]] = a3.[[sentence.pageid]]
+        WHERE a1.total >= a2.totalR
+        and a3.totalR = 0
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
+    }
+    
+    public function countSplitReviewed() {
+      $query = $this->query("
+        SELECT COUNT(p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssReviewedSplit' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s3.[[sentence.pageid]] FROM [[sentence]] s3 WHERE s3.[[sentence.status]] = 'ssTrainedSplit' GROUP BY s3.[[sentence.pageid]]
+        ) a3 ON p.[[page.id]] = a3.[[sentence.pageid]]
+        WHERE a1.total >= a2.totalR
+        and a3.totalR = 0
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
+    }
+    
+    public function countRepTrained() {
+      $query = $this->query("
+        SELECT COUNT(p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssTrainedRep' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s3.[[sentence.pageid]] FROM [[sentence]] s3 WHERE s3.[[sentence.status]] = 'ssReviewedSplit' GROUP BY s3.[[sentence.pageid]]
+        ) a3 ON p.[[page.id]] = a3.[[sentence.pageid]]
+        WHERE a1.total >= a2.totalR
+        and a3.totalR = 0
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
+    }
+    
+    public function countRepReviewed() {
+      $query = $this->query("
+        SELECT COUNT(p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        LEFT JOIN (
+          SELECT COUNT(*) AS total, s1.[[sentence.pageid]] FROM [[sentence]] s1 GROUP BY s1.[[sentence.pageid]]
+        ) a1 ON p.[[page.id]] = a1.[[sentence.pageid]]
+        LEFT JOIN (
+          SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssReviewedRep' GROUP BY s2.[[sentence.pageid]]
+        ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
+        WHERE a1.total = a2.totalR
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
+    }
+    
+    public function countCRepReviewed() {
+      $query = $this->query("
+        SELECT
+          COUNT(DISTINCT p.[[page.id]]) AS `total`
+        FROM [[page]] p
+        WHERE
+          p.[[page.status]] = 'psReviewedCRep'
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
     }
     
     public function deleteWithData($pageId) {
