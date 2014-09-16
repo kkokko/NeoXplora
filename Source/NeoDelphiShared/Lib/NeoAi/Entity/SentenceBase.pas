@@ -9,7 +9,7 @@ type
   TSentenceBase = class(TEntity)
   public
     type
-      TStatus = (ssFinishedGenerate, ssTrainedSplit, ssReviewedSplit, ssTrainedRep, ssReviewedRep, ssReviewedCRep);
+      TStatus = (ssFinishedGenerate, ssTrainedSplit, ssReviewedSplit, ssTrainedRep, ssReviewedRep);
   private
     FName: string;
     FPos: string;

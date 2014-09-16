@@ -1626,7 +1626,11 @@ begin
     Result := FCount
   else
     if Find(ADouble, Result) then
+    begin
+      if OwnsObjects then
+        ALink.Free;
       Exit;
+    end;
   InsertItem(Result, ADouble, ALink);
 end;
 
@@ -1804,7 +1808,11 @@ begin
     Result := FCount
   else
     if Find(AInt64, Result) then
+    begin
+      if OwnsObjects then
+        ALink.Free;
       Exit;
+    end;
   InsertItem(Result, AInt64, ALink);
 end;
 
@@ -2498,7 +2506,11 @@ begin
     Result := FCount
   else
     if Find(AString, Result) then
+    begin
+      if OwnsObjects then
+        ALink.Free;
       Exit;
+    end;
   InsertItem(Result, AString, ALink);
 end;
 

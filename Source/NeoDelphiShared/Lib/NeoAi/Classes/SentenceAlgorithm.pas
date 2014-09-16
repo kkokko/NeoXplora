@@ -37,7 +37,6 @@ type
     function TestRunTextMatch: Double;
     function TestRunPosMatch: Double;
     function TestRunHybridPosMatch: Double;
-    function TestRunHybridSemMatch: Double;
 
     property AlignInList: TStringList read FAlignInList;
     property AlignOutList: TStringList read FAlignOutList;
@@ -45,6 +44,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
+    function DoRunHybridSemMatch: Double;
 
     procedure RunTextMatch(var ACurrentBestScore: Double; var AnId: TId; var ARepGuess, ASemRepGuess, AMatchSentence: string);
     procedure RunPosMatch(var ACurrentBestScore: Double; var AnId: TId; var ARepGuess, ASemRepGuess, AMatchSentence: string);
@@ -161,8 +162,6 @@ begin
   // Logic to construct the matrix and find maximum edit distance
   for I := 1 to TheCountX do
   begin
-
-
     for J := 1 to TheCountY do
     begin
       TheCheckI := (I < 3) or (I > TheCountX - 2);
@@ -280,7 +279,7 @@ begin
   Result := RunSmithWaterman;
 end;
 
-function TSentenceAlgorithm.TestRunHybridSemMatch: Double;
+function TSentenceAlgorithm.DoRunHybridSemMatch: Double;
 begin
   FAlignMatchFunction := CheckHybridSemMatch;
   FPosAddScore := 0;

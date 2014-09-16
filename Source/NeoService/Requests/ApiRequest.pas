@@ -6,6 +6,36 @@ uses
   Communication, EntityList, Entity, TypesConsts, GuessObject, SkyIdList;
 
 type
+{$Region 'TApiRequestGenerateProtoGuess'}
+  TApiRequestGenerateProtoGuess = class(TRequest)
+  private
+    FApiKey: string;
+    FSentenceText: string;
+  published
+    property ApiKey: string read FApiKey write FApiKey;
+    property SentenceText: string read FSentenceText write FSentenceText;
+  end;
+  TApiResponseGenerateProtoGuess = class(TResponse)
+  private
+    FMatchedSplit: string;
+    FMatchedProto: string;
+    FMatchedRep: string;
+    FGeneratedPos: string;
+    FGeneratedSplit: string;
+    FGeneratedRep: string;
+  public
+    constructor Create(const AGeneratedSplit, AGeneratedPos, AGeneratedRep, AMatchedProto,
+      AMatchedSplit, AMatchedRep: string); reintroduce;
+  published
+    property GeneratedSplit: string read FGeneratedSplit write FGeneratedSplit;
+    property GeneratedPos: string read FGeneratedPos write FGeneratedPos;
+    property GeneratedRep: string read FGeneratedRep write FGeneratedRep;
+    property MatchedProto: string read FMatchedProto write FMatchedProto;
+    property MatchedSplit: string read FMatchedSplit write FMatchedSplit;
+    property MatchedRep: string read FMatchedRep write FMatchedRep;
+  end;
+
+{$EndRegion}
 {$Region 'TApiRequestGenerateRep'}
   TApiRequestGenerateRep = class(TRequest)
   private
@@ -44,11 +74,27 @@ begin
   FMatchedSentence := AMatchedSentence;
 end;
 
+{ TApiResponseGenerateProtoGuess }
+
+constructor TApiResponseGenerateProtoGuess.Create(const AGeneratedSplit, AGeneratedPos, AGeneratedRep, AMatchedProto,
+  AMatchedSplit, AMatchedRep: string);
+begin
+  inherited Create;
+  FGeneratedSplit := AGeneratedSplit;
+  FGeneratedPos := AGeneratedPos;
+  FGeneratedRep := AGeneratedRep;
+  FMatchedProto := AMatchedProto;
+  FMatchedSplit := AMatchedSplit;
+  FMatchedRep := AMatchedRep;
+end;
+
 initialization
   // please keep these sorted
   TEntityManager.RegisterEntityClasses([
+    TApiRequestGenerateProtoGuess,
     TApiRequestGenerateRep,
 
+    TApiResponseGenerateProtoGuess,
     TApiResponseGenerateRep
   ]);
 

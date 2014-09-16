@@ -56,10 +56,11 @@ object frmDebug: TfrmDebug
     Width = 729
     Height = 210
     Lines.Strings = (
-      '!Request.php'
+      '!api.xml.php'
       
-        '!{"ClassName":"TRequestSplitSentence","Properties":{"Id":"8347",' +
-        '"NewText":"Hi. My name is Eric"}}')
+        '!<ApiRequestGenerateProtoGuess><ApiKey>abc</ApiKey><SentenceText' +
+        '>The car gives the planet gas and heat</SentenceText></ApiReques' +
+        'tGenerateProtoGuess>')
     ScrollBars = ssBoth
     TabOrder = 2
     WordWrap = False

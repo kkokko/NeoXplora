@@ -122,6 +122,7 @@
 			<DCCReference Include="Communication\AppEntityXmlWriter2.pas"/>
 			<DCCReference Include="Requests\ApiRequest.pas"/>
 			<DCCReference Include="Requests\ApiCommands.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

@@ -13,6 +13,11 @@ type
     class function SessionRequired: Boolean; override;
   end;
 
+  TApiCommandGenerateProtoGuess = class(TApiCommand)
+  protected
+    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
+  end;
+
   TApiCommandGenerateRep = class(TApiCommand)
   protected
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
@@ -22,19 +27,6 @@ implementation
 
 uses
   ApiRequest, ServerCore, AppUnit, ActiveX;
-
-{ TApiCommandGenerateRep }
-
-class function TApiCommandGenerateRep.DoExecute(ARequest: TRequest): TGenericResponse;
-var
-  TheRep: string;
-  TheSentence: string;
-  TheRequest: TApiRequestGenerateRep;
-begin
-  TheRequest := ARequest as TApiRequestGenerateRep;
-  Core.ApiGenerateRep(TheRequest.SentenceText, TheRequest.ApiKey, TheRequest.OutputSentence, TheRep, TheSentence);
-  Result := TApiResponseGenerateRep.Create(TheRep, TheSentence);
-end;
 
 { TApiCommand }
 
@@ -58,8 +50,35 @@ begin
   Result := False;
 end;
 
+{ TApiCommandGenerateRep }
+
+class function TApiCommandGenerateRep.DoExecute(ARequest: TRequest): TGenericResponse;
+var
+  TheRep: string;
+  TheSentence: string;
+  TheRequest: TApiRequestGenerateRep;
+begin
+  TheRequest := ARequest as TApiRequestGenerateRep;
+  Core.ApiGenerateRep(TheRequest.SentenceText, TheRequest.ApiKey, TheRequest.OutputSentence, TheRep, TheSentence);
+  Result := TApiResponseGenerateRep.Create(TheRep, TheSentence);
+end;
+
+{ TApiCommandGenerateProtoGuess }
+
+class function TApiCommandGenerateProtoGuess.DoExecute(ARequest: TRequest): TGenericResponse;
+var
+  TheRequest: TApiRequestGenerateProtoGuess;
+  TheResults: TServerCore.TGenerateProtoGuessRecord;
+begin
+  TheRequest := ARequest as TApiRequestGenerateProtoGuess;
+  TheResults := Core.ApiGenerateProtoGuess(TheRequest.SentenceText, TheRequest.ApiKey);
+  Result := TApiResponseGenerateProtoGuess.Create(TheResults.Split, TheResults.Pos, TheResults.Rep,
+    TheResults.MatchedProto, TheResults.MatchedSplit, TheResults.MatchedRep);
+end;
+
 initialization
   // please keep these sorted
+  TApiCommandGenerateProtoGuess.RegisterClass(TApiRequestGenerateProtoGuess);
   TApiCommandGenerateRep.RegisterClass(TApiRequestGenerateRep);
 
 end.

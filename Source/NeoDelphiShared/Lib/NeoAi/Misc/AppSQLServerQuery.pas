@@ -16,7 +16,9 @@ type
     class function GetSearchPagesByOffset(ASearch: string; AnOffset: Integer): TEntities;
     class function GetSentenceBaseById(AnId: TId): TSentenceBase;
     class function GetSplitSentences: TEntities;
+    class function GetSplitProtos: TEntities;
     class function GetPageReps(APageId, ASentenceId: TId): TEntities;
+    class function GetSentencesForProtoId(AProtoId: TId): TEntities;
     class function GetTotalPageCount(const ASearch: string): Integer;
     class function GetUntrainedStories: TEntities;
     class procedure UpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer);
@@ -28,7 +30,9 @@ type
     class function QueryGetIRepRules: TDBSQLQuery;
     class function QueryGetSearchPagesByOffset(AnOffset: Integer): TDBSQLQuery;
     class function QueryGetSentenceBaseById(AnId: TId): TDBSQLQuery;
+    class function QueryGetSentencesForProtoId(AnId: TId): TDBSQLQuery;
     class function QueryGetSplitSentences: TDBSQLQuery;
+    class function QueryGetSplitProtos: TDBSQLQuery;
     class function QueryGetPageReps(APageId, ASentenceId: TId): TDBSQLQuery;
     class function QueryGetTotalPageCount: TDBSQLQuery;
     class function QueryGetUntrainedStories: TDBSQLQuery;
@@ -39,7 +43,7 @@ implementation
 
 uses
   StringArray, AppUnit, EntityWithName, PageBase, TypesFunctions, SentenceWithGuesses, TypInfo, CountData, EntityWithId,
-  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule;
+  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto;
 
 { TAppSQLServerQuery }
 
@@ -61,8 +65,7 @@ begin
   TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
     TheDbQuery.Query.Count := 0;
-    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedRep));
-    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedCRep));
+    TheQuery.ParamByName('ASentenceStatus1').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssReviewedRep));
     TheQuery.Open;
     Result := TheQuery.ReadCountData;
   finally
@@ -97,8 +100,7 @@ begin
   TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
     TheDbQuery.Query.Count := 0;
-    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedRep));
-    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedCRep));
+    TheQuery.ParamByName('ASentenceStatus1').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssReviewedRep));
     TheQuery.Open;
     Result := TheQuery.ReadMappedEntities([TEntityWithName]);
   finally
@@ -132,6 +134,34 @@ begin
   TheDbQuery.Query.Count := 0;
 end;
 
+class function TAppSQLServerQuery.GetSentencesForProtoId(AProtoId: TId): TEntities;
+var
+  TheDbQuery: TDBSQLQuery;
+begin
+  TheDbQuery := QueryGetSentencesForProtoId(AProtoId);
+  Result := App.SQLConnection.SelectQuery([TSentenceBase], TheDbQuery);
+  TheDbQuery.Query.Count := 0;
+end;
+
+class function TAppSQLServerQuery.GetSplitProtos: TEntities;
+var
+  TheQuery: TBaseQuery;
+  TheDbQuery: TDBSQLQuery;
+begin
+  TheDbQuery := QueryGetSplitProtos;
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
+  try
+    TheDbQuery.Query.Count := 0;
+    TheQuery.ParamByName('ASentenceStatus1').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssReviewedSplit));
+    TheQuery.ParamByName('ASentenceStatus2').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssTrainedRep));
+    TheQuery.ParamByName('ASentenceStatus3').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssReviewedRep));
+    TheQuery.Open;
+    Result := TheQuery.ReadMappedEntities([TProto]);
+  finally
+    TheQuery.Free;
+  end;
+end;
+
 class function TAppSQLServerQuery.GetSplitSentences: TEntities;
 var
   TheQuery: TBaseQuery;
@@ -141,8 +171,7 @@ begin
   TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
   try
     TheDbQuery.Query.Count := 0;
-    TheQuery.ParamByName('APageStatus1').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedRep));
-    TheQuery.ParamByName('APageStatus2').AsString := GetEnumName(TypeInfo(TPageBase.TStatus), Integer(psReviewedCRep));
+    TheQuery.ParamByName('ASentenceStatus1').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssReviewedRep));
     TheQuery.Open;
     Result := TheQuery.ReadMappedEntities([TSentenceBase]);
   finally
@@ -229,13 +258,11 @@ class function TAppSQLServerQuery.QueryGetHypernyms: TDBSQLQuery;
 begin
   Result.Name := 'QueryGetHypernyms';
   Result.Query := TStringArray.FromArray([
-    'select se.`', TSentenceBase.Tok_SRep.SQLToken, '` as `',
+    'select `', TSentenceBase.Tok_SRep.SQLToken, '` as `',
     TEntityWithName.EntityToken_Name.SQLToken,'` from `', TSentenceBase.SQLToken,
-    '` se inner join `', TPageBase.SQLToken, '` st on se.`',
-    TSentenceBase.Tok_PageId.SQLToken, '` = st.`', TPageBase.EntityToken_Id.SQLToken,
-    '` where st.`', TPageBase.Tok_Status.SQLToken, '` in (:APageStatus1, :APageStatus2) and (se.`',
+    '` where `', TSentenceBase.Tok_Status.SQLToken, '` = :ASentenceStatus1 and (`',
     TSentenceBase.Tok_SRep.SQLToken,'` like ''%eg(%'' or',
-    ' se.`', TSentenceBase.Tok_SRep.SQLToken,'` like ''%part(%'' or se.`',
+    ' `', TSentenceBase.Tok_SRep.SQLToken,'` like ''%part(%'' or `',
     TSentenceBase.Tok_SRep.SQLToken,'` like ''%property(%'');'
   ]);
 end;
@@ -271,17 +298,40 @@ begin
   ]);
 end;
 
+class function TAppSQLServerQuery.QueryGetSentencesForProtoId(AnId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryGetSentencesForProtoId';
+  Result.Query := TStringArray.FromArray([
+    'select `', TSentenceBase.EntityToken_Id.SQLToken, '`, `', TSentenceBase.Tok_Name.SQLToken,
+    '`, `', TSentenceBase.Tok_Rep.SQLToken, '`, `', TSentenceBase.Tok_SRep.SQLToken,
+    '`, `', TSentenceBase.Tok_Pos.SQLToken, '`',
+    ' from `', TSentenceBase.SQLToken, '` where `', TSentenceBase.Tok_ProtoId.SQLToken,
+    '` = ' + IdToStr(AnId) + ' order by `', TSentenceBase.Tok_Order.SQLToken, '`'
+  ]);
+end;
+
 class function TAppSQLServerQuery.QueryGetSplitSentences: TDBSQLQuery;
 begin
   Result.Name := 'QueryGetSplitSentences';
   Result.Query := TStringArray.FromArray([
-    'select se.`', TSentenceBase.EntityToken_Id.SQLToken, '`, se.`', TSentenceBase.Tok_Name.SQLToken,
-    '`, se.`', TSentenceBase.Tok_Rep.SQLToken, '`, se.`', TSentenceBase.Tok_SRep.SQLToken,
-    '`, se.`', TSentenceBase.Tok_Pos.SQLToken, '`',
-    ' from `', TSentenceBase.SQLToken, '` se inner join `', TPageBase.SQLToken, '` st on se.`',
-    TSentenceBase.Tok_PageId.SQLToken, '` = st.`', TPageBase.EntityToken_Id.SQLToken,
-    '` where st.`', TPageBase.Tok_Status.SQLToken, '` in (:APageStatus1, :APageStatus2) and trim(se.`',
+    'select `', TSentenceBase.EntityToken_Id.SQLToken, '`, `', TSentenceBase.Tok_Name.SQLToken,
+    '`, `', TSentenceBase.Tok_Rep.SQLToken, '`, `', TSentenceBase.Tok_SRep.SQLToken,
+    '`, `', TSentenceBase.Tok_Pos.SQLToken, '`',
+    ' from `', TSentenceBase.SQLToken, '` where `', TSentenceBase.Tok_Status.SQLToken,
+    '` = :ASentenceStatus1 and trim(`',
     TSentenceBase.Tok_Rep.SQLToken, '`) <> '''''
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryGetSplitProtos: TDBSQLQuery;
+begin
+  Result.Name := 'QueryGetSplitProtos';
+  Result.Query := TStringArray.FromArray([
+    'select pr.`', TProto.Tok_Id.SQLToken, '`, pr.`', TProto.Tok_Name.SQLToken,
+    '` from `', TSentenceBase.SQLToken, '` se inner join `',
+    TProto.SQLToken, '` pr on pr.`', TProto.Tok_Id.SQLToken, '` = se.`',
+    TSentenceBase.Tok_ProtoId.SQLToken, '` where se.`', TSentenceBase.Tok_Status.SQLToken,
+    '` in (:ASentenceStatus1, :ASentenceStatus2, :ASentenceStatus3)'
   ]);
 end;
 
@@ -296,6 +346,8 @@ begin
 end;
 
 class function TAppSQLServerQuery.QueryGetFinishedStoriesCount: TDBSQLQuery;
+var
+  TheQuery: TDBSQLQuery;
 begin
   Result.Name := 'QueryGetFinishedStoriesCount';
   Result.Query := TStringArray.FromArray([
@@ -303,7 +355,9 @@ begin
     TCountData.EntityToken_Number.SQLToken,
     '` from ('
   ]);
-  Result.Query.Add(QueryGetSplitSentences.Query);
+  TheQuery := QueryGetSplitSentences;
+  Result.Query.Add(TheQuery.Query);
+  TheQuery.Query.Count := 0;
   Result.Query.Add(TStringArray.FromArray([
     ')a;'
   ]));

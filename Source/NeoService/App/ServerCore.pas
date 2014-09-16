@@ -8,6 +8,18 @@ uses
 
 type
   TServerCore = class(TObject)
+  {$Region 'TypeDef'}
+  public
+    type
+      TGenerateProtoGuessRecord = record
+        Split: string;
+        Pos: string;
+        Rep: string;
+        MatchedProto: string;
+        MatchedSplit: string;
+        MatchedRep: string;
+      end;
+  {$EndRegion}
   private
     type
       TLockType = (ltRead, ltWrite);
@@ -57,6 +69,7 @@ type
     property MainThreadHandle: HWND read FMainThreadHandle write FMainThreadHandle;
 
     // api commands - please keep sorted
+    function ApiGenerateProtoGuess(const ASentenceText, AnApiKey: string): TGenerateProtoGuessRecord;
     procedure ApiGenerateRep(const ASentenceText, AnApiKey: string; BOutputSentence: Boolean; out ARep, ASentence: string);
 
     // user commands - please keep sorted
@@ -83,7 +96,8 @@ implementation
 uses
   SysUtils, AppUnit, AppSQLServerQuery, BaseConnection, EntityWithName, TypesFunctions, SentenceBase,
   SentenceSplitter, CRep, RepDecoder, SearchPage, SkyLists, RepGroup, IRepRuleGroup, LoggerUnit, 
-  IRepRule, IRepRuleValue, IRepRuleCondition, CRepRule, CRepRuleCondition, CRepRuleGroup, AppConsts;
+  IRepRule, IRepRuleValue, IRepRuleCondition, CRepRule, CRepRuleCondition, CRepRuleGroup, AppConsts, Proto,
+  SentenceAlgorithm, SentenceListElement;
 
 var
   _Core: TServerCore;
@@ -96,6 +110,80 @@ end;
 procedure FreeCore;
 begin
   TServerCore.EndInstance;
+end;
+
+function TServerCore.ApiGenerateProtoGuess(const ASentenceText, AnApiKey: string): TGenerateProtoGuessRecord;
+var
+  TheGuessObject: TGuessObject;
+  ThePos: string;
+  TheProto: TProto;
+  TheProtos: TEntities;
+  TheSentence: TSentenceBase;
+  TheSentenceAlgorithm: TSentenceAlgorithm;
+  TheSentenceList: TSentenceList;
+  TheSentences: TEntities;
+  TheSplitter: TSentenceSplitter;
+  I: Integer;
+begin
+  TheSplitter := nil;
+  TheProtos := nil;
+  TheGuessObject := nil;
+  TheSentenceAlgorithm := nil;
+  TheSentenceList := TSentenceList.Create;
+  try
+    TheSentenceList.Hypernym := FHypernym;
+    TheProtos := TAppSQLServerQuery.GetSplitProtos;
+    TheSplitter := TSentenceSplitter.Create;
+    for I := 0 to High(TheProtos) do
+    begin
+      TheProto := TheProtos[I] as TProto;
+      TheSplitter.SentenceSplitWords(TheProto.Name);
+      ThePos := FPosTagger.GetTagsForWords(TheSplitter, True);
+      TheSentenceList.AddSentence(TheSplitter.WordList, TheProto.Id, TheProto.Name, '', '', ThePos);
+    end;
+
+    TheSplitter.SentenceSplitWords(ASentenceText);
+    ThePos := FPosTagger.GetTagsForString(ASentenceText);
+    TheGuessObject := TGuessObject.Create;
+    TheSentenceList.GetRepGuess(TheSplitter.WordList, ASentenceText, ThePos, 1, False, TheGuessObject, True);
+    TheSentences := TAppSQLServerQuery.GetSentencesForProtoId(TheGuessObject.GuessDId);
+
+    TheSentenceAlgorithm := TSentenceAlgorithm.Create;
+    TheSentenceAlgorithm.Element1 := TSentenceListElement.Create(TheSplitter.WordList, IdNil, ASentenceText, '', '', ThePos);
+
+    TheSplitter.SentenceSplitWords(TheGuessObject.MatchSentenceD);
+    ThePos := FPosTagger.GetTagsForString(TheGuessObject.MatchSentenceD);
+    TheSentenceAlgorithm.Element2 := TSentenceListElement.Create(TheSplitter.WordList, IdNil, TheGuessObject.MatchSentenceD, '', '', ThePos);
+
+    TheSentenceAlgorithm.DoRunHybridSemMatch;
+
+    Result.Split := '';
+    Result.Rep := '';
+    Result.MatchedSplit := '';
+    for I := 0 to High(TheSentences) do
+    begin
+      TheSentence := TheSentences[I] as TSentenceBase;
+      Result.Split := Result.Split + TheSentenceAlgorithm.GetAdjustedRep(TheSentence.Name) + '.';
+      Result.Rep := Result.Rep + TheSentenceAlgorithm.GetAdjustedRep(TheSentence.Rep) + ' ';
+      Result.MatchedSplit := Result.MatchedSplit + TheSentence.Name + '.';
+      Result.MatchedRep := Result.MatchedRep + TheSentence.Rep + ' ';
+    end;
+    TheSplitter.SentenceSplitWords(Result.Split);
+    Result.Pos := FPosTagger.GetTagsForWords(TheSplitter, True);
+    Result.MatchedProto := TheGuessObject.MatchSentenceD;
+  finally
+    TheSentenceList.Free;
+    TheSplitter.Free;
+    TEntity.FreeEntities(TheProtos);
+    TEntity.FreeEntities(TheSentences);
+    TheGuessObject.Free;
+    if TheSentenceAlgorithm <> nil then
+    begin
+      TheSentenceAlgorithm.Element1.Free;
+      TheSentenceAlgorithm.Element2.Free;
+    end;
+    TheSentenceAlgorithm.Free;
+  end;
 end;
 
 procedure TServerCore.ApiGenerateRep(const ASentenceText, AnApiKey: string; BOutputSentence: Boolean; out ARep, ASentence: string);
@@ -111,7 +199,7 @@ begin
     SentenceLockAquire(ltRead);
     try
       FSentenceList.GetRepGuess(TheSplitter.WordList, ASentenceText,
-        FPosTagger.GetTagsForString(ASentenceText), 1, False, TheGuessObject);
+        FPosTagger.GetTagsForString(ASentenceText), 1, False, TheGuessObject, True);
     finally
       SentenceLockRelease(ltRead);
     end;
@@ -175,6 +263,7 @@ procedure TServerCore.ReloadSentences;
 var
   TheHyperNyms, TheSentences: TEntities;
   TheSentenceBase: TSentenceBase;
+  TheSentencePos: string;
   TheSplitter: TSentenceSplitter;
   I: Integer;
 begin
@@ -193,8 +282,9 @@ begin
       begin
         TheSentenceBase := TheSentences[I] as TSentenceBase;
         TheSplitter.SentenceSplitWords(TheSentenceBase.Name);
+        TheSentencePos := FPosTagger.GetTagsForWords(TheSplitter, True);
         FSentenceList.AddSentence(TheSplitter.WordList, TheSentenceBase.Id, TheSentenceBase.Name,
-          TheSentenceBase.Rep, TheSentenceBase.SRep, TheSentenceBase.Pos);
+          TheSentenceBase.Rep, TheSentenceBase.SRep, TheSentencePos);
       end;
     finally
       SentenceLockRelease(ltWrite);
