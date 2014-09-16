@@ -81,7 +81,7 @@ class TPanelTests extends TPanel {
           $requestxml = '<ApiRequestGenerateRep><ApiKey>abc</ApiKey><SentenceText>My name is Mimi</SentenceText><OutputSentence>True</OutputSentence></ApiRequestGenerateRep>';
           break; 
         case "guessProto":
-          $requestxml = '<ApiRequestGenerateProtoGuess><ApiKey>abc</ApiKey><SentenceText>My name is Mimi</SentenceText><OutputSentence>True</OutputSentence></ApiRequestGenerateProtoGuess>';
+          $requestxml = ' <ApiRequestGenerateProtoGuess><ApiKey>abc</ApiKey><SentenceText>The car gives the planet gas and heat</SentenceText></ApiRequestGenerateProtoGuess>';
           break; 
       }
       
