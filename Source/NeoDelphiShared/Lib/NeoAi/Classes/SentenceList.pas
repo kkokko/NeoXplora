@@ -11,6 +11,7 @@ type
   private
     FSentences: TSkyIdList;
     FHypernym: THypernym;
+    FScoringMode: TSentenceAlgorithm.TScoringMode;
     function CheckSmallPosMatch(ASentence1, ASentence2: TSentenceListElement): Boolean;
     function GetSentenceCount: Integer;
   public
@@ -24,6 +25,7 @@ type
 
     property SentenceCount: Integer read GetSentenceCount;
     property Hypernym: THypernym read FHypernym write FHyperNym;
+    property ScoringMode: TSentenceAlgorithm.TScoringMode read FScoringMode write FScoringMode;
   end;
 
 implementation
@@ -95,6 +97,7 @@ begin
   TheCurrentSentence := TSentenceListElement.Create(SentenceWords, IdNil, ASentence, '', '', APos);
   try
     TheSentenceAlgorithm := TSentenceAlgorithm.Create;
+    TheSentenceAlgorithm.ScoringMode := FScoringMode;
     TheSentenceAlgorithm.Element1 := TheCurrentSentence;
     for I := 0 to FSentences.Count - 1 do
       if I mod AStep = 0 then

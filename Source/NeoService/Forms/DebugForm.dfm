@@ -59,8 +59,8 @@ object frmDebug: TfrmDebug
       '!api.xml.php'
       
         '!<ApiRequestGenerateProtoGuess><ApiKey>abc</ApiKey><SentenceText' +
-        '>The car gives the planet gas and heat</SentenceText></ApiReques' +
-        'tGenerateProtoGuess>')
+        '>I play computer games because I am bored.</SentenceText></ApiRe' +
+        'questGenerateProtoGuess>')
     ScrollBars = ssBoth
     TabOrder = 2
     WordWrap = False

@@ -14,10 +14,8 @@ type
       TGenerateProtoGuessRecord = record
         Split: string;
         Pos: string;
-        Rep: string;
         MatchedProto: string;
         MatchedSplit: string;
-        MatchedRep: string;
       end;
   {$EndRegion}
   private
@@ -145,6 +143,7 @@ begin
     TheSplitter.SentenceSplitWords(ASentenceText);
     ThePos := FPosTagger.GetTagsForString(ASentenceText);
     TheGuessObject := TGuessObject.Create;
+    TheSentenceList.ScoringMode := smProto;
     TheSentenceList.GetRepGuess(TheSplitter.WordList, ASentenceText, ThePos, 1, False, TheGuessObject, True);
     TheSentences := TAppSQLServerQuery.GetSentencesForProtoId(TheGuessObject.GuessDId);
 
@@ -155,18 +154,15 @@ begin
     ThePos := FPosTagger.GetTagsForString(TheGuessObject.MatchSentenceD);
     TheSentenceAlgorithm.Element2 := TSentenceListElement.Create(TheSplitter.WordList, IdNil, TheGuessObject.MatchSentenceD, '', '', ThePos);
 
+    TheSentenceAlgorithm.ScoringMode := smProto;
     TheSentenceAlgorithm.DoRunHybridSemMatch;
+    TheSentenceAlgorithm.AddMissingInWordsToOutList;
 
-    Result.Split := '';
-    Result.Rep := '';
-    Result.MatchedSplit := '';
     for I := 0 to High(TheSentences) do
     begin
       TheSentence := TheSentences[I] as TSentenceBase;
       Result.Split := Result.Split + TheSentenceAlgorithm.GetAdjustedRep(TheSentence.Name) + '.';
-      Result.Rep := Result.Rep + TheSentenceAlgorithm.GetAdjustedRep(TheSentence.Rep) + ' ';
       Result.MatchedSplit := Result.MatchedSplit + TheSentence.Name + '.';
-      Result.MatchedRep := Result.MatchedRep + TheSentence.Rep + ' ';
     end;
     TheSplitter.SentenceSplitWords(Result.Split);
     Result.Pos := FPosTagger.GetTagsForWords(TheSplitter, True);

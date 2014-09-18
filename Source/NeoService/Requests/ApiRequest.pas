@@ -19,20 +19,15 @@ type
   private
     FMatchedSplit: string;
     FMatchedProto: string;
-    FMatchedRep: string;
     FGeneratedPos: string;
     FGeneratedSplit: string;
-    FGeneratedRep: string;
   public
-    constructor Create(const AGeneratedSplit, AGeneratedPos, AGeneratedRep, AMatchedProto,
-      AMatchedSplit, AMatchedRep: string); reintroduce;
+    constructor Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto, AMatchedSplit: string); reintroduce;
   published
     property GeneratedSplit: string read FGeneratedSplit write FGeneratedSplit;
     property GeneratedPos: string read FGeneratedPos write FGeneratedPos;
-    property GeneratedRep: string read FGeneratedRep write FGeneratedRep;
     property MatchedProto: string read FMatchedProto write FMatchedProto;
     property MatchedSplit: string read FMatchedSplit write FMatchedSplit;
-    property MatchedRep: string read FMatchedRep write FMatchedRep;
   end;
 
 {$EndRegion}
@@ -76,16 +71,13 @@ end;
 
 { TApiResponseGenerateProtoGuess }
 
-constructor TApiResponseGenerateProtoGuess.Create(const AGeneratedSplit, AGeneratedPos, AGeneratedRep, AMatchedProto,
-  AMatchedSplit, AMatchedRep: string);
+constructor TApiResponseGenerateProtoGuess.Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto, AMatchedSplit: string);
 begin
   inherited Create;
   FGeneratedSplit := AGeneratedSplit;
   FGeneratedPos := AGeneratedPos;
-  FGeneratedRep := AGeneratedRep;
   FMatchedProto := AMatchedProto;
   FMatchedSplit := AMatchedSplit;
-  FMatchedRep := AMatchedRep;
 end;
 
 initialization

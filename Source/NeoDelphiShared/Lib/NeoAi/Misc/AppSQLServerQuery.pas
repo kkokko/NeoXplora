@@ -330,8 +330,10 @@ begin
     'select pr.`', TProto.Tok_Id.SQLToken, '`, pr.`', TProto.Tok_Name.SQLToken,
     '` from `', TSentenceBase.SQLToken, '` se inner join `',
     TProto.SQLToken, '` pr on pr.`', TProto.Tok_Id.SQLToken, '` = se.`',
-    TSentenceBase.Tok_ProtoId.SQLToken, '` where se.`', TSentenceBase.Tok_Status.SQLToken,
-    '` in (:ASentenceStatus1, :ASentenceStatus2, :ASentenceStatus3)'
+    TSentenceBase.Tok_ProtoId.SQLToken,
+    '` where se.`', TSentenceBase.Tok_Status.SQLToken,
+    '` in (:ASentenceStatus1, :ASentenceStatus2, :ASentenceStatus3) AND se.`',
+    TSentenceBase.Tok_Name.SQLToken, '` <> pr.`', TProto.Tok_Name.SQLToken, '`'
   ]);
 end;
 

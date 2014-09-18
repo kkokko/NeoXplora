@@ -72,8 +72,8 @@ var
 begin
   TheRequest := ARequest as TApiRequestGenerateProtoGuess;
   TheResults := Core.ApiGenerateProtoGuess(TheRequest.SentenceText, TheRequest.ApiKey);
-  Result := TApiResponseGenerateProtoGuess.Create(TheResults.Split, TheResults.Pos, TheResults.Rep,
-    TheResults.MatchedProto, TheResults.MatchedSplit, TheResults.MatchedRep);
+  Result := TApiResponseGenerateProtoGuess.Create(TheResults.Split, TheResults.Pos,
+    TheResults.MatchedProto, TheResults.MatchedSplit);
 end;
 
 initialization
