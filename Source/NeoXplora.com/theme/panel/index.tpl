@@ -7,7 +7,7 @@
         <a href="panel.php?type=ireprules"><img src="images/ireprules.jpg" alt="IRep Rules" /></a>
         <a href="panel.php?type=linkerrule"><img src="images/linkerrule.jpg" alt="Linker Rules" /></a>
         <a href="panel.php?type=pages"><img src="images/pages.jpg" alt="Manage Pages" /></a>
-        <a href="panel.php?type=tests"><img src="images/tests.jpg" alt="Run Tests" /></a>
+        <a href="api.php"><img src="images/tests.jpg" alt="Run Tests" /></a>
       </div>
     </div>
   </div>

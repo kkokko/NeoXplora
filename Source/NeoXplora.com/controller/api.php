@@ -1,52 +1,84 @@
 <?php
-
 namespace NeoX\Controller;
 
 require_once APP_DIR . "/app/system/Object.php";
 class TApi extends \SkyCore\TObject {
 
   public function index() {
-    
-  }
-  
-  public function getRep() {
-    ob_clean();
-  
-    header("Content-type: text/xml");
-    $output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-  
-    if(!isset($_REQUEST['sentence']) || $_REQUEST['sentence'] == '') {
-      $output .= $this->error("GetRep: Sentence not set");
-      echo $output;
+    if(!isset($_GET['name'])) {
+      $this->template->redirect = "api.php?name=GenerateRep";
+      $this->template->render();
       return;
     }
     
-    if(!isset($_REQUEST['api_key']) || $_REQUEST['api_key'] == '') {
-      $output .= $this->error("Invalid API Key");
-      echo $output;
-      return;
+    $name = $_GET['name'];
+    
+    if(!file_exists(__DIR__ . "/../api/Response" . $name . ".php") || !file_exists(__DIR__ . "/../api/Request" . $name . ".php")) {
+      die("No such API Request !");
     }
+    
+    require_once __DIR__ . "/../api/Request" . $name . ".php";
+    require_once __DIR__ . "/../api/Response" . $name . ".php";
+    
+    $requestClassName = "NeoX\\API\\TRequest" . $name;
+    $responseClassName = "NeoX\\API\\TResponse" . $name;
+    
+    if(!class_exists($requestClassName) || !class_exists($responseClassName)) {
+      die("No such API Request !");
+    }
+    
+    $requestData = null;
+    $responseData = null;
+    $apiKey = "abc";
+    
+    if(isset($_POST['ApiKey'])) {
+      $requestData = $_POST;
+      $apiKey = $_POST['ApiKey'];
+    }
+    
+    $request = new $requestClassName($requestData);
+    $requestxml = $request->toXML();
+    
+    if($requestData) {
+      $responsexml = $this->postRequest($this->template->site_url . "api.xml.php", $requestxml);
         
-    $sentence = $_REQUEST['sentence'];
-    $api_key = $_REQUEST['api_key'];
+      if($responsexml != false) {
+        $responseData = simplexml_load_string($responsexml);
+        $response = new $responseClassName($responseData);
+        $this->template->responseHTML = $response->toHTML();
+        $this->template->responseXML = $response->toXML();
+      }
+    }
     
-    $rep = $this->Delphi()->GetRep($sentence, $api_key);
+    $this->template->requestName = $name;
+    $this->template->ApiKey = $apiKey;
+    $this->template->requestHTML = $request->toHTML();
+    $this->template->requestXML = $request->toXML();
     
-    $output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    $output .= "<result>\n";
-    $output .= "<predicted_rep>" . $rep->GetProperty("PredictedRep") . "</predicted_rep>\n";
-    $output .= "<matched_sentence>" . $rep->GetProperty("MatchedSentence") . "</matched_sentence>\n";
-    $output .= "</result>\n";
-    
-    echo $output;
-    
+    $this->template->load("index", "apixml");
+    $this->template->render();
   }
   
-  private function error($error) {
-    $output = "<errors>\n";
-    $output .= "<error>" . $error . "</error>\n";
-    $output .= "</errors>\n";
-    return $output;
+  private function postRequest($url, $request) {
+    $TheServer=curl_init();
+    curl_setopt($TheServer, CURLOPT_POST,1);
+    curl_setopt($TheServer, CURLOPT_POSTFIELDS, $request);
+    curl_setopt($TheServer,CURLOPT_HTTPHEADER, 
+      Array(
+      "X-Forwarded-For: ".$_SERVER['REMOTE_ADDR'],
+      "User-Agent: ".$_SERVER['HTTP_USER_AGENT']
+    ));
+    
+    $TheURL = "http://neoxplora.com/api.xml.php";
+    curl_setopt($TheServer, CURLOPT_URL, $url);
+    curl_setopt($TheServer, CURLOPT_CONNECTTIMEOUT, 5); 
+    curl_setopt($TheServer, CURLOPT_TIMEOUT, 30); //timeout in seconds
+    curl_setopt($TheServer, CURLOPT_HEADER, false);
+    curl_setopt($TheServer, CURLOPT_RETURNTRANSFER, 1);
+    $TheResponseOutput = curl_exec($TheServer);
+    curl_close($TheServer);
+    
+    return $TheResponseOutput;
   }
   
 }
