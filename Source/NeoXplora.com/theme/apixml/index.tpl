@@ -39,7 +39,7 @@
         <div class="ui tabular filter menu top attached">
           <a class="active item">Request</a>
           <div class="item right fitted" style="padding-top: 10px;">
-            <div class="ui label floating right" style="top: 6px; left: -55px; width: 75px; background-color: transparent; color: #666;">
+            <div class="ui label floating right" style="top: 6px; left: -55px; width: 85px; background-color: transparent; color: #666;">
               API Key:
             </div>
             <div class="ui right input">
