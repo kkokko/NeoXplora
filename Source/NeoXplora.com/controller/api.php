@@ -37,7 +37,11 @@ class TApi extends \SkyCore\TObject {
     }
     
     $request = new $requestClassName($requestData);
-    $requestxml = $request->toXML();
+    $requestxml = '';
+     
+    if(isset($_POST['ApiKey'])) {
+      $requestxml = $request->toXML();
+    }
     
     if($requestData) {
       $responsexml = $this->postRequest($this->template->site_url . "api.xml.php", $requestxml);
@@ -53,7 +57,7 @@ class TApi extends \SkyCore\TObject {
     $this->template->requestName = $name;
     $this->template->ApiKey = $apiKey;
     $this->template->requestHTML = $request->toHTML();
-    $this->template->requestXML = $request->toXML();
+    $this->template->requestXML = $requestxml;
     
     $this->template->load("index", "apixml");
     $this->template->render();
