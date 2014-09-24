@@ -1,5 +1,5 @@
 <?php echo $this->fetch("header"); ?>
-<div class="boxContainer">
+<div style="padding: 20px 30px;">
   <div class="buttons leftMenu">
     <a href="train.php?type=splitter">Train</a>
     <a href="browse.php?type=splitter">Browse</a>

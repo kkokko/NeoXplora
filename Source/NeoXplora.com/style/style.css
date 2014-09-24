@@ -452,3 +452,77 @@ label{color: #6C6C6C; font-size: 15px;}
   color: #fff;
   display: block;
 }
+
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: url("../semantic/packaged/images/loader-large.gif") 50% 50% no-repeat rgba(255,255,255,.8);
+  border-radius: 30px;
+  visibility: visible;
+}
+
+.level-indent {
+  display: inline-block;
+  border-left: 3px solid #000;
+  width: 20px;
+  height: 100%;
+  vertical-align: middle;  
+}
+
+.content-indent {
+  display: inline-block;
+  padding: 5px;
+  vertical-align: middle;  
+  width: 80%;
+  padding-left: 0px;
+  margin-left: -4px;
+}
+
+.trainer.splitter-review td {
+  padding: 0;
+}
+
+.trainer.splitter-review .aproto td {
+  padding: 0;
+}
+
+.aproto .content-indent {
+  padding-top: 15px;
+}
+
+.level-indent-wrapper {
+  display: inline-block;
+  height: 100%;
+}
+
+.level-indent-wrapper .level-indent:last-child {
+  width: 3px;
+}
+
+.level0 {
+  border-left-color: #666;
+}
+
+.level1 {
+  border-left-color: red;
+}
+
+.level2 {
+  border-left-color: yellow;
+}
+
+.level3 {
+  border-left-color: green;
+}
+
+.level4 {
+  border-left-color: blue;
+}

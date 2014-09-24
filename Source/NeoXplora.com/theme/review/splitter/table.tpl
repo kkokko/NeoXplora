@@ -1,13 +1,14 @@
-<table class='trainer'>
+<table class='trainer splitter-review loading'>
   <tr>
     <th>Sentence</th>
-    <th style="width: 270px">Actions</th>
+    <th style="width: 400px">Actions</th>
   </tr>
-  <?php foreach($this->protos AS $proto) { ?>
-    <?php $this->proto = $proto; ?>
-    <?php echo $this->fetch("proto", "review/splitter"); ?>
-    <?php foreach($proto['sentences'] AS $sentence) { ?>
-      <?php $this->sentence = $sentence; ?>
+  <?php foreach($this->data AS $row) { ?>
+    <?php if($row['type'] == "proto") { ?>
+      <?php $this->proto = $row; ?>
+      <?php echo $this->fetch("proto", "review/splitter"); ?>
+    <?php } else { ?>
+      <?php $this->sentence = $row; ?>
       <?php echo $this->fetch("sentence", "review/splitter"); ?>
     <?php } ?>
   <?php } ?>

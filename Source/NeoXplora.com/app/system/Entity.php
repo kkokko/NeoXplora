@@ -107,6 +107,7 @@
       }
       
       $query = $this->prepareQueryString("INSERT INTO [[" . $this::getEntityName() . "]]") . $fieldlist . " VALUES " . $valuelist;
+      
       $result = $this->db->query($query);
       
       return $this->result($result);

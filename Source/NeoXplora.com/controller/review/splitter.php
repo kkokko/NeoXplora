@@ -8,6 +8,9 @@ require_once __DIR__ . "/../train.php";
 class TReviewSplitter extends TTrain {
   
   protected $accessLevel = 'admin';
+  protected $model = null;
+  protected $rowclass = "row1";
+  protected $mode = "tree";
   
   public function index() {
     $this->template->addScripts(array(
@@ -28,47 +31,69 @@ class TReviewSplitter extends TTrain {
     $this->template->render();
   }
   
+  private function getFlatProtoData($someProtos){
+    $theResult = array();
+    foreach ($someProtos as &$aProto) {
+      if($aProto['type'] == "sentence") {
+        $aProto['rowclass'] = $this->rowclass;
+        $this->rowclass = ($this->rowclass == "row1")?"row2":"row1";
+      }
+      $theResult[] = $aProto;
+      if(isset($aProto['kids'])) {
+        $theResult = array_merge($theResult, $this->getFlatProtoData($aProto['kids']));
+      }
+    }
+    foreach ($theResult as &$aProto) {
+      if(isset($aProto['kids'])) {
+        unset($aProto['kids']);
+      }
+    }
+    return $theResult;
+  }
+  
   public function load() {
     $page = isset($_POST['page'])?$_POST['page']:1;
     $per_page = 5;
     $pagination = array();
     $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
     
-    $splitterModel = $this->core->model("splitter", "review");
-    $count_data = $splitterModel->countProtos($pageId)->fetch_array();
+    $this->model = $this->core->model("splitter", "review");
+    $count_data = $this->model->countMainProtos($pageId)->fetch_array();
     
     if($count_data['total'] > 0) {
       $pages = ceil($count_data['total'] / $per_page);
       $start = ($page - 1) * $per_page;
       
-      $query = $splitterModel->getSentences($pageId, $start, $per_page);
+      $query = $this->model->getMainProtos($pageId, $start, $per_page);
       
       if(!$query) {
-        $query = $splitterModel->getSentences($pageId, 0, $per_page);
+        $query = $this->model->getMainProtos($pageId, 0, $per_page);
         $page = 1;
       }
       
-      $protos = array();
+      $theProtoList = array();
       $rowclass = '';
-      while($sentence_data = $query->fetch_array()) {
-        if(!isset($protos[$sentence_data['protoId']])) {
-          $protos[$sentence_data['protoId']] = array(
-            "id" => $sentence_data['protoId'],
-            "name" => $sentence_data['protoName'],
-            "pageid" => $sentence_data['pageId'],
-            "sentences" => array()
-          );
-          $rowclass = '';
-        }
-        
-        $rowclass = (($rowclass == "row1")?"row2":"row1");
-        
-        $protos[$sentence_data['protoId']]['sentences'][] = array(
-          "id" => $sentence_data['sentenceId'],
-          "rowclass" => $rowclass,
-          "name" => $sentence_data['sentenceName']
+      while($proto_data = $query->fetch_array()) {
+        $TheProto = array(
+          "type" => "proto",
+          "id" => $proto_data['id'],
+          "order" => $proto_data['order'],
+          "name" => $proto_data['name'],
+          "pageid" => $proto_data['pageid'],
+          "level" => 1,
+          "indentation" => 0
         );
+
+        $kids = array_merge($this->loadChildProtos($proto_data['id'], 1), $this->loadSentences($proto_data['id'], 1));
+        
+        usort($kids, array("NeoX\\Controller\\TReviewSplitter", "compareRows"));
+        $TheProto['kids'] = $kids;
+        
+        $theProtoList[] = $TheProto;
       }
+      
+      $theResult = $this->getFlatProtoData($theProtoList);
+      
       
       require_once APP_DIR . "classes/Pagination.php";
       $paginationObj = new Classes\Pagination($pages, $page);
@@ -79,7 +104,7 @@ class TReviewSplitter extends TTrain {
       $this->template->currentPage = $page;
       $pagination = $this->template->fetch("pagination", "review/splitter");
       
-      $this->template->protos = $protos;
+      $this->template->data = $theResult;
       $data = $this->template->fetch("table", "review/splitter");
     } else {
       $data = 'There are no sentences to review.';
@@ -93,35 +118,208 @@ class TReviewSplitter extends TTrain {
     echo json_encode($response);
   }
 
+  private function loadChildProtos($protoId, $intendation) {
+    $data = array();
+    $query = $this->model->getChildProtos($protoId);
+        
+    if($query->num_rows > 0) {
+      while($proto_data = $query->fetch_array()) {
+        $theProtoData = array(
+          "type" => "proto",
+          "id" => $proto_data['id'],
+          "order" => $proto_data['order'],
+          "name" => $proto_data['name'],
+          "pageid" => $proto_data['pageid'],
+          "level" => $intendation + 1,
+          "indentation" => $intendation
+        );
+
+        $kids = array_merge($this->loadChildProtos($proto_data['id'], $intendation + 1), $this->loadSentences($proto_data['id'], $intendation + 1));
+        
+        if($this->mode == "tree") {
+          usort($kids, array("NeoX\\Controller\\TReviewSplitter", "compareRows"));
+         
+          $theProtoData['kids'] = $kids;
+          $data[] = $theProtoData;
+        } else {
+          $kids[] = $theProtoData;
+          $data = array_merge($data, $kids);
+        }
+      }
+    }
+    
+    return $data;
+  }
+  
+  private function loadSentences($protoId, $intendation) {
+    $data = array();
+    $query = $this->model->getSentences($protoId);
+        
+    if($query->num_rows > 0) {
+      while($sentence_data = $query->fetch_array()) {
+        $data[] = array(
+          "type" => "sentence",
+          "id" => $sentence_data['id'],
+          "protoid" => $protoId,
+          "parentid" => $protoId,
+          "pageid" => $sentence_data['pageid'],
+          "order" => $sentence_data['order'],
+          "indentation" => $intendation,
+          "rowclass" => "row1",
+          "name" => $sentence_data['name']
+        );
+      }
+    }
+    
+    return $data;
+  }
+
+  public static function compareRows(&$a, &$b) {
+    if($a['order'] > $b['order']) {
+      return 1;
+    } else if($a['order'] < $b['order']) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+  
+  public function createProto() {
+    if(!isset($_POST['protoId'])) return;
+    if(!isset($_POST['sentences'])) return;
+    $sentences = $_POST['sentences'];
+    $protoId = $_POST['protoId'];
+    
+    $query = $this->core->entity("proto")->select($protoId, "*");
+    if(!$query->num_rows) return;
+    $proto_data = $query->fetch_array();
+    
+    $mainProtoId = $proto_data[Entity\TProto::$tok_mainprotoid];
+    $level = $proto_data[Entity\TProto::$tok_level];
+    $pageId = $proto_data[Entity\TProto::$tok_pageid];
+    $query = $this->core->entity("sentence")->select(
+      array(
+        "id" => $sentences
+      ), 
+      array(
+        "name", 
+        "order"
+      )
+    );
+    if(!$query->num_rows) return;
+    $protoName = '';
+    $order = -1;
+    while($sentence_data = $query->fetch_array()) {
+      if($order == -1) {
+        $order = $sentence_data[Entity\TSentence::$tok_order];
+      }
+      $protoName .= " " . $sentence_data[Entity\TSentence::$tok_name];
+    }
+    
+    $query = $this->core->entity("proto")->insert(
+      array(
+        "name",
+        "level",
+        "order",
+        "pageid",
+        "parentid"
+      ),
+      array(
+        array(
+          $protoName,
+          $level + 1,
+          $order,
+          $pageId, 
+          $protoId
+        )
+      )
+    );
+    
+    $newProtoId = $this->db->insert_id;
+    
+    if(!$newProtoId) {
+      return;
+    }
+    
+    $this->core->entity("sentence")->update(
+      array(
+        "id" => $sentences
+      ),
+      array(
+        "protoid" => $newProtoId 
+      )
+    );
+    
+    echo json_encode("");
+  }
+
   public function revert() {
     if(!isset($_POST['protoID'])) return;
     $protoId = $_POST['protoID'];
     
-    $sentence_data = $this->core->model("splitter", "review")->getFirstSentenceIdForProtoId($protoId)->fetch_array();
-    $sentenceId = $sentence_data[Entity\TSentence::$tok_id];
-    $sentenceNewValue = $sentence_data[Entity\TProto::$tok_name];
+    $query = $this->core->entity("proto")->select($protoId, "*");
+    if(!$query->num_rows) return;
     
-    $this->core->model("splitter", "review")->revertSentenceToProto($sentenceId, $protoId);
+    $proto_data = $query->fetch_array();
     
-    $this->updatePageStatus($sentenceId);
+    $this->model = $this->core->model("splitter", "review");
+    $tree_data = array_merge($this->loadChildProtos($protoId, 0), $this->loadSentences($protoId, 0));
+    $data = $this->getFlatProtoData($tree_data);
     
-    $this->template->proto = array(
-      "id" => $protoId
+    $sentenceIds = array();
+    $protoIds = array();
+    $newOrder = -1;
+    
+    foreach($data as $row) {
+      if($row['type'] == "sentence") {
+        $sentenceIds[] = $row['id'];
+        if($newOrder == -1) {
+          $newOrder = $row['order'];
+        } 
+      } else {
+        $protoIds[] = $row['id'];
+      }
+    }
+    
+    if($proto_data[Entity\TProto::$tok_parentid] != null) {
+      $protoIds[] = $protoId;
+      $newProtoId = $proto_data[Entity\TProto::$tok_parentid];
+    } else {
+      $newProtoId = $protoId;
+    }
+    
+    $newOrder = $proto_data[Entity\TProto::$tok_order];
+    $newName = $proto_data[Entity\TProto::$tok_name];
+    
+    $firstSentenceId = $sentenceIds[0]; 
+    unset($sentenceIds[0]);
+    
+    $sentenceIds = array_values($sentenceIds);
+    
+    $query = $this->core->entity("sentence")->update(
+      array(
+        "id" => array($firstSentenceId)
+      ),
+      array(
+        "protoid" => $newProtoId,
+        "order" => $newOrder,
+        "name" => $newName
+      )
     );
-    $this->template->sentence = array(
-      "id" => $sentenceId,
-      "name" => $sentenceNewValue,
-      "rowclass" => "row1"
-    );
-    $this->template->load("sentence", "review/splitter");
-    $data = $this->template->parse();
-        
-    $response = array(
-      "data" => $data,
-      "sentenceID" => $sentenceId
+    
+    $this->core->entity("sentence")->delete(
+      array(
+        "id" => $sentenceIds
+      )
     );
     
-    echo json_encode($response);
+    $this->core->entity("proto")->delete(
+      array(
+        "id" => $protoIds
+      )
+    );
+    
+    echo json_encode("");
   }
 
   public function modify() {
@@ -181,13 +379,31 @@ class TReviewSplitter extends TTrain {
     echo json_encode($response);
   }
 
+  public function editProto() {
+    if(!isset($_POST['protoID'])) return;
+    if(!isset($_POST['newValue'])) return;
+    $protoID = $_POST['protoID'];
+    $newValue = $_POST['newValue'];
+    
+    $query = $this->core->entity("proto")->update(
+      array(
+        "id" => array($protoID)
+      ),
+      array(
+        "name" => $newValue
+      )
+    );
+    
+    echo json_encode("");
+  }
+
   public function approve() {
     if(!isset($_POST['protoID'])) return;
     $protoID = $_POST['protoID'];
     
     $this->core->entity("sentence")->update(
       array(
-        "protoid" => array(
+        "mainprotoid" => array(
           $protoID
         )
       ),
@@ -201,7 +417,7 @@ class TReviewSplitter extends TTrain {
     $sentenceIDs = array();
     $query = $this->core->entity("sentence")->select(
       array(
-        "protoid" => array(
+        "mainprotoid" => array(
           $protoID
         )
       ),
@@ -228,7 +444,7 @@ class TReviewSplitter extends TTrain {
     
     $this->core->entity("sentence")->update(
       array(
-        "protoid" => array(
+        "mainprotoid" => array(
           $protoID
         )
       ),
@@ -249,7 +465,7 @@ class TReviewSplitter extends TTrain {
       
     $this->core->entity("sentence")->update(
       array(
-        "protoid" => $protoIDs
+        "mainprotoid" => $protoIDs
       ),
       array(
         "status" => 'ssReviewedSplit'
@@ -263,7 +479,7 @@ class TReviewSplitter extends TTrain {
     
     $query = $this->core->entity("sentence")->select(
       array(
-        "protoid" => $protoIDs
+        "mainprotoid" => $protoIDs
       ),
       "id"
     );
@@ -295,7 +511,7 @@ class TReviewSplitter extends TTrain {
     
     $this->core->entity("sentence")->update(
       array(
-        "protoid" => $protoIDs
+        "mainprotoid" => $protoIDs
       ),
       array(
         "status" => 'ssFinishedGenerate'

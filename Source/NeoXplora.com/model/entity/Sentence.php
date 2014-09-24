@@ -15,6 +15,7 @@
     public static $tok_srep = "SRep";
     public static $tok_pageid = "PageId";
     public static $tok_protoid = "ProtoId";
+    public static $tok_mainprotoid = "MainProtoId";
     public static $tok_pos = "Pos";
     public static $tok_guessaid = "GuessAId";
     public static $tok_guessbid = "GuessBId";

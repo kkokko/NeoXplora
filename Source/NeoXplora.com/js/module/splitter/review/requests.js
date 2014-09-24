@@ -32,6 +32,24 @@ var MSplitterReviewRequests_Implementation = {
       });
     },
     
+    createProto: function(protoId, sentenceList) {
+    	$.ajax({
+        type: "POST",
+        url: NeoX.Modules.SplitterReviewIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.SplitterReviewIndex.getConfig().moduleType,
+          'action': 'createProto',
+          'protoId': protoId,
+          'sentences': sentenceList
+        },
+        success: NeoX.Modules.SplitterReviewRequests.createProtoCallback,
+        error: function() {
+          $(".trainer").removeClass("loading");
+        }
+      });
+    },
+    
     revert: function (protoID) {
       $.ajax({
         type: "POST",
@@ -59,6 +77,21 @@ var MSplitterReviewRequests_Implementation = {
           'newValue': newValue
         },
         success: NeoX.Modules.SplitterReviewRequests.modifyCallback(sentenceID, newValue)
+      });
+    },
+    
+    editProto: function(protoID, newVal) {
+    	$.ajax({
+        type: "POST",
+        url: NeoX.Modules.SplitterReviewIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.SplitterReviewIndex.getConfig().moduleType,
+          'action': 'editProto',
+          'protoID': protoID,
+          'newValue': newVal
+        },
+        success: NeoX.Modules.SplitterReviewRequests.editProtoCallback
       });
     },
     
@@ -122,26 +155,41 @@ var MSplitterReviewRequests_Implementation = {
      * AJAX SUCCESS CALLBACKS
      */
     
+    reload: function(json) {
+    	var page = parseInt($('.currentPage').html(), 10);
+      if(!page) page = 1;
+      NeoX.Modules.SplitterReviewRequests.load(page);
+    },
+    
     loadCallback: function(json) {
     	$(NeoX.Modules.SplitterReviewIndex.getConfig().dataContainer).html(json['data']);
     	$(NeoX.Modules.SplitterReviewIndex.getConfig().paginationContainer).html(json['pagination']);
+    	$(".trainer").removeClass("loading");
+    	
+    	$(".trainer tr").each(function() {
+    		
+    		var cell = $(this).find("td").first();
+        var totalWidth = cell.width();
+        
+        var indentWidth = cell.find(".level-indent-wrapper").width();
+        var newWidth = totalWidth - indentWidth - 10;
+        cell.find(".content-indent").width(newWidth);
+    	});
+    },
+    
+    createProtoCallback: function() {
+      NeoX.Modules.SplitterReviewRequests.reload();
     },
     
     revertCallback: function (protoID) {
     	return function(json) {
-        $("#pr" + protoID).nextUntil(".aproto").fadeOut("slow");
+        NeoX.Modules.SplitterReviewRequests.reload();
     	};
     },
     
     revertCompletedCallback: function(protoID) {
-    	return function(xhr) {
-        var json = $.parseJSON(xhr.responseText);
-        setTimeout(function() {
-        	$("#pr" + protoID).removeClass("approved").removeClass("dismissed");
-          $("#pr" + protoID).after(json['data']);
-          $("#s" + json['sentenceID']).hide().fadeIn();
-          $(".disabledRevertReviewSplitButton").attr('class', 'revertReviewSplitButton button');
-        }, 600);
+    	return function(json) {
+        NeoX.Modules.SplitterReviewRequests.reload();
     	};
     },
     
@@ -150,95 +198,35 @@ var MSplitterReviewRequests_Implementation = {
     		if(json['exception']) {
           $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
         } else if(json['error']) {
-         alert(json['error']);
+          alert(json['error']);
         } else {
-        	$("#s" + sentenceID).prevAll(".aproto:first").removeClass("approved").removeClass("dismissed");
-        	$("#s" + sentenceID).prevAll(".aproto:first").nextUntil(".aproto").each(function() {
-            $(this).removeClass("dismissedSentence approvedSentence row1 row2");
-        	});
-        	
-          $("#s" + sentenceID).fadeOut("slow");
-          var protoRow = $("#s" + sentenceID).prevAll('.aproto').eq(0);
-          protoRow.nextUntil(".aproto").each(function(i) {
-            if(i%2 == 0) { 
-              $(this).removeClass('row2');
-              $(this).addClass('row1', 300);
-              $(this).find('td').css('background-color', '');
-            } else {
-              $(this).removeClass('row1');
-              $(this).addClass('row2', 300);
-              $(this).find('td').css('background-color', '');
-            }
-          });
-          setTimeout(function() {
-            $("#s" + sentenceID).after(json['data']);
-            $("#s" + sentenceID).remove();
-            protoRow.nextUntil(".aproto").each(function(i) {
-              if(i%2 == 0) { 
-                $(this).removeClass('row2');
-                $(this).addClass('row1', 300);
-                $(this).find('td').css('background-color', '');
-              } else {
-                $(this).removeClass('row1');
-                $(this).addClass('row2', 300);
-                $(this).find('td').css('background-color', '');
-              }
-            });
-          }, 600);
+        	NeoX.Modules.SplitterReviewRequests.reload();
         }
     	};
     },
     
     approveCallback: function(protoID) {
       return function(json) {
-        $("#pr" + protoID).nextUntil(".aproto").removeClass("dismissedSentence approvedSentence row1 row2").addClass("approvedSentence");
-        $("#pr" + protoID).addClass("approved");
-        setTimeout(function() {
-          var flag = true;
-          $(".aproto").each(function() {
-            if(!$(this).hasClass('approved') || !$(this).hasClass('dismissed')) {
-              flag = false;
-            }
-          });
-          if(flag == true) {
-            var page = parseInt($('.currentPage').html(), 10);
-            if(!page) page = 1;
-            NeoX.Modules.SplitterReviewRequests.load(page);
-          }
-        }, 300);
+        NeoX.Modules.SplitterReviewRequests.reload();
       };
     },
     
     dismissCallback: function(protoID) {
       return function(json) {
-      	$("#pr" + protoID).nextUntil(".aproto").removeClass("dismissedSentence approvedSentence row1 row2").addClass("dismissedSentence");
-        $("#pr" + protoID).addClass("dismissed");
-        setTimeout(function() {
-          var flag = true;
-          $(".aproto").each(function() {
-            if(!$(this).hasClass('approved') || !$(this).hasClass('dismissed')) {
-              flag = false;
-            }
-          });
-          if(flag == true) {
-            var page = parseInt($('.currentPage').html(), 10);
-            if(!page) page = 1;
-            NeoX.Modules.SplitterReviewRequests.load(page);
-          }
-        }, 300);
+      	NeoX.Modules.SplitterReviewRequests.reload();
       };
     },
     
     approveAllCallback: function(json) {
-      var page = parseInt($('.currentPage').html(), 10);
-      if(!page) page = 1;
-      NeoX.Modules.SplitterReviewRequests.load(page);
+      NeoX.Modules.SplitterReviewRequests.reload();
     },
     
     dismissAllCallback: function() {
-      var page = parseInt($('.currentPage').html(), 10);
-      if(!page) page = 1;
-      NeoX.Modules.SplitterReviewRequests.load(page);
+      NeoX.Modules.SplitterReviewRequests.reload();
+    },
+    
+    editProtoCallback: function() {
+    	NeoX.Modules.SplitterReviewRequests.reload();
     }
     
   }

@@ -44,14 +44,35 @@ var MSplitterReviewIndex_Implementation = {
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approve, NeoX.Modules.SplitterReviewIndex.approve);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismiss, NeoX.Modules.SplitterReviewIndex.dismiss);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approveAll, NeoX.Modules.SplitterReviewIndex.approveAll);
-      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismissAll, NeoX.Modules.SplitterReviewIndex.dismissAll);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('keypress', ".editProto", NeoX.Modules.SplitterReviewIndex.editProtoReq);
+        NeoX.Modules.SplitterReviewIndex.hookEvent('click', ".aproto .content-indent.childProto b", NeoX.Modules.SplitterReviewIndex.editProto);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', ".createProtoButton", NeoX.Modules.SplitterReviewIndex.createProto);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('change', ".selectedSentence", NeoX.Modules.SplitterReviewIndex.selectedSentences_change);
     },
     
     load: function() {
+    	$(".trainer").addClass("loading");
     	NeoX.Modules.SplitterReviewRequests.load(1);
     },
     
+    editProto: function() {
+    	if(!$(this).hasClass('inEdit')) {
+      	var theval = $(this).html();
+      	$(this).addClass('inEdit');
+      	$(this).html("<input class='editProto' style='width: 95%; padding: 5px;' value='" + theval + "' />");
+    	}
+    },
+    
+    editProtoReq: function(e) {
+    	if(e.which == 13) {
+      	var newVal = $(this).val();
+      	var protoId = $(this).parent().parent().parent().parent().data("id");
+      	NeoX.Modules.SplitterReviewRequests.editProto(protoId, newVal);
+    	}
+    },
+    
     goToPage: function() {
+    	$(".trainer").addClass("loading");
     	var page = parseInt($(this).html(), 10);
       NeoX.Modules.SplitterReviewRequests.load(page);
       $('html, body').animate({
@@ -59,37 +80,62 @@ var MSplitterReviewIndex_Implementation = {
       }, 50);
     },
     
+    createProto: function() {
+    	var protoId = $(this).parent().parent().data("id");
+    	var sentenceList = [];
+    	
+    	$(".selectedSentence:checked").each(function() {
+    		var currentProtoId = $(this).parent().parent().parent().data("proto");
+    		var sentenceId = $(this).parent().parent().parent().data("id");
+    		if(currentProtoId == protoId) {
+    		  sentenceList.push(sentenceId);
+    		}
+    	});
+    	
+    	if(sentenceList.length > 0) {
+    		$(".trainer").addClass("loading");
+    		NeoX.Modules.SplitterReviewRequests.createProto(protoId, sentenceList);
+    	} else {
+        alert("Please select at least one valid sentence that belongs to this proto.");
+    	}
+    },
+    
+    selectedSentences_change: function() {
+    	var protoId = $(this).parent().parent().parent().data("proto");
+    	$(".selectedSentence:checked").each(function() {
+        var currentProtoId = $(this).parent().parent().parent().data("proto");
+        if(currentProtoId != protoId) {
+        	$(this).prop('checked', false);
+        }
+      });
+    },
+    
     revert: function () {
       $(this).attr('class', "disabledRevertReviewSplitButton button");
-      var protoID = $(this).parent().parent().attr('id');
-      protoID = parseInt(protoID.replace('pr', ''), 10);
+      var protoID = $(this).parent().parent().data('id');
       NeoX.Modules.SplitterReviewRequests.revert(protoID);
     },
     
     modify: function() {
-    	var sentenceID = $(this).parent().parent().attr('id');
-      sentenceID = parseInt(sentenceID.replace('s', ''), 10);
+    	var sentenceID = $(this).parent().parent().data('id');
       var newValue = $(this).parent().parent().find('.newValue').val();
       NeoX.Modules.SplitterReviewRequests.modify(sentenceID, newValue);
     },
     
     approve: function() {
-    	var protoID = $(this).parent().parent().attr('id');
-      protoID = parseInt(protoID.replace('pr', ''), 10);
+    	var protoID = $(this).parent().parent().data('id');
       NeoX.Modules.SplitterReviewRequests.approve(protoID);
     },
     
     dismiss: function() {
-    	var protoID = $(this).parent().parent().attr('id');
-      protoID = parseInt(protoID.replace('pr', ''), 10);
+    	var protoID = $(this).parent().parent().data('id');
       NeoX.Modules.SplitterReviewRequests.dismiss(protoID);
     },
     
     approveAll: function() {
     	var protoIDs = [];
       $('.aproto').each(function() {
-        var protoID = $(this).attr('id');
-        protoID = parseInt(protoID.replace('pr', ''), 10);
+        var protoID = $(this).data('id');
         protoIDs.push(protoID);
       });
       NeoX.Modules.SplitterReviewRequests.approveAll(protoIDs);
@@ -98,8 +144,7 @@ var MSplitterReviewIndex_Implementation = {
     dismissAll: function() {
     	var protoIDs = [];
       $('.aproto').each(function() {
-        var protoID = $(this).attr('id');
-        protoID = parseInt(protoID.replace('pr', ''), 10);
+        var protoID = $(this).data('id');
         protoIDs.push(protoID);
       });
       NeoX.Modules.SplitterReviewRequests.dismissAll(protoIDs);
