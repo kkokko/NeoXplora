@@ -20,6 +20,10 @@
     </ul>
   </div>
   <div class="clear"></div>
+  <div style="display: inline-block; padding-top: 5px; margin-bottom: 10px; padding-left: 5px;">
+    <input type="checkbox" id="dofix" />Show Reviewed
+  </div>
+  <br/>
   <div class="buttons smaller">
     <a href="javascript:void(0)" class="approveAllSplitButton">Approve All</a>
     <a href="javascript:void(0)" class="dismissAllSplitButton">Dismiss All</a>

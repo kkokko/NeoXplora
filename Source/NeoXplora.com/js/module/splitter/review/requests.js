@@ -17,7 +17,9 @@ var MSplitterReviewRequests_Implementation = {
     
     load: function(page) {
     	var pageId = NeoX.Modules.SplitterReviewIndex.getParameterByName("pageId");
-
+      var showReviewed = $("#dofix").prop("checked");
+      if(!showReviewed) showReviewed = false;
+      
       $.ajax({
         type: "POST",
         url: NeoX.Modules.SplitterReviewIndex.getConfig().moduleScript,
@@ -26,7 +28,8 @@ var MSplitterReviewRequests_Implementation = {
           'type': NeoX.Modules.SplitterReviewIndex.getConfig().moduleType,
           'action': 'load',
           'page': page,
-          'pageId': pageId
+          'pageId': pageId,
+          'showReviewed': showReviewed
         },
         success: NeoX.Modules.SplitterReviewRequests.loadCallback
       });
@@ -166,15 +169,7 @@ var MSplitterReviewRequests_Implementation = {
     	$(NeoX.Modules.SplitterReviewIndex.getConfig().paginationContainer).html(json['pagination']);
     	$(".trainer").removeClass("loading");
     	
-    	$(".trainer tr").each(function() {
-    		
-    		var cell = $(this).find("td").first();
-        var totalWidth = cell.width();
-        
-        var indentWidth = cell.find(".level-indent-wrapper").width();
-        var newWidth = totalWidth - indentWidth - 10;
-        cell.find(".content-indent").width(newWidth);
-    	});
+    	NeoX.Modules.SplitterReviewIndex.resizeInputs();
     },
     
     createProtoCallback: function() {

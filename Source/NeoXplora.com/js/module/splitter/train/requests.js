@@ -28,7 +28,7 @@ var MSplitterTrainRequests_Implementation = {
       });
     },
     
-    skip: function(sentenceID) {
+    skip: function(protoID) {
     	$.ajax({
         type: "POST",
         url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
@@ -36,9 +36,25 @@ var MSplitterTrainRequests_Implementation = {
         data: {
           'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
           'action': 'skip',
-          'sentenceID': sentenceID
+          'protoID': protoID
         },
         success: NeoX.Modules.SplitterTrainRequests.skipCallback
+      });
+    },
+    
+    finish: function(protoID) {
+    	var approve = ($(".checkApproved:checked").length)?true:false;
+      $.ajax({
+        type: "POST",
+        url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
+        dataType: 'json',
+        data: {
+          'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
+          'action': 'finish',
+          'approved': approve,
+          'protoID': protoID
+        },
+        success: NeoX.Modules.SplitterTrainRequests.finishCallback
       });
     },
     
@@ -52,68 +68,37 @@ var MSplitterTrainRequests_Implementation = {
           'action': 'catChanged',
           'categoryId': categoryId
         },
-        success: NeoX.Modules.SplitterTrainIndex.load
+        success: NeoX.Modules.SplitterTrainRequests.load
       });
     },
     
-    split: function(sentenceID, newSplitValue, level, approved) {
+    revert: function (protoID) {
       $.ajax({
         type: "POST",
         url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
         dataType: 'json',
         data: {
           'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
-          'action': 'split',
-          'sentenceID': sentenceID,
-          'newValue': newSplitValue,
-          'level': level,
-          'approved': approved
+          'action': 'revert',
+          'protoID': protoID
         },
-        success: NeoX.Modules.SplitterTrainRequests.splitCallback(sentenceID, level)
-      });
-    },
-      
-    dontSplit: function(sentenceID) {
-    	$.ajax({
-        type: "POST",
-        url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
-        dataType: 'json',
-        data: {
-          'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
-          'action': 'dont_split',
-          'sentenceID': sentenceID
-        },
-        success: NeoX.Modules.SplitterTrainRequests.dontSplitCallback
+        success: NeoX.Modules.SplitterTrainRequests.revertCallback(protoID),
+        complete: NeoX.Modules.SplitterTrainRequests.revertCompletedCallback(protoID)
       });
     },
     
-    approve: function(sentenceIDs) {
-    	$.ajax({
+    modify: function(sentenceID, newValue) {
+      $.ajax({
         type: "POST",
         url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
         dataType: 'json',
         data: {
           'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
-          'action': 'approve',
-          'sentenceIDs': sentenceIDs
-        },
-        success: NeoX.Modules.SplitterTrainRequests.approveCallback
-      });
-    },
-    
-    reset: function(sentenceID, originalValue, deleteSentences) {
-    	$.ajax({
-        type: "POST",
-        url: NeoX.Modules.SplitterTrainIndex.getConfig().moduleScript,
-        dataType: 'json',
-        data: {
-          'type': NeoX.Modules.SplitterTrainIndex.getConfig().moduleType,
-          'action': 'reset',
+          'action': 'modify',
           'sentenceID': sentenceID,
-          'originalValue': originalValue,
-          'deleteSentences': deleteSentences
+          'newValue': newValue
         },
-        success: NeoX.Modules.SplitterTrainRequests.resetCallback(sentenceID)
+        success: NeoX.Modules.SplitterTrainRequests.modifyCallback(sentenceID, newValue)
       });
     },
     
@@ -124,64 +109,41 @@ var MSplitterTrainRequests_Implementation = {
     loadCallback: function(json) {
     	$(NeoX.Modules.SplitterTrainIndex.getConfig().dataContainer).html(json['data']);
     	$(".storyTitle").html(json['pageTitle']);
-    	NeoX.Modules.SplitterTrainIndex.splitValChangedInit();
-      //$('.newRepValue').focus();
+    	$(".trainer").removeClass("loading");
+      
+      NeoX.Modules.SplitterTrainIndex.resizeInputs();
     },
     
     skipCallback: function() {
       NeoX.Modules.SplitterTrainIndex.load();
     },
     
-    splitCallback: function(sentenceID, level) {
-    	return function(json) {
-    		
-    		if(json['exception']) {
-    		  $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
-    		} else if(json['error']) {
+    revertCallback: function (protoID) {
+      return function(json) {
+        NeoX.Modules.SplitterTrainRequests.load();
+      };
+    },
+    
+    revertCompletedCallback: function(protoID) {
+      return function(json) {
+        NeoX.Modules.SplitterTrainRequests.load();
+      };
+    },
+    
+    modifyCallback: function(sentenceID, newValue) {
+      return function(json) {
+        if(json['exception']) {
+          $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
+        } else if(json['error']) {
           alert(json['error']);
         } else {
-          var row = $("input[value='" + sentenceID + "']").parent().parent();
-          row.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).prop('disabled', true);
-          row.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).css('display', 'none');
-          row.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.split).css('display', 'none');
-          row.find('td:last-child').append(' <a href="javascript:void(0)" class="resetSplitButton button">Re-split</a>');
-          if(level == 0) {
-            $(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.skip).html('Next');
-            $(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.skip).attr('class', 'nextSplitButton button');
-            $(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).html('Done');
-            $(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).css('display', 'inline-block');
-            $(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).attr('class', 'nextSplitButton button');
-          }
-          if(json['newSentencesCount'] > 1) {
-            row.after(json['data']);
-          }
-          if(json['newSentencesCount'] == 1 && json['level'] == 1) {
-            NeoX.Modules.SplitterTrainIndex.load();
-          } else {
-            $(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).each(function() {
-            	//with the introduction of Order field, below line won't be needed
-              //if(json['newSentenceIDs'][$(this).val()]) $(this).val(json['newSentenceIDs'][$(this).val()]); 
-            }); 
-          }
-          
-          NeoX.Modules.SplitterTrainIndex.splitValChangedInit();
+          NeoX.Modules.SplitterTrainRequests.load();
         }
-    	};
+      };
     },
     
-    dontSplitCallback: function(json) {
-      
-    },
-    
-    approveCallback: function(json) {
+    finishCallback: function(json) {
       NeoX.Modules.SplitterTrainIndex.load();
-      //$(".sentencestbl tr td").animate({backgroundColor:'#73C96D'}, 300);
-    },
-    
-    resetCallback: function(sentenceID) {
-    	return function(json) {
-        $("input[value='" + sentenceID + "']").val(json['newSentenceID']);
-    	};
     }
     
   }

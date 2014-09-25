@@ -1,5 +1,5 @@
 <?php echo $this->fetch("header"); ?>
-<div class="boxContainer">
+<div style="padding: 20px 30px;">
   <div class="buttons leftMenu">
     <a href="train.php?type=splitter" class='active'>Train</a>
     <a href="browse.php?type=splitter">Browse</a>
@@ -39,6 +39,7 @@
   </div>
   <div style="display: inline-block; padding-top: 5px; margin-bottom: 10px; padding-left: 5px;">
     Story Title: <span class="storyTitle">-</span>
+    <input type="hidden" class="ThePageId" value="<?php echo $this->thePageId; ?>" />
   </div>
   <br/>
   <?php if($this->userlevel == 'admin') { ?>

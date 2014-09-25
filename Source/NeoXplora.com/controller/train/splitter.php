@@ -7,6 +7,7 @@ require_once __DIR__ . "/../train.php";
 class TTrainSplitter extends TTrain {
   
   protected $accessLevel = 'user';
+  protected $rowclass = "row1";
   
   public function index() {
     $this->template->addScripts(array(
@@ -40,6 +41,26 @@ class TTrainSplitter extends TTrain {
     $this->template->render();
   }
   
+  private function getFlatProtoData($someProtos){
+    $theResult = array();
+    foreach ($someProtos as &$aProto) {
+      if($aProto['type'] == "sentence") {
+        $aProto['rowclass'] = $this->rowclass;
+        $this->rowclass = ($this->rowclass == "row1")?"row2":"row1";
+      }
+      $theResult[] = $aProto;
+      if(isset($aProto['kids'])) {
+        $theResult = array_merge($theResult, $this->getFlatProtoData($aProto['kids']));
+      }
+    }
+    foreach ($theResult as &$aProto) {
+      if(isset($aProto['kids'])) {
+        unset($aProto['kids']);
+      }
+    }
+    return $theResult;
+  }
+  
   public function load() {
     $ignoreIDs = array();
     
@@ -51,10 +72,9 @@ class TTrainSplitter extends TTrain {
       $_SESSION['splitCategoryId'] = -1;
     }
     
-    $trainModel = $this->core->model("train");
     $sentence_data = null;
     
-    if($GLOBALS['random_training'] == true) {
+    /*if($GLOBALS['random_training'] == true) {
       $category_data = $trainModel->getCategory("ssFinishedGenerate", "psFinishedCrawl", "psFinishedGenerate", $ignoreIDs)->fetch_array();
       
       $categoryID = $category_data['id'];
@@ -68,41 +88,42 @@ class TTrainSplitter extends TTrain {
       $sentence_data = $trainModel->getSentence($categoryID, $offset, $sentence_offset, "ssFinishedGenerate", $ignoreIDs);
     } else {
       $sentence_data = $trainModel->getSentenceNotRandom("ssFinishedGenerate", $ignoreIDs, $_SESSION['splitCategoryId']);    
-    }
+    }*/
+    
+    $query = $this->core->model("splitter", "train")->getMainProtos($ignoreIDs, $_SESSION['splitCategoryId']);
     
     $data = 'No sentence to display';
     $pageTitle = "-";
     
-    if($sentence_data && $sentence_data->num_rows) {
-      $sentence_data = $sentence_data->fetch_array();
-      
-      $query = $this->core->entity("page")->select(array("id" => $sentence_data[Entity\TSentence::$tok_pageid]), "title");
-      $res = $query->fetch_array();
-      $pageTitle = $res[Entity\TPage::$tok_title];
-      
-      $this->core->entity("sentence")->update(
-        $sentence_data[Entity\TSentence::$tok_id], 
-        array(
-          "assigneddate" => date("Y-m-d H:i:s")
-        )
-      );
+    if($query && $query->num_rows) {
+      $theProtoList = array();
+      $rowclass = '';
+      while($proto_data = $query->fetch_array()) {
+        $TheProto = array(
+          "type" => "proto",
+          "id" => $proto_data['id'],
+          "order" => $proto_data['order'],
+          "name" => $proto_data['name'],
+          "pageid" => $proto_data['pageid'],
+          "pagetitle" => $proto_data['pagetitle'],
+          "level" => 1,
+          "indentation" => 0
+        );
 
-      $this->template->sentence = array(
-        "id" => $sentence_data[Entity\TSentence::$tok_id],
-        "level" => 0,
-        "name" =>  $sentence_data[Entity\TSentence::$tok_name],
-        "newName" => $sentence_data[Entity\TSentence::$tok_name],
-        "index" => 1,
-        "indentation" => 0,
-        "splitBtn" => true,
-        "dontSplitBtn" => true,
-        "skipBtn" => true,
-        "approveBtn" => true
-      );
+        $kids = array_merge($this->loadChildProtos($proto_data['id'], 1), $this->loadSentences($proto_data['id'], 1));
+        
+        usort($kids, array("NeoX\\Controller\\TTrainSplitter", "compareRows"));
+        $TheProto['kids'] = $kids;
+        
+        $theProtoList[] = $TheProto;
+      }
       
-      $this->template->load("table", "train/splitter");
+      $pageTitle = $theProtoList[0]['pagetitle'];
       
-      $data = $this->template->parse();
+      $theResult = $this->getFlatProtoData($theProtoList);
+      
+      $this->template->data = $theResult;
+      $data = $this->template->fetch("table", "train/splitter");
     }
     
     $response = array(
@@ -113,35 +134,198 @@ class TTrainSplitter extends TTrain {
     echo json_encode($response);
   }
 
+  private function loadChildProtos($protoId, $intendation) {
+    $data = array();
+    $query = $this->core->model("splitter", "train")->getChildProtos($protoId);
+        
+    if($query->num_rows > 0) {
+      while($proto_data = $query->fetch_array()) {
+        $theProtoData = array(
+          "type" => "proto",
+          "id" => $proto_data['id'],
+          "order" => $proto_data['order'],
+          "name" => $proto_data['name'],
+          "pageid" => $proto_data['pageid'],
+          "level" => $intendation + 1,
+          "indentation" => $intendation
+        );
+
+        $kids = array_merge($this->loadChildProtos($proto_data['id'], $intendation + 1), $this->loadSentences($proto_data['id'], $intendation + 1));
+        
+        usort($kids, array("NeoX\\Controller\\TTrainSplitter", "compareRows"));
+       
+        $theProtoData['kids'] = $kids;
+        $data[] = $theProtoData;
+      }
+    }
+    
+    return $data;
+  }
+  
+  private function loadSentences($protoId, $intendation) {
+    $data = array();
+    $query = $this->core->model("splitter", "train")->getSentences($protoId);
+        
+    if($query->num_rows > 0) {
+      while($sentence_data = $query->fetch_array()) {
+        $data[] = array(
+          "type" => "sentence",
+          "id" => $sentence_data['id'],
+          "protoid" => $protoId,
+          "parentid" => $protoId,
+          "pageid" => $sentence_data['pageid'],
+          "order" => $sentence_data['order'],
+          "indentation" => $intendation,
+          "rowclass" => "row1",
+          "name" => $sentence_data['name']
+        );
+      }
+    }
+    
+    return $data;
+  }
+
+  public static function compareRows(&$a, &$b) {
+    if($a['order'] > $b['order']) {
+      return 1;
+    } else if($a['order'] < $b['order']) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+  
+  public function finish() {
+    if(!isset($_POST['protoID'])) return;
+    $protoID = $_POST['protoID'];
+    
+    $status = "ssTrainedSplit";
+    if(isset($_POST['approved']) && ($_POST['approved'] == true || $_POST['approved'] == "true")) {
+      $status = "ssReviewedSplit";
+    }
+    
+    $this->core->entity("sentence")->update(
+      array(
+        "mainprotoid" => array($protoID)
+      ),
+      array(
+        "status" => $status
+      )
+    );
+    
+    echo json_encode("");
+  }
+
   public function skip() {
-    if(!isset($_POST['sentenceID'])) return;
-    $sentenceID = $_POST['sentenceID'];
+    if(!isset($_POST['protoID'])) return;
+    $protoID = $_POST['protoID'];
     
     if(!isset($_SESSION['ignoredSplitPageIDs'])) { 
       $_SESSION['ignoredSplitPageIDs'] = array();
     }
     
-    if(!in_array($sentenceID, $_SESSION['ignoredSplitPageIDs'])) {
-      $_SESSION['ignoredSplitPageIDs'][] = $sentenceID;
+    if(!in_array($protoID, $_SESSION['ignoredSplitPageIDs'])) {
+      $_SESSION['ignoredSplitPageIDs'][] = $protoID;
     }
     
     if(count($_SESSION['ignoredSplitPageIDs']) > 10) {
       $_SESSION['ignoredSplitPageIDs'] = array_values(array_slice($_SESSION['ignoredSplitPageIDs'], 1));
     }
     
-    $count_data = $this->core->model("train")->countSentenceNotRandom("ssFinishedGenerate", $_SESSION['splitCategoryId'])->fetch_array();
+    $count_data = $this->core->model("splitter", "train")->countMainProtos($_SESSION['splitCategoryId'])->fetch_array();
     
     if($count_data['total'] == count($_SESSION['ignoredSplitPageIDs'])) {
       $_SESSION['ignoredSplitPageIDs'] = array();
     }
     
-    $this->core->entity("sentence")->update(
-      $sentenceID, 
+    echo json_encode("");
+  }
+  
+  public function revert() {
+    if(!isset($_POST['protoID'])) return;
+    $protoId = $_POST['protoID'];
+    
+    $query = $this->core->entity("proto")->select($protoId, "*");
+    if(!$query->num_rows) return;
+    
+    $proto_data = $query->fetch_array();
+    
+    $tree_data = array_merge($this->loadChildProtos($protoId, 0), $this->loadSentences($protoId, 0));
+    $data = $this->getFlatProtoData($tree_data);
+    
+    $sentenceIds = array();
+    $protoIds = array();
+    $newOrder = -1;
+    
+    foreach($data as $row) {
+      if($row['type'] == "sentence") {
+        $sentenceIds[] = $row['id'];
+        if($newOrder == -1) {
+          $newOrder = $row['order'];
+        } 
+      } else {
+        $protoIds[] = $row['id'];
+      }
+    }
+    
+    if($proto_data[Entity\TProto::$tok_parentid] != null) {
+      $protoIds[] = $protoId;
+      $newProtoId = $proto_data[Entity\TProto::$tok_parentid];
+    } else {
+      $newProtoId = $protoId;
+    }
+    
+    $newOrder = $proto_data[Entity\TProto::$tok_order];
+    $newName = $proto_data[Entity\TProto::$tok_name];
+    
+    $firstSentenceId = $sentenceIds[0]; 
+    unset($sentenceIds[0]);
+    
+    $sentenceIds = array_values($sentenceIds);
+    
+    $query = $this->core->entity("sentence")->update(
       array(
-        "assigneddate" => date("Y-m-d H:i:s", 0)
+        "id" => array($firstSentenceId)
+      ),
+      array(
+        "protoid" => $newProtoId,
+        "order" => $newOrder,
+        "name" => $newName
+      )
+    );
+        
+    $this->core->entity("sentence")->delete(
+      array(
+        "id" => $sentenceIds
       )
     );
     
+    $this->core->entity("proto")->delete(
+      array(
+        "id" => $protoIds
+      )
+    );
+    
+    echo json_encode("");
+  }
+  
+  public function modify() {
+    if(!isset($_POST['sentenceID']) || !isset($_POST['newValue'])) return;
+    $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
+    $sentenceId = $_POST['sentenceID'];
+    $protoId = $this->core->entity("sentence")->select($sentenceId, "protoid")->fetch_array();
+    $protoId = $protoId[Entity\TSentence::$tok_protoid];
+    
+    $result;
+    try {
+      $result = $this->Delphi()->SplitSentence($sentenceId, $newValue, true);
+    } catch(\Exception $e) {
+      echo json_encode(array("exception" => $e->getMessage()));
+      exit;
+    }
+    
+    $this->updatePageStatus($sentenceId);
+        
     echo json_encode("");
   }
   
@@ -152,41 +336,6 @@ class TTrainSplitter extends TTrain {
     $_SESSION['ignoredSplitPageIDs'] = array();
     
     echo json_encode("");
-  }
-  
-  public function reset() {
-    if(!isset($_POST['sentenceID']) || !isset($_POST['originalValue']) || !isset($_POST['deleteSentences'])) return;
-    $sentenceID = $_POST['sentenceID'];
-    $originalValue = $_POST['originalValue'];
-    $deleteSentences = $_POST['deleteSentences'];
-    $newSentenceID = 0;
-    
-    $sentence_data = $this->core->model("splitter", "train")->getSentenceIdFromIds($deleteSentences);
-    
-    if($sentence_data) {
-      $newSentenceID = $sentence_data[Entity\TSentence::$tok_id];
-      $this->core->entity("sentence")->update(
-        $newSentenceID,
-        array(
-          "name" => $originalValue,
-          "status" => 'ssFinishedGenerate'
-        )
-      );
-      $this->core->entity("sentence")->delete(
-        $deleteSentences,
-        array(
-          $newSentenceID
-        )
-      );      
-    }
-    
-    if($newSentenceID > 0) $this->updatePageStatus($newSentenceID);
-    
-    $response = array(
-      'newSentenceID' => $newSentenceID
-    );
-    
-    echo json_encode($response);
   }
 
   public function approve() {
@@ -201,104 +350,6 @@ class TTrainSplitter extends TTrain {
     );
 
     $this->updatePageStatus(0, $sentenceIDs[0]);
-    
-    echo json_encode("");
-  }
-
-  public function split() {
-    if(!isset($_POST['newValue']) || !isset($_POST['sentenceID']) || !isset($_POST['level'])) return;
-    
-    $level = $_POST['level'];
-    $sentenceID = $_POST['sentenceID'];
-    $newValue = htmlspecialchars_decode($_POST['newValue'], ENT_QUOTES);
-    $approved =  $_POST['approved'];
-    
-    $originalValue = $this->core->entity("sentence")->select($sentenceID, "name")->fetch_array();
-    $originalValue = $originalValue[Entity\TSentence::$tok_name];
-    $exception = '';
-    $data = '';
-    $newSentencesCount = 0;
-    
-    try {
-      $result = $this->Delphi()->SplitSentence($sentenceID, $newValue);
-      $newSentencesCount = $result->Count();    
-          
-      if($newSentencesCount == 1) {
-        if($approved == "true") {
-          $this->core->entity("sentence")->update(
-            $sentenceID,
-            array(
-              'status' => 'ssReviewedSplit'
-            )
-          );
-        }
-        
-        $this->template->sentence = array(
-          "id" => $sentenceID,
-          "level" => (intval($level) + 1),
-          "name" =>  $originalValue,
-          "newName" => $newValue,
-          "index" => intval($level) + 2,
-          "indentation" => 0,
-          "splitBtn" => true,
-          "dontSplitBtn" => true
-        );
-        
-        $data = $this->template->fetch("row", "train/splitter");
-      } elseif($newSentencesCount > 1) {
-        for($i = 0; $i < $newSentencesCount; $i++) {
-          $sentenceID = $result->Item($i)->GetProperty("Id");
-          
-          if($approved == "true") {
-            $this->core->entity("sentence")->update(
-              $sentenceID,
-              array(
-                'status' => 'ssReviewedSplit'
-              )
-            );
-          }
-          
-          $this->template->sentence = array(
-            "id" => $result->Item($i)->GetProperty("Id"),
-            "level" => intval($level) + 1,
-            "name" =>  $result->Item($i)->GetProperty("Name"),
-            "newName" => $result->Item($i)->GetProperty("Name"),
-            "index" => (intval($level) + 2) . '.' . ($i +1),
-            "indentation" => 8 * (intval($level) + 2),
-            "splitBtn" => true,
-            "dontSplitBtn" => true
-          );
-          
-          $data .= $this->template->fetch("row", "train/splitter");
-        }
-      }
-  
-      $this->updatePageStatus($sentenceID);
-    } catch(\Exception $e) {
-      $exception = $e->getMessage();
-    }
-    
-    $response = array(
-      'exception' => $exception,
-      'data' => $data,
-      'level' => ((int) $level) + 1,
-      'newSentencesCount' => $newSentencesCount
-    );
-    
-    echo json_encode($response);
-  }
-  
-  public function dont_split() {
-    if(!isset($_POST['sentenceID'])) return;
-    $sentenceID = $_POST['sentenceID'];
-    $query = $this->core->entity("sentence")->update(
-      intval($sentenceID),
-      array(
-        'status' => 'ssTrainedSplit'
-      )
-    );
-    
-    $this->updatePageStatus($sentenceID);
     
     echo json_encode("");
   }

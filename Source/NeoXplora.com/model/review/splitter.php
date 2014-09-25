@@ -4,30 +4,37 @@
   require_once __DIR__ . "/../Train.php";
   class TReviewSplitter extends TTrain {
     
-    public function countMainProtos($pageId) {
+    public function countMainProtos($pageId, $showReviewed = false) {
       $condition = '';
       $status = "se.[[sentence.status]] = 'ssTrainedSplit'";
       if($pageId) {
         $condition = " AND se.[[sentence.pageid]] = " . intval($pageId);
         $status = "se.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
       }
+      if($showReviewed == "true") {
+        $status = "se.[[sentence.isfixed]] IS NULL";
+      }
       
       $query = $this->query("
-      SELECT COUNT(DISTINCT pr.[[proto.id]]) AS `total` 
-      FROM [[sentence]] se 
-      INNER JOIN [[proto]] pr ON se.[[sentence.protoid]] = pr.[[proto.id]]
-      WHERE " . $status . "
-      " . $condition);
+        SELECT COUNT(DISTINCT pr.[[proto.id]]) AS `total` 
+        FROM [[sentence]] se 
+        INNER JOIN [[proto]] pr ON se.[[sentence.mainprotoid]] = pr.[[proto.id]]
+        WHERE " . $status . "
+        " . $condition
+      );
       
       return $this->result($query);
     }
     
-    public function getMainProtos($pageId, $offset, $limit) {
+    public function getMainProtos($pageId, $offset, $limit, $showReviewed = false) {
       $condition = '';
       $status = "se.[[sentence.status]] = 'ssTrainedSplit'";
       if($pageId) {
         $condition = " AND se.[[sentence.pageid]] = " . intval($pageId);
         $status = "se.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
+      }
+      if($showReviewed == "true") {
+        $status = "se.[[sentence.isfixed]] IS NULL";
       }
       
       $query = $this->query("

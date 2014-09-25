@@ -48,6 +48,12 @@ var MSplitterReviewIndex_Implementation = {
         NeoX.Modules.SplitterReviewIndex.hookEvent('click', ".aproto .content-indent.childProto b", NeoX.Modules.SplitterReviewIndex.editProto);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', ".createProtoButton", NeoX.Modules.SplitterReviewIndex.createProto);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('change', ".selectedSentence", NeoX.Modules.SplitterReviewIndex.selectedSentences_change);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('change', "#dofix", NeoX.Modules.SplitterReviewIndex.dofix_change);
+      	$(document).ready(function() {
+        	$( window ).resize(function() {
+            NeoX.Modules.SplitterReviewIndex.resizeInputs();
+          });
+      	});
     },
     
     load: function() {
@@ -61,6 +67,25 @@ var MSplitterReviewIndex_Implementation = {
       	$(this).addClass('inEdit');
       	$(this).html("<input class='editProto' style='width: 95%; padding: 5px;' value='" + theval + "' />");
     	}
+    },
+    
+    dofix_change: function() {
+    	NeoX.Modules.SplitterReviewRequests.reload();
+    },
+    
+    resizeInputs: function() {
+    	$(".trainer tr").each(function() {
+        $(this).find("td").first().find(".content-indent").width(0);
+    	});
+    	$(".trainer tr").each(function() {
+        
+        var cell = $(this).find("td").first();
+        var totalWidth = cell.width();
+        
+        var indentWidth = cell.find(".level-indent-wrapper").width();
+        var newWidth = totalWidth - indentWidth - 10;
+        cell.find(".content-indent").width(newWidth);
+      });
     },
     
     editProtoReq: function(e) {

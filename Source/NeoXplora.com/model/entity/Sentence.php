@@ -24,6 +24,7 @@
     public static $tok_status = "Status"; // ssFinishedGenerate, ssTrainedSplit, ssReviewedSplit, ssTrainedRep, ssReviewedRep, ssReviewedCRep
     public static $tok_assigneddate = "AssignedDate";
     public static $tok_order = "Order";
+    public static $tok_isfixed = "IsFixed";
     
     public function advancedCount() {
       $query = $this->query("

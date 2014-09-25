@@ -56,15 +56,16 @@ class TReviewSplitter extends TTrain {
     $per_page = 5;
     $pagination = array();
     $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
+    $showReviewed = ($_REQUEST['showReviewed'] == "true")?true:false;
     
     $this->model = $this->core->model("splitter", "review");
-    $count_data = $this->model->countMainProtos($pageId)->fetch_array();
+    $count_data = $this->model->countMainProtos($pageId, $showReviewed)->fetch_array();
     
     if($count_data['total'] > 0) {
       $pages = ceil($count_data['total'] / $per_page);
       $start = ($page - 1) * $per_page;
       
-      $query = $this->model->getMainProtos($pageId, $start, $per_page);
+      $query = $this->model->getMainProtos($pageId, $start, $per_page, $showReviewed);
       
       if(!$query) {
         $query = $this->model->getMainProtos($pageId, 0, $per_page);
@@ -136,15 +137,10 @@ class TReviewSplitter extends TTrain {
 
         $kids = array_merge($this->loadChildProtos($proto_data['id'], $intendation + 1), $this->loadSentences($proto_data['id'], $intendation + 1));
         
-        if($this->mode == "tree") {
-          usort($kids, array("NeoX\\Controller\\TReviewSplitter", "compareRows"));
-         
-          $theProtoData['kids'] = $kids;
-          $data[] = $theProtoData;
-        } else {
-          $kids[] = $theProtoData;
-          $data = array_merge($data, $kids);
-        }
+        usort($kids, array("NeoX\\Controller\\TReviewSplitter", "compareRows"));
+       
+        $theProtoData['kids'] = $kids;
+        $data[] = $theProtoData;
       }
     }
     
@@ -195,7 +191,6 @@ class TReviewSplitter extends TTrain {
     $proto_data = $query->fetch_array();
     
     $mainProtoId = $proto_data[Entity\TProto::$tok_mainprotoid];
-    $level = $proto_data[Entity\TProto::$tok_level];
     $pageId = $proto_data[Entity\TProto::$tok_pageid];
     $query = $this->core->entity("sentence")->select(
       array(
@@ -204,6 +199,9 @@ class TReviewSplitter extends TTrain {
       array(
         "name", 
         "order"
+      ),
+      array(
+        "order" => "ASC"
       )
     );
     if(!$query->num_rows) return;
@@ -219,7 +217,6 @@ class TReviewSplitter extends TTrain {
     $query = $this->core->entity("proto")->insert(
       array(
         "name",
-        "level",
         "order",
         "pageid",
         "parentid"
@@ -227,7 +224,6 @@ class TReviewSplitter extends TTrain {
       array(
         array(
           $protoName,
-          $level + 1,
           $order,
           $pageId, 
           $protoId
@@ -306,7 +302,7 @@ class TReviewSplitter extends TTrain {
         "name" => $newName
       )
     );
-    
+        
     $this->core->entity("sentence")->delete(
       array(
         "id" => $sentenceIds
@@ -340,60 +336,8 @@ class TReviewSplitter extends TTrain {
     $newSentencesCount = $result->Count();    
     $data = '';
     
-    if($newSentencesCount == 1) {
-      $this->template->proto = array(
-        "id" => $protoId
-      );
-      $this->template->sentence = array(
-        "id" => $sentenceId,
-        "name" => $newValue,
-        "rowclass" => "row1"
-      );
-      
-      $data = $this->template->fetch("sentence", "review/splitter");
-    } elseif($newSentencesCount > 1) {
-      for($i = 0; $i < $newSentencesCount; $i++) {
-        $sentenceId = $result->Item($i)->GetProperty("Id");
-        
-        $this->template->proto = array(
-          "id" => $protoId
-        );
-        $this->template->sentence = array(
-          "id" => $result->Item($i)->GetProperty("Id"),
-          "name" => $result->Item($i)->GetProperty("Name"),
-          "rowclass" => "row" . ($i%2 + 1)
-        );
-        
-        $data .= $this->template->fetch("sentence", "review/splitter");
-      }
-    }
-
     $this->updatePageStatus($sentenceId);
-    
-    $response = array(
-      'data' => $data,
-      'newSentencesCount' => $newSentencesCount,
-      'asentenceid' => $sentenceId
-    );
-    
-    echo json_encode($response);
-  }
-
-  public function editProto() {
-    if(!isset($_POST['protoID'])) return;
-    if(!isset($_POST['newValue'])) return;
-    $protoID = $_POST['protoID'];
-    $newValue = $_POST['newValue'];
-    
-    $query = $this->core->entity("proto")->update(
-      array(
-        "id" => array($protoID)
-      ),
-      array(
-        "name" => $newValue
-      )
-    );
-    
+        
     echo json_encode("");
   }
 

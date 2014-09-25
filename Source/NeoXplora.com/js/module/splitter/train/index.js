@@ -37,127 +37,64 @@ var MSplitterTrainIndex_Implementation = {
     },
     
     hookEvents: function() {
-    	NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.skip, NeoX.Modules.SplitterTrainIndex.skip);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.split, NeoX.Modules.SplitterTrainIndex.split);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.next, NeoX.Modules.SplitterTrainIndex.load);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit, NeoX.Modules.SplitterTrainIndex.dontSplit);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.approve, NeoX.Modules.SplitterTrainIndex.approve);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('click', NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.reset, NeoX.Modules.SplitterTrainIndex.reset);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('change', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitValChanged);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('keyup', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitValChanged);
-      NeoX.Modules.SplitterTrainIndex.hookEvent('keypress', NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue, NeoX.Modules.SplitterTrainIndex.splitKeyPress);
+    	NeoX.Modules.SplitterTrainIndex.hookEvent('click', ".finish", NeoX.Modules.SplitterTrainIndex.finish);
+      NeoX.Modules.SplitterTrainIndex.hookEvent('click', '.modifyReviewSplitButton', NeoX.Modules.SplitterTrainIndex.modify);
+      NeoX.Modules.SplitterTrainIndex.hookEvent('click', ".skip", NeoX.Modules.SplitterTrainIndex.skip);
+      NeoX.Modules.SplitterTrainIndex.hookEvent('click', '.revertReviewSplitButton', NeoX.Modules.SplitterTrainIndex.revert);
       NeoX.Modules.SplitterTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.SplitterTrainIndex.catChanged);
+      $(document).ready(function() {
+        $( window ).resize(function() {
+          NeoX.Modules.SplitterTrainIndex.resizeInputs();
+        });
+      });
     },
     
     load: function() {
+    	$(".trainer").addClass("loading");
     	NeoX.Modules.SplitterTrainRequests.load();
     },
     
     skip: function() {
-      var sentenceID = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();
+      var protoID = $(this).parent().parent().data("id");
       
-      NeoX.Modules.SplitterTrainRequests.skip(sentenceID);
+      NeoX.Modules.SplitterTrainRequests.skip(protoID);
     },
     
-    split: function() {
-      var sentenceID = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();
-      var newSplitValue = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).val();
-      var level = $(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).val();
-      var approved = ($(".checkApproved").length > 0) && $(".checkApproved").is(":checked");
-      NeoX.Modules.SplitterTrainRequests.split(sentenceID, newSplitValue, level, approved);
+    revert: function () {
+      $(this).attr('class', "disabledRevertReviewSplitButton button");
+      var protoID = $(this).parent().parent().data('id');
+      NeoX.Modules.SplitterTrainRequests.revert(protoID);
     },
-      
+    
+    modify: function() {
+      var sentenceID = $(this).parent().parent().data('id');
+      var newValue = $(this).parent().parent().find('.newValue').val();
+      NeoX.Modules.SplitterTrainRequests.modify(sentenceID, newValue);
+    },
+    
+    resizeInputs: function() {
+      $(".trainer tr").each(function() {
+        $(this).find("td").first().find(".content-indent").width(0);
+      });
+      $(".trainer tr").each(function() {
+        
+        var cell = $(this).find("td").first();
+        var totalWidth = cell.width();
+        
+        var indentWidth = cell.find(".level-indent-wrapper").width();
+        var newWidth = totalWidth - indentWidth - 10;
+        cell.find(".content-indent").width(newWidth);
+      });
+    },
+    
     catChanged: function() {
       NeoX.Modules.SplitterTrainRequests.catChanged($(this).val());
     },
     
-    dontSplit: function() {
-    	var parent = $(this).parent().parent();
-      var sentenceID = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();
-      NeoX.Modules.SplitterTrainRequests.dontSplit(sentenceID);
-      if(parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).val() == 0) {
-        NeoX.Modules.SplitterTrainIndex.load();
-      } else  {
-        var row = $("input[value='" + sentenceID + "']").parent().parent();
-        row.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).prop('disabled', true);
-        row.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.split).css('display', 'none');
-        row.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).css('display', 'none');
-        
-        var count = 0;
-        $(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).each(function () {
-          if($(this).parent().parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.split).css('display') != 'none') {
-            count++;
-          }
-        });
-        if(count == 0) {
-          NeoX.Modules.SplitterTrainIndex.load();
-        }
-      }
-    },
-    
-    approve: function() {
-    	var sentenceIDs = [];
-      $(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).each(function() {
-        sentenceIDs.push($(this).val());
-      });
-      NeoX.Modules.SplitterTrainRequests.approve(sentenceIDs);
-    },
-    
-    reset: function() {
-    	var parent = $(this).parent().parent();
-      var sentenceID = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();
-      var level = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).val();
-      var originalValue = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.originalValue).val();
-      var deleteSentences = [];
-      parent.nextAll().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).each(function() {
-        if($(this).val() > level) {
-          deleteSentences.push($(this).parent().find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val());
-          $(this).parent().parent().remove();
-        } else {
-          return false;
-        }
-      });
-      NeoX.Modules.SplitterTrainRequests.reset(sentenceID, originalValue, deleteSentences);
-      
-      var row = $("input[value='" + sentenceID + "']").parent().parent();
-      parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).prop('disabled', false);
-      parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).val(originalValue);
-      parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).html("No need");
-      parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.split).css('display', 'inline-block');
-      parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Buttons.dontSplit).css('display', 'inline-block');
-      $(this).remove();
-    },
-    
-    splitKeyPress: function(event) {
-      if(event.which == 13) {
-        var parent = $(this).parent().parent();
-        var sentenceID = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.sentenceID).val();
-        var newSplitValue = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.newValue).val();
-        var level = parent.find(NeoX.Modules.SplitterTrainIndex.getConfig().Inputs.level).val();
-        NeoX.Modules.SplitterTrainRequests.split(sentenceID, newSplitValue, level);
-      }
-    },
-    
-    splitValChanged: function() {
-    	var originalHTML = $(this).parent().html();
-    	var newValue = $(this).val();
-    	$(this).parent().append("<div class='newSplitValueContainer'>" + newValue + "</div>");
-    	var height = $(".newSplitValueContainer").height();
-    	$(".newSplitValueContainer").remove();
-    	$(this).height(height);
-    },   
-    
-    splitValChangedInit: function() {
-    	$(".newSplitValue").each(function(index) {
-      	var originalHTML = $(this).parent().html();
-        var newValue = $(this).val();
-        $(this).parent().append("<div class='newSplitValueContainer'>" + newValue + "</div>");
-        var height = $(".newSplitValueContainer").height();
-        $(".newSplitValueContainer").remove();
-        $(this).height(height);
-    	}); 
-    }   
-    
+    finish: function() {
+    	var protoID = $(this).parent().parent().data('id');
+    	NeoX.Modules.SplitterTrainRequests.finish(protoID);
+    }
   }
   
 };
