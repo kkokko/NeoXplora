@@ -5,7 +5,7 @@ use NeoX\Entity;
 use NeoX\Classes;
 
 require_once __DIR__ . "/../train.php";
-class TReviewSplitter extends TTrain {
+class TListSplitter extends TTrain {
   
   protected $accessLevel = 'admin';
   protected $model = null;
@@ -370,8 +370,7 @@ class TReviewSplitter extends TTrain {
         )
       ),
       array(
-        "status" => 'ssReviewedSplit',
-        "isfixed" => 1
+        "status" => 'ssReviewedSplit'
       )
     );
 

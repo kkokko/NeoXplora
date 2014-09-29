@@ -200,7 +200,7 @@ class TTrainSplitter extends TTrain {
     $protoID = $_POST['protoID'];
     
     $status = "ssTrainedSplit";
-    if(isset($_POST['approved']) && ($_POST['approved'] == true || $_POST['approved'] == "true")) {
+    if(isset($_POST['approved']) && $_POST['approved'] == "true") {
       $status = "ssReviewedSplit";
     }
     
@@ -209,7 +209,8 @@ class TTrainSplitter extends TTrain {
         "mainprotoid" => array($protoID)
       ),
       array(
-        "status" => $status
+        "status" => $status,
+        "isfixed" => 1
       )
     );
     
