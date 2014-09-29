@@ -5,6 +5,7 @@
     <a href="browse.php?type=splitter">Browse</a>
     <?php if($this->userlevel == 'admin') { ?>
     <a href="review.php?type=splitter" class='active'>Review</a>
+    <a href="list.php?type=splitter">List</a>
     <?php } ?>
   </div>
   <div class="button bigButton rightMenu">

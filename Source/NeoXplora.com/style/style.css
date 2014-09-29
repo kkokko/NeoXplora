@@ -525,3 +525,16 @@ label{color: #6C6C6C; font-size: 15px;}
 .level4 {
   border-left-color: blue;
 }
+
+.trainer.splitter-list td {
+  vertical-align: top;
+  padding: 7px;
+}
+
+.trainer.splitter-list .row1 td {
+  background-color: #ccc;
+}
+
+.trainer.splitter-list .row2 td {
+  background-color: #eee;
+}
