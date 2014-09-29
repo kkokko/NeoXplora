@@ -24,6 +24,8 @@ type
     FStatus: TStatus;
     FProtoId: TId;
     FOrder: Integer;
+    FMainProtoId: TId;
+    FIsFixed: Boolean;
   protected
     function GetName: string; override;
     procedure SetName(const AName: string); override;
@@ -54,6 +56,8 @@ type
   published
     property CRep: string read FCRep write FCRep;
     property Id;
+    property IsFixed: Boolean read FIsFixed write FIsFIxed;
+    property MainProtoId: TId read FMainProtoId write FMainProtoId;
     property Name;
     property Order: Integer read FOrder write FOrder;
     property Pos: string read FPos write FPos;

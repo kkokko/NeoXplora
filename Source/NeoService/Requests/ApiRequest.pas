@@ -31,6 +31,37 @@ type
   end;
 
 {$EndRegion}
+{$Region 'TApiRequestGenerateProtoGuess2'}
+  TApiRequestGenerateProtoGuess2 = class(TRequest)
+  private
+    FApiKey: string;
+    FSentenceText: string;
+    FIterateResults: Boolean;
+    FThresholdScore: Double;
+  published
+    property ApiKey: string read FApiKey write FApiKey;
+    property IterateResults: Boolean read FIterateResults write FIterateResults;
+    property SentenceText: string read FSentenceText write FSentenceText;
+    property ThresholdScore: Double read FThresholdScore write FThresholdScore;
+  end;
+  TApiResponseGenerateProtoGuess2 = class(TResponse)
+  private
+    FMatchedSplit: string;
+    FMatchedProto: string;
+    FGeneratedPos: string;
+    FGeneratedSplit: string;
+    FMatchScore: Double;
+  public
+    constructor Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto, AMatchedSplit: string; AMatchScore: Double); reintroduce;
+  published
+    property GeneratedSplit: string read FGeneratedSplit write FGeneratedSplit;
+    property GeneratedPos: string read FGeneratedPos write FGeneratedPos;
+    property MatchedProto: string read FMatchedProto write FMatchedProto;
+    property MatchedSplit: string read FMatchedSplit write FMatchedSplit;
+    property MatchScore: Double read FMatchScore write FMatchScore;
+  end;
+
+{$EndRegion}
 {$Region 'TApiRequestGenerateRep'}
   TApiRequestGenerateRep = class(TRequest)
   private
@@ -78,6 +109,19 @@ begin
   FGeneratedPos := AGeneratedPos;
   FMatchedProto := AMatchedProto;
   FMatchedSplit := AMatchedSplit;
+end;
+
+{ TApiResponseGenerateProtoGuess2 }
+
+constructor TApiResponseGenerateProtoGuess2.Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto,
+  AMatchedSplit: string; AMatchScore: Double);
+begin
+  inherited Create;
+  FGeneratedSplit := AGeneratedSplit;
+  FGeneratedPos := AGeneratedPos;
+  FMatchedProto := AMatchedProto;
+  FMatchedSplit := AMatchedSplit;
+  FMatchScore := AMatchScore;
 end;
 
 initialization

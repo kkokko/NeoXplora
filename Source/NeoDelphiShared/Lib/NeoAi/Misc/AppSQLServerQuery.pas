@@ -18,9 +18,11 @@ type
     class function GetSplitSentences: TEntities;
     class function GetSplitProtos: TEntities;
     class function GetPageReps(APageId, ASentenceId: TId): TEntities;
-    class function GetSentencesForProtoId(AProtoId: TId): TEntities;
+    class function GetProtoChildCount(AProtoId: Integer): Integer;
+    class function GetSplitsForProtoId(AProtoId: TId): TEntities;
     class function GetTotalPageCount(const ASearch: string): Integer;
     class function GetUntrainedStories: TEntities;
+    class procedure UpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer);
     class procedure UpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer);
   private
     class function QueryGetCRepRules: TDBSQLQuery;
@@ -30,12 +32,14 @@ type
     class function QueryGetIRepRules: TDBSQLQuery;
     class function QueryGetSearchPagesByOffset(AnOffset: Integer): TDBSQLQuery;
     class function QueryGetSentenceBaseById(AnId: TId): TDBSQLQuery;
-    class function QueryGetSentencesForProtoId(AnId: TId): TDBSQLQuery;
+    class function QueryGetSplitsForProtoId(AnId: TId): TDBSQLQuery;
     class function QueryGetSplitSentences: TDBSQLQuery;
     class function QueryGetSplitProtos: TDBSQLQuery;
     class function QueryGetPageReps(APageId, ASentenceId: TId): TDBSQLQuery;
+    class function QueryGetProtoChildCount(AProtoId: TId): TDBSQLQuery;
     class function QueryGetTotalPageCount: TDBSQLQuery;
     class function QueryGetUntrainedStories: TDBSQLQuery;
+    class function QueryUpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer): TDBSQLQuery;
     class function QueryUpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer): TDBSQLQuery;
   end;
 
@@ -43,7 +47,7 @@ implementation
 
 uses
   StringArray, AppUnit, EntityWithName, PageBase, TypesFunctions, SentenceWithGuesses, TypInfo, CountData, EntityWithId,
-  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto;
+  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto, Split;
 
 { TAppSQLServerQuery }
 
@@ -134,13 +138,22 @@ begin
   TheDbQuery.Query.Count := 0;
 end;
 
-class function TAppSQLServerQuery.GetSentencesForProtoId(AProtoId: TId): TEntities;
+class function TAppSQLServerQuery.GetSplitsForProtoId(AProtoId: TId): TEntities;
 var
+  TheQuery: TBaseQuery;
   TheDbQuery: TDBSQLQuery;
 begin
-  TheDbQuery := QueryGetSentencesForProtoId(AProtoId);
-  Result := App.SQLConnection.SelectQuery([TSentenceBase], TheDbQuery);
-  TheDbQuery.Query.Count := 0;
+  TheDbQuery := QueryGetSplitsForProtoId(AProtoId);;
+  TheQuery := TBaseQuery.TranslateDBSQLQuery(App.SQLConnection, TheDbQuery);
+  try
+    TheDbQuery.Query.Count := 0;
+    TheQuery.ParamByName('aProtoSplitType').AsString := GetEnumName(TypeInfo(TSplit.TSplitType), Integer(stProto));
+    TheQuery.ParamByName('aSentenceSplitType').AsString := GetEnumName(TypeInfo(TSplit.TSplitType), Integer(stSentence));
+    TheQuery.Open;
+    Result := TheQuery.ReadMappedEntities([TSplit]);
+  finally
+    TheQuery.Free;
+  end;
 end;
 
 class function TAppSQLServerQuery.GetSplitProtos: TEntities;
@@ -188,6 +201,18 @@ begin
   TheDbQuery.Query.Count := 0;
 end;
 
+class function TAppSQLServerQuery.GetProtoChildCount(AProtoId: Integer): Integer;
+var
+  TheDbQuery: TDBSQLQuery;
+  TheCountData: TCountData;
+begin
+  TheDbQuery := QueryGetProtoChildCount(AProtoId);
+  TheCountData := App.SQLConnection.SelectQuerySingle([TCountData], TheDbQuery, True) as TCountData;
+  TheDbQuery.Query.Count := 0;
+  Result := TheCountData.Number;
+  TheCountData.Free;
+end;
+
 class function TAppSQLServerQuery.GetTotalPageCount(const ASearch: string): Integer;
 var
   TheDbQuery: TDBSQLQuery;
@@ -218,6 +243,15 @@ begin
   TheDbQuery.Query.Count := 0;
 end;
 
+class procedure TAppSQLServerQuery.UpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer);
+var
+  TheDbQuery: TDBSQLQuery;
+begin
+  TheDbQuery := QueryUpdateProtoOrderForPage(APageId, AnOrder, ACount);
+  App.SQLConnection.ExecuteQuery(TheDbQuery);
+  TheDbQuery.Query.Count := 0;
+end;
+
 class procedure TAppSQLServerQuery.UpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer);
 var
   TheDbQuery: TDBSQLQuery;
@@ -233,6 +267,24 @@ begin
   Result.Query := TStringArray.FromArray([
     'select `', TSentenceBase.EntityToken_Id.SQLToken, '` as `', TEntityWithId.EntityToken_Id.SQLToken, '` from `',
     TSentenceBase.SQLToken, '`;'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryUpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer): TDBSQLQuery;
+begin
+  Result.Name := 'QueryUpdateProtoOrderForPage';
+  Result.Query := TStringArray.FromArray([
+    'update `',
+    TProto.SQLToken,
+    '` set `',
+    TProto.Tok_Order.SQLToken,
+    '` = `',
+    TProto.Tok_Order.SQLToken,
+    '` + ' + IntToStr(ACount) + ' where `',
+    TProto.Tok_PageId.SQLToken,
+    '` = ' + IdToStr(APageId) + ' and `',
+    TProto.Tok_Order.SQLToken,
+    '` > ' + IntToStr(AnOrder) + ';'
   ]);
 end;
 
@@ -298,15 +350,22 @@ begin
   ]);
 end;
 
-class function TAppSQLServerQuery.QueryGetSentencesForProtoId(AnId: TId): TDBSQLQuery;
+class function TAppSQLServerQuery.QueryGetSplitsForProtoId(AnId: TId): TDBSQLQuery;
 begin
-  Result.Name := 'QueryGetSentencesForProtoId';
+  Result.Name := 'QueryGetSplitsForProtoId';
   Result.Query := TStringArray.FromArray([
-    'select `', TSentenceBase.EntityToken_Id.SQLToken, '`, `', TSentenceBase.Tok_Name.SQLToken,
-    '`, `', TSentenceBase.Tok_Rep.SQLToken, '`, `', TSentenceBase.Tok_SRep.SQLToken,
-    '`, `', TSentenceBase.Tok_Pos.SQLToken, '`',
-    ' from `', TSentenceBase.SQLToken, '` where `', TSentenceBase.Tok_ProtoId.SQLToken,
-    '` = ' + IdToStr(AnId) + ' order by `', TSentenceBase.Tok_Order.SQLToken, '`'
+    'select * from (' +
+    'select `', TProto.Tok_Id.SQLToken,'` as `', TSplit.Tok_Id.SQLToken,
+    '`, `', TProto.Tok_Name.SQLToken, '` as `', TSplit.Tok_Name.SQLToken,
+    '`, :aProtoSplitType as `', TSplit.Tok_SplitType.SQLToken,
+    '`, `', TProto.Tok_Order.SQLToken, '` as`', TSplit.Tok_Order.SQLToken,
+    '` from `', TProto.SQLToken,
+    '` where `', TProto.Tok_ParentId.SQLToken, '` = ' + IntToStr(AnId) + ' union ' +
+    'select `', TSentenceBase.Tok_Id.SQLToken,'`, `', TSentenceBase.Tok_Name.SQLToken,
+    '`, :aSentenceSplitType, `', TSentenceBase.Tok_Order.SQLToken,
+    '` from `', TSentenceBase.SQLToken,
+    '` where `', TSentenceBase.Tok_ProtoId.SQLToken, '` = ' + IntToStr(AnId),
+    ')a order by `', TSplit.Tok_Order.SQLToken, '`'
   ]);
 end;
 
@@ -384,6 +443,18 @@ begin
     '` where `', TSentenceBase.Tok_PageId.SQLToken, '` = ' + IdToStr(APageId),
     ' and `', TSentenceBase.Tok_Id.SQLToken, '` < ' + IdToStr(ASentenceId),
     ' order by `', TSentenceBase.Tok_Id.SQLToken, '`;'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryGetProtoChildCount(AProtoId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryGetProtoChildCount';
+  Result.Query := TStringArray.FromArray([
+    'select count(`', TProto.Tok_Id.SQLToken,
+    '`) + (select count(`', TSentenceBase.Tok_Id.SQLToken, '`) from `', TSentenceBase.SQLToken,
+    '` where `', TSentenceBase.Tok_ProtoId.SQLToken, '` = ' + IdToStr(AProtoId) + ') `',
+    TCountData.EntityToken_Number.SQLToken, '` from `', TProto.SQLToken,
+    '` where `', TProto.Tok_ParentId.SQLToken, '` = ' + IdToStr(AProtoId)
   ]);
 end;
 

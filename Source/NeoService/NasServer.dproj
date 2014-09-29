@@ -123,6 +123,7 @@
 			<DCCReference Include="Requests\ApiRequest.pas"/>
 			<DCCReference Include="Requests\ApiCommands.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

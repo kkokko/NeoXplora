@@ -62,7 +62,8 @@ uses
   AppEntityXmlWriter2 in 'Communication\AppEntityXmlWriter2.pas',
   ApiRequest in 'Requests\ApiRequest.pas',
   ApiCommands in 'Requests\ApiCommands.pas',
-  Proto in '..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas';
+  Proto in '..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas',
+  Split in '..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas';
 
 {$R *.res}
 

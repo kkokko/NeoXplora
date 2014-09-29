@@ -120,7 +120,9 @@ type
   TRequestSplitSentence = class(TRequest)
   private
     FNewText: string;
+    FCanCreateProto: Boolean;
   published
+    property CanCreateProto: Boolean read FCanCreateProto write FCanCreateProto;
     property Id;
     property NewText: string read FNewText write FNewText;
   end;

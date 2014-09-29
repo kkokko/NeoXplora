@@ -199,7 +199,7 @@ var
   TheNewSentences: TEntities;
 begin
   TheRequest := ARequest as TRequestSplitSentence;
-  TheNewSentences := Core.SplitSentence(TheRequest.Id, TheRequest.NewText);
+  TheNewSentences := Core.SplitSentence(TheRequest.Id, TheRequest.NewText, TheRequest.CanCreateProto);
   Result := TResponseSplitSentence.Create(TheNewSentences);
 end;
 

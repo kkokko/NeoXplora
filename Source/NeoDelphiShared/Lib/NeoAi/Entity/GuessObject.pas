@@ -25,6 +25,7 @@ type
     FGuessBId: TId;
     FGuessCId: TId;
     FGuessDId: TId;
+    FMatchScore: Double;
   public
     class var
       Tok_Id: TEntityFieldNamesToken;
@@ -32,6 +33,7 @@ type
       Tok_MatchSentenceB: TEntityFieldNamesToken;
       Tok_MatchSentenceC: TEntityFieldNamesToken;
       Tok_MatchSentenceD: TEntityFieldNamesToken;
+      Tok_MatchScore: TEntityFieldNamesToken;
       Tok_RepGuessA: TEntityFieldNamesToken;
       Tok_RepGuessB: TEntityFieldNamesToken;
       Tok_RepGuessC: TEntityFieldNamesToken;
@@ -53,6 +55,7 @@ type
     property MatchSentenceB: string read FMatchSentenceB write FMatchSentenceB;
     property MatchSentenceC: string read FMatchSentenceC write FMatchSentenceC;
     property MatchSentenceD: string read FMatchSentenceD write FMatchSentenceD;
+    property MatchScore: Double read FMatchScore write FMatchScore;
     property RepGuessA: string read FRepGuessA write FRepGuessA;
     property RepGuessB: string read FRepGuessB write FRepGuessB;
     property RepGuessC: string read FRepGuessC write FRepGuessC;
@@ -88,6 +91,7 @@ begin
   TheManager.SetValueForField('MatchSentenceB', Tok_MatchSentenceB.PropertyName);
   TheManager.SetValueForField('MatchSentenceC', Tok_MatchSentenceC.PropertyName);
   TheManager.SetValueForField('MatchSentenceD', Tok_MatchSentenceD.PropertyName);
+  TheManager.SetValueForField('MatchScore', Tok_MatchScore.PropertyName);
   TheManager.SetValueForField('RepGuessA', Tok_RepGuessA.PropertyName);
   TheManager.SetValueForField('RepGuessB', Tok_RepGuessB.PropertyName);
   TheManager.SetValueForField('RepGuessC', Tok_RepGuessC.PropertyName);
@@ -107,6 +111,7 @@ initialization
   TGuessObject.RegisterToken(TGuessObject.Tok_MatchSentenceB, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_MatchSentenceC, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_MatchSentenceD, '');
+  TGuessObject.RegisterToken(TGuessObject.Tok_MatchScore, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_RepGuessA, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_RepGuessB, '');
   TGuessObject.RegisterToken(TGuessObject.Tok_RepGuessC, '');
