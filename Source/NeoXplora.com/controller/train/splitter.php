@@ -65,6 +65,11 @@ class TTrainSplitter extends TTrain {
     $ignoreIDs = array();
     
     if(isset($_SESSION['ignoredSplitPageIDs']) && is_array($_SESSION['ignoredSplitPageIDs'])) {
+      $count_data = $this->core->model("splitter", "train")->countMainProtos($_SESSION['splitCategoryId'])->fetch_array();
+    
+      if($count_data['total'] == count($_SESSION['ignoredSplitPageIDs'])) {
+        $_SESSION['ignoredSplitPageIDs'] = array();
+      }
       $ignoreIDs = array_values($_SESSION['ignoredSplitPageIDs']);
     }
     
@@ -128,7 +133,7 @@ class TTrainSplitter extends TTrain {
     
     $response = array(
       'data' => $data,
-      'pageTitle' => $pageTitle
+      'pageTitle' => htmlspecialchars($pageTitle, ENT_QUOTES)
     );
     
     echo json_encode($response);

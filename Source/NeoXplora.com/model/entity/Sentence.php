@@ -33,20 +33,33 @@
           COUNT(s2.[[sentence.id]]) AS pendingTraining, 
           COUNT(s3.[[sentence.id]]) AS splitTrained, 
           COUNT(s4.[[sentence.id]]) AS splitReviewed,
-          COUNT(s5.[[sentence.id]]) AS repTrained,
-          COUNT(s6.[[sentence.id]]) AS repReviewed
+          COUNT(s5.[[sentence.id]]) AS repTrained
         FROM [[sentence]] s1
         LEFT JOIN [[sentence]] s2 ON s1.[[sentence.id]] = s2.[[sentence.id]] AND s2.[[sentence.status]] = 'ssFinishedGenerate'
         LEFT JOIN [[sentence]] s3 ON s1.[[sentence.id]] = s3.[[sentence.id]] AND s3.[[sentence.status]] = 'ssTrainedSplit' 
         LEFT JOIN [[sentence]] s4 ON s1.[[sentence.id]] = s4.[[sentence.id]] AND s4.[[sentence.status]] = 'ssReviewedSplit' 
         LEFT JOIN [[sentence]] s5 ON s1.[[sentence.id]] = s5.[[sentence.id]] AND s5.[[sentence.status]] = 'ssTrainedRep'
-        LEFT JOIN [[sentence]] s6 ON s1.[[sentence.id]] = s6.[[sentence.id]] AND s6.[[sentence.status]] = 'ssReviewedRep'
       ");
       
       $result = $this->result($query)->fetch_array();
+      $result['repReviewed'] = $this->countRepReviewed(); 
       $result['crepReviewed'] = $this->countCRepReviewed(); 
       
       return $result;
+    }
+    
+    public function countRepReviewed() {
+      $query = $this->query("
+        SELECT 
+          COUNT(s1.[[sentence.id]]) AS total
+        FROM [[sentence]] s1
+        INNER JOIN [[page]] p ON p.[[page.id]] = s1.[[sentence.pageid]] AND p.[[page.status]] <> 'psReviewedCRep'
+        WHERE s1.[[sentence.status]] = 'ssReviewedRep'
+      ");
+      
+      $result = $this->result($query)->fetch_array();
+      
+      return $result['total'];
     }
     
     public function countCRepReviewed() {

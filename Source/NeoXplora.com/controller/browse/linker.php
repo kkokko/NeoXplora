@@ -92,7 +92,7 @@ class TBrowseLinker extends TTrain {
         
         $data[] = (object) array(
           "Id" => $sentence_data['SentenceId'], 
-          "Sentence" => $sentence_data['Sentence'],
+          "Sentence" => htmlspecialchars($sentence_data['Sentence'], ENT_QUOTES),
           "Rep" => $sentence_data['Rep'],
           "Highlights" => $highlights,
           "Children" => $children

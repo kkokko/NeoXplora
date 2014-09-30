@@ -9,7 +9,7 @@
       <?php if($this->proto['level'] == 1) { ?>
         > 
       <?php } ?>
-      <b><?php echo $this->proto['name'] ?></b>
+      <b><?php echo htmlspecialchars($this->proto['name'], ENT_QUOTES); ?></b>
       <input type='hidden' class='pageID' value='<?php echo $this->proto['pageid']; ?>' />
     </div>
   </td>

@@ -89,10 +89,12 @@ var MInterpreterBrowseIndex_Implementation = {
     },
     
     edit: function() {
+    	var id = parseInt($(this).parent().data("id"), 10);
     	if($(this).find("input").length == 0) {
-        var rep = $(this).html().trim();
-        var newRep = $(this).html("<input type='text' class='newRep' value='" + rep + "' style='width: 830px;' /> <input type='button' value='Save' style='padding: 4px;' class='saveRep' />");
-        $('.newRep').focus();
+        var rep = $(this).text().trim();
+        var newRep = $(this).html("<input type='text' id='newRep" + id + "' class='newRep' value='' style='width: 830px;' /> <input type='button' value='Save' style='padding: 4px;' class='saveRep' />");
+        $('#newRep' + id).val(rep);
+        $('#newRep' + id).focus();
     	}
     },
     

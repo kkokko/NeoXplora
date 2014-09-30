@@ -102,8 +102,8 @@
         FROM [[sentence]] se
         INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = :1
         " . $ignore_se . "
-        ORDER BY se.[[sentence.pageid]], se.[[sentence.id]] ", $ignoreIDs[0]);
-        
+        AND se.[[sentence.status]] = :2
+        ORDER BY se.[[sentence.pageid]], se.[[sentence.id]] ", $ignoreIDs[0], $sStatus);
       } else {
         $category_cnd = '';
         if($categoryId > -1) {
@@ -127,16 +127,21 @@
       return $this->result($query);
     }
 
-    public function countSentenceNotRandom($sStatus, $categoryId = -1) {
+    public function countSentenceNotRandom($sStatus, $ignoreIDs = array(), $categoryId = -1) {
       $category_cnd = '';
       if($categoryId > -1) {
         $category_cnd = ' INNER JOIN [[page]] p ON se.[[sentence.pageid]] = p.[[page.id]] AND p.[[page.categoryid]] = ' . $categoryId;;
-      }    
-
+      
+      $innerjoin_samepage = '';
+      if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
+        $innerjoin_samepage = ' INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = ' . $ignoreIDs[0];
+      }
+      
       $query = $this->query("
         SELECT
           COUNT(se.[[sentence.id]]) AS `total`
         FROM [[sentence]] se 
+        " . $innerjoin_samepage . "
         " . $category_cnd . "
         WHERE se.[[sentence.status]] = :1
       ", $sStatus);

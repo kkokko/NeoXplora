@@ -42,6 +42,11 @@ class TTrainInterpreter extends TTrain {
   public function load() {
     $ignoreIDs = array();
     if(isset($_SESSION['ignoredInterpreterPageIDs']) && is_array($_SESSION['ignoredInterpreterPageIDs'])) {
+      $count_data = $this->core->model("train")->countSentenceNotRandom("ssReviewedSplit", $_SESSION['ignoredInterpreterPageIDs'], $_SESSION['interpreterCategoryId'])->fetch_array();
+      if($count_data['total'] == count($_SESSION['ignoredInterpreterPageIDs'])) {
+        $_SESSION['ignoredInterpreterPageIDs'] = array();
+      }
+
       $ignoreIDs = array_values($_SESSION['ignoredInterpreterPageIDs']);
     }
     
@@ -108,7 +113,7 @@ class TTrainInterpreter extends TTrain {
 
     $response = array(
       'data' => $data,
-      'pageTitle' => $pageTitle,
+      'pageTitle' => htmlspecialchars($pageTitle, ENT_QUOTES),
       'exception' => $exception
     );
     
@@ -140,7 +145,7 @@ class TTrainInterpreter extends TTrain {
       $_SESSION['ignoredInterpreterPageIDs'] = array_values(array_slice($_SESSION['ignoredInterpreterPageIDs'], 1));
     }
     
-    $count_data = $this->core->model("train")->countSentenceNotRandom("ssReviewedSplit", $_SESSION['interpreterCategoryId'])->fetch_array();
+    $count_data = $this->core->model("train")->countSentenceNotRandom("ssReviewedSplit", $_SESSION['ignoredInterpreterPageIDs'], $_SESSION['interpreterCategoryId'])->fetch_array();
     
     if($count_data['total'] == count($_SESSION['ignoredInterpreterPageIDs'])) {
       $_SESSION['ignoredInterpreterPageIDs'] = array();

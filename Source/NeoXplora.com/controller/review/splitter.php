@@ -162,6 +162,7 @@ class TReviewSplitter extends TTrain {
           "order" => $sentence_data['order'],
           "indentation" => $intendation,
           "rowclass" => "row1",
+          "status" => $sentence_data['status'],
           "name" => $sentence_data['name']
         );
       }
@@ -317,7 +318,8 @@ class TReviewSplitter extends TTrain {
       array(
         "protoid" => $newProtoId,
         "order" => $newOrder,
-        "name" => $newName
+        "name" => $newName,
+        "status" => "ssTrainedSplit"
       )
     );
         
@@ -431,7 +433,8 @@ class TReviewSplitter extends TTrain {
         "mainprotoid" => $protoIDs
       ),
       array(
-        "status" => 'ssReviewedSplit'
+        "status" => 'ssReviewedSplit',
+        "isfixed" => 1
       )
     );
     
@@ -467,7 +470,7 @@ class TReviewSplitter extends TTrain {
     $wherein = '';
     $wherein .= " s.`pr2ID` IN (";
     for($i = 0; $i < count($protoIDs); $i++) {
-      $wherein .= "'" . $protoIDs . "'";
+      $wherein .= "'" . $protoIDs[$i] . "'";
       if($i != count($protoIDs) - 1) $wherein .= ', ';
     }
     $wherein .= ") ";

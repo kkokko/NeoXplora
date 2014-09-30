@@ -31,7 +31,8 @@
           </tr>
           <tr>
             <td></td>
-            <td><input type="submit" name="submit" value="Edit Page" style="width: 100px; float: right;" /></td>
+            <td><input type="submit" name="submit_regenerate" value="Regenerate Sentences" style="width: 150px; float: right;" /> <input type="submit" name="submit_editcat" value="Edit Category" style="width: 100px; float: right;margin-right: 12px;" /></td>
+            
           </tr>
         </table>
       </form>

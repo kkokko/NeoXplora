@@ -34,7 +34,7 @@
         $status = "se.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
       }
       if($showReviewed == "true") {
-        $status = "se.[[sentence.isfixed]] IS NULL";
+        $status = "se.[[sentence.isfixed]] IS NULL OR se.[[sentence.isfixed]] = 0";
       }
       
       $query = $this->query("
@@ -75,7 +75,8 @@
           se.[[sentence.id]] id,
           se.[[sentence.name]] name,
           se.[[sentence.pageid]] pageid,
-          se.[[sentence.order]] `order`
+          se.[[sentence.order]] `order`,
+          se.[[sentence.status]] status
         FROM [[sentence]] se 
         WHERE [[sentence.protoid]] = :1
         ORDER BY se.[[sentence.id]]

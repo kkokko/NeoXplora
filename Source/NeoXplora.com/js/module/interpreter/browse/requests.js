@@ -79,16 +79,16 @@ var MInterpreterBrowseRequests_Implementation = {
           container.find('.rep-error').remove();
           container.append("<br/><div class='rep-error' style='color: red'><br/>" + json['ErrorString'] + " at \"" + near + "\"</div>");
         } else {
-          container.html(newValue);
+          container.text(newValue);
         }
       };
     },
     
     resplitCallback: function(container) {
       return function(json) {
-      	container.nextUntil(".aproto").remove();
-      	container.remove();
-      }
+        container.nextUntil(".aproto").remove();
+        container.remove();
+      };
     }
        
     

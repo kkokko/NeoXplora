@@ -16,6 +16,7 @@ var MInterpreterTrainRequests_Implementation = {
      */
     
     load: function() {
+    	$(".trainer").addClass("loading");
       $.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -29,6 +30,7 @@ var MInterpreterTrainRequests_Implementation = {
     },
     
     save: function(sentenceID, newValue, approved) {
+    	$(".trainer").addClass("loading");
     	$.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -59,6 +61,7 @@ var MInterpreterTrainRequests_Implementation = {
     },
     
     skip: function(sentenceID) {
+    	$(".trainer").addClass("loading");
       $.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -73,6 +76,7 @@ var MInterpreterTrainRequests_Implementation = {
     },
       
     use: function(sentenceID, newValue, approved) {
+    	$(".trainer").addClass("loading");
     	$.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -103,6 +107,7 @@ var MInterpreterTrainRequests_Implementation = {
     },
     
     resplit: function(sentenceID) {
+    	$(".trainer").addClass("loading");
       $.ajax({
         type: "POST",
         url: NeoX.Modules.InterpreterTrainIndex.getConfig().moduleScript,
@@ -121,6 +126,7 @@ var MInterpreterTrainRequests_Implementation = {
      */
     
     loadCallback: function(json) {
+    	$(".trainer").removeClass("loading");
     	if(json['exception']) {
         $(".boxContent").prepend('<h3 style="color:red; text-align: center; padding: 5px;">Error: ' + json['exception'] + '</h3>');
       } else {

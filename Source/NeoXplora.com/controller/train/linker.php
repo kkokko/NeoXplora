@@ -140,7 +140,7 @@ class TTrainLinker extends TTrain {
           
           $data[] = (object) array(
             "Id" => $sentence_data['SentenceId'], 
-            "Sentence" => $sentence_data['Sentence'],
+            "Sentence" => htmlspecialchars($sentence_data['Sentence'], ENT_QUOTES),
             "Rep" => $sentence_data['Rep'],
             "Highlights" => $highlights,
             "Children" => $children
@@ -154,7 +154,7 @@ class TTrainLinker extends TTrain {
         while($sentence_data = $query->fetch_array()) {
           $data[] = (object) array(
             "Id" => $sentence_data[Entity\TSentence::$tok_id], 
-            "Sentence" => $sentence_data[Entity\TSentence::$tok_name],
+            "Sentence" => htmlspecialchars($sentence_data[Entity\TSentence::$tok_name], ENT_QUOTES),
             "Rep" => $sentence_data[Entity\TSentence::$tok_rep],
             "Highlights" => array(),
             "Children" => array()
@@ -167,7 +167,7 @@ class TTrainLinker extends TTrain {
 
     $response = array(
       'data' => $data,
-      'pageTitle' => $pageTitle
+      'pageTitle' => htmlspecialchars($pageTitle, ENT_QUOTES)
     );
     
     echo json_encode($response);

@@ -50,7 +50,7 @@
         LEFT JOIN (
           SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssFinishedGenerate' GROUP BY s2.[[sentence.pageid]]
         ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
-        WHERE a1.total = a2.totalR
+        WHERE a1.total = a2.totalR OR a1.total IS NULL
       ");
       
       $result = $this->result($query)->fetch_array();
@@ -135,6 +135,7 @@
           SELECT COUNT(*) AS totalR, s2.[[sentence.pageid]] FROM [[sentence]] s2 WHERE s2.[[sentence.status]] = 'ssReviewedRep' GROUP BY s2.[[sentence.pageid]]
         ) a2 ON p.[[page.id]] = a2.[[sentence.pageid]]
         WHERE a1.total = a2.totalR
+        AND p.[[page.status]] <> 'psReviewedCRep'
       ");
       
       $result = $this->result($query)->fetch_array();

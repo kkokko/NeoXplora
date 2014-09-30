@@ -158,15 +158,12 @@ class TPanelPages extends TPanel {
       
       $this->template->page = "edit_pages_panel";
       
-      if(isset($_POST['submit'])) {
-        if($_POST['pageTitle'] == $pageTitle && $_POST['pageBody'] == $pageBody) {
-          $this->core->entity("page")->update($pageId, array("categoryid" => intval($_POST['categoryId'])));
-          $this->template->redirect = "panel.php?type=pages&page=" . $page;
-        } else if($_POST['pageTitle'] != "" && $_POST['pageBody'] != "" && intval($_POST['categoryId']) > -1) {
-          //edit request to delphi
-          $this->Delphi()->PageEdit($pageId, $_POST['pageTitle'], $_POST['pageBody'], $_POST['categoryId']);
-          $this->template->redirect = "panel.php?type=pages&page=" . $page;
-        }
+      if(isset($_POST['submit_editcat'])) {
+        $this->core->entity("page")->update($pageId, array("categoryid" => intval($_POST['categoryId'])));
+        $this->template->redirect = "panel.php?type=pages&page=" . $page;
+      } else if(isset($_POST['submit_regenerate']) && $_POST['pageTitle'] != "" && $_POST['pageBody'] != "" && intval($_POST['categoryId']) > -1) {
+        $this->Delphi()->PageEdit($pageId, $_POST['pageTitle'], $_POST['pageBody'], $_POST['categoryId']);
+        $this->template->redirect = "panel.php?type=pages&page=" . $page;
       }
     }
 

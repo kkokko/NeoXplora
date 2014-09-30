@@ -44,6 +44,7 @@ var MSplitterReviewIndex_Implementation = {
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approve, NeoX.Modules.SplitterReviewIndex.approve);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismiss, NeoX.Modules.SplitterReviewIndex.dismiss);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.approveAll, NeoX.Modules.SplitterReviewIndex.approveAll);
+      	NeoX.Modules.SplitterReviewIndex.hookEvent('click', NeoX.Modules.SplitterReviewIndex.getConfig().Buttons.dismissAll, NeoX.Modules.SplitterReviewIndex.dismissAll);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('keypress', ".editProto", NeoX.Modules.SplitterReviewIndex.editProtoReq);
         NeoX.Modules.SplitterReviewIndex.hookEvent('click', ".aproto .content-indent.childProto b", NeoX.Modules.SplitterReviewIndex.editProto);
       	NeoX.Modules.SplitterReviewIndex.hookEvent('click', ".createProtoButton", NeoX.Modules.SplitterReviewIndex.createProto);
@@ -63,9 +64,11 @@ var MSplitterReviewIndex_Implementation = {
     
     editProto: function() {
     	if(!$(this).hasClass('inEdit')) {
-      	var theval = $(this).html();
+      	var theval = $(this).text();
+      	var protoId = parseInt($(this).parent().parent().parent().data("id"), 10);
       	$(this).addClass('inEdit');
-      	$(this).html("<input class='editProto' style='width: 95%; padding: 5px;' value='" + theval + "' />");
+      	$(this).html("<input class='editProto' id ='editProto" + protoId + "' style='width: 95%; padding: 5px;' value='abc' />");
+      	$('#editProto' + protoId).val(theval);
     	}
     },
     
