@@ -131,7 +131,7 @@
       $category_cnd = '';
       if($categoryId > -1) {
         $category_cnd = ' INNER JOIN [[page]] p ON se.[[sentence.pageid]] = p.[[page.id]] AND p.[[page.categoryid]] = ' . $categoryId;;
-      
+      }
       $innerjoin_samepage = '';
       if(is_array($ignoreIDs) && count($ignoreIDs) > 0) {
         $innerjoin_samepage = ' INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = ' . $ignoreIDs[0];
@@ -147,7 +147,7 @@
       ", $sStatus);
       
       return $this->result($query);
-    } 
+    }
     
     public function countSentences($categoryID, $offset, $sStatus, $ignoreIDs = array()) {
       $ignore_s = '';
