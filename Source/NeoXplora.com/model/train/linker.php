@@ -121,37 +121,44 @@
       return $this->result($query);
     }
     
-    public function getCReps($pageid) {
+    public function getHighlights($sentenceIds) {
+      if(!count($sentenceIds)) {
+        $sentenceIds = array(-1);
+      }
+      $where_in = '(' . implode(", ", $sentenceIds) . ')';
+      
       $query = $this->query("
-        SELECT cr.[[crep.id]] AS `CRepId`, s.[[sentence.id]] AS `SentenceId`, s.[[sentence.rep]] AS `Rep`, s.[[sentence.name]] AS `Sentence`
+        SELECT cr.[[crep.id]] AS `CRepId`, cr.[[crep.parentcrepid]] AS `ParentId`, cr.[[crep.sentenceid]] AS `SentenceId`, ch.[[crephighlight.id]] AS `hid`, ch.[[crephighlight.from]] AS `From`, ch.[[crephighlight.until]] AS `Until`, ch.[[crephighlight.style]] AS `Style`
         FROM [[crep]] cr
-        INNER JOIN [[sentence]] s ON cr.[[crep.sentenceid]] = s.[[sentence.id]]
-        INNER JOIN [[proto]] pr on s.[[sentence.mainprotoid]] = pr.[[proto.id]]
-        WHERE cr.[[crep.pageid]] = :1 AND [[crep.parentcrepid]] IS NULL
-        ORDER BY pr.[[proto.order]], s.[[sentence.protoid]], s.[[sentence.order]], cr.[[crep.id]]
-      ", intval($pageid));
+        INNER JOIN [[crephighlight]] ch ON cr.[[crep.id]] = ch.[[crephighlight.crepid]]
+        WHERE cr.[[crep.sentenceid]] IN " . $where_in . "
+        ORDER BY cr.[[crep.id]], ch.[[crephighlight.id]]
+      ");
       
       return $this->result($query);
     }
     
-    public function getHighlights($CRepId) {
-      $query = $this->query("
-        SELECT ch.[[crephighlight.from]] AS `From`, ch.[[crephighlight.until]] AS `Until`, ch.[[crephighlight.style]] AS `Style`
-        FROM [[crephighlight]] ch
-        WHERE ch.[[crephighlight.crepid]] = :1
-        ORDER BY ch.[[crephighlight.id]] ASC 
-      ", intval($CRepId));
+    public function getProtosAndSentencesForPageIdAndProtoId($pageid, $protoid) {
+      $proto_condition = ($protoid == null) ?
+        (" [[proto.pageid]] = " . intval($pageid) . " AND [[proto.parentid]] IS NULL ") :
+        (" [[proto.parentid]] = " . intval($protoid));
+      $sentence_condition = ($protoid == null) ?
+        (" [[sentence.pageid]] = " . intval($pageid) . " AND [[sentence.protoid]] IS NULL ") :
+        (" [[sentence.protoid]] = " . intval($protoid));
       
-      return $this->result($query);
-    }
-    
-    public function getChildren($CRepId) {
       $query = $this->query("
-        SELECT cr.[[crep.id]] AS `CRepId`
-        FROM [[crep]] cr
-        WHERE cr.[[crep.parentcrepid]] = :1
-        ORDER BY cr.[[crep.id]] ASC 
-      ", intval($CRepId));
+        SELECT * 
+        FROM (
+            SELECT [[proto.id]] Id, 'pr' Type, '' Name, '' Rep, [[proto.order]] `Order`
+            FROM [[proto]] 
+            WHERE " . $proto_condition . " 
+          UNION
+            SELECT Id, 'se', Name, Rep, `Order`
+            FROM [[sentence]] 
+            WHERE " . $sentence_condition . "
+        ) a
+        ORDER BY `Order`
+      ");
       
       return $this->result($query);
     }

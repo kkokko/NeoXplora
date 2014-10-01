@@ -94,16 +94,18 @@
         $ignore_se = 'WHERE se.[[sentence.id]] NOT IN ' . $ignore;
         
         $query = $this->query("
-        SELECT 
-          se.[[sentence.id]],
-          se.[[sentence.name]],
-          se.[[sentence.rep]],
-          se.[[sentence.pageid]]
-        FROM [[sentence]] se
-        INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = :1
-        " . $ignore_se . "
-        AND se.[[sentence.status]] = :2
-        ORDER BY se.[[sentence.pageid]], se.[[sentence.id]] ", $ignoreIDs[0], $sStatus);
+          SELECT 
+            se.[[sentence.id]],
+            se.[[sentence.name]],
+            se.[[sentence.rep]],
+            se.[[sentence.pageid]]
+          FROM [[sentence]] se
+          INNER JOIN [[sentence]] se2 ON se.[[sentence.pageid]] = se2.[[sentence.pageid]] AND se2.[[sentence.id]] = :1
+          INNER JOIN [[orderinpage]] o ON o.[[orderinpage.sentenceid]] = se2.[[sentence.id]]
+          " . $ignore_se . "
+          AND se.[[sentence.status]] = :2
+          ORDER BY se.[[sentence.pageid]], o.[[orderinpage.order]] 
+        ", $ignoreIDs[0], $sStatus);
       } else {
         $category_cnd = '';
         if($categoryId > -1) {
@@ -116,10 +118,11 @@
             se.[[sentence.name]],
             se.[[sentence.rep]],
             se.[[sentence.pageid]]
-          FROM [[sentence]] se 
+          FROM [[sentence]] se
+          INNER JOIN [[orderinpage]] o ON o.[[orderinpage.sentenceid]] = se.[[sentence.id]] 
           " . $category_cnd . "
           WHERE se.[[sentence.status]] = :1
-          ORDER BY se.[[sentence.pageid]] ASC, se.[[sentence.id]] DESC
+          ORDER BY se.[[sentence.pageid]], o.[[orderinpage.order]]
         ", $sStatus);
         
       }

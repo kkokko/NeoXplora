@@ -6,6 +6,13 @@ require_once __DIR__ . "/../train.php";
 class TTrainLinker extends TTrain {
   
   public $accessLevel = 'user';
+  private $data = array();
+  private $sentenceIDs = array();
+  
+  public function __construct($registry) {
+    \SkyCore\TModel::$LogSqls = true;
+    parent::__construct($registry);
+  }
   
   public function index() {
     $this->template->addScripts(array(
@@ -77,7 +84,6 @@ class TTrainLinker extends TTrain {
       }
     }
     
-    $data = array();
     $pageTitle = "-";
     
     if($pageData->num_rows) {
@@ -102,77 +108,69 @@ class TTrainLinker extends TTrain {
         )
       );
       
-      $query = $this->core->model("linker", "train")->getCReps($pageId);
-      
-      if($query->num_rows > 0) {
-        
-        while($sentence_data = $query->fetch_array()) {
-          $highlights = array();
-          $children = array();
-          
-          $crep_result = $this->core->model("linker", "train")->getHighlights($sentence_data['CRepId']);
-          
-          while($crep_data = $crep_result->fetch_array()) {
-            $highlights[] = (object) array(
-              "From" => $crep_data['From'],
-              "Until" => $crep_data['Until'],
-              "Style" => $crep_data['Style']
-            );
-          }
-
-          $children_result = $this->core->model("linker", "train")->getChildren($sentence_data['CRepId']);
-          
-          while($child_data = $children_result->fetch_array()) {
-            $child_highlights = array();
-            
-            $crep_result = $this->core->model("linker", "train")->getHighlights($child_data['CRepId']);
-          
-            while($crep_data = $crep_result->fetch_array()) {
-              $child_highlights[] = (object) array(
-                "From" => $crep_data['From'],
-                "Until" => $crep_data['Until'],
-                "Style" => $crep_data['Style']
-              );
-            }
-            
-            $children[] = $child_highlights;
-          }
-          
-          $data[] = (object) array(
-            "Id" => $sentence_data['SentenceId'], 
-            "Sentence" => htmlspecialchars($sentence_data['Sentence'], ENT_QUOTES),
-            "Rep" => $sentence_data['Rep'],
-            "Highlights" => $highlights,
-            "Children" => $children
-          );
-        }
-        
-        
-      } else {
-        $query = $this->core->entity("sentence")->select(array("pageid" => $pageId), "*", array("id" => "ASC"));
-        
-        while($sentence_data = $query->fetch_array()) {
-          $data[] = (object) array(
-            "Id" => $sentence_data[Entity\TSentence::$tok_id], 
-            "Sentence" => htmlspecialchars($sentence_data[Entity\TSentence::$tok_name], ENT_QUOTES),
-            "Rep" => $sentence_data[Entity\TSentence::$tok_rep],
-            "Highlights" => array(),
-            "Children" => array()
-          );
-        }
-      }
-            
+      $this->loadSentences($pageId);
+      $this->loadHighlights($this->sentenceIDs);
+      $this->fixDataArray();
     }
 
-
     $response = array(
-      'data' => $data,
+      'data' => $this->data,
       'pageTitle' => htmlspecialchars($pageTitle, ENT_QUOTES)
     );
     
     echo json_encode($response);
   }
 
+  private function fixDataArray() {
+    $this->data = array_values($this->data);
+    foreach($this->data as &$sentence) {
+      $sentence['Children'] = array_values($sentence['Children']);
+    }
+  }
+
+  private function loadSentences($pageId, $protoId = NULL, $indentation = -1) {
+    $query = $this->core->model("linker", "train")->getProtosAndSentencesForPageIdAndProtoId($pageId, $protoId);
+    while($row = $query->fetch_array()) {
+      if($row['Type'] == 'se') {
+        $this->sentenceIDs[] = $row['Id'];
+        $this->data[$row['Id']] = array(
+          "Id" => $row['Id'], 
+          "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
+          "Rep" => $row['Rep'],
+          "Indentation" => $indentation,
+          "Highlights" => array(),
+          "Children" => array()
+        );
+      } else {
+        $this->loadSentences($pageId, $row['Id'], $indentation + 1);
+      }
+    }
+  }
+
+  private function loadHighlights($sentenceIds) {
+    $query = $this->core->model("linker", "train")->getHighlights($sentenceIds);
+    
+    while($row = $query->fetch_array()) {
+      if($row['ParentId'] == null) {
+        $this->data[$row['SentenceId']]['Highlights'][] = array(
+          "HID" => $row['hid'],
+          "From" => $row['From'],
+          "Until" => $row['Until'],
+          "Style" => $row['Style']
+        );
+      } else {
+        if(!isset($this->data[$row['SentenceId']]['Children'][$row['CRepId']])) {
+          $this->data[$row['SentenceId']]['Children'][$row['CRepId']] = array();
+        }
+        $this->data[$row['SentenceId']]['Children'][$row['CRepId']][] = array(
+          "From" => $row['From'],
+          "Until" => $row['Until'],
+          "Style" => $row['Style']
+        );
+      }
+    }
+  }
+  
   public function save() {
     if(!isset($_SESSION['pageID']) && !isset($_POST['pageId'])) return;
     

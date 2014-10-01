@@ -99,7 +99,7 @@ var MLinkerBrowseIndex_Implementation = {
     loadData: function(data) {
     	var dataList = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
-    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep);
+    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation);
     		
     		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
         CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
@@ -108,7 +108,7 @@ var MLinkerBrowseIndex_Implementation = {
     			for(var j = 0; j < data[i].Highlights.length; j++) {
       			var interval = new Sky.TInterval(parseInt(data[i].Highlights[j].From, 10), parseInt(data[i].Highlights[j].Until, 10));
       			CRepRecord.Highlights.add({'Interval': interval, 'Style': data[i].Highlights[j].Style});
-      			if(data[i].Highlights[j].Style.split("-").length > 1) {
+      			if(data[i].Highlights[j]['Style'].split("-").length > 1) {
               NeoX.Modules.LinkerBrowseIndex.createCSS(data[i].Highlights[j].Style);
       			}
     			}
@@ -123,7 +123,7 @@ var MLinkerBrowseIndex_Implementation = {
     		    for(var k = 0; k < data[i].Children[j].length; k++) {
     		      var interval = new Sky.TInterval(parseInt(data[i].Children[j][k].From, 10), parseInt(data[i].Children[j][k].Until, 10));
               Highlights.add({'Interval': interval, 'Style': data[i].Children[j][k].Style});
-              if(data[i].Children[j][k].Style.split("-").length > 1) {
+              if(data[i].Children[j][k]['Style'].split("-").length > 1) {
                 NeoX.Modules.LinkerBrowseIndex.createCSS(data[i].Children[j][k].Style);
               }
     		    }
@@ -152,8 +152,8 @@ var MLinkerBrowseIndex_Implementation = {
         
       for(var i = 0; i < data.count(); i++) {
         html += '<tr data-id="' + i +  '">';
-        html += '<td>' + data.object(i).Sentence +  '</td>';
-        
+        console.log(data.object(i).Indentation * 20);
+        html += '<td style="padding-left: ' + (data.object(i).Indentation * 20)  + 'px">' + data.object(i).Sentence +  '</td>';
         html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         for(var j = 0; j < data.object(i).Children.count(); j++) {
           html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));

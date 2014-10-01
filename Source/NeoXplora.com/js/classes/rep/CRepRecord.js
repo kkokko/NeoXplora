@@ -1,9 +1,10 @@
 var TCRepRecord_Implementation = {
   
-  construct: function(id, sentence, rep) {
+  construct: function(id, sentence, rep, indentation) {
     this.base(this);
     this.setId(id);
     this.setSentence(sentence);
+    this.setIndentation(indentation);
     this.setRep(rep);
     this.Children = new Sky.TList();
     this.Highlights = new Sky.TList();
@@ -13,6 +14,7 @@ var TCRepRecord_Implementation = {
   	Id: null, //int
     Sentence: null, //string
     Rep: null, //string
+    Indentation: null,
     Children: null, //TList of TStringList of Style: (TList of Intervals) 
     Highlights: null //TList of {Style, Interval}
   },

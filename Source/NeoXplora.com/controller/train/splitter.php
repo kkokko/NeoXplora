@@ -299,6 +299,27 @@ class TTrainSplitter extends TTrain {
         "name" => $newName
       )
     );
+    
+    $query = $this->core->entity("orderinpage")->select(
+      array(
+        "protoid" => $protoId
+      ), 
+      array(
+        "indentation"
+      )
+    );
+    
+    $result = $query->fetch_array();
+    $indentation = $result[Entity\TOrderInPage::$tok_indentation];
+
+    $query = $this->core->entity("orderinpage")->update(
+      array(
+        "sentenceid" => array($firstSentenceId)
+      ),
+      array(
+        "indentation" => $indentation
+      )
+    );
         
     $this->core->entity("sentence")->delete(
       array(
@@ -309,6 +330,18 @@ class TTrainSplitter extends TTrain {
     $this->core->entity("proto")->delete(
       array(
         "id" => $protoIds
+      )
+    );
+    
+    $this->core->entity("orderinpage")->delete(
+      array(
+        "sentenceid" => $sentenceIds
+      )
+    );
+    
+    $this->core->entity("orderinpage")->delete(
+      array(
+        "protoid" => $protoIds
       )
     );
     

@@ -238,23 +238,66 @@ class TReviewSplitter extends TTrain {
         "name",
         "order",
         "pageid",
-        "parentid"
+        "parentid",
+        "mainprotoid"
       ),
       array(
         array(
-          $protoName,
+          trim($protoName),
           $order,
           $pageId, 
-          $protoId
+          $protoId,
+          $mainProtoId
         )
       )
     );
     
     $newProtoId = $this->db->insert_id;
     
+    $query = $this->core->entity("orderinpage")->select(
+      array(
+        "sentenceid" => $sentences[0]
+      ), 
+      array(
+        "indentation"
+      )
+    );
+    
+    $result = $query->fetch_array();
+    $indentation = $result[Entity\TOrderInPage::$tok_indentation];
+    
+    $query = $this->core->entity("orderinpage")->getMinOrderForSentenceIds($sentences);
+    $minOrder = 1;
+    if($query->num_rows) {
+      $row = $query->fetch_array();
+      $minOrder = $row['Min'];
+    }
+    //insert into orderinpage
+    //update following entries in that page with +1 to order;
+    
     if(!$newProtoId) {
       return;
     }
+    
+    $query = $this->core->entity("orderinpage")->increaseIndentation($sentences);
+    $query = $this->core->entity("orderinpage")->increaseOrder($pageId, $minOrder);
+    
+    $query = $this->core->entity("orderinpage")->insert(
+      array(
+        "pageid",
+        "protoid",
+        "order",
+        "indentation"
+      ),
+      array(
+        array(
+          $pageId,
+          $newProtoId,
+          $minOrder, 
+          $indentation
+        )
+      )
+    );
     
     $this->core->entity("sentence")->update(
       array(
@@ -265,7 +308,7 @@ class TReviewSplitter extends TTrain {
       )
     );
     
-    echo json_encode("");
+    echo json_encode("-");
   }
 
   public function revert() {
@@ -322,7 +365,28 @@ class TReviewSplitter extends TTrain {
         "status" => "ssTrainedSplit"
       )
     );
-        
+    
+    $query = $this->core->entity("orderinpage")->select(
+      array(
+        "protoid" => $protoId
+      ), 
+      array(
+        "indentation"
+      )
+    );
+    
+    $result = $query->fetch_array();
+    $indentation = $result[Entity\TOrderInPage::$tok_indentation];
+
+    $query = $this->core->entity("orderinpage")->update(
+      array(
+        "sentenceid" => array($firstSentenceId)
+      ),
+      array(
+        "indentation" => $indentation
+      )
+    );
+
     $this->core->entity("sentence")->delete(
       array(
         "id" => $sentenceIds
@@ -332,6 +396,18 @@ class TReviewSplitter extends TTrain {
     $this->core->entity("proto")->delete(
       array(
         "id" => $protoIds
+      )
+    );
+    
+    $this->core->entity("orderinpage")->delete(
+      array(
+        "sentenceid" => $sentenceIds
+      )
+    );
+    
+    $this->core->entity("orderinpage")->delete(
+      array(
+        "protoid" => $protoIds
       )
     );
     

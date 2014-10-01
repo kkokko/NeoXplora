@@ -153,7 +153,7 @@ var MLinkerTrainIndex_Implementation = {
     loadData: function(data) {
     	var dataList = NeoX.Modules.LinkerTrainIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
-    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep);
+    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation);
     		
     		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
         CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
@@ -206,7 +206,7 @@ var MLinkerTrainIndex_Implementation = {
         
       for(var i = 0; i < data.count(); i++) {
         html += '<tr data-id="' + i +  '">';
-        html += '<td>' + data.object(i).Sentence +  '</td>';
+        html += '<td style="padding-left: ' + (data.object(i).Indentation * 20)  + 'px">' + data.object(i).Sentence +  '</td>';
         
         html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         for(var j = 0; j < data.object(i).Children.count(); j++) {

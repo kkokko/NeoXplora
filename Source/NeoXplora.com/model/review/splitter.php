@@ -12,7 +12,8 @@
         $status = "se.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
       }
       if($showReviewed == "true") {
-        $status = "se.[[sentence.isfixed]] IS NULL";
+        $status = "se.[[sentence.status]] NOT IN ('ssTrainedSplit', 'ssFinishedGenerate')";
+        //$status = "se.[[sentence.isfixed]] IS NULL OR se.[[sentence.isfixed]] = 0";
       }
       
       $query = $this->query("
@@ -34,7 +35,8 @@
         $status = "se.[[sentence.status]] IN ('ssTrainedSplit', 'ssFinishedGenerate')";
       }
       if($showReviewed == "true") {
-        $status = "se.[[sentence.isfixed]] IS NULL OR se.[[sentence.isfixed]] = 0";
+        $status = "se.[[sentence.status]] NOT IN ('ssTrainedSplit', 'ssFinishedGenerate')";
+        //$status = "se.[[sentence.isfixed]] IS NULL OR se.[[sentence.isfixed]] = 0";
       }
       
       $query = $this->query("
