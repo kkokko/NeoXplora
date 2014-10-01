@@ -126,8 +126,9 @@
         SELECT cr.[[crep.id]] AS `CRepId`, s.[[sentence.id]] AS `SentenceId`, s.[[sentence.rep]] AS `Rep`, s.[[sentence.name]] AS `Sentence`
         FROM [[crep]] cr
         INNER JOIN [[sentence]] s ON cr.[[crep.sentenceid]] = s.[[sentence.id]]
+        INNER JOIN [[proto]] pr on s.[[sentence.mainprotoid]] = pr.[[proto.id]]
         WHERE cr.[[crep.pageid]] = :1 AND [[crep.parentcrepid]] IS NULL
-        ORDER BY cr.[[crep.id]] ASC
+        ORDER BY pr.[[proto.order]], s.[[sentence.protoid]], s.[[sentence.order]], cr.[[crep.id]]
       ", intval($pageid));
       
       return $this->result($query);

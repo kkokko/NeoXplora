@@ -18,23 +18,25 @@
       }
       
       $query = $this->query("
-        SELECT a.* 
+        SELECT DISTINCT a.* 
         FROM (
           SELECT 
             pr.[[proto.id]] id, 
             pr.[[proto.name]] proto,
             GROUP_CONCAT(splits.Name SEPARATOR ' ● ') SplitText 
           FROM [[proto]] pr
-          INNER JOIN (
-            SELECT [[proto.id]] Id, [[proto.name]] Name, [[proto.order]] `Order`, [[proto.parentid]] ParentId
-            FROM [[proto]]
-            UNION
-            SELECT [[sentence.id]] Id, [[sentence.name]] Name, [[sentence.order]] `Order`, [[sentence.protoid]] ProtoId
-            FROM [[sentence]]
+          INNER JOIN ( 
+            select * from (
+              SELECT [[proto.id]] Id, [[proto.name]] Name, [[proto.order]] `Order`, [[proto.parentid]] ParentId
+              FROM [[proto]]
+              UNION
+              SELECT [[sentence.id]] Id, [[sentence.name]] Name, [[sentence.order]] `Order`, [[sentence.protoid]] ProtoId
+              FROM [[sentence]]
+            ) a order by `Order`
           ) splits ON pr.[[proto.id]] = splits.ParentId
           GROUP BY pr.[[proto.id]]
           HAVING COUNT(splits.Id) > 1
-          ORDER BY pr.[[proto.pageid]], pr.[[proto.order]], splits.`Order`
+          ORDER BY pr.[[proto.pageid]], pr.[[proto.order]]
         ) a 
         INNER JOIN [[sentence]] se ON se.[[sentence.protoid]] = a.id
         WHERE 1=1

@@ -3,6 +3,7 @@
   
   require_once APP_DIR . "/app/system/Object.php";
   class TModel extends TObject {
+    public static $LogSqls = false;
     
     public function prepareQueryString() {
       $query = func_get_arg(0);
@@ -78,8 +79,13 @@
     public function query() {
       //get first argument, the query string
       $query = call_user_func_array(array($this, 'prepareQueryString'), func_get_args());
-      
+      if(TModel::$LogSqls == true) {
+        file_put_contents('dblog.sql', "Query: ". $query . "\r\n", FILE_APPEND | LOCK_EX);
+      }
       $result = $this->db->query($query) or die($this->db->error);
+      if(TModel::$LogSqls == true) {
+        file_put_contents('dblog.sql', "Results: ". json_encode($result) . "\r\n\r\n", FILE_APPEND | LOCK_EX);
+      }
       return $result;
     }
 
@@ -92,7 +98,6 @@
         return $query;
       }
     }
-    
   }
   
 ?>
