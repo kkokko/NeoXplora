@@ -138,27 +138,14 @@
       return $this->result($query);
     }
     
-    public function getProtosAndSentencesForPageIdAndProtoId($pageid, $protoid) {
-      $proto_condition = ($protoid == null) ?
-        (" [[proto.pageid]] = " . intval($pageid) . " AND [[proto.parentid]] IS NULL ") :
-        (" [[proto.parentid]] = " . intval($protoid));
-      $sentence_condition = ($protoid == null) ?
-        (" [[sentence.pageid]] = " . intval($pageid) . " AND [[sentence.protoid]] IS NULL ") :
-        (" [[sentence.protoid]] = " . intval($protoid));
-      
+    public function getSentences($pageid) {
       $query = $this->query("
-        SELECT * 
-        FROM (
-            SELECT [[proto.id]] Id, 'pr' Type, '' Name, '' Rep, [[proto.order]] `Order`
-            FROM [[proto]] 
-            WHERE " . $proto_condition . " 
-          UNION
-            SELECT Id, 'se', Name, Rep, `Order`
-            FROM [[sentence]] 
-            WHERE " . $sentence_condition . "
-        ) a
-        ORDER BY `Order`
-      ");
+        SELECT s.[[sentence.id]] Id, s.[[sentence.name]] Name, s.[[sentence.rep]] Rep, o.[[orderinpage.indentation]] Indentation
+        FROM [[sentence]] s
+        INNER JOIN [[orderinpage]] o ON s.[[sentence.id]] = o.[[orderinpage.sentenceid]]  
+        WHERE o.[[orderinpage.pageid]] = :1
+        ORDER BY o.[[orderinpage.order]] ASC
+      ", intval($pageid));
       
       return $this->result($query);
     }

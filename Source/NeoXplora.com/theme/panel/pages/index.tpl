@@ -34,11 +34,12 @@
       </select>
       Status: 
       <select id="status">
-        <option value="-1">Any</option>
-        <option value="0" <?php if($this->currentStatus == 0) echo "selected='selected'"; ?>>Split not done</option>
-        <option value="1" <?php if($this->currentStatus == 1) echo "selected='selected'"; ?>>Interpreting not done</option>
-        <option value="2" <?php if($this->currentStatus == 2) echo "selected='selected'"; ?>>Linking not done</option>
-        <option value="3" <?php if($this->currentStatus == 3) echo "selected='selected'"; ?>>Training completed</option>
+        <option value="-1">To be added</option>
+        <option value="0" <?php if($this->currentStatus == 0) echo "selected='selected'"; ?>>Any</option>
+        <option value="1" <?php if($this->currentStatus == 1) echo "selected='selected'"; ?>>Split not done</option>
+        <option value="2" <?php if($this->currentStatus == 2) echo "selected='selected'"; ?>>Interpreting not done</option>
+        <option value="3" <?php if($this->currentStatus == 3) echo "selected='selected'"; ?>>Linking not done</option>
+        <option value="4" <?php if($this->currentStatus == 4) echo "selected='selected'"; ?>>Training completed</option>
       </select>
       <br/>
       <br/>

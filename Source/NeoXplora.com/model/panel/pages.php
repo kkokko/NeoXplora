@@ -16,16 +16,19 @@
         FROM [[page]] p";
       
       switch($status) {
-        case 0: 
-          $query .= "\n" . $this->conditionPagesNotSplit();
+        case -1:
+          $query .= "\n" . $this->conditionPagesToBeAdded();
         break;
         case 1: 
-          $query .= "\n" . $this->conditionPagesNotInterpreted();
+          $query .= "\n" . $this->conditionPagesNotSplit();
         break;
         case 2: 
-          $query .= "\n" . $this->conditionPagesNotLinked();
+          $query .= "\n" . $this->conditionPagesNotInterpreted();
         break;
         case 3: 
+          $query .= "\n" . $this->conditionPagesNotLinked();
+        break;
+        case 4: 
           $query .= "\n" . $this->conditionPagesTrained();
         break;
         default:
@@ -56,16 +59,19 @@
       
       $condition = '';
       switch($status) {
-        case 0: 
-          $query .= "\n" . $this->conditionPagesNotSplit();
+        case -1:
+          $query .= "\n" . $this->conditionPagesToBeAdded();
         break;
         case 1: 
-          $query .= "\n" . $this->conditionPagesNotInterpreted();
+          $query .= "\n" . $this->conditionPagesNotSplit();
         break;
         case 2: 
-          $query .= "\n" . $this->conditionPagesNotLinked();
+          $query .= "\n" . $this->conditionPagesNotInterpreted();
         break;
         case 3: 
+          $query .= "\n" . $this->conditionPagesNotLinked();
+        break;
+        case 4: 
           $query .= "\n" . $this->conditionPagesTrained();
         break;
         default:
@@ -81,6 +87,12 @@
       $result = $this->query($query, $offset, $limit);
       
       return $this->result($result);
+    }
+    
+    private function conditionPagesToBeAdded() {
+      return " 
+        LEFT JOIN [[sentence]] s on p.[[page.id]] = s.[[sentence.pageid]]
+        WHERE s.[[sentence.id]] IS NULL";
     }
     
     private function conditionPagesNotSplit() {

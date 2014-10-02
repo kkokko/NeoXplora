@@ -7,6 +7,13 @@ require_once __DIR__ . "/../train.php";
 class TBrowseLinker extends TTrain {
   
   public $accessLevel = 'user';
+  private $data = array();
+  private $sentenceIDs = array();
+  
+  public function __construct($registry) {
+    //\SkyCore\TModel::$LogSqls = true;
+    parent::__construct($registry);
+  }
   
   public function index() {
     $this->template->addScripts(array(
@@ -53,51 +60,12 @@ class TBrowseLinker extends TTrain {
       $page_data = $query->fetch_array();
       $pagetitle = $page_data[Entity\TPage::$tok_title];
       $pageId = $page_data[Entity\TPage::$tok_id];
-            
+      
       require_once __DIR__ . "/../../model/entity/sentence.php";
       
-      $query = $this->core->model("linker", "train")->getCReps($page_data[Entity\TPage::$tok_id]);
-      
-      while($sentence_data = $query->fetch_array()) {
-        $highlights = array();
-        $children = array();
-        
-        $crep_result = $this->core->model("linker", "train")->getHighlights($sentence_data['CRepId']);
-        
-        while($crep_data = $crep_result->fetch_array()) {
-          $highlights[] = (object) array(
-            "From" => $crep_data['From'],
-            "Until" => $crep_data['Until'],
-            "Style" => $crep_data['Style']
-          );
-        }
-
-        $children_result = $this->core->model("linker", "train")->getChildren($sentence_data['CRepId']);
-        
-        while($child_data = $children_result->fetch_array()) {
-          $child_highlights = array();
-          
-          $crep_result = $this->core->model("linker", "train")->getHighlights($child_data['CRepId']);
-        
-          while($crep_data = $crep_result->fetch_array()) {
-            $child_highlights[] = (object) array(
-              "From" => $crep_data['From'],
-              "Until" => $crep_data['Until'],
-              "Style" => $crep_data['Style']
-            );
-          }
-          
-          $children[] = $child_highlights;
-        }
-        
-        $data[] = (object) array(
-          "Id" => $sentence_data['SentenceId'], 
-          "Sentence" => htmlspecialchars($sentence_data['Sentence'], ENT_QUOTES),
-          "Rep" => $sentence_data['Rep'],
-          "Highlights" => $highlights,
-          "Children" => $children
-        );
-      }
+      $this->loadSentences($pageId);
+      $this->loadHighlights($this->sentenceIDs);
+      $this->fixDataArray();
 
       require_once APP_DIR . "classes/Pagination.php";
       $paginationObj = new Classes\Pagination($pages, $page);
@@ -110,12 +78,58 @@ class TBrowseLinker extends TTrain {
     }
 
     $response = array(
-      'data' => $data,
+      'data' => $this->data,
       'pageid' => $pageId,
       'pagination' => $pagination
     );
 
     echo json_encode($response);
+  }
+
+  private function fixDataArray() {
+    $this->data = array_values($this->data);
+    foreach($this->data as &$sentence) {
+      $sentence['Children'] = array_values($sentence['Children']);
+    }
+  }
+
+  private function loadSentences($pageId) {
+    $query = $this->core->model("linker", "train")->getSentences($pageId);
+    while($row = $query->fetch_array()) {
+      $this->sentenceIDs[] = $row['Id'];
+      $this->data[$row['Id']] = array(
+        "Id" => $row['Id'], 
+        "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
+        "Rep" => $row['Rep'],
+        "Indentation" => $row['Indentation'],
+        "Highlights" => array(),
+        "Children" => array()
+      );
+    }
+  }
+  
+  private function loadHighlights($sentenceIds) {
+    $query = $this->core->model("linker", "train")->getHighlights($sentenceIds);
+    
+    while($row = $query->fetch_array()) {
+      if($row['ParentId'] == null) {
+        $this->data[$row['SentenceId']]['Highlights'][] = array(
+          "HID" => $row['hid'],
+          "From" => $row['From'],
+          "Until" => $row['Until'],
+          "Style" => $row['Style']
+        );
+      } else {
+        if(!isset($this->data[$row['SentenceId']]['Children'][$row['CRepId']])) {
+          $this->data[$row['SentenceId']]['Children'][$row['CRepId']] = array();
+        }
+        $this->data[$row['SentenceId']]['Children'][$row['CRepId']][] = array(
+          "From" => $row['From'],
+          "Until" => $row['Until'],
+          "Style" => $row['Style']
+        );
+      }
+    }
   }
 
   public function retrain() {
@@ -129,7 +143,7 @@ class TBrowseLinker extends TTrain {
         "status" => "psReviewedRep"
       )
     );
-    
+        
     echo json_encode('');
   }
 

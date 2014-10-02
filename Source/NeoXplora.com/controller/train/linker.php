@@ -10,7 +10,7 @@ class TTrainLinker extends TTrain {
   private $sentenceIDs = array();
   
   public function __construct($registry) {
-    \SkyCore\TModel::$LogSqls = true;
+    //\SkyCore\TModel::$LogSqls = true;
     parent::__construct($registry);
   }
   
@@ -128,22 +128,18 @@ class TTrainLinker extends TTrain {
     }
   }
 
-  private function loadSentences($pageId, $protoId = NULL, $indentation = -1) {
-    $query = $this->core->model("linker", "train")->getProtosAndSentencesForPageIdAndProtoId($pageId, $protoId);
+  private function loadSentences($pageId) {
+    $query = $this->core->model("linker", "train")->getSentences($pageId);
     while($row = $query->fetch_array()) {
-      if($row['Type'] == 'se') {
-        $this->sentenceIDs[] = $row['Id'];
-        $this->data[$row['Id']] = array(
-          "Id" => $row['Id'], 
-          "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
-          "Rep" => $row['Rep'],
-          "Indentation" => $indentation,
-          "Highlights" => array(),
-          "Children" => array()
-        );
-      } else {
-        $this->loadSentences($pageId, $row['Id'], $indentation + 1);
-      }
+      $this->sentenceIDs[] = $row['Id'];
+      $this->data[$row['Id']] = array(
+        "Id" => $row['Id'], 
+        "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
+        "Rep" => $row['Rep'],
+        "Indentation" => $row['Indentation'],
+        "Highlights" => array(),
+        "Children" => array()
+      );
     }
   }
 

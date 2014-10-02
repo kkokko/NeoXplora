@@ -114,11 +114,31 @@ class TBrowseInterpreter extends TTrain {
     
     $sentenceID = $_POST['sentenceID'];
     $this->core->entity("sentence")->update(
-      $sentenceID, 
+      $sentenceID,
       array(
         "status" => "ssFinishedGenerate"
       )
     );
+    
+    $query = $this->core->entity("sentence")->select(
+      array("id" => array($sentenceID)),
+      "pageid"
+    );
+    $result = $query->fetch_array();
+    $pageId = $result[Entity\TSentence::$tok_pageid];
+    
+    $this->core->entity("crep")->delete(
+      array(
+        'pageid' => array($pageId)
+      )
+    );
+    
+    $this->core->entity("crephighlight")->delete(
+      array(
+       'pageid' => array($pageId)
+      )
+    );
+    
     $this->updatePageStatus($sentenceID);
     
     echo json_encode("");

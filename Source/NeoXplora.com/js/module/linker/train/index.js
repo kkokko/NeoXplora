@@ -207,7 +207,6 @@ var MLinkerTrainIndex_Implementation = {
       for(var i = 0; i < data.count(); i++) {
         html += '<tr data-id="' + i +  '">';
         html += '<td style="padding-left: ' + (data.object(i).Indentation * 20)  + 'px">' + data.object(i).Sentence +  '</td>';
-        
         html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         for(var j = 0; j < data.object(i).Children.count(); j++) {
           html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
