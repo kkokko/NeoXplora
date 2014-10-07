@@ -160,11 +160,17 @@
     
     public function getSentences($pageid) {
       $query = $this->query("
-        SELECT s.[[sentence.id]] Id, s.[[sentence.name]] Name, s.[[sentence.rep]] Rep, o.[[orderinpage.indentation]] Indentation
-        FROM [[sentence]] s
-        INNER JOIN [[orderinpage]] o ON s.[[sentence.id]] = o.[[orderinpage.sentenceid]]  
-        WHERE o.[[orderinpage.pageid]] = :1
-        ORDER BY o.[[orderinpage.order]] ASC
+        SELECT * FROM (
+          SELECT s.[[sentence.id]] Id, s.[[sentence.name]] Name, s.[[sentence.rep]] Rep, o.[[orderinpage.indentation]] Indentation, o.[[orderinpage.order]] `Order`, o.[[orderinpage.pageid]] `PageId`, 'se' Type
+          FROM [[sentence]] s
+          INNER JOIN [[orderinpage]] o ON s.[[sentence.id]] = o.[[orderinpage.sentenceid]]  
+          UNION 
+          SELECT -pr.[[proto.id]], pr.[[proto.name]] Name, '', o.[[orderinpage.indentation]] Indentation, o.[[orderinpage.order]], o.[[orderinpage.pageid]], 'pr' Type
+          FROM [[proto]] pr
+          INNER JOIN [[orderinpage]] o ON pr.[[proto.id]] = o.[[orderinpage.protoid]]
+        ) a
+        WHERE a.pageid = :1
+        ORDER BY a.`order` ASC
       ", intval($pageid));
       
       return $this->result($query);

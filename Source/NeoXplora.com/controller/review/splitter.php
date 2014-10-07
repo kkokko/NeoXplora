@@ -431,8 +431,6 @@ class TReviewSplitter extends TTrain {
     
     $newSentencesCount = $result->Count();    
     $data = '';
-    
-    $this->updatePageStatus($sentenceId);
         
     echo json_encode("");
   }
@@ -452,8 +450,6 @@ class TReviewSplitter extends TTrain {
         "isfixed" => 1
       )
     );
-
-    $this->updatePageStatus(0, $protoID);
     
     $sentenceIDs = array();
     $query = $this->core->entity("sentence")->select(
@@ -494,8 +490,6 @@ class TReviewSplitter extends TTrain {
       )
     );
     
-    $this->updatePageStatus(0, $protoID);
-    
     echo json_encode("");
   }
   
@@ -513,9 +507,6 @@ class TReviewSplitter extends TTrain {
         "isfixed" => 1
       )
     );
-    
-    foreach($protoIDs as $protoID)
-      $this->updatePageStatus(0, $protoID);
 
     $sentenceIDs = array();
     
@@ -559,9 +550,6 @@ class TReviewSplitter extends TTrain {
         "status" => 'ssFinishedGenerate'
       )
     );
-      
-    foreach($protoIDs as $protoID)
-      $this->updatePageStatus(0, $protoID);
     
     echo json_encode("");
   }

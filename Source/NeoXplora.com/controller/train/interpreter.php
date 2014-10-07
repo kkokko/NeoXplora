@@ -186,7 +186,6 @@ class TTrainInterpreter extends TTrain {
             "status" => $status
           )
         );
-        $this->updatePageStatus($sentenceID);
         echo json_encode("");
       } else {
         $response = array(
@@ -222,7 +221,6 @@ class TTrainInterpreter extends TTrain {
             "status" => $status
           )
         );
-        $this->updatePageStatus($sentenceID);
         echo json_encode("");
       } else {
         $response = array(
@@ -257,7 +255,6 @@ class TTrainInterpreter extends TTrain {
             "status" => 'ssReviewedRep'
           )
         );
-        $this->updatePageStatus($sentenceID);
         echo json_encode("");
       } else {
         $response = array(
@@ -283,7 +280,6 @@ class TTrainInterpreter extends TTrain {
         "status" => 'ssFinishedGenerate'
       )
     );
-    $this->updatePageStatus($sentenceID);
     echo json_encode("");
 
   }

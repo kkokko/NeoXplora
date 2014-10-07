@@ -531,10 +531,18 @@ label{color: #6C6C6C; font-size: 15px;}
   padding: 7px;
 }
 
-.trainer.splitter-list .row1 td {
+.trainer.splitter-list .row1 td, .trainer.linker-list .row1 td {
   background-color: #ccc;
 }
 
-.trainer.splitter-list .row2 td {
+.trainer.splitter-list .row2 td, .trainer.linker-list .row2 td {
   background-color: #eee;
+}
+
+.linker-list .content-indent {
+  margin-left: 5px;
+}
+
+.trainer.linker-list td {
+  padding: 0 !important;
 }

@@ -1,11 +1,12 @@
 var TCRepRecord_Implementation = {
   
-  construct: function(id, sentence, rep, indentation) {
+  construct: function(id, sentence, rep, indentation, type) {
     this.base(this);
     this.setId(id);
     this.setSentence(sentence);
     this.setIndentation(indentation);
     this.setRep(rep);
+    this.setType(type);
     this.Children = new Sky.TList();
     this.Highlights = new Sky.TList();
   },
@@ -14,7 +15,8 @@ var TCRepRecord_Implementation = {
   	Id: null, //int
     Sentence: null, //string
     Rep: null, //string
-    Indentation: null,
+    Indentation: null, //int
+    Type: null, //se or pr
     Children: null, //TList of TStringList of Style: (TList of Intervals) 
     Highlights: null //TList of {Style, Interval}
   },
@@ -24,7 +26,7 @@ var TCRepRecord_Implementation = {
   	highlight: function(AnInterval, AStyle, ColIndex) {
       var i = 0;
       
-      var HLights;;
+      var HLights;
       
       if(typeof ColIndex != "undefined") {
         HLights = this.Children.object(ColIndex);

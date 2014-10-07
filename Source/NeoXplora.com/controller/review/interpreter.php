@@ -107,7 +107,6 @@ class TReviewInterpreter extends TTrain {
           "rep" => $newValue
         )
       );
-      $this->updatePageStatus($sentenceID);
       echo json_encode("");
     } else {
       $response = array(
@@ -128,8 +127,6 @@ class TReviewInterpreter extends TTrain {
         "status" => 'ssReviewedSplit'
       )
     );
-    
-    $this->updatePageStatus($sentenceID);
     
     echo json_encode("");    
   }
@@ -161,7 +158,6 @@ class TReviewInterpreter extends TTrain {
             "rep" => $newValue
           )
         );
-        $this->updatePageStatus($sentenceIDs[$i]);
         
         $response['sentences'][$sentenceIDs[$i]] = 'Approved';
       } else {
@@ -192,8 +188,6 @@ class TReviewInterpreter extends TTrain {
         )
       );
     }
-    
-    $this->updatePageStatus($sentenceIDs[0]);
     
     echo json_encode("");
   }

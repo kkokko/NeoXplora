@@ -23,6 +23,7 @@
           SELECT 
             pr.[[proto.id]] id, 
             pr.[[proto.name]] proto,
+            pr.[[proto.mainprotoid]] mainprotoid,
             GROUP_CONCAT(splits.Name SEPARATOR ' ● ') SplitText 
           FROM [[proto]] pr
           INNER JOIN ( 
@@ -30,15 +31,15 @@
               SELECT [[proto.id]] Id, [[proto.name]] Name, [[proto.order]] `Order`, [[proto.parentid]] ParentId
               FROM [[proto]]
               UNION
-              SELECT [[sentence.id]] Id, [[sentence.name]] Name, [[sentence.order]] `Order`, [[sentence.protoid]] ProtoId
+              SELECT [[sentence.id]], [[sentence.name]], [[sentence.order]], [[sentence.protoid]]
               FROM [[sentence]]
             ) a order by `Order`
           ) splits ON pr.[[proto.id]] = splits.ParentId
-          GROUP BY pr.[[proto.id]]
+          GROUP BY pr.[[proto.id]], pr.[[proto.mainprotoid]]
           HAVING COUNT(splits.Id) > 1
           ORDER BY pr.[[proto.pageid]], pr.[[proto.order]]
         ) a 
-        INNER JOIN [[sentence]] se ON se.[[sentence.protoid]] = a.id
+        LEFT JOIN [[sentence]] se ON se.[[sentence.mainprotoid]] = a.mainprotoid
         WHERE 1=1
         " . $status_cond . "
         " . $search_cond . "
@@ -69,6 +70,7 @@
             SELECT 
               pr.[[proto.id]] id,
               pr.[[proto.name]] proto, 
+              pr.[[proto.mainprotoid]] mainprotoid,
               GROUP_CONCAT(splits.Name SEPARATOR ' ● ') SplitText
             FROM [[proto]] pr
             INNER JOIN (
@@ -78,10 +80,10 @@
               SELECT [[sentence.id]], [[sentence.name]], [[sentence.protoid]]
               FROM [[sentence]]
             ) splits ON pr.[[proto.id]] = splits.ParentId
-            GROUP BY pr.[[proto.id]]
+            GROUP BY pr.[[proto.id]], pr.[[proto.mainprotoid]]
             HAVING COUNT(splits.Id) > 1  
           ) a 
-          INNER JOIN [[sentence]] se ON se.[[sentence.protoid]] = a.id
+          LEFT JOIN [[sentence]] se ON se.[[sentence.mainprotoid]] = a.mainprotoid
           WHERE 1=1
           " . $status_cond . "
           " . $search_cond . "

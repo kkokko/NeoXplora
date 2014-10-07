@@ -141,7 +141,7 @@ var MLinkerBrowseIndex_Implementation = {
     	var html = '<input type="hidden" class="pageId" value=""/><div class="trainer-container">' +
         '<table class="trainer">' + 
         '<tr class="table-header">' +
-        '<th>Sentence</th>' +
+        '<th width="50%">Sentence</th>' +
         '<th>Rep</th>';
         
       for(var i = 0; i < data.object(0).Children.count(); i++) {

@@ -363,8 +363,6 @@ class TTrainSplitter extends TTrain {
       exit;
     }
     
-    $this->updatePageStatus($sentenceId);
-        
     echo json_encode("");
   }
   
@@ -387,8 +385,6 @@ class TTrainSplitter extends TTrain {
         'status' => 'ssReviewedSplit'
       )
     );
-
-    $this->updatePageStatus(0, $sentenceIDs[0]);
     
     echo json_encode("");
   }

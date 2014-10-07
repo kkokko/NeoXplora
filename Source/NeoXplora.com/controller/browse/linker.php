@@ -96,12 +96,15 @@ class TBrowseLinker extends TTrain {
   private function loadSentences($pageId) {
     $query = $this->core->model("linker", "train")->getSentences($pageId);
     while($row = $query->fetch_array()) {
-      $this->sentenceIDs[] = $row['Id'];
+      if($row['Type'] == 'se') {
+        $this->sentenceIDs[] = $row['Id'];
+      }
       $this->data[$row['Id']] = array(
         "Id" => $row['Id'], 
         "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
         "Rep" => $row['Rep'],
         "Indentation" => $row['Indentation'],
+        "Type" => $row['Type'],
         "Highlights" => array(),
         "Children" => array()
       );

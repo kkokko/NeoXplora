@@ -98,7 +98,7 @@ class TBrowseInterpreter extends TTrain {
           "rep" => $newValue
         )
       );
-      $this->updatePageStatus($sentenceID);
+      
       echo json_encode("");
     } else {
       $response = array(
@@ -138,8 +138,6 @@ class TBrowseInterpreter extends TTrain {
        'pageid' => array($pageId)
       )
     );
-    
-    $this->updatePageStatus($sentenceID);
     
     echo json_encode("");
   }
