@@ -35,7 +35,7 @@ var TCRepRecord_Implementation = {
       while(i < HLights.count()) {
     		var TheObject = HLights.object(i);
     		
-    		if(TheObject.Interval.Equals(AnInterval)) {
+    		if(TheObject.Interval.Equals(AnInterval) && TheObject.Style != 's0') {
     			this.addHighlight(TheObject, AStyle);
     		} else if (TheObject.Interval.OverlapsWith(AnInterval)) {
   				if(TheObject.Interval.From < AnInterval.From){

@@ -41,6 +41,7 @@ var MLinkerTrainIndex_Implementation = {
     hookEvents: function() {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", ".color-pallette td", NeoX.Modules.LinkerTrainIndex.selectStyle);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.addRepBtn, NeoX.Modules.LinkerTrainIndex.addRepColumn);
+      NeoX.Modules.LinkerTrainIndex.hookEvent("click", ".deleteRepColumn", NeoX.Modules.LinkerTrainIndex.deleteRepColumn);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.saveBtn, NeoX.Modules.LinkerTrainIndex.save);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.skipBtn, NeoX.Modules.LinkerTrainIndex.skip);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.finishBtn, NeoX.Modules.LinkerTrainIndex.finish);
@@ -145,6 +146,16 @@ var MLinkerTrainIndex_Implementation = {
     		var interval = new Sky.TInterval(0, data.object(i).Rep.length);
         Highlights.add({'Interval': interval, 'Style': 's0'});
         data.object(i).Children.add(Highlights);
+      }
+      
+      NeoX.Modules.LinkerTrainIndex.repaint();
+    },
+    
+    deleteRepColumn: function() {
+      var data = NeoX.Modules.LinkerTrainIndex.getConfig().data;
+      
+      for(var i = 0; i < data.count(); i++) {
+        data.object(i).Children.pop();
       }
       
       NeoX.Modules.LinkerTrainIndex.repaint();
@@ -289,12 +300,13 @@ var MLinkerTrainIndex_Implementation = {
               "until": stopPos + 1 
             };
         	}
-
+        	
         	if(colIndex == 1) {
             NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle);
         	} else {
         		NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle, colIndex - 2);
         	}
+
           NeoX.Modules.LinkerTrainIndex.repaint();
         } else {
         	throw "StartBiggerThenStopException";

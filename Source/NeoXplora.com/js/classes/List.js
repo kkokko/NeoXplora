@@ -19,6 +19,14 @@ var TList_Implementation = {
       return this.Items.length;
     },
     
+    pop: function() {
+    	if(this.count()) {
+    		var theItem = this.Items[this.Items.length - 1];
+    		this.Items.splice(this.Items.length - 1, 1);
+        return theItem;
+    	}
+    },
+    
     item: function(index) {
     	if(this.count() > index) {
         return this.Items[index];

@@ -66,10 +66,10 @@ class TTrainLinker extends TTrain {
     $pageData = null;
     $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
     
-    if($pageId) {
+    if($pageId && $this->core->model("linker", "train")->checkPageId($pageId)) {
       $pageData = $this->core->entity("page")->select(array("id" => $pageId), "*");
     } else {
-      if(!isset($_SESSION['pageID']) || $_SESSION['pageID'] == -1) {
+      if(!isset($_SESSION['pageID']) || $_SESSION['pageID'] == -1 || !$this->core->model("linker", "train")->checkPageId($_SESSION['pageID'])) {
         $ignoreIDs = array();
         
         if(isset($_SESSION['ignoredLinkerPageIDs']) && is_array($_SESSION['ignoredLinkerPageIDs'])) {
@@ -169,9 +169,18 @@ class TTrainLinker extends TTrain {
   
   public function save() {
     if(!isset($_SESSION['pageID']) && !isset($_POST['pageId'])) return;
+    $flag = true;
+    if(isset($_REQUEST['pageId']) && ($_REQUEST['pageId'] == "" || $_REQUEST['pageId'] == -1)) $flag = false;
+    else $flag = true;
+    if(isset($_SESSION['pageID']) && ($_SESSION['pageID'] == "" || $_SESSION['pageID'] == -1)) $flag = $flag || false;
+    else $flag = $flag || true;
+    
+    if(!$flag) return;
     
     $data = $_POST['data'];
     $pageId = (isset($_POST['pageId']) && $_POST['pageId'] != "")?$_POST['pageId']:$_SESSION['pageID'];
+    
+    if(!$this->core->model("linker", "train")->checkPageId($pageId)) return;
     
     $this->saveData($data, $pageId);
     
@@ -180,9 +189,18 @@ class TTrainLinker extends TTrain {
 
   public function finish() {
     if(!isset($_SESSION['pageID']) && !isset($_REQUEST['pageId'])) return;
+    $flag = true;
+    if(isset($_REQUEST['pageId']) && ($_REQUEST['pageId'] == "" || $_REQUEST['pageId'] == -1)) $flag = false;
+    else $flag = true;
+    if(isset($_SESSION['pageID']) && ($_SESSION['pageID'] == "" || $_SESSION['pageID'] == -1)) $flag = $flag || false;
+    else $flag = $flag || true;
+    
+    if(!$flag) return;
     
     $data = $_POST['data'];
     $pageId = (isset($_POST['pageId']) && $_POST['pageId'] != "")?$_POST['pageId']:$_SESSION['pageID'];
+    
+    if(!$this->core->model("linker", "train")->checkPageId($pageId)) return;
     
     $this->saveData($data, $pageId);
     

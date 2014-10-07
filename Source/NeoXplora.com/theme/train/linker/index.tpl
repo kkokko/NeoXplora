@@ -82,6 +82,7 @@
         <div class='clear'></div>
         <div class="buttons smaller">
           <a href="javascript:void(0)" class="addRepColumn">Add Rep Column</a>
+          <a href="javascript:void(0)" class="deleteRepColumn">Delete Rep Column</a>
         </div>
         <div class='clear'></div>
         <input type="hidden" id="pageId" value="<?php echo $this->pageId; ?>" />
