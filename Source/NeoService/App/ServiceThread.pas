@@ -105,7 +105,8 @@ begin
       Core.ReloadSentences;
       App.WebInterfaceHandler.BringOnline;
       TheStartSuccessFull := True;
-      TCacheReloadThread.GetInstance;
+      if ConstUseCache then
+        TCacheReloadThread.GetInstance;
     except on E: Exception do
     begin
       // Catastrophic failure. Errors should not be here.

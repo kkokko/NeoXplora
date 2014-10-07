@@ -83,6 +83,20 @@ type
   TRequestTrainUntrainedStories = class(TRequest);
 
 {$EndRegion}
+{$Region 'TRequestPageEdit'}
+  TRequestPageEdit = class(TRequest)
+  private
+    FCategoryId: TId;
+    FBody: string;
+    FTitle: string;
+  published
+    property Body: string read FBody write FBody;
+    property CategoryId: TId read FCategoryId write FCategoryId;
+    property Id;
+    property Title: string read FTitle write FTitle;
+  end;
+
+{$EndRegion}
 {$Region 'TRequestPredictAfterSplit'}
   TRequestPredictAfterSplit = class(TRequest)
   private
@@ -216,6 +230,7 @@ initialization
     TRequestGetPosForPage,
     TRequestGetPosForSentences,
     TRequestGuessRepsForSentenceId,
+    TRequestPageEdit,
     TRequestPredictAfterSplit,
     TRequestSearch,
     TRequestSplitSentence,

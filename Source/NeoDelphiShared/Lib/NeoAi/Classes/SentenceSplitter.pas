@@ -21,6 +21,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
+    function HideDotsForExpressions(const ABodyText: string; SomeExpressions: array of string): string;
+
     // splits and merges a sentence (separates words from punctuation)
     class function SentenceAdjust(const ASentence: string): string;
     // merge a word list into a sentence
@@ -36,6 +38,9 @@ type
   end;
 
 implementation
+
+uses
+  SkyStringBuilder;
 
 { TSentenceSplitter }
 
@@ -167,6 +172,8 @@ begin
       end;
     Inc(I);
   end;
+  if WordList.Count = 0 then
+    Exit;
   I := WordList.Count - 1;
   if WordList[I] = '.' then
     WordList.DeleteFromIndex(I);
@@ -193,6 +200,40 @@ begin
   Result := StringReplace(Result, #$E2#$80#$BA, '''', [rfReplaceAll]); // › (U+203A) in UTF-8
 end;
 
+function TSentenceSplitter.HideDotsForExpressions(const ABodyText: string; SomeExpressions: array of string): string;
+var
+  TheBuilder: TSkyStringBuilder;
+  TheIndex: Integer;
+  TheSearchText: string;
+  TheReplaceText: string;
+  I: Integer;
+begin
+  TheBuilder := TSkyStringBuilder.Create(ABodyText);
+  try
+    for I := 0 to Length(SomeExpressions) - 1 do
+    begin
+      TheSearchText := SomeExpressions[I];
+      TheIndex := 0;
+      TheReplaceText := '';
+      while TheBuilder.InsensPosEx(TheSearchText, TheIndex) do
+      begin
+        if (TheIndex <> 0) AND (CharInSet(TheBuilder.Chars[TheIndex - 1], ConstWordChars)) then
+        begin
+          Inc(TheIndex);
+          Continue;
+        end;
+        if TheReplaceText = '' then
+          TheReplaceText := StringReplace(TheSearchText, '.', '%&^', [rfReplaceAll]);
+        TheBuilder._Replace(TheIndex, TheSearchText, TheReplaceText);
+        Inc(TheIndex);
+      end;
+    end;
+    Result := TheBuilder.ToString;
+  finally
+    TheBuilder.Free;
+  end;
+end;
+
 procedure TSentenceSplitter.PageSplitProtos(const APageBody: string);
 var
   TheBody: string;
@@ -205,19 +246,8 @@ begin
   FWordList.Clear;
   TheBody := Trim(ReplaceInvalidPageChars(APageBody));
 
-  TheBody := StringReplace(TheBody, 'Mr.', 'Mr%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'Mrs.', 'Mrs%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'Ms.', 'Ms%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'e.g.', 'e%&^g%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'etc.', 'etc%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'i.e.', 'i%&^e%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'Dr.', 'Dr%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'Prof.', 'Prof%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'Sr.', 'Sr%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'Jr.', 'Jr%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'No.', 'No%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'St.', 'St%&^', [rfReplaceAll, rfIgnoreCase]);
-  TheBody := StringReplace(TheBody, 'p.m.', 'p%&^m%&^', [rfReplaceAll, rfIgnoreCase]);
+  TheBody := HideDotsForExpressions(TheBody, ['Mr.', 'Mrs.', 'Ms.', 'e.g.', 'etc.', 'i.e.', 'Dr.', 'Prof.', 'Sr.', 'Jr.', 'No.',
+    'St.', 'p.m.', 'a.m.']);
 
   //If the ENTIRE Page is INSIDE ONLY one open and ONLY one closed quote, remove them BEFORE processing.
   if (Length(TheBody) > 1) and (TheBody[1] = '"') and (TheBody[Length(TheBody)] = '"') then

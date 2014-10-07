@@ -3,16 +3,22 @@ unit AppSQLServerQuery;
 interface
 
 uses
-  BaseQuery, TypesConsts, Entity, DBSQLQuery, SentenceBase;
+  BaseQuery, TypesConsts, Entity, DBSQLQuery, SentenceBase, OrderInPage;
 
 type
   TAppSQLServerQuery = class(TBaseQuery)
   public
+    class procedure DeleteCRepForPageId(APageId: TId);
+    class procedure DeleteOrderInPageForProtoId(AnId: TId);
+    class procedure DeleteOrderInPageForSentenceId(AnId: TId);
+    class procedure DeleteProtoForPageId(APageId: TId);
+    class procedure DeleteSentenceForPageId(APageId: TId);
     class function GetCRepRules: TEntities;
     class function GetFinishedStoriesCount: Integer;
     class function GetFullSentencesForPageId(APageId: TId): TEntities;
     class function GetHypernyms: TEntities;
     class function GetIRepRules: TEntities;
+    class function GetOrderInPageForPageAndSentenceId(APageId, ASentenceId: TId): TOrderInPage;
     class function GetSearchPagesByOffset(ASearch: string; AnOffset: Integer): TEntities;
     class function GetSentenceBaseById(AnId: TId): TSentenceBase;
     class function GetSplitSentences: TEntities;
@@ -22,14 +28,21 @@ type
     class function GetSplitsForProtoId(AProtoId: TId): TEntities;
     class function GetTotalPageCount(const ASearch: string): Integer;
     class function GetUntrainedStories: TEntities;
+    class procedure IncreasePageOrderForPageId(APageId: TId; AStartingFrom, AnIncrease: Integer);
     class procedure UpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer);
     class procedure UpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer);
   private
+    class function QueryDeleteCRepForPageId(APageId: TId): TDBSQLQuery;
+    class function QueryDeleteOrderInPageForProtoId(AnId: TId): TDBSQLQuery;
+    class function QueryDeleteOrderInPageForSentenceId(AnId: TId): TDBSQLQuery;
+    class function QueryDeleteProtoForPageId(APageId: TId): TDBSQLQuery;
+    class function QueryDeleteSentenceForPageId(APageId: TId): TDBSQLQuery;
     class function QueryGetCRepRules: TDBSQLQuery;
     class function QueryGetFinishedStoriesCount: TDBSQLQuery;
     class function QueryGetFullSentencesForPageId(APageId: TId): TDBSQLQuery;
     class function QueryGetHypernyms: TDBSQLQuery;
     class function QueryGetIRepRules: TDBSQLQuery;
+    class function QueryGetOrderInPageForPageAndSentenceId(APageId, ASentenceId: TId): TDBSQLQuery;
     class function QueryGetSearchPagesByOffset(AnOffset: Integer): TDBSQLQuery;
     class function QueryGetSentenceBaseById(AnId: TId): TDBSQLQuery;
     class function QueryGetSplitsForProtoId(AnId: TId): TDBSQLQuery;
@@ -39,6 +52,8 @@ type
     class function QueryGetProtoChildCount(AProtoId: TId): TDBSQLQuery;
     class function QueryGetTotalPageCount: TDBSQLQuery;
     class function QueryGetUntrainedStories: TDBSQLQuery;
+    class function QueryIncreasePageOrderForPageId(APageId: TId; AStartingFrom, AnIncrease: Integer): TDBSQLQuery;
+
     class function QueryUpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer): TDBSQLQuery;
     class function QueryUpdateSentenceOrderForPage(APageId: TId; AnOrder, ACount: Integer): TDBSQLQuery;
   end;
@@ -47,9 +62,54 @@ implementation
 
 uses
   StringArray, AppUnit, EntityWithName, PageBase, TypesFunctions, SentenceWithGuesses, TypInfo, CountData, EntityWithId,
-  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto, Split;
+  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto, Split, CRep;
 
 { TAppSQLServerQuery }
+
+class procedure TAppSQLServerQuery.DeleteCRepForPageId(APageId: TId);
+var
+  TheQuery: TDBSQLQuery;
+begin
+  TheQuery := QueryDeleteCRepForPageId(APageId);
+  App.SQLConnection.ExecuteQuery(TheQuery);
+  TheQuery.Query.Count := 0;
+end;
+
+class procedure TAppSQLServerQuery.DeleteOrderInPageForProtoId(AnId: TId);
+var
+  TheQuery: TDBSQLQuery;
+begin
+  TheQuery := QueryDeleteOrderInPageForProtoId(AnId);
+  App.SQLConnection.ExecuteQuery(TheQuery);
+  TheQuery.Query.Count := 0;
+end;
+
+class procedure TAppSQLServerQuery.DeleteOrderInPageForSentenceId(AnId: TId);
+var
+  TheQuery: TDBSQLQuery;
+begin
+  TheQuery := QueryDeleteOrderInPageForSentenceId(AnId);
+  App.SQLConnection.ExecuteQuery(TheQuery);
+  TheQuery.Query.Count := 0;
+end;
+
+class procedure TAppSQLServerQuery.DeleteProtoForPageId(APageId: TId);
+var
+  TheQuery: TDBSQLQuery;
+begin
+  TheQuery := QueryDeleteProtoForPageId(APageId);
+  App.SQLConnection.ExecuteQuery(TheQuery);
+  TheQuery.Query.Count := 0;
+end;
+
+class procedure TAppSQLServerQuery.DeleteSentenceForPageId(APageId: TId);
+var
+  TheQuery: TDBSQLQuery;
+begin
+  TheQuery := QueryDeleteSentenceForPageId(APageId);
+  App.SQLConnection.ExecuteQuery(TheQuery);
+  TheQuery.Query.Count := 0;
+end;
 
 class function TAppSQLServerQuery.GetCRepRules: TEntities;
 var
@@ -92,6 +152,15 @@ var
 begin
   TheDbQuery := QueryGetIRepRules;
   Result := App.SQLConnection.SelectQuery([TIRepRule], TheDbQuery);
+  TheDbQuery.Query.Count := 0;
+end;
+
+class function TAppSQLServerQuery.GetOrderInPageForPageAndSentenceId(APageId, ASentenceId: TId): TOrderInPage;
+var
+  TheDbQuery: TDBSQLQuery;
+begin
+  TheDbQuery := QueryGetOrderInPageForPageAndSentenceId(APageId, ASentenceId);
+  Result := App.SQLConnection.SelectQuerySingle([TOrderInPage], TheDbQuery, True) as TOrderInPage;
   TheDbQuery.Query.Count := 0;
 end;
 
@@ -243,6 +312,15 @@ begin
   TheDbQuery.Query.Count := 0;
 end;
 
+class procedure TAppSQLServerQuery.IncreasePageOrderForPageId(APageId: TId; AStartingFrom, AnIncrease: Integer);
+var
+  TheDbQuery: TDBSQLQuery;
+begin
+  TheDbQuery := QueryIncreasePageOrderForPageId(APageId, AStartingFrom, AnIncrease);
+  App.SQLConnection.ExecuteQuery(TheDbQuery);
+  TheDbQuery.Query.Count := 0;
+end;
+
 class procedure TAppSQLServerQuery.UpdateProtoOrderForPage(APageId: TId; AnOrder, ACount: Integer);
 var
   TheDbQuery: TDBSQLQuery;
@@ -267,6 +345,18 @@ begin
   Result.Query := TStringArray.FromArray([
     'select `', TSentenceBase.EntityToken_Id.SQLToken, '` as `', TEntityWithId.EntityToken_Id.SQLToken, '` from `',
     TSentenceBase.SQLToken, '`;'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryIncreasePageOrderForPageId(APageId: TId; AStartingFrom,
+  AnIncrease: Integer): TDBSQLQuery;
+begin
+  Result.Name := 'QueryIncreasePageOrderForPageId';
+  Result.Query := TStringArray.FromArray([
+    'update `', TOrderInPage.SQLToken,
+    '` set `', TOrderInPage.Tok_Order.SQLToken, '` = `', TOrderInPage.Tok_Order.SQLToken, '` + ' + IntToStr(AnIncrease) +
+    ' where `', TOrderInPage.Tok_PageId.SQLToken, '` = ' + IdToStr(APageId) +
+    ' and `', TOrderInPage.Tok_Order.SQLToken, '` > ' + IntToStr(AStartingFrom)
   ]);
 end;
 
@@ -326,6 +416,17 @@ begin
     'select * from `',
     TIRepRule.SQLToken,
     '` order by `', TIRepRule.Tok_Order.SQLToken, '`;'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryGetOrderInPageForPageAndSentenceId(APageId, ASentenceId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryGetOrderInPageForPageAndSentenceId';
+  Result.Query := TStringArray.FromArray([
+    'select * from `',
+    TOrderInPage.SQLToken,
+    '` where `', TOrderInPage.Tok_PageId.SQLToken, '` = ' + IdToStr(APageId) +
+    ' and `', TOrderInPage.Tok_SentenceId.SQLToken, '` = ' + IdToStr(ASentenceId)
   ]);
 end;
 
@@ -393,6 +494,56 @@ begin
     '` where se.`', TSentenceBase.Tok_Status.SQLToken,
     '` in (:ASentenceStatus1, :ASentenceStatus2, :ASentenceStatus3) AND se.`',
     TSentenceBase.Tok_Name.SQLToken, '` <> pr.`', TProto.Tok_Name.SQLToken, '`'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryDeleteCRepForPageId(APageId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryDeleteCRepForPageId';
+  Result.Query := TStringArray.FromArray([
+    'delete from `',
+    TCRep.SQLToken,
+    '` where `', TCRep.Tok_PageId.SQLToken, '` = ' + IdToStr(APageId) + ';'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryDeleteOrderInPageForProtoId(AnId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryDeleteOrderInPageForProtoId';
+  Result.Query := TStringArray.FromArray([
+    'delete from `',
+    TOrderInPage.SQLToken,
+    '` where `', TOrderInPage.Tok_ProtoId.SQLToken, '` = ' + IdToStr(AnId) + ';'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryDeleteOrderInPageForSentenceId(AnId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryDeleteOrderInPageForProtoId';
+  Result.Query := TStringArray.FromArray([
+    'delete from `',
+    TOrderInPage.SQLToken,
+    '` where `', TOrderInPage.Tok_SentenceId.SQLToken, '` = ' + IdToStr(AnId) + ';'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryDeleteProtoForPageId(APageId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryDeleteProtoForPageId';
+  Result.Query := TStringArray.FromArray([
+    'delete from `',
+    TProto.SQLToken,
+    '` where `', TProto.Tok_PageId.SQLToken, '` = ' + IdToStr(APageId) + ';'
+  ]);
+end;
+
+class function TAppSQLServerQuery.QueryDeleteSentenceForPageId(APageId: TId): TDBSQLQuery;
+begin
+  Result.Name := 'QueryDeleteSentenceForPageId';
+  Result.Query := TStringArray.FromArray([
+    'delete from `',
+    TSentenceBase.SQLToken,
+    '` where `', TSentenceBase.Tok_PageId.SQLToken, '` = ' + IdToStr(APageId) + ';'
   ]);
 end;
 

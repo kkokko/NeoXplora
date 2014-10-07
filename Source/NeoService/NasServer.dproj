@@ -88,7 +88,6 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas"/>
 			<DCCReference Include="App\CacheReloadThread.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\PosTagger.pas"/>
@@ -124,6 +123,8 @@
 			<DCCReference Include="Requests\ApiCommands.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\CRep.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\OrderInPage.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

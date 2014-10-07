@@ -7,6 +7,8 @@ const
     '%', '^', '&', '*', '#', '.'];
   ConstNeoPrefix = 'neox_';
   ConstAppName = 'neoxplora';
+  ConstUseCache = false;
+  ConstUseCacheForRepGuess = false;
 
 implementation
 

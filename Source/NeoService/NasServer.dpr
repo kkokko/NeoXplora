@@ -28,7 +28,6 @@ uses
   SentenceSplitter in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas',
   GuessObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas',
   PageBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas',
-  CRep in '..\NeoDelphiShared\Lib\NeoAi\Classes\CRep.pas',
   SentenceWithGuesses in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas',
   CacheReloadThread in 'App\CacheReloadThread.pas',
   PosTagger in '..\NeoDelphiShared\Lib\NeoAi\Classes\PosTagger.pas',
@@ -63,7 +62,9 @@ uses
   ApiRequest in 'Requests\ApiRequest.pas',
   ApiCommands in 'Requests\ApiCommands.pas',
   Proto in '..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas',
-  Split in '..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas';
+  Split in '..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas',
+  CRep in '..\NeoDelphiShared\Lib\NeoAi\Entity\CRep.pas',
+  OrderInPage in '..\NeoDelphiShared\Lib\NeoAi\Entity\OrderInPage.pas';
 
 {$R *.res}
 

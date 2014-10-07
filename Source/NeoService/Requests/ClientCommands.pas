@@ -63,6 +63,11 @@ type
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
 
+  TCommandPageEdit = class(TClientCommand)
+  protected
+    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
+  end;
+
 implementation
 
 uses
@@ -203,12 +208,24 @@ begin
   Result := TResponseSplitSentence.Create(TheNewSentences);
 end;
 
+{ TCommandPageEdit }
+
+class function TCommandPageEdit.DoExecute(ARequest: TRequest): TGenericResponse;
+var
+  TheRequest: TRequestPageEdit;
+begin
+  TheRequest := ARequest as TRequestPageEdit;
+  Core.PageEdit(TheRequest.Id, TheRequest.CategoryId, TheRequest.Title, TheRequest.Body);
+  Result := nil;
+end;
+
 initialization
   // please keep these sorted
   TCommandGuessRepsForSentenceId.RegisterClass(TRequestGuessRepsForSentenceId);
   TCommandGetPosForPage.RegisterClass(TRequestGetPosForPage);
   TCommandGetPosForSentences.RegisterClass(TRequestGetPosForSentences);
   TCommandGetFullSentencesForPageId.RegisterClass(TRequestGetFullSentencesForPageId);
+  TCommandPageEdit.RegisterClass(TRequestPageEdit);
   TCommandPredictAfterSplit.RegisterClass(TRequestPredictAfterSplit);
   TCommandSearch.RegisterClass(TRequestSearch);
   TCommandSplitSentence.RegisterClass(TRequestSplitSentence);

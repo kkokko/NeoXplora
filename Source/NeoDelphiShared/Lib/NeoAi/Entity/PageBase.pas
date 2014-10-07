@@ -3,20 +3,19 @@ unit PageBase;
 interface
 
 uses
-  Entity, EntityFieldNamesToken;
+  Entity, EntityFieldNamesToken, TypesConsts;
 
 type
   TPageBase = class(TEntity)
   public
     type
-      TStatus = (psFinishedGenerate, psTrainingSplit, psTrainedSplit, psReviewingSplit,
-        psReviewedSplit, psTrainingRep, psTrainedRep, psReviewingRep, psReviewedRep, psTrainingCRep, psTrainedCRep,
-        psReviewingCRep, psReviewedCRep);
+      TStatus = (psFinishedGenerate, psReviewedCRep);
   private
     FBody: string;
     FStatus: TStatus;
     FName: string;
     FSource: string;
+    FCategoryId: TId;
   protected
     function GetName: string; override;
     procedure SetName(const AName: string); override;
@@ -31,6 +30,7 @@ type
       Tok_Source: TEntityFieldNamesToken;
       Tok_Status: TEntityFieldNamesToken;
   published
+    property CategoryId: TId read FCategoryId write FCategoryId;
     property Id;
     property Body: string read FBody write FBody;
     property Name;

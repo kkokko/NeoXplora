@@ -19,8 +19,9 @@ uses
   RepObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\RepObject.pas',
   StringExpression in '..\NeoDelphiShared\Lib\NeoAi\Classes\StringExpression.pas',
   AppExceptionClasses in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas',
-  RepSerializeTest in 'Includes\RepSerializeTest.pas';
-
+  SentenceSplitter in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas',
+   SentenceSplitterTest in 'Includes\SentenceSplitterTest.pas';
+//  RepSerializeTest in 'Includes\RepSerializeTest.pas'
 {$R *.res}
 
 var

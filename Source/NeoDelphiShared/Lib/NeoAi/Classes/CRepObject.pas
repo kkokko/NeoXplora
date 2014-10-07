@@ -1,4 +1,4 @@
-unit CRep;
+unit CRepObject;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   Classes, Rep, RepRecord, RepEntity, EntityList, RepPropertyKey, RepObjectBase, RepPropertyValue;
 
 type
-  TCRep = class(TRep)
+  TCRepObject = class(TRep)
   private
     FRepEntityMapping: TEntityList;
     FGlobalRepRecord: TRepRecord;
@@ -34,23 +34,23 @@ implementation
 uses
   SysUtils;
 
-{ TCRep }
+{ TCRepObject }
 
-constructor TCRep.Create;
+constructor TCRepObject.Create;
 begin
   FGlobalRepRecord := TRepRecord.Create;
   FGlobalRepRecord.SentenceNumber := 0;
   FRepEntityMapping := TEntityList.Create(False, False);
 end;
 
-destructor TCRep.Destroy;
+destructor TCRepObject.Destroy;
 begin
   FRepEntityMapping.Free;
   FGlobalRepRecord.Free;
   inherited;
 end;
 
-procedure TCRep.AddSentence(ARepRecord: TRepRecord);
+procedure TCRepObject.AddSentence(ARepRecord: TRepRecord);
 var
   TheGlobalRepEntity: TRepEntity;
   TheRepEntity: TRepEntity;
@@ -66,17 +66,17 @@ begin
     MergeRepEntityToGlobal(ARepRecord.RepEntities.Objects[I] as TRepEntity);
 end;
 
-function TCRep.GetGlobalRepRecordWithIReps: TRepRecord;
+function TCRepObject.GetGlobalRepRecordWithIReps: TRepRecord;
 begin
   Result := nil; //todo: fix
 end;
 
-procedure TCRep.GuessSentence(ARepRecord: TRepRecord);
+procedure TCRepObject.GuessSentence(ARepRecord: TRepRecord);
 begin
 
 end;
 
-procedure TCRep.MergeRepEntityToGlobal(AnEntity: TRepEntity);
+procedure TCRepObject.MergeRepEntityToGlobal(AnEntity: TRepEntity);
 var
   TheGlobalEntity: TRepEntity;
   TheKey: TRepPropertyKey;
@@ -92,7 +92,7 @@ begin
   end;
 end;
 
-procedure TCRep.MergeRepPropertyKeyByNameToGlobal(const AKeyName: string; AKey: TRepPropertyKey; AGlobalObject: TRepObjectBase);
+procedure TCRepObject.MergeRepPropertyKeyByNameToGlobal(const AKeyName: string; AKey: TRepPropertyKey; AGlobalObject: TRepObjectBase);
 var
   TheGlobalKey: TRepPropertyKey;
 begin
@@ -105,7 +105,7 @@ begin
   MergeRepPropertyKeyToGlobal(AKey, TheGlobalKey);
 end;
 
-procedure TCRep.MergeRepPropertyKeyToGlobal(AKey, AGlobalKey: TRepPropertyKey);
+procedure TCRepObject.MergeRepPropertyKeyToGlobal(AKey, AGlobalKey: TRepPropertyKey);
 var
   TheKey: TRepPropertyKey;
   TheKeyName: string;
@@ -127,7 +127,7 @@ begin
   end;
 end;
 
-procedure TCRep.MergeRepPropertyValueByNameToGlobal(const AValueName: string; AValue: TRepPropertyValue;
+procedure TCRepObject.MergeRepPropertyValueByNameToGlobal(const AValueName: string; AValue: TRepPropertyValue;
   AGlobalKey: TRepPropertyKey);
 var
   TheGlobalValue: TRepPropertyValue;
@@ -147,7 +147,7 @@ begin
 //  AGlobalKey
 end;
 
-procedure TCRep.Clear;
+procedure TCRepObject.Clear;
 begin
   FGlobalRepRecord.Clear;
 end;
