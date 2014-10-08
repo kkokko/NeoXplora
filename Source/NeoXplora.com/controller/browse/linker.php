@@ -95,19 +95,35 @@ class TBrowseLinker extends TTrain {
 
   private function loadSentences($pageId) {
     $query = $this->core->model("linker", "train")->getSentences($pageId);
+    $lastId = 0; 
+    $decreaseIndentFlag = false;
     while($row = $query->fetch_array()) {
-      if($row['Type'] == 'se') {
-        $this->sentenceIDs[] = $row['Id'];
+      if($lastId != 0 && $this->data[$lastId]['Type'] == 'pr' && $this->data[$lastId]['Sentence'] == htmlspecialchars($row['Name'], ENT_QUOTES)) {
+        unset($this->data[$lastId]);
+        $decreaseIndentFlag = true;
       }
+      
+      $indentation = $row['Indentation'];
+      if($indentation == 0) $decreaseIndentFlag = false;
+      if($decreaseIndentFlag) $indentation--;
+      
       $this->data[$row['Id']] = array(
         "Id" => $row['Id'], 
         "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
         "Rep" => $row['Rep'],
-        "Indentation" => $row['Indentation'],
+        "Indentation" => $indentation,
         "Type" => $row['Type'],
         "Highlights" => array(),
         "Children" => array()
       );
+      
+      if($row['Type'] == 'se') {
+        $this->sentenceIDs[] = $row['Id'];
+      } else {
+        $this->data[$row['Id']]['Style'] = $row['Style'];
+      }
+      
+      $lastId = $row['Id'];
     }
   }
   

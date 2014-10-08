@@ -14,6 +14,7 @@
     public static $tok_parentid = "ParentId";
     public static $tok_mainprotoid = "MainProtoId";
     public static $tok_order = "Order";
+    public static $tok_style = "Style";
     
 	}
 ?>

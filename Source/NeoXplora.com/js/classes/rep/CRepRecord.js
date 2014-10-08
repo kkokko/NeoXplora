@@ -17,6 +17,7 @@ var TCRepRecord_Implementation = {
     Rep: null, //string
     Indentation: null, //int
     Type: null, //se or pr
+    Style: null, //string
     Children: null, //TList of TStringList of Style: (TList of Intervals) 
     Highlights: null //TList of {Style, Interval}
   },

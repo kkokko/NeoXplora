@@ -161,11 +161,11 @@
     public function getSentences($pageid) {
       $query = $this->query("
         SELECT * FROM (
-          SELECT s.[[sentence.id]] Id, s.[[sentence.name]] Name, s.[[sentence.rep]] Rep, o.[[orderinpage.indentation]] Indentation, o.[[orderinpage.order]] `Order`, o.[[orderinpage.pageid]] `PageId`, 'se' Type
+          SELECT s.[[sentence.id]] Id, s.[[sentence.name]] Name, s.[[sentence.rep]] Rep, o.[[orderinpage.indentation]] Indentation, o.[[orderinpage.order]] `Order`, o.[[orderinpage.pageid]] `PageId`, 'se' Type, '' Style
           FROM [[sentence]] s
           INNER JOIN [[orderinpage]] o ON s.[[sentence.id]] = o.[[orderinpage.sentenceid]]  
           UNION 
-          SELECT -pr.[[proto.id]], pr.[[proto.name]] Name, '', o.[[orderinpage.indentation]] Indentation, o.[[orderinpage.order]], o.[[orderinpage.pageid]], 'pr' Type
+          SELECT -pr.[[proto.id]], pr.[[proto.name]] Name, '', o.[[orderinpage.indentation]] Indentation, o.[[orderinpage.order]], o.[[orderinpage.pageid]], 'pr', pr.[[proto.style]]
           FROM [[proto]] pr
           INNER JOIN [[orderinpage]] o ON pr.[[proto.id]] = o.[[orderinpage.protoid]]
         ) a

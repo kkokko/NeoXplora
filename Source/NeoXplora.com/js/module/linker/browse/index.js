@@ -99,8 +99,10 @@ var MLinkerBrowseIndex_Implementation = {
     loadData: function(data) {
     	var dataList = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
-    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation);
-    		
+    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation, data[i].Type);
+    		if(CRepRecord.Type == 'pr') {
+    		  CRepRecord.Style = data[i].Style;
+    		}
     		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
         CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
     		
@@ -118,6 +120,10 @@ var MLinkerBrowseIndex_Implementation = {
     		}
     		
     		if(data[i].hasOwnProperty("Children") && data[i].Children instanceof Array && data[i].Children.length > 0) {
+    			if(data[i].Children.length > NeoX.Modules.LinkerBrowseIndex.Config.maxChildren) {
+    				
+            NeoX.Modules.LinkerBrowseIndex.Config.maxChildren = data[i].Children.length;
+    			} 
     		  for(var j = 0; j < data[i].Children.length; j++) {
     		    var Highlights = new Sky.TList();
     		    for(var k = 0; k < data[i].Children[j].length; k++) {
@@ -138,24 +144,44 @@ var MLinkerBrowseIndex_Implementation = {
     repaint: function() {
     	var data = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
     	
-    	var html = '<input type="hidden" class="pageId" value=""/><div class="trainer-container">' +
-        '<table class="trainer">' + 
+    	var html = '<div class="trainer-container">' +
+        '<table class="trainer linker-list">' + 
         '<tr class="table-header">' +
         '<th width="50%">Sentence</th>' +
         '<th>Rep</th>';
         
-      for(var i = 0; i < data.object(0).Children.count(); i++) {
+      for(var i = 0; i < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; i++) {
       	html += '<th>Rep</th>';
       }
         
       html += '</tr>';
         
       for(var i = 0; i < data.count(); i++) {
-        html += '<tr data-id="' + i +  '">';
-        html += '<td style="padding-left: ' + (data.object(i).Indentation * 20)  + 'px">' + data.object(i).Sentence +  '</td>';
-        html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
-        for(var j = 0; j < data.object(i).Children.count(); j++) {
-          html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
+        if(data.object(i).Type == "pr") {
+        	html += '<tr data-id="' + i +  '" class="row1">';
+        } else {
+        	html += '<tr data-id="' + i +  '" class="aproto">';
+        }
+        
+        html += '<td>';
+        html += '<div class="level-indent-wrapper">';
+        for(var p = 0; p < parseInt(data.object(i).Indentation, 10) + 1; p++) {
+        	html += '<div class="level-indent level' + (p % 5) + '"></div>'
+        }
+        html += '</div>';
+        html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
+        html += '</td>';
+        if(data.object(i).Type == 'se') {
+          html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
+        } else {
+        	html += NeoX.Modules.LinkerBrowseIndex.repaintProtoRow(data.object(i).Style); 
+        }
+        for(var j = 0; j < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; j++) {
+        	if(data.object(i).Type == "pr") {
+            html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, "", new Sky.TList());
+        	} else {
+            html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
+        	}
         }
         html += '</tr>';
       }
@@ -176,6 +202,13 @@ var MLinkerBrowseIndex_Implementation = {
         );
         html += '</span>';
       }
+      html += '</td>';
+      return html;
+    },
+    
+    repaintProtoRow: function(style) {
+      html = '<td class="rep" data-id="1">';
+      html += '<span class="char protoRep highlighted ' + style + '">this1</span>';
       html += '</td>';
       return html;
     },
