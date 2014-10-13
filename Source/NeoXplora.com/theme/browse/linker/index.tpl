@@ -1,4 +1,5 @@
 <?php echo $this->fetch("header"); ?>
+      <input type="hidden" class="pageId" />
       <div style="padding: 20px 30px;">
         <div class="buttons leftMenu">
           <a href="train.php?type=linker">Train</a>

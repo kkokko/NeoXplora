@@ -27,8 +27,8 @@ var MLinkerTrainIndex_Implementation = {
       currentRow: null,
       keyDown: false,
       styles: ['#AEABAB', '#ADB9CA', '#BDD7EE', '#F7CBAC', '#DBDBDB', '#FEE599', '#B4C6E7', '#C5E0B3', '#757070', '#8496B0', '#9CC3E5',
-                '#F4B183', '#C9C9C9', '#FFD965', '#8EAADB', '#A8D08D', '#3A3838', '#323F4F', '#2F75B5', '#C55A11', '#7B7B7B', '#BF9000',
-                '#2F5496', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF', '#6633CC', '#663300', '#880000']
+                '#F4B183', '#C9C9C9', '#FFD965', '#8EAADB', '#A8D08D', '#FFFFFF', '#3A3838', '#323F4F', '#2F75B5', '#C55A11', '#7B7B7B', '#BF9000',
+                '#2F5496', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF', '#6633CC', '#880000']
     }
   },
   
@@ -237,7 +237,6 @@ var MLinkerTrainIndex_Implementation = {
       }
         
       html += '</tr>';
-        
       for(var i = 0; i < data.count(); i++) {
         if(data.object(i).Type == "pr") {
         	html += '<tr data-id="' + i +  '" class="row1">';
@@ -290,7 +289,7 @@ var MLinkerTrainIndex_Implementation = {
     
     repaintProtoRow: function(style) {
       html = '<td class="rep" data-id="1">';
-      html += '<span class="char protoRep highlighted ' + style + '">this1</span>';
+      html += '<span class="char protoRep highlighted ' + style + '">All</span>';
       html += '</td>';
       return html;
     },
@@ -333,7 +332,6 @@ var MLinkerTrainIndex_Implementation = {
         while(stopPos < TheObject.Rep.length && /[a-zA-Z0-9]/.test(TheObject.Rep[stopPos+1])) {
           stopPos++;
         }
-        
         if(startPos <= stopPos) {
         	var TheInterval;
         	
@@ -356,13 +354,11 @@ var MLinkerTrainIndex_Implementation = {
               "until": stopPos + 1 
             };
         	}
-        	
         	if(colIndex == 1) {
             NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle);
         	} else {
         		NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle, colIndex - 2);
         	}
-
           NeoX.Modules.LinkerTrainIndex.repaint();
         } else {
         	throw "StartBiggerThenStopException";

@@ -208,7 +208,7 @@ var MLinkerBrowseIndex_Implementation = {
     
     repaintProtoRow: function(style) {
       html = '<td class="rep" data-id="1">';
-      html += '<span class="char protoRep highlighted ' + style + '">this1</span>';
+      html += '<span class="char protoRep highlighted ' + style + '">All</span>';
       html += '</td>';
       return html;
     },
