@@ -546,3 +546,11 @@ label{color: #6C6C6C; font-size: 15px;}
 .trainer.linker-list td {
   padding: 0 !important;
 }
+
+.trainer.linker-list th {
+  text-align: left;
+}
+
+.trainer.linker-list {
+  min-width: 100%;
+}

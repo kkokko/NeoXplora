@@ -102,6 +102,7 @@ var MLinkerTrainIndex_Implementation = {
         if(CRepRecord.Type == 'pr') {
           data.push({
             'Id': CRepRecord.Id,
+            'Type': 'pr',
             'Style': CRepRecord.Style
           });
           continue;
@@ -130,7 +131,9 @@ var MLinkerTrainIndex_Implementation = {
         data.push({
           'Id': CRepRecord.Id,
           'Highlights': Highlights,
-          'Children': Children
+          'Children': Children,
+          'Type': 'se',
+          'Style': CRepRecord.Style
         });
       }
       
@@ -182,9 +185,7 @@ var MLinkerTrainIndex_Implementation = {
     	var dataList = NeoX.Modules.LinkerTrainIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
     		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation, data[i].Type);
-    		if(CRepRecord.Type == 'pr') {
-    		  CRepRecord.Style = data[i].Style;
-    		}
+  		  CRepRecord.Style = data[i].Style;
     		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
         CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
     		
@@ -230,6 +231,7 @@ var MLinkerTrainIndex_Implementation = {
         '<table class="trainer linker-list">' + 
         '<tr class="table-header">' +
         '<th width="50%">Sentence</th>' +
+        '<th width="50">All</th>' +
         '<th>Rep</th>';
         
       for(var i = 0; i < NeoX.Modules.LinkerTrainIndex.Config.maxChildren; i++) {
@@ -252,10 +254,11 @@ var MLinkerTrainIndex_Implementation = {
         html += '</div>';
         html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
         html += '</td>';
+        html += NeoX.Modules.LinkerTrainIndex.repaintProtoRow(data.object(i).Style);
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
-        	html += NeoX.Modules.LinkerTrainIndex.repaintProtoRow(data.object(i).Style); 
+        	html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, "", new Sky.TList());
         }
         for(var j = 0; j < NeoX.Modules.LinkerTrainIndex.Config.maxChildren; j++) {
         	if(data.object(i).Type == "pr") {
@@ -288,7 +291,7 @@ var MLinkerTrainIndex_Implementation = {
     },
     
     repaintProtoRow: function(style) {
-      html = '<td class="rep" data-id="1">';
+      html = '<td class="rep" data-id="0">';
       html += '<span class="char protoRep highlighted ' + style + '">All</span>';
       html += '</td>';
       return html;
@@ -311,7 +314,7 @@ var MLinkerTrainIndex_Implementation = {
       var colIndex = parseInt($(this).parents("td").first().attr("data-id"), 10);
       var TheObject = NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex);
       
-      if(TheObject.Type == 'pr') {
+      if(colIndex == 0) {
         TheObject.Style = NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle;
         NeoX.Modules.LinkerTrainIndex.repaint();
       	return;

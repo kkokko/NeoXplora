@@ -111,6 +111,7 @@ class TBrowseLinker extends TTrain {
         "Id" => $row['Id'], 
         "Sentence" => htmlspecialchars($row['Name'], ENT_QUOTES),
         "Rep" => $row['Rep'],
+        "Style" => $row['Style'],
         "Indentation" => $indentation,
         "Type" => $row['Type'],
         "Highlights" => array(),
@@ -119,8 +120,6 @@ class TBrowseLinker extends TTrain {
       
       if($row['Type'] == 'se') {
         $this->sentenceIDs[] = $row['Id'];
-      } else {
-        $this->data[$row['Id']]['Style'] = $row['Style'];
       }
       
       $lastId = $row['Id'];

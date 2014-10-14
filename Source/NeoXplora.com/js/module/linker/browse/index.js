@@ -100,9 +100,8 @@ var MLinkerBrowseIndex_Implementation = {
     	var dataList = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
     		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation, data[i].Type);
-    		if(CRepRecord.Type == 'pr') {
-    		  CRepRecord.Style = data[i].Style;
-    		}
+    		CRepRecord.Style = data[i].Style;
+    		
     		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
         CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
     		
@@ -148,6 +147,7 @@ var MLinkerBrowseIndex_Implementation = {
         '<table class="trainer linker-list">' + 
         '<tr class="table-header">' +
         '<th width="50%">Sentence</th>' +
+        '<th width="50">All</th>' +
         '<th>Rep</th>';
         
       for(var i = 0; i < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; i++) {
@@ -171,10 +171,11 @@ var MLinkerBrowseIndex_Implementation = {
         html += '</div>';
         html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
         html += '</td>';
+        html += NeoX.Modules.LinkerBrowseIndex.repaintProtoRow(data.object(i).Style);
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
-        	html += NeoX.Modules.LinkerBrowseIndex.repaintProtoRow(data.object(i).Style); 
+        	html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, "", new Sky.TList()); 
         }
         for(var j = 0; j < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; j++) {
         	if(data.object(i).Type == "pr") {
@@ -207,7 +208,7 @@ var MLinkerBrowseIndex_Implementation = {
     },
     
     repaintProtoRow: function(style) {
-      html = '<td class="rep" data-id="1">';
+      html = '<td class="rep" data-id="0">';
       html += '<span class="char protoRep highlighted ' + style + '">All</span>';
       html += '</td>';
       return html;
