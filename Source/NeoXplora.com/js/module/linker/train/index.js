@@ -231,8 +231,8 @@ var MLinkerTrainIndex_Implementation = {
         '<table class="trainer linker-list">' + 
         '<tr class="table-header">' +
         '<th width="50%">Sentence</th>' +
-        '<th width="50">All</th>' +
-        '<th>Rep</th>';
+        '<th>All</th>' +
+        '<th width="50">Rep</th>';
         
       for(var i = 0; i < NeoX.Modules.LinkerTrainIndex.Config.maxChildren; i++) {
       	html += '<th>Rep</th>';
@@ -254,12 +254,12 @@ var MLinkerTrainIndex_Implementation = {
         html += '</div>';
         html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
         html += '</td>';
-        html += NeoX.Modules.LinkerTrainIndex.repaintProtoRow(data.object(i).Style);
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
         	html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, "", new Sky.TList());
         }
+        html += NeoX.Modules.LinkerTrainIndex.repaintProtoRow(data.object(i).Style);
         for(var j = 0; j < NeoX.Modules.LinkerTrainIndex.Config.maxChildren; j++) {
         	if(data.object(i).Type == "pr") {
             html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", new Sky.TList());

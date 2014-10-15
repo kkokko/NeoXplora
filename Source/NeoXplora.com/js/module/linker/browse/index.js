@@ -171,12 +171,13 @@ var MLinkerBrowseIndex_Implementation = {
         html += '</div>';
         html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
         html += '</td>';
-        html += NeoX.Modules.LinkerBrowseIndex.repaintProtoRow(data.object(i).Style);
+        
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
         	html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, "", new Sky.TList()); 
         }
+        html += NeoX.Modules.LinkerBrowseIndex.repaintProtoRow(data.object(i).Style);
         for(var j = 0; j < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; j++) {
         	if(data.object(i).Type == "pr") {
             html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, "", new Sky.TList());
