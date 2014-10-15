@@ -63,7 +63,6 @@ class TTrainLinker extends TTrain {
   }
   
   public function loadPage() {
-    \SkyCore\TModel::$LogSqls = true;
     $pageData = null;
     $pageId = (isset($_REQUEST['pageId']) && $_REQUEST['pageId'] != "")?$_REQUEST['pageId']:null;
     

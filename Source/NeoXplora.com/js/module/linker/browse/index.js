@@ -147,8 +147,8 @@ var MLinkerBrowseIndex_Implementation = {
         '<table class="trainer linker-list">' + 
         '<tr class="table-header">' +
         '<th width="50%">Sentence</th>' +
-        '<th width="50">All</th>' +
-        '<th>Rep</th>';
+        '<th>Rep</th>' +
+        '<th width="50">All</th>';
         
       for(var i = 0; i < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; i++) {
       	html += '<th>Rep</th>';
