@@ -264,7 +264,11 @@ var MLinkerTrainIndex_Implementation = {
         	if(data.object(i).Type == "pr") {
             html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", new Sky.TList());
         	} else {
-            html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
+        		if(j < data.object(i).Children.count()) {
+              html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
+        		} else {
+        			html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", new Sky.TList());
+        		}
         	}
         }
         html += '</tr>';

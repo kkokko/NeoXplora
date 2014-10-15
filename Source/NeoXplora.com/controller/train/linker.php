@@ -297,6 +297,7 @@ class TTrainLinker extends TTrain {
             "style" => $data[$i]['Style'] 
           )
         );
+        continue;
       }
       
       $this->core->entity("crep")->insert(
