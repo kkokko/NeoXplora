@@ -48,6 +48,9 @@ var MLinkerTrainIndex_Implementation = {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.finishBtn, NeoX.Modules.LinkerTrainIndex.finish);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().charSelector, NeoX.Modules.LinkerTrainIndex.charClicked);
       NeoX.Modules.LinkerTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.LinkerTrainIndex.catChanged);
+      $(window).resize(function() {
+      	NeoX.Modules.LinkerTrainIndex.repaint();
+      });
       $(document).on("keydown", NeoX.Modules.LinkerTrainIndex.onKeyDown);
       $(document).on("keyup", NeoX.Modules.LinkerTrainIndex.onKeyUp);
     },
@@ -278,6 +281,16 @@ var MLinkerTrainIndex_Implementation = {
         '</div>';
         
       $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).html(html);
+      $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).find("tr").each(function() {
+        if($(this).hasClass('table-header')) {
+          return;
+        }
+        var theFirstCell = $(this).find("td").eq(0);
+        var theFirstCellWidth = theFirstCell.width();
+        var levelWrapperWidth = theFirstCell.find(".level-indent-wrapper").width();
+        var contentWrapperWidth = theFirstCellWidth - levelWrapperWidth - 10;
+        theFirstCell.find(".content-indent").width(contentWrapperWidth);
+      });
     },
     
     repaintRow: function(rowNumber, rep, highlightArray) {
