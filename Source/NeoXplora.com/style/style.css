@@ -544,7 +544,7 @@ label{color: #6C6C6C; font-size: 15px;}
 }
 
 .trainer.linker-list td {
-  padding: 0 !important;
+  padding: 0;
 }
 
 .trainer.linker-list th {
@@ -553,4 +553,27 @@ label{color: #6C6C6C; font-size: 15px;}
 
 .trainer.linker-list {
   min-width: 100%;
+}
+
+.boxContent .trainer.linker-list td {
+  padding-right: 0px;
+}
+
+.boxContent .trainer.linker-list td .bgMask {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  padding:5px;
+}
+
+.boxContent .trainer.linker-list tr.row1 td .bgMask {
+  background-color: #ccc;
+}
+
+.boxContent .trainer.linker-list tr.aproto td .bgMask {
+  background-color: RGB(223,223,223);
+}
+
+.boxContent .trainer.linker-list tr td.sent {
+  background-image: url('../images/level-indentation.png');
 }

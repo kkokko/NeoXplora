@@ -48,7 +48,7 @@ var MLinkerTrainIndex_Implementation = {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.saveBtn, NeoX.Modules.LinkerTrainIndex.save);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.skipBtn, NeoX.Modules.LinkerTrainIndex.skip);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.finishBtn, NeoX.Modules.LinkerTrainIndex.finish);
-      NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().charSelector, NeoX.Modules.LinkerTrainIndex.charClicked);
+      NeoX.Modules.LinkerTrainIndex.hookEvent("click", ".rep", NeoX.Modules.LinkerTrainIndex.charClicked);
       NeoX.Modules.LinkerTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.LinkerTrainIndex.catChanged);
       $(document).on("keydown", NeoX.Modules.LinkerTrainIndex.onKeyDown);
       $(document).on("keyup", NeoX.Modules.LinkerTrainIndex.onKeyUp);
@@ -184,6 +184,7 @@ var MLinkerTrainIndex_Implementation = {
     },
     
     loadData: function(data) {
+    	NeoX.Modules.LinkerTrainIndex.Config.maxChildren = 0;
     	var dataList = NeoX.Modules.LinkerTrainIndex.getConfig().data;
     	for(var i = 0; i < data.length; i++) {
     		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation, data[i].Type);
@@ -248,14 +249,13 @@ var MLinkerTrainIndex_Implementation = {
         	html += '<tr data-id="' + i +  '" class="aproto">';
         }
         
-        html += '<td>';
-        html += '<div class="level-indent-wrapper">';
-        for(var p = 0; p < parseInt(data.object(i).Indentation, 10) + 1; p++) {
-        	html += '<div class="level-indent level' + (p % 5) + '"></div>'
-        }
+        html += '<td class="sent" style="padding-left: ' + (parseInt(data.object(i).Indentation, 10) * 21 + 10) + 'px;">';
+        html += '<div class="bgMask">';
+        html += data.object(i).Sentence;
         html += '</div>';
-        html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
+        
         html += '</td>';
+        
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
@@ -285,45 +285,50 @@ var MLinkerTrainIndex_Implementation = {
     
     repaintRow: function(rowNumber, rep, highlightArray) {
     	html = '<td class="rep" data-id="' + rowNumber + '">';
-      for(var j = 0; j < highlightArray.count(); j++) {
-        html += '<span class="highlighted ' + highlightArray.item(j).Style + '">';
-        html += NeoX.Modules.LinkerTrainIndex.repaintChars(
-          rep.substr(highlightArray.item(j).Interval.From, highlightArray.item(j).Interval.Until - highlightArray.item(j).Interval.From), 
-          highlightArray.item(j).Interval.From
-        );
+      html += NeoX.Modules.LinkerTrainIndex.repaintInnerRow(rowNumber, rep, highlightArray);
+      html += '</td>';
+      return html;
+    },
+    
+    repaintInnerRow: function(rowNumber, rep, highlightArray) {
+    	html = '';
+    	for(var j = 0; j < highlightArray.count(); j++) {
+        html += '<span class="char highlighted ' + highlightArray.item(j).Style + '">';
+        html += rep.substr(highlightArray.item(j).Interval.From, highlightArray.item(j).Interval.Until - highlightArray.item(j).Interval.From);
         html += '</span>';
       }
-      html += '</td>';
       return html;
     },
     
     repaintProtoRow: function(style) {
       html = '<td class="rep" data-id="0">';
-      html += '<span class="char protoRep highlighted ' + style + '">All</span>';
+      html += NeoX.Modules.LinkerTrainIndex.repaintInnerProtoRow(style); 
       html += '</td>';
       return html;
     },
     
-    repaintChars: function(str, offset) {
-    	if(!offset) offset = 0;
-    	var output = '';
-    	
-    	for(var i =0; i < str.length; i++) {
-    		output += "<span class='char' data-id='" + (i + offset) + "'>" + str[i] + "</span>";
-    	}
-    	
-    	return output;
+    repaintInnerProtoRow: function(style) {
+    	return '<span class="char protoRep highlighted ' + style + '">All</span>';
     },
     
     charClicked: function(e) {
-      var charPos = parseInt($(this).attr("data-id"), 10);
+      s = window.getSelection();
+      var range = s.getRangeAt(0);
+      
+      var containingSpan = $(range.startContainer).parent();
+      var totalOffset = 0;
+      containingSpan.prevAll().each(function() {
+      	totalOffset += $(this).text().length;
+      });
+      
+      var charPos = range.startOffset + totalOffset;
       var repIndex = parseInt($(this).parents("tr").first().attr("data-id"), 10);
-      var colIndex = parseInt($(this).parents("td").first().attr("data-id"), 10);
+      var colIndex = parseInt($(this).attr("data-id"), 10);
       var TheObject = NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex);
       
       if(colIndex == 0) {
         TheObject.Style = NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle;
-        NeoX.Modules.LinkerTrainIndex.repaint();
+        $(this).html(NeoX.Modules.LinkerTrainIndex.repaintInnerProtoRow(TheObject.Style));
       	return;
       }
       
@@ -366,12 +371,11 @@ var MLinkerTrainIndex_Implementation = {
         	}
         	if(colIndex == 1) {
             NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle);
+            $(this).html(NeoX.Modules.LinkerTrainIndex.repaintInnerRow(1, NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).Rep, NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).Highlights));
         	} else {
         		NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle, colIndex - 2);
+        		$(this).html(NeoX.Modules.LinkerTrainIndex.repaintInnerRow(1, NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).Rep, NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).Children.object(colIndex - 2)));
         	}
-        	
-        	//adfasfaf
-          NeoX.Modules.LinkerTrainIndex.repaint();
         } else {
         	throw "StartBiggerThenStopException";
         }

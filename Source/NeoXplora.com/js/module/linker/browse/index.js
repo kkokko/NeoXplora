@@ -5,6 +5,7 @@ var MLinkerBrowseIndex_Implementation = {
   construct: function(settings) {
     this.setConfig($.extend(this.getConfig(), settings));
     this.getConfig().data = new Sky.TStringList();
+    this.getConfig().emptyList = new Sky.TList();
   },
   
   properties: {
@@ -17,6 +18,8 @@ var MLinkerBrowseIndex_Implementation = {
         lastPage: '.lastBtn',
         retrainBtn: '.retrainBtn'
       },
+      emptyList: null,
+      maxChildren: 0,
       moduleScript: 'browse.php',
       moduleType: 'linker',
       dataContainer: '.boxContent',
@@ -53,9 +56,6 @@ var MLinkerBrowseIndex_Implementation = {
       NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.nextPage, NeoX.Modules.LinkerBrowseIndex.goToNext);
       NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.lastPage, NeoX.Modules.LinkerBrowseIndex.goToLast);
       NeoX.Modules.LinkerBrowseIndex.hookEvent('click', NeoX.Modules.LinkerBrowseIndex.getConfig().Buttons.retrainBtn, NeoX.Modules.LinkerBrowseIndex.retrain);
-      $(window).resize(function() {
-        NeoX.Modules.LinkerBrowseIndex.repaint();
-      });
     },
     
     load: function() {
@@ -100,47 +100,47 @@ var MLinkerBrowseIndex_Implementation = {
     },
     
     loadData: function(data) {
-    	var dataList = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
-    	for(var i = 0; i < data.length; i++) {
-    		var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation, data[i].Type);
-    		CRepRecord.Style = data[i].Style;
-    		
-    		/*var interval = new Sky.TInterval(0, data[i].Rep.length);
+    	NeoX.Modules.LinkerBrowseIndex.Config.maxChildren = 0;
+      var dataList = NeoX.Modules.LinkerBrowseIndex.getConfig().data;
+      for(var i = 0; i < data.length; i++) {
+        var CRepRecord = new NeoX.TCRepRecord(data[i].Id, data[i].Sentence, data[i].Rep, data[i].Indentation, data[i].Type);
+        CRepRecord.Style = data[i].Style;
+        /*var interval = new Sky.TInterval(0, data[i].Rep.length);
         CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});*/
-    		
-    		if(data[i].hasOwnProperty("Highlights") && data[i].Highlights instanceof Array && data[i].Highlights.length > 0) {
-    			for(var j = 0; j < data[i].Highlights.length; j++) {
-      			var interval = new Sky.TInterval(parseInt(data[i].Highlights[j].From, 10), parseInt(data[i].Highlights[j].Until, 10));
-      			CRepRecord.Highlights.add({'Interval': interval, 'Style': data[i].Highlights[j].Style});
-      			if(data[i].Highlights[j].Style.split("-").length > 1) {
+        
+        if(data[i].hasOwnProperty("Highlights") && data[i].Highlights instanceof Array && data[i].Highlights.length > 0) {
+          for(var j = 0; j < data[i].Highlights.length; j++) {
+            var interval = new Sky.TInterval(parseInt(data[i].Highlights[j].From, 10), parseInt(data[i].Highlights[j].Until, 10));
+            CRepRecord.Highlights.add({'Interval': interval, 'Style': data[i].Highlights[j].Style});
+            if(data[i].Highlights[j].Style.split("-").length > 1) {
               NeoX.Modules.LinkerBrowseIndex.createCSS(data[i].Highlights[j].Style);
-      			}
-    			}
-    		} else {
-    			var interval = new Sky.TInterval(0, data[i].Rep.length);
+            }
+          }
+        } else {
+          var interval = new Sky.TInterval(0, data[i].Rep.length);
           CRepRecord.Highlights.add({'Interval': interval, 'Style': 's0'});
-    		}
-    		
-    		if(data[i].hasOwnProperty("Children") && data[i].Children instanceof Array && data[i].Children.length > 0) {
-    			if(data[i].Children.length > NeoX.Modules.LinkerBrowseIndex.Config.maxChildren) {
-    				
+        }
+        
+        if(data[i].hasOwnProperty("Children") && data[i].Children instanceof Array && data[i].Children.length > 0) {
+          if(data[i].Children.length > NeoX.Modules.LinkerBrowseIndex.Config.maxChildren) {
+            
             NeoX.Modules.LinkerBrowseIndex.Config.maxChildren = data[i].Children.length;
-    			} 
-    		  for(var j = 0; j < data[i].Children.length; j++) {
-    		    var Highlights = new Sky.TList();
-    		    for(var k = 0; k < data[i].Children[j].length; k++) {
-    		      var interval = new Sky.TInterval(parseInt(data[i].Children[j][k].From, 10), parseInt(data[i].Children[j][k].Until, 10));
+          } 
+          for(var j = 0; j < data[i].Children.length; j++) {
+            var Highlights = new Sky.TList();
+            for(var k = 0; k < data[i].Children[j].length; k++) {
+              var interval = new Sky.TInterval(parseInt(data[i].Children[j][k].From, 10), parseInt(data[i].Children[j][k].Until, 10));
               Highlights.add({'Interval': interval, 'Style': data[i].Children[j][k].Style});
               if(data[i].Children[j][k].Style.split("-").length > 1) {
                 NeoX.Modules.LinkerBrowseIndex.createCSS(data[i].Children[j][k].Style);
               }
-    		    }
-    		    CRepRecord.Children.add(Highlights);
-    		  }
-    		}
-    		
-    		dataList.add(data[i].Id, CRepRecord);
-    	}
+            }
+            CRepRecord.Children.add(Highlights);
+          }
+        }
+        
+        dataList.add(data[i].Id, CRepRecord);
+      }
     },
     
     repaint: function() {
@@ -166,25 +166,23 @@ var MLinkerBrowseIndex_Implementation = {
         	html += '<tr data-id="' + i +  '" class="aproto">';
         }
         
-        html += '<td>';
-        html += '<div class="level-indent-wrapper">';
-        for(var p = 0; p < parseInt(data.object(i).Indentation, 10) + 1; p++) {
-        	html += '<div class="level-indent level' + (p % 5) + '"></div>'
-        }
+        html += '<td class="sent" style="padding-left: ' + (parseInt(data.object(i).Indentation, 10) * 21 + 10) + 'px;">';
+        html += '<div class="bgMask">';
+        html += data.object(i).Sentence;
         html += '</div>';
-        html += '<div class="content-indent">' + data.object(i).Sentence + '</div>';
         html += '</td>';
         
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
-        	html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, "", new Sky.TList()); 
+        	html += NeoX.Modules.LinkerBrowseIndex.repaintRow(1, "", NeoX.Modules.LinkerBrowseIndex.Config.emptyList); 
         }
         html += NeoX.Modules.LinkerBrowseIndex.repaintProtoRow(data.object(i).Style);
         for(var j = 0; j < NeoX.Modules.LinkerBrowseIndex.Config.maxChildren; j++) {
         	if(data.object(i).Type == "pr") {
-            html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, "", new Sky.TList());
+            html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, "", NeoX.Modules.LinkerBrowseIndex.Config.emptyList);
         	} else {
+        		console.log(data.object(i));
             html += NeoX.Modules.LinkerBrowseIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
         	}
         }
@@ -195,26 +193,13 @@ var MLinkerBrowseIndex_Implementation = {
         '</div>';
         
       $(NeoX.Modules.LinkerBrowseIndex.getConfig().dataContainer).html(html);
-      $(NeoX.Modules.LinkerBrowseIndex.getConfig().dataContainer).find("tr").each(function() {
-        if($(this).hasClass('table-header')) {
-          return;
-        }
-        var theFirstCell = $(this).find("td").eq(0);
-        var theFirstCellWidth = theFirstCell.width();
-        var levelWrapperWidth = theFirstCell.find(".level-indent-wrapper").width();
-        var contentWrapperWidth = theFirstCellWidth - levelWrapperWidth - 10;
-        theFirstCell.find(".content-indent").width(contentWrapperWidth);
-      });
     },
     
     repaintRow: function(rowNumber, rep, highlightArray) {
     	html = '<td class="rep" data-id="' + rowNumber + '">';
       for(var j = 0; j < highlightArray.count(); j++) {
         html += '<span class="highlighted ' + highlightArray.item(j).Style + '">';
-        html += NeoX.Modules.LinkerBrowseIndex.repaintChars(
-          rep.substr(highlightArray.item(j).Interval.From, highlightArray.item(j).Interval.Until - highlightArray.item(j).Interval.From), 
-          highlightArray.item(j).Interval.From
-        );
+        html += rep.substr(highlightArray.item(j).Interval.From, highlightArray.item(j).Interval.Until - highlightArray.item(j).Interval.From);
         html += '</span>';
       }
       html += '</td>';
