@@ -5,6 +5,7 @@ var MLinkerTrainIndex_Implementation = {
   construct: function(settings) {
     this.setConfig($.extend(this.getConfig(), settings));
     this.getConfig().data = new Sky.TStringList();
+    this.getConfig().emptyList = new Sky.TList();
   },
   
   properties: {
@@ -15,6 +16,7 @@ var MLinkerTrainIndex_Implementation = {
         skipBtn: '.skipBtn',
         finishBtn: '.finishBtn'
       },
+      emptyList: null,
       maxChildren: 0,
       moduleScript: 'train.php',
       moduleType: 'linker',
@@ -48,9 +50,6 @@ var MLinkerTrainIndex_Implementation = {
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().Buttons.finishBtn, NeoX.Modules.LinkerTrainIndex.finish);
       NeoX.Modules.LinkerTrainIndex.hookEvent("click", NeoX.Modules.LinkerTrainIndex.getConfig().charSelector, NeoX.Modules.LinkerTrainIndex.charClicked);
       NeoX.Modules.LinkerTrainIndex.hookEvent("change", "#categoryId", NeoX.Modules.LinkerTrainIndex.catChanged);
-      $(window).resize(function() {
-      	NeoX.Modules.LinkerTrainIndex.repaint();
-      });
       $(document).on("keydown", NeoX.Modules.LinkerTrainIndex.onKeyDown);
       $(document).on("keyup", NeoX.Modules.LinkerTrainIndex.onKeyUp);
     },
@@ -260,37 +259,28 @@ var MLinkerTrainIndex_Implementation = {
         if(data.object(i).Type == 'se') {
           html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, data.object(i).Rep, data.object(i).Highlights);
         } else {
-        	html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, "", new Sky.TList());
+        	html += NeoX.Modules.LinkerTrainIndex.repaintRow(1, "", NeoX.Modules.LinkerTrainIndex.Config.emptyList);
         }
         html += NeoX.Modules.LinkerTrainIndex.repaintProtoRow(data.object(i).Style);
+        
         for(var j = 0; j < NeoX.Modules.LinkerTrainIndex.Config.maxChildren; j++) {
         	if(data.object(i).Type == "pr") {
-            html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", new Sky.TList());
+            html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", NeoX.Modules.LinkerTrainIndex.Config.emptyList);
         	} else {
         		if(j < data.object(i).Children.count()) {
               html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, data.object(i).Rep, data.object(i).Children.object(j));
         		} else {
-        			html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", new Sky.TList());
+        			html += NeoX.Modules.LinkerTrainIndex.repaintRow(j + 2, "", NeoX.Modules.LinkerTrainIndex.Config.emptyList);
         		}
         	}
         }
         html += '</tr>';
       }
-        
+      
       html += '</table>' +
         '</div>';
-        
+      
       $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).html(html);
-      $(NeoX.Modules.LinkerTrainIndex.getConfig().dataContainer).find("tr").each(function() {
-        if($(this).hasClass('table-header')) {
-          return;
-        }
-        var theFirstCell = $(this).find("td").eq(0);
-        var theFirstCellWidth = theFirstCell.width();
-        var levelWrapperWidth = theFirstCell.find(".level-indent-wrapper").width();
-        var contentWrapperWidth = theFirstCellWidth - levelWrapperWidth - 10;
-        theFirstCell.find(".content-indent").width(contentWrapperWidth);
-      });
     },
     
     repaintRow: function(rowNumber, rep, highlightArray) {
@@ -379,12 +369,13 @@ var MLinkerTrainIndex_Implementation = {
         	} else {
         		NeoX.Modules.LinkerTrainIndex.getConfig().data.object(repIndex).highlight(TheInterval, NeoX.Modules.LinkerTrainIndex.getConfig().selectedStyle, colIndex - 2);
         	}
+        	
+        	//adfasfaf
           NeoX.Modules.LinkerTrainIndex.repaint();
         } else {
         	throw "StartBiggerThenStopException";
         }
       }
-      
     },
     
     createCSS: function(AStyle) {
