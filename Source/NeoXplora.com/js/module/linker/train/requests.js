@@ -41,7 +41,7 @@ var MLinkerTrainRequests_Implementation = {
         data: {
           'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
           'action': 'save',
-          'data': data,
+          'data': JSON.stringify(data),
           'pageId': pageId
         },
         success: NeoX.Modules.LinkerTrainRequests.saveCallback
@@ -76,7 +76,7 @@ var MLinkerTrainRequests_Implementation = {
         data: {
           'type': NeoX.Modules.LinkerTrainIndex.getConfig().moduleType,
           'action': 'finish',
-          'data': data,
+          'data': JSON.stringify(data),
           'pageId': pageId
         },
         success: NeoX.Modules.LinkerTrainRequests.finishCallback

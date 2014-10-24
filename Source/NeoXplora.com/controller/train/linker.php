@@ -195,7 +195,8 @@ class TTrainLinker extends TTrain {
     
     if(!$flag) return;
     
-    $data = $_POST['data'];
+    $data = json_decode($_POST['data'], true);
+    
     $pageId = (isset($_POST['pageId']) && $_POST['pageId'] != "")?$_POST['pageId']:$_SESSION['pageID'];
     
     if(!$this->core->model("linker", "train")->checkPageId($pageId)) return;
@@ -215,7 +216,7 @@ class TTrainLinker extends TTrain {
     
     if(!$flag) return;
     
-    $data = $_POST['data'];
+    $data = json_decode($_POST['data'], true);
     $pageId = (isset($_POST['pageId']) && $_POST['pageId'] != "")?$_POST['pageId']:$_SESSION['pageID'];
     
     if(!$this->core->model("linker", "train")->checkPageId($pageId)) return;
