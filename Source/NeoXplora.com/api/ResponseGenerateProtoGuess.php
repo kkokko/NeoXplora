@@ -26,17 +26,18 @@ class TResponseGenerateProtoGuess extends TResponse {
       "name" => "Matched Split",
       "value" => "",
       "type" => "text"
+    ),
+    "SplitMatchScore" => array(
+      "name" => "Split Match Score",
+      "value" => "",
+      "type" => "numeric"
+    ),
+    "SplitStatus" => array(
+      "name" => "Split Status",
+      "value" => "",
+      "type" => "bool"
     )
   );
-  
-  public function __construct($data = null) {
-    if($data) {
-      $this->properties['GeneratedSplit']['value'] = ((string) $data->GeneratedSplit)?$data->GeneratedSplit:null;
-      $this->properties['GeneratedPos']['value'] = ((string) $data->GeneratedPos)?$data->GeneratedPos:null;
-      $this->properties['MatchedProto']['value'] = ((string) $data->MatchedProto)?$data->MatchedProto:null;
-      $this->properties['MatchedSplit']['value'] = ((string) $data->MatchedSplit)?$data->MatchedSplit:null;
-    }
-  }
   
 }
 

@@ -7,6 +7,18 @@ class TRequest {
   protected $properties = array(
   );
   
+  public function __construct($data = null) {
+    $this->properties['ApiKey'] = array(
+      "name" => "ApiKey",
+      "value" => "",
+      "type" => "text"
+    );
+    
+    foreach($this->properties as $key => $property) {
+      $this->properties[$key]['value'] = $this->getCheckedValueFromSource($key, $data);
+    }
+  }
+  
   public function &__get($key) {
     $return = null;
     if(isset($this->properties[$key])) {
@@ -22,6 +34,39 @@ class TRequest {
         "value" => $value,
         "type" => $type
       );
+    }
+  }
+  
+  protected function getCheckedValueFromSource($key, $source) {
+    if(!isset($this->properties[$key]['type'])) {
+      return $this->getValueFromSource($key, $source);
+    }
+    
+    switch($this->properties[$key]['type']) {
+      case 'text':
+        return ($this->getValueFromSource($key, $source) !== false)?$this->getValueFromSource($key, $source):$this->properties[$key]['value'];
+        break;
+      case 'numeric':
+        return (is_numeric($this->getValueFromSource($key, $source)))?$this->getValueFromSource($key, $source):$this->properties[$key]['value'];
+        break;
+      case 'int':
+        return (is_int($this->getValueFromSource($key, $source)))?$this->getValueFromSource($key, $source):$this->properties[$key]['value'];
+        break;
+      case 'bool':
+        return $this->getValueFromSource;
+        break;
+      default:
+        
+    }
+  }
+  
+  protected function getValueFromSource($key, $source) {
+    if(is_array($source) && isset($source[$key])) {
+      return $source[$key];
+    } else if($source !== null && !is_array($source)) {
+      return $source;
+    } else {
+      return false;
     }
   }
   
@@ -59,6 +104,7 @@ class TRequest {
     $xml .= "<" . $aPropertyKey . ">";
     switch($aPropertyType) {
       case "text":
+      case "numeric":
         $xml .= $aPropertyValue;
         break;
       case "bool":
@@ -102,6 +148,7 @@ class TRequest {
     $html = '';
     switch($aPropertyType) {
       case "text":
+      case "numeric":
         $html .= '<div class="field">
           <label>' . $aPropertyName . '</label>
           <div class="ui left labeled input">

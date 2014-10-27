@@ -24,14 +24,6 @@ class TRequestGenerateRep extends TRequest {
     )
   );
   
-  public function __construct($data = null) {
-    if($data) {
-      $this->properties['ApiKey']['value'] = ($data['ApiKey'])?$data['ApiKey']:'';
-      $this->properties['SentenceText']['value'] = ($data['SentenceText'])?$data['SentenceText']:'';
-      $this->properties['OutputSentence']['value'] = (isset($data['OutputSentence']))?true:null;
-    }
-  }
-  
 }
 
 ?>

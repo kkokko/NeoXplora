@@ -16,15 +16,13 @@ class TRequestGenerateProtoGuess extends TRequest {
       "name" => "Proto-Sentence",
       "value" => "I play computer games because I am bored.",
       "type" => "text"
-    )
+    ),
+    "SplitThreshold" => array(
+      "name" => "Split Threshold",
+      "value" => "0.1",
+      "type" => "numeric"
+    ), 
   );
-  
-  public function __construct($data = null) {
-    if($data) {
-      $this->properties['ApiKey']['value'] = ($data['ApiKey'])?$data['ApiKey']:'';
-      $this->properties['SentenceText']['value'] = ($data['SentenceText'])?$data['SentenceText']:'';
-    }
-  }
   
 }
 

@@ -19,13 +19,6 @@ class TResponseGenerateRep extends TResponse {
     )
   );
   
-  public function __construct($data = null) {
-    if($data) {
-      $this->properties['RepText']['value'] = ((string) $data->RepText)?$data->RepText:null;
-      $this->properties['MatchedSentence']['value'] = ((string) $data->MatchedSentence)?$data->MatchedSentence:null;
-    }
-  }
-  
 }
 
 ?>

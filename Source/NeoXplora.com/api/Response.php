@@ -7,6 +7,12 @@ class TResponse {
   protected $properties = array(
   );
   
+  public function __construct($data = null) {
+    foreach($this->properties as $key => $property) {
+      $this->properties[$key]['value'] = ((string) $data->$key !== '')?$data->$key:null;
+    }
+  }
+  
   public function &__get($key) {
     $return = null;
     if(isset($this->properties[$key])) {
@@ -60,6 +66,7 @@ class TResponse {
     $xml .= "<" . $aPropertyKey . ">";
     switch($aPropertyType) {
       case "text":
+      case "numeric":
         $xml .= $aPropertyValue;
         break;
       case "bool":
@@ -103,6 +110,7 @@ class TResponse {
     $html = '';
     switch($aPropertyType) {
       case "text":
+      case "numeric":
         $html .= '<div class="field">
           <label>' . $aPropertyName . '</label>
           <div class="ui left labeled input">
@@ -112,9 +120,9 @@ class TResponse {
         break;
       case "bool":
         $html .= '<div class="field">
-              <div class="ui toggle checkbox">
-                <input id="' . $aPropertyKey . '" type="checkbox" readonly="readyonly" ' . (($aPropertyValue == true)?' checked="checked"':'') . '>
-                <label for="' . $aPropertyKey . '">' . $aPropertyName . '</label>
+              <label>' . $aPropertyName . '</label>
+              <div class="ui left labeled input">
+                <input type="text" id="' . $aPropertyKey . '" readonly="readyonly" value="' . (($aPropertyValue)?"True":"False") . '">
               </div>
             </div>';
         break;
