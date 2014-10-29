@@ -35,37 +35,9 @@
         </div>
       </div>
       <div class="eight wide middle column">
-        
-        <div class="ui tabular filter menu top attached">
-          <a class="active item">Request</a>
-          <div class="item right fitted" style="padding-top: 10px;">
-            <div class="ui label floating right" style="top: 6px; left: -55px; width: 85px; background-color: transparent; color: #666;">
-              API Key:
-            </div>
-            <div class="ui right input">
-              <input type="text" id="ApiKey" value="<?php echo $this->ApiKey; ?>">
-            </div>
-          </div>
-        </div>
-        <div class="ui bottom attached segment stacked selection">
-          <form action="api.php?name=<?php echo $this->requestName; ?>" method="post" id="requestForm">
-            <div class="ui form">
-              <?php echo $this->requestHTML; ?>
-              <input type="hidden" name="ApiKey" />
-              <div class="ui purple submit button" id="executeRequest">Execute</div>
-            </div>
-          </form>
-        </div>
-        
+        <?php echo $this->requestHTML; ?>
         <br/>
-        <div class="ui tabular filter menu top attached">
-          <a class="active item">Response</a>
-        </div>
-        <div class="ui segment stacked selection bottom attached">
-          <div class="ui form">
-            <?php echo $this->responseHTML; ?>
-          </div>
-        </div>
+        <?php echo $this->responseHTML; ?>
       </div>
       <div class="six wide right column">
         <div class="2 fluid ui buttons">

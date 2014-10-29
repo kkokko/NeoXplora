@@ -9,17 +9,17 @@ class TRequestGenerateRep extends TRequest {
   protected $properties = array(
     "ApiKey" => array(
       "name" => "ApiKey",
-      "value" => "",
+      "default" => "",
       "type" => "text"
     ),
     "SentenceText" => array(
       "name" => "Sentence",
-      "value" => "My name is Mimi",
+      "default" => "My name is Mimi",
       "type" => "text"
     ),
     "OutputSentence" => array(
       "name" => "Output Sentence",
-      "value" => null,
+      "default" => null,
       "type" => "bool"
     )
   );

@@ -9,19 +9,29 @@ class TRequestGenerateProtoGuess extends TRequest {
   protected $properties = array(
     "ApiKey" => array(
       "name" => "ApiKey",
-      "value" => "",
+      "default" => "",
       "type" => "text"
     ),
     "SentenceText" => array(
       "name" => "Proto-Sentence",
-      "value" => "I play computer games because I am bored.",
+      "default" => "I play computer games because I am bored.",
       "type" => "text"
     ),
     "SplitThreshold" => array(
       "name" => "Split Threshold",
-      "value" => "0.1",
+      "default" => "0.1",
       "type" => "numeric"
+    ),
+    "SepWeight" => array(
+      "name" => "Separator Weight",
+      "default" => "10",
+      "type" => "int"
     ), 
+    "UseExact" => array(
+      "name" => "Exact Match",
+      "default" => "true",
+      "type" => "bool"
+    )
   );
   
 }
