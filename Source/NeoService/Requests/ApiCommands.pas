@@ -18,11 +18,6 @@ type
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
 
-  TApiCommandGenerateProtoGuess2 = class(TApiCommand)
-  protected
-    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
-  end;
-
   TApiCommandGenerateRep = class(TApiCommand)
   protected
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
@@ -71,33 +66,13 @@ end;
 { TApiCommandGenerateProtoGuess }
 
 class function TApiCommandGenerateProtoGuess.DoExecute(ARequest: TRequest): TGenericResponse;
-var
-  TheRequest: TApiRequestGenerateProtoGuess;
-  TheResults: TServerCore.TGenerateProtoGuessRecord;
 begin
-  TheRequest := ARequest as TApiRequestGenerateProtoGuess;
-  TheResults := Core.ApiGenerateProtoGuess(TheRequest.SentenceText, TheRequest.ApiKey);
-  Result := TApiResponseGenerateProtoGuess.Create(TheResults.Split, TheResults.Pos,
-    TheResults.MatchedProto, TheResults.MatchedSplit);
-end;
-
-{ TApiCommandGenerateProtoGuess2 }
-
-class function TApiCommandGenerateProtoGuess2.DoExecute(ARequest: TRequest): TGenericResponse;
-var
-  TheRequest: TApiRequestGenerateProtoGuess2;
-  TheResults: TServerCore.TGenerateProtoGuessRecord2;
-begin
-  TheRequest := ARequest as TApiRequestGenerateProtoGuess2;
-  TheResults := Core.ApiGenerateProtoGuess2(TheRequest.SentenceText, TheRequest.ApiKey);
-  Result := TApiResponseGenerateProtoGuess2.Create(TheResults.Split, TheResults.Pos,
-    TheResults.MatchedProto, TheResults.MatchedSplit, TheResults.MatchScore);
+  Result := TApiResponseGenerateProtoGuess.Create(Core.ApiGenerateProtoGuess(ARequest as TApiRequestGenerateProtoGuess));
 end;
 
 initialization
   // please keep these sorted
   TApiCommandGenerateProtoGuess.RegisterClass(TApiRequestGenerateProtoGuess);
-  TApiCommandGenerateProtoGuess2.RegisterClass(TApiRequestGenerateProtoGuess2);
   TApiCommandGenerateRep.RegisterClass(TApiRequestGenerateRep);
 
 end.

@@ -125,6 +125,11 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\CRep.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\OrderInPage.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\CRepHighlight.pas"/>
+			<DCCReference Include="Api\Entity\ApiGeneratedSplit.pas"/>
+			<DCCReference Include="Api\Entity\ApiGeneratedSplitFull.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SplitGuessAlgorithm.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

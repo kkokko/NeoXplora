@@ -20,7 +20,7 @@ type
 
     procedure AddSentence(SentenceWords: TSkyStringStringList; AnId: TId; const ASentence, ARepresentation, ASemRep, APos: string);
     procedure GetRepGuess(SentenceWords: TSkyStringStringList; const ASentence, APos: string; AStep: Integer;
-      AIsTurboMode: Boolean; AResult: TGuessObject; ACalculateOnlyD: Boolean = False);
+      BIsTurboMode: Boolean; AResult: TGuessObject; BCalculateOnlyD: Boolean = False; BAllowExactMatch: Boolean = False);
     procedure RecalculateGuesses(ASentenceWordList: TSkyStringStringList; ASentence: TSentenceWithGuesses);
 
     property SentenceCount: Integer read GetSentenceCount;
@@ -29,6 +29,9 @@ type
   end;
 
 implementation
+
+uses
+  Math;
 
 { TSentenceList }
 
@@ -82,7 +85,7 @@ begin
 end;
 
 procedure TSentenceList.GetRepGuess(SentenceWords: TSkyStringStringList; const ASentence, APos: string; AStep: Integer;
-  AIsTurboMode: Boolean; AResult: TGuessObject; ACalculateOnlyD: Boolean);
+  BIsTurboMode: Boolean; AResult: TGuessObject; BCalculateOnlyD: Boolean = False; BAllowExactMatch: Boolean = False);
 var
   TheBestScoreA, TheBestScoreB, TheBestScoreC, TheBestScoreD: Double;
   TheCurrentSentence: TSentenceListElement;
@@ -103,11 +106,11 @@ begin
       if I mod AStep = 0 then
       begin
         TheSentenceAlgorithm.Element2 := FSentences.Objects[I] as TSentenceListElement;
-        if AIsTurboMode and not CheckSmallPosMatch(TheCurrentSentence, TheSentenceAlgorithm.Element2) then
+        if BIsTurboMode and not CheckSmallPosMatch(TheCurrentSentence, TheSentenceAlgorithm.Element2) then
           Continue;
-        if TheSentenceAlgorithm.Element1.Sentence = TheSentenceAlgorithm.Element2.Sentence then
+        if (not BAllowExactMatch) and (TheSentenceAlgorithm.Element1.Sentence = TheSentenceAlgorithm.Element2.Sentence) then
           Continue;
-        if not ACalculateOnlyD then
+        if not BCalculateOnlyD then
         begin
           TheSentenceAlgorithm.RunTextMatch(TheBestScoreA, AResult.FGuessAId, AResult.FRepGuessA, AResult.FSRepGuessA, AResult.FMatchSentenceA);
           TheSentenceAlgorithm.RunPosMatch(TheBestScoreB, AResult.FGuessBId, AResult.FRepGuessB, AResult.FSRepGuessB, AResult.FMatchSentenceB);
@@ -119,6 +122,9 @@ begin
     TheCurrentSentence.Free;
     TheSentenceAlgorithm.Free;
   end;
+  AResult.MatchScore := Max(TheBestScoreA, TheBestScoreB);
+  AResult.MatchScore := Max(AResult.MatchScore, TheBestScoreC);
+  AResult.MatchScore := Max(AResult.MatchScore, TheBestScoreD);
 end;
 
 function TSentenceList.GetSentenceCount: Integer;

@@ -70,3 +70,5 @@ UpdateExternal.bat
 /Source/NeoService/Build/Log
 /Source/NeoServiceTests/Dcu
 /Source/NeoServiceTests/Build
+/Source/NeoXplora.com/sql.log
+/Source/NeoXplora.com/dblog.sql

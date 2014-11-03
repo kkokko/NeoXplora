@@ -57,10 +57,18 @@ object frmDebug: TfrmDebug
     Height = 210
     Lines.Strings = (
       '!api.xml.php'
+      '!<ApiRequestGenerateProtoGuess>'
+      '!  <ApiKey></ApiKey>'
       
-        '!<ApiRequestGenerateProtoGuess><ApiKey>abc</ApiKey><SentenceText' +
-        '>I play computer games because I am bored.</SentenceText></ApiRe' +
-        'questGenerateProtoGuess>')
+        '!  <SentenceText>A man wearing a heavy army jacket, a pullover r' +
+        'ed cap, and dark sunglasses walked into the First American Bank ' +
+        'at the corner of Maple and Main streets in downtown Short Beach.' +
+        '</SentenceText>'
+      '!  <SplitThreshold>0.6</SplitThreshold>'
+      '!  <SepWeight>10</SepWeight>'
+      '!  <UseExact>True</UseExact>'
+      '!  <FullDetails>True</FullDetails>'
+      '!</ApiRequestGenerateProtoGuess>')
     ScrollBars = ssBoth
     TabOrder = 2
     WordWrap = False

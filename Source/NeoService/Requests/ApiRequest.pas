@@ -3,7 +3,7 @@ unit ApiRequest;
 interface
 
 uses
-  Communication, EntityList, Entity, TypesConsts, GuessObject, SkyIdList;
+  Communication, EntityList, Entity, TypesConsts, GuessObject, SkyIdList, ApiGeneratedSplit, ApiGeneratedSplitFull;
 
 type
 {$Region 'TApiRequestGenerateProtoGuess'}
@@ -11,54 +11,29 @@ type
   private
     FApiKey: string;
     FSentenceText: string;
+    FSplitThreshold: Double;
+    FUseExact: Boolean;
+    FSepWeight: Integer;
+    FMaxIterations: Integer;
+    FFullDetails: Boolean;
   published
     property ApiKey: string read FApiKey write FApiKey;
+    property MaxIterations: Integer read FMaxIterations write FMaxIterations;
     property SentenceText: string read FSentenceText write FSentenceText;
+    property SepWeight: Integer read FSepWeight write FSepWeight;
+    property SplitThreshold: Double read FSplitThreshold write FSplitThreshold;
+    property UseExact: Boolean read FUseExact write FUseExact;
+    property FullDetails: Boolean read FFullDetails write FFullDetails;
   end;
   TApiResponseGenerateProtoGuess = class(TResponse)
   private
-    FMatchedSplit: string;
-    FMatchedProto: string;
-    FGeneratedPos: string;
-    FGeneratedSplit: string;
+    FDataSimple: TApiGeneratedSplit;
+    FDataFull: TApiGeneratedSplitFull;
   public
-    constructor Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto, AMatchedSplit: string); reintroduce;
+    constructor Create(AData: TApiGeneratedSplit); reintroduce;
   published
-    property GeneratedSplit: string read FGeneratedSplit write FGeneratedSplit;
-    property GeneratedPos: string read FGeneratedPos write FGeneratedPos;
-    property MatchedProto: string read FMatchedProto write FMatchedProto;
-    property MatchedSplit: string read FMatchedSplit write FMatchedSplit;
-  end;
-
-{$EndRegion}
-{$Region 'TApiRequestGenerateProtoGuess2'}
-  TApiRequestGenerateProtoGuess2 = class(TRequest)
-  private
-    FApiKey: string;
-    FSentenceText: string;
-    FIterateResults: Boolean;
-    FThresholdScore: Double;
-  published
-    property ApiKey: string read FApiKey write FApiKey;
-    property IterateResults: Boolean read FIterateResults write FIterateResults;
-    property SentenceText: string read FSentenceText write FSentenceText;
-    property ThresholdScore: Double read FThresholdScore write FThresholdScore;
-  end;
-  TApiResponseGenerateProtoGuess2 = class(TResponse)
-  private
-    FMatchedSplit: string;
-    FMatchedProto: string;
-    FGeneratedPos: string;
-    FGeneratedSplit: string;
-    FMatchScore: Double;
-  public
-    constructor Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto, AMatchedSplit: string; AMatchScore: Double); reintroduce;
-  published
-    property GeneratedSplit: string read FGeneratedSplit write FGeneratedSplit;
-    property GeneratedPos: string read FGeneratedPos write FGeneratedPos;
-    property MatchedProto: string read FMatchedProto write FMatchedProto;
-    property MatchedSplit: string read FMatchedSplit write FMatchedSplit;
-    property MatchScore: Double read FMatchScore write FMatchScore;
+    property DataSimple: TApiGeneratedSplit read FDataSimple write FDataSimple;
+    property DataFull: TApiGeneratedSplitFull read FDataFull write FDataFull;
   end;
 
 {$EndRegion}
@@ -102,26 +77,13 @@ end;
 
 { TApiResponseGenerateProtoGuess }
 
-constructor TApiResponseGenerateProtoGuess.Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto, AMatchedSplit: string);
+constructor TApiResponseGenerateProtoGuess.Create(AData: TApiGeneratedSplit);
 begin
   inherited Create;
-  FGeneratedSplit := AGeneratedSplit;
-  FGeneratedPos := AGeneratedPos;
-  FMatchedProto := AMatchedProto;
-  FMatchedSplit := AMatchedSplit;
-end;
-
-{ TApiResponseGenerateProtoGuess2 }
-
-constructor TApiResponseGenerateProtoGuess2.Create(const AGeneratedSplit, AGeneratedPos, AMatchedProto,
-  AMatchedSplit: string; AMatchScore: Double);
-begin
-  inherited Create;
-  FGeneratedSplit := AGeneratedSplit;
-  FGeneratedPos := AGeneratedPos;
-  FMatchedProto := AMatchedProto;
-  FMatchedSplit := AMatchedSplit;
-  FMatchScore := AMatchScore;
+  if AData is TApiGeneratedSplitFull then
+    FDataFull := AData as TApiGeneratedSplitFull
+  else
+    FDataSimple := AData;
 end;
 
 initialization

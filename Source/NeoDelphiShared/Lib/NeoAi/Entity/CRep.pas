@@ -32,7 +32,7 @@ begin
 end;
 
 initialization
-  TCRep.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'CRep');
+  TCRep.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'crep');
   TCRep.RegisterToken(TCRep.Tok_Id, 'Id');
   TCRep.RegisterToken(TCRep.Tok_PageId, 'PageId');
 

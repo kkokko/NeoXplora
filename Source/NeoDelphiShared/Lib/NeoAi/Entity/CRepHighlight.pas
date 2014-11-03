@@ -32,7 +32,7 @@ begin
 end;
 
 initialization
-  TCRepHighlight.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'CRepHighlight_highlight');
+  TCRepHighlight.RegisterEntityClassWithMappingToTable(ConstNeoPrefix + 'crep_highlight');
   TCRepHighlight.RegisterToken(TCRepHighlight.Tok_Id, 'Id');
   TCRepHighlight.RegisterToken(TCRepHighlight.Tok_PageId, 'PageId');
 

@@ -13,7 +13,6 @@ type
       TAlignMatchFunction = function(AnIndex1, AnIndex2: Integer): Double of object;
     const
       ConstWeightMatchMax = 2;
-      ConstWeightMatchProto = 10;
       ConstWeightMisMatch = -1;
       ConstWeightGap = -1;
   public
@@ -31,6 +30,7 @@ type
     FHypernym: THypernym;
     FScoringMode: TScoringMode;
     FSpecialWords: TStringList;
+    FWeightMatchProto: Integer;
 
     // compare methods used in the Smith Waterman algorithm
     function CheckTextMatch(AnIndex1, AnIndex2: Integer): Double;
@@ -67,6 +67,7 @@ type
     property Element1: TSentenceListElement read FElement1 write FElement1;
     property Element2: TSentenceListElement read FElement2 write FElement2;
     property ScoringMode: TScoringMode read FScoringMode write FScoringMode;
+    property WeightMatchProto: Integer read FWeightMatchProto write FWeightMatchProto;
   end;
 
 implementation
@@ -80,7 +81,7 @@ function TSentenceAlgorithm.CheckTextMatch(AnIndex1, AnIndex2: Integer): Double;
 begin
   if Element1.SentenceWords[AnIndex1] = Element2.SentenceWords[AnIndex2] then
     if (FScoringMode = smProto) and (FSpecialWords.IndexOf(Element1.SentenceWords[AnIndex1]) <> -1) then
-      Result := ConstWeightMatchProto
+      Result := FWeightMatchProto
     else
       Result := ConstWeightMatchMax
   else
@@ -118,10 +119,10 @@ begin
   begin
     if FAlignOutList[I] <> '-' then
       Continue;
-    if FindOutListWordAttachPosition(I, -1, TheIndex) then // search to the left
-      FAlignInList[TheIndex] := FAlignInList[TheIndex] + ' ' + FAlignInList[I]
-    else if FindOutListWordAttachPosition(I, +1, TheIndex) then // search to the right
-      FAlignInList[TheIndex] := FAlignInList[I] + ' ' + FAlignInList[TheIndex];
+    if FindOutListWordAttachPosition(I, +1, TheIndex) then // search to the right
+      FAlignInList[TheIndex] := FAlignInList[I] + ' ' + FAlignInList[TheIndex]
+    else if FindOutListWordAttachPosition(I, -1, TheIndex) then // search to the left
+      FAlignInList[TheIndex] := FAlignInList[TheIndex] + ' ' + FAlignInList[I];
   end;
 end;
 
@@ -368,9 +369,11 @@ begin
 
     // replace the word if found
     TheListIndex := FAlignOutList.IndexOf(TheWord);
-    if (TheListIndex <> -1) and (FAlignInList[TheListIndex] <> '-') and
-      (AnsiCompareText(FAlignInList[TheListIndex], TheWord) <> 0) then
-      Result := Result + FAlignInList[TheListIndex]
+    if (TheListIndex <> -1) and (AnsiCompareText(FAlignInList[TheListIndex], TheWord) <> 0) then
+      if (FAlignInList[TheListIndex] <> '-') then
+        Result := Result + FAlignInList[TheListIndex]
+      else
+        Continue
     else
       Result := Result + TheWord;
   end;
@@ -413,6 +416,7 @@ begin
   FSpecialWords.Add('where');
   FHyperNym := THyperNym.Create;
   FScoringMode := smNormal;
+  FWeightMatchProto := 10;
 end;
 
 destructor TSentenceAlgorithm.Destroy;

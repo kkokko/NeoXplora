@@ -64,7 +64,12 @@ uses
   Proto in '..\NeoDelphiShared\Lib\NeoAi\Entity\Proto.pas',
   Split in '..\NeoDelphiShared\Lib\NeoAi\Entity\Split.pas',
   CRep in '..\NeoDelphiShared\Lib\NeoAi\Entity\CRep.pas',
-  OrderInPage in '..\NeoDelphiShared\Lib\NeoAi\Entity\OrderInPage.pas';
+  OrderInPage in '..\NeoDelphiShared\Lib\NeoAi\Entity\OrderInPage.pas',
+  CRepHighlight in '..\NeoDelphiShared\Lib\NeoAi\Entity\CRepHighlight.pas',
+  ApiGeneratedSplit in 'Api\Entity\ApiGeneratedSplit.pas',
+  ApiGeneratedSplitFull in 'Api\Entity\ApiGeneratedSplitFull.pas',
+  SplitGuessAlgorithm in '..\NeoDelphiShared\Lib\NeoAi\Classes\SplitGuessAlgorithm.pas',
+  SplitGuess in '..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas';
 
 {$R *.res}
 
