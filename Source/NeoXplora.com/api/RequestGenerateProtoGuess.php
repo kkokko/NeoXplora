@@ -19,9 +19,14 @@ class TRequestGenerateProtoGuess extends TRequest {
     ),
     "SplitThreshold" => array(
       "name" => "Split Threshold",
-      "default" => "0.1",
+      "default" => "0.6",
       "type" => "numeric"
     ),
+    "MaxIterations" => array(
+      "name" => "Maximum Iterations",
+      "default" => "0",
+      "type" => "int"
+    ), 
     "SepWeight" => array(
       "name" => "Separator Weight",
       "default" => "10",
@@ -30,6 +35,11 @@ class TRequestGenerateProtoGuess extends TRequest {
     "UseExact" => array(
       "name" => "Exact Match",
       "default" => "true",
+      "type" => "bool"
+    ),
+    "FullDetails" => array(
+      "name" => "Show Full Details",
+      "default" => "false",
       "type" => "bool"
     )
   );

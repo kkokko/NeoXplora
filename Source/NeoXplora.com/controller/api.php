@@ -45,11 +45,11 @@ class TApi extends \SkyCore\TObject {
     
     if($requestData) {
       $responsexml = $this->postRequest($this->template->site_url . "api.xml.php", $requestxml);
-        
+      
       if($responsexml != false) {
         $responseData = simplexml_load_string($responsexml);
         $response = new $responseClassName($responseData);
-        $this->template->responseHTML = $response->toHTML();
+        $this->template->responseHTML = $response->display();
         $this->template->responseXML = $response->toXML();
       }
     }

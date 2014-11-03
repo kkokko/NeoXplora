@@ -5,6 +5,7 @@ namespace NeoX\API;
 class TAPIEntity {
 
   protected $readonly = false;
+  protected $displayAs = "html";
   protected $properties = array(
   );
   
@@ -85,6 +86,7 @@ class TAPIEntity {
         }
         return null;
       case 'object':
+        
         if($theValue !== null && $theValue !== false) {
           $theObject = $this->cloneProperties($properties[$key]['template']);
           $this->readValuesIntoProperties($theObject, $theValue);
@@ -102,7 +104,7 @@ class TAPIEntity {
       return $default;
     }
     if(is_object($source)) {
-      if(((string) $source->$key) !== '') {
+      if(($source->$key->count() > 0 && $source->$key->children()->count() > 0) || ((string) $source->$key) !== '') {
         return $source->$key;
       } else {
         return null;
@@ -179,7 +181,74 @@ class TAPIEntity {
     $xml .= "\r\n";
     return $xml;
   }
-    
+
+  public function display() {
+    if($this->displayAs == "html") {
+      return $this->toHTML();
+    } else {
+      
+      return $this->toText();
+    }
+  }
+
+  public function toText() {
+    $html = '<div class="ui tabular filter menu top attached">
+               <a class="active item">Response</a>
+             </div>
+             <div class="ui segment stacked selection bottom attached">
+               <div class="ui form" style="font-size:20px;">';
+    $html .= $this->propertiesToText($this->properties, '', -1);
+    $html .= "</div>
+              </div>";
+    return $html;
+  }
+  
+  protected function propertiesToText($someProperties, $aWrapper, $aDepth) {
+    $text = "<table style='width:100%;". (($aDepth > 0)?"border-bottom: 1px solid #aaa; border-left: 1px solid #000; padding-left: 15px;":'') ."'><tr><td>";
+    foreach($someProperties AS $aPropertyKey => $aPropertyValue) {
+      $text .= $this->propertyToText($aPropertyKey, $aPropertyValue, $aDepth + 1);
+    }
+    $text .= "</td></tr></table>";
+    return $text;
+  }
+
+  protected function propertyToText($aPropertyKey, $aPropertyValue, $depth) {
+    if($aPropertyValue['value'] === null || (is_array($aPropertyValue['value']) && count($aPropertyValue['value']) == 0)){
+      return '';
+    }
+    return $this->getPropertyText($aPropertyKey, $aPropertyValue, $depth);
+  }
+  
+  protected function getPropertyText($aPropertyKey, $aPropertyValue, $depth) {
+    $text = "<table style='width:100%;". (($depth > 0)?"border-left: 1px solid #000; padding-left: 15px;":'') ."'><tr><td  style='border-bottom: 1px solid #ccc';>";
+    if($aPropertyValue['type'] != "object") {
+      $text .= $aPropertyKey . ": ";
+    }
+    switch($aPropertyValue['type']) {
+      case "text":
+      case "numeric":
+      case "int":
+        $text .= $aPropertyValue['value'];
+        break;
+      case "bool":
+        $text .= (strtolower($aPropertyValue['value']) == "true")?"True":"False";
+        break;
+      case "recursive":
+        foreach($aPropertyValue['value'] AS $anElement) {
+          $text .= $this->propertiesToText($anElement, $aPropertyValue['wrapper'], $depth + 1);
+        }
+        break;
+      case "object":
+        $text .= $this->propertiesToText($aPropertyValue['value'], '', $depth);
+        $text .= str_repeat("&nbsp;", $depth * 2);
+        break;
+      default:
+        $text .= $this->propertyToText($aPropertyKey, $aPropertyValue['value'], $depth + 1);
+    }
+    $text .= "</td></tr></table>";
+    return $text;
+  }
+
   public function toHTML() {
     $className = str_replace("NeoX\API\T", "", get_class($this));
     if(stripos($className, "request") === 0) {
@@ -195,7 +264,7 @@ class TAPIEntity {
   public function propertiesToHTML($someProperties, $aWrapper, $showExecute = false) {
     $html = '<div class="ui tabular filter menu top attached">
                 <a class="active item">' . $aWrapper . '</a>';
-    if($showExecute) {            
+    if($showExecute) {          
       $html .= '<div class="item right fitted" style="padding-top: 10px;">
             <div class="ui label floating right" style="top: 6px; left: -55px; width: 85px; background-color: transparent; color: #666;">
               API Key:
