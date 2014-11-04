@@ -131,11 +131,11 @@ class TResponseGenerateProtoGuess extends TResponse {
       $text .= str_repeat("|&nbsp;&nbsp;", $depth);
     } else if($aPropertyKey == "Sentence") {
       $text .= "<td>";
-      if($someProperties['SplitStatus']['value'] == "True") {
+      if($someProperties['SplitStatus']['value'] == "False") {
         $text .= "<b>";
       }
       $text .= $aPropertyValue['value'];
-      if($someProperties['SplitStatus']['value'] == "True") {
+      if($someProperties['SplitStatus']['value'] == "False") {
         $text .= "</b>";
       }
       $text .= "<br/>";
