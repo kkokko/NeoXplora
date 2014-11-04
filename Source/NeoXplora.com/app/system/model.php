@@ -82,7 +82,7 @@
       if(TModel::$LogSqls == true) {
         file_put_contents('dblog.sql', "Query: ". $query . "\r\n", FILE_APPEND | LOCK_EX);
       }
-      $result = $this->db->query($query) or die($this->db->error);
+      $result = $this->db->query($query) or $this->passError($this->db->error);
       if(TModel::$LogSqls == true) {
         file_put_contents('dblog.sql', "Results: ". json_encode($result) . "\r\n\r\n", FILE_APPEND | LOCK_EX);
       }
@@ -97,6 +97,10 @@
       } else {
         return $query;
       }
+    }
+    
+    private function passError($error) {
+      throw new \Exception($this->db->error);
     }
   }
   

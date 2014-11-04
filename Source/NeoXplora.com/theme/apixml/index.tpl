@@ -23,6 +23,9 @@
     <div class="ui celled grid">
       <div class="two wide left column ">
         <div class="ui vertical purple menu fluid">
+          <a class="item" href="panel.php">
+            Go back to panel
+          </a>
           <div class="header item">
             Requests:
           </div>
