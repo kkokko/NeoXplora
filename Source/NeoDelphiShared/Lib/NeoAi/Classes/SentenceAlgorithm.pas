@@ -3,7 +3,7 @@ unit SentenceAlgorithm;
 interface
 
 uses
-  Classes, SysUtils, SentenceListElement, HyperNym, TypesConsts;
+  Classes, SysUtils, SentenceListElement, HyperNym, TypesConsts, SkyLists;
 
 type
   TSentenceAlgorithm = class
@@ -12,7 +12,7 @@ type
     type
       TAlignMatchFunction = function(AnIndex1, AnIndex2: Integer): Double of object;
     const
-      ConstWeightMatchMax = 2;
+      ConstWeightMatch = 2;
       ConstWeightMisMatch = -1;
       ConstWeightGap = -1;
   public
@@ -24,13 +24,14 @@ type
     FElement2: TSentenceListElement;
     FAlignMatchFunction: TAlignMatchFunction;
     FAlignInList: TStringList;
-    FAlignOutList: TStringList;
+    FAlignOutList: TSkyStringList;
     FComparisonLog: TStringList;
     FPosAddScore: Integer;
     FHypernym: THypernym;
     FScoringMode: TScoringMode;
     FSpecialWords: TStringList;
     FWeightMatchProto: Integer;
+    FWeightMax: Integer;
 
     // compare methods used in the Smith Waterman algorithm
     function CheckTextMatch(AnIndex1, AnIndex2: Integer): Double;
@@ -39,6 +40,7 @@ type
     function CheckHybridSemMatch(AnIndex1, AnIndex2: Integer): Double;
 
     function FindOutListWordAttachPosition(AStartPotision, ADirection: Integer; out AnIndex: Integer): Boolean;
+    procedure SetWeightMatchProto(const Value: Integer);
   public
     // for testing purposes, these should be private
     function RunSmithWaterman: Double;
@@ -48,7 +50,7 @@ type
     function TestRunHybridPosMatch: Double;
 
     property AlignInList: TStringList read FAlignInList;
-    property AlignOutList: TStringList read FAlignOutList;
+    property AlignOutList: TSkyStringList read FAlignOutList;
     property ComparisonLog: TStringList read FComparisonLog;
   public
     constructor Create;
@@ -67,13 +69,14 @@ type
     property Element1: TSentenceListElement read FElement1 write FElement1;
     property Element2: TSentenceListElement read FElement2 write FElement2;
     property ScoringMode: TScoringMode read FScoringMode write FScoringMode;
-    property WeightMatchProto: Integer read FWeightMatchProto write FWeightMatchProto;
+    property WeightMatchProto: Integer read FWeightMatchProto write SetWeightMatchProto;
+    property WeightMax: Integer read FWeightMax;
   end;
 
 implementation
 
 uses
-  Math, AppConsts;
+  Math, AppConsts, AppUnit, Separator, Entity;
 
 { TSentenceAlgorithm }
 
@@ -83,7 +86,7 @@ begin
     if (FScoringMode = smProto) and (FSpecialWords.IndexOf(Element1.SentenceWords[AnIndex1]) <> -1) then
       Result := FWeightMatchProto
     else
-      Result := ConstWeightMatchMax
+      Result := ConstWeightMatch
   else
     Result := ConstWeightMisMatch;
 end;
@@ -120,9 +123,9 @@ begin
     if FAlignOutList[I] <> '-' then
       Continue;
     if FindOutListWordAttachPosition(I, +1, TheIndex) then // search to the right
-      FAlignInList[TheIndex] := FAlignInList[I] + ' ' + FAlignInList[TheIndex]
+      FAlignInList[I + 1] := FAlignInList[I] + ' ' + FAlignInList[I + 1]
     else if FindOutListWordAttachPosition(I, -1, TheIndex) then // search to the left
-      FAlignInList[TheIndex] := FAlignInList[TheIndex] + ' ' + FAlignInList[I];
+      FAlignInList[I - 1] := FAlignInList[I - 1] + ' ' + FAlignInList[I];
   end;
 end;
 
@@ -199,7 +202,7 @@ begin
       TheCheckI := (I < 3) or (I > TheCountX - 2);
       TheCheckJ := (J < 3) or (J > TheCountY - 2);
       if TheCheckI and TheCheckJ then
-        TheDiagonalScore := TheScore[I - 1, J - 1] + ConstWeightMatchMax
+        TheDiagonalScore := TheScore[I - 1, J - 1] + FWeightMax
       else if TheCheckI xor TheCheckJ then
         TheDiagonalScore := TheScore[I - 1, J - 1] + ConstWeightMisMatch
       else begin
@@ -207,7 +210,8 @@ begin
         TheDiagonalScore := TheScore[I - 1, J - 1] + TheMatchScore;
 
         FComparisonLog.Add(Format('%2.2f %s(%2d) %s(%2d)', [
-        TheMatchScore, Element1.SentenceWords[I - 3], I - 3, Element2.SentenceWords[J - 3], J - 3
+          TheMatchScore, Element1.SentenceWords[I - 3],
+          I - 3, Element2.SentenceWords[J - 3], J - 3
         ]));
 
       end;
@@ -254,7 +258,7 @@ begin
   if Element2.SentenceWords.Count = 0 then
     Result := 0
   else
-    Result := TheMaxScore / (Max(TheCountX, TheCountY) * ConstWeightMatchMax);
+    Result := TheMaxScore / (Max(TheCountX, TheCountY) * FWeightMax);
 
   // Trace-back
   while (TheMaxI > 0) and (TheMaxJ > 0) do
@@ -264,7 +268,7 @@ begin
         if (TheMaxI >= 3) and (TheMaxI <= TheCountX - 2) then
         begin
           FAlignInList.Insert(0, Element1.SentenceWords[TheMaxI - 3]);
-          FAlignOutList.Insert(0, '-');
+          FAlignOutList.InsertItem(0, '-', nil);
         end;
         Dec(TheMaxI);
       end;
@@ -272,7 +276,7 @@ begin
         if (TheMaxJ >= 3) and (TheMaxJ <= TheCountY - 2) then
         begin
           FAlignInList.Insert(0, '-');
-          FAlignOutList.Insert(0, Element2.SentenceWords[TheMaxJ - 3]);
+          FAlignOutList.InsertItem(0, Element2.SentenceWords[TheMaxJ - 3], nil);
         end;
         Dec(TheMaxJ);
       end;
@@ -280,7 +284,7 @@ begin
         if (TheMaxI >= 3) and (TheMaxJ >= 3) and (TheMaxI <= TheCountX - 2) and (TheMaxJ <= TheCountY - 2) then
         begin
           FAlignInList.Insert(0, Element1.SentenceWords[TheMaxI - 3]);
-          FAlignOutList.Insert(0, Element2.SentenceWords[TheMaxJ - 3]);
+          FAlignOutList.InsertItem(0, Element2.SentenceWords[TheMaxJ - 3], nil);
         end;
         Dec(TheMaxI);
         Dec(TheMaxJ);
@@ -338,11 +342,15 @@ end;
 
 function TSentenceAlgorithm.GetAdjustedRep(const ARep: string): string;
 var
+  TheLastSep: Char;
   TheListIndex: Integer;
+  TheNewIndex: Integer;
+  TheSep: Char;
   TheWordIndex: Integer;
   TheWord: string;
 begin
   Result := '';
+  TheLastSep := #0;
   TheWordIndex := 1;
   while TheWordIndex <= Length(ARep) do
   begin
@@ -351,7 +359,10 @@ begin
     begin
       if not CharInSet(ARep[TheWordIndex], ConstSplitChars) then
         Break;
-      Result := Result + ARep[TheWordIndex];
+      TheSep := ARep[TheWordIndex];
+      if (TheLastSep <> ' ') or (TheSep <> ' ') then
+        Result := Result + ARep[TheWordIndex];
+      TheLastSep := TheSep;
       Inc(TheWordIndex);
     end;
     if TheWordIndex > Length(ARep) then
@@ -369,51 +380,54 @@ begin
 
     // replace the word if found
     TheListIndex := FAlignOutList.IndexOf(TheWord);
+    if TheListIndex <> -1 then
+    begin
+      TheNewIndex := TheListIndex;
+      while (FAlignOutList.Objects[TheListIndex] <> nil) and (TheNewIndex <> - 1) do
+      begin
+        TheNewIndex := FAlignOutList.IndexOf(TheWord, TheNewIndex + 1);
+        if TheNewIndex <> -1 then
+          TheListIndex := TheNewIndex;
+      end;
+      FAlignOutList.Objects[TheListIndex] := Pointer(1);
+    end;
+
     if (TheListIndex <> -1) and (AnsiCompareText(FAlignInList[TheListIndex], TheWord) <> 0) then
       if (FAlignInList[TheListIndex] <> '-') then
-        Result := Result + FAlignInList[TheListIndex]
+      begin
+        Result := Result + FAlignInList[TheListIndex];
+        TheLastSep := #0;
+      end
       else
         Continue
     else
+    begin
       Result := Result + TheWord;
+      TheLastSep := #0;
+    end;
   end;
 end;
 
 constructor TSentenceAlgorithm.Create;
+var
+  TheWords: TEntities;
+  I: Integer;
 begin
-  FAlignOutList := TStringList.Create;
+  FAlignOutList := TSkyStringList.Create;
   FAlignInList := TStringList.Create;
   FComparisonLog := TStringList.Create;
   FSpecialWords := TStringList.Create;
-  FSpecialWords.Sorted := True;
+  FSpecialWords.Sorted := False;
   FSpecialWords.CaseSensitive := False;
-  FSpecialWords.Add('because');
-  FSpecialWords.Add('hence');
-  FSpecialWords.Add('therefore');
-  FSpecialWords.Add('so');
-  FSpecialWords.Add('until');
-  FSpecialWords.Add('between');
-  FSpecialWords.Add('and');
-  FSpecialWords.Add('but');
-  FSpecialWords.Add('after');
-  FSpecialWords.Add('before');
-  FSpecialWords.Add('especially');
-  FSpecialWords.Add('to');
-  FSpecialWords.Add('into');
-  FSpecialWords.Add('of');
-  FSpecialWords.Add('for');
-  FSpecialWords.Add('instead');
-  FSpecialWords.Add('when');
-  FSpecialWords.Add('why');
-  FSpecialWords.Add('what');
-  FSpecialWords.Add('who');
-  FSpecialWords.Add('whom');
-  FSpecialWords.Add('in');
-  FSpecialWords.Add('on');
-  FSpecialWords.Add('onto');
-  FSpecialWords.Add('at');
-  FSpecialWords.Add('by');
-  FSpecialWords.Add('where');
+  TheWords := App.SQLConnection.SelectAll(TSeparator);
+  try
+    FSpecialWords.Sorted := False;
+    for I := 0 to High(TheWords) do
+      FSpecialWords.Add(TheWords[I].Name);
+  finally
+    TEntity.FreeEntities(TheWords);
+  end;
+  FSpecialWords.Sorted := True;
   FHyperNym := THyperNym.Create;
   FScoringMode := smNormal;
   FWeightMatchProto := 10;
@@ -451,6 +465,12 @@ procedure TSentenceAlgorithm.RunTextMatch(var ACurrentBestScore: Double; var AnI
 begin
   FAlignMatchFunction := CheckTextMatch;
   RunCurrentMatch(ACurrentBestScore, AnId, ARepGuess, ASemRepGuess, AMatchSentence);
+end;
+
+procedure TSentenceAlgorithm.SetWeightMatchProto(const Value: Integer);
+begin
+  FWeightMatchProto := Value;
+  FWeightMax := Max(ConstWeightMatch, Value);
 end;
 
 procedure TSentenceAlgorithm.RunPosMatch(var ACurrentBestScore: Double; var AnId: TId; var ARepGuess,

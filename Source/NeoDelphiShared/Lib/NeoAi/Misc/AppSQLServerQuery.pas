@@ -52,7 +52,7 @@ implementation
 
 uses
   StringArray, AppUnit, EntityWithName, PageBase, TypesFunctions, SentenceWithGuesses, TypInfo, CountData, EntityWithId,
-  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto, Split, CRep;
+  SearchPage, SysUtils, RepGroup, IRepRule, CRepRule, Proto, Split, CRep, ProtoOrSentence;
 
 { TAppSQLServerQuery }
 
@@ -183,7 +183,7 @@ begin
     TheQuery.ParamByName('ASentenceStatus2').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssTrainedRep));
     TheQuery.ParamByName('ASentenceStatus3').AsString := GetEnumName(TypeInfo(TSentenceBase.TStatus), Integer(ssReviewedRep));
     TheQuery.Open;
-    Result := TheQuery.ReadMappedEntities([TProto]);
+    Result := TheQuery.ReadMappedEntities([TProtoOrSentence]);
   finally
     TheQuery.Free;
   end;
@@ -432,14 +432,22 @@ class function TAppSQLServerQuery.QueryGetSplitProtos: TDBSQLQuery;
 begin
   Result.Name := 'QueryGetSplitProtos';
   Result.Query := TStringArray.FromArray([
-    'select distinct pr.`', TProto.Tok_Id.SQLToken, '`, pr.`', TProto.Tok_Name.SQLToken,
-    '` from `', TProto.SQLToken, '` pr',
-    ' inner join `', TSentenceBase.SQLToken, '` se on pr.`', TProto.Tok_PageId.SQLToken, '`',
+    'select distinct',
+    ' pr.`', TProto.Tok_Id.SQLToken, '` as `', TProtoOrSentence.EntityToken_Id.SQLToken, '`,',
+    ' pr.`', TProto.Tok_Name.SQLToken, '` as `', TProtoOrSentence.EntityToken_Name.SQLToken, '`,',
+    ' ''stProto'' as `', TProtoOrSentence.Tok_SentenceType.SQLToken, '`',
+    ' from `', TProto.SQLToken, '` pr',
+    ' inner join `', TSentenceBase.SQLToken, '` se on pr.`', TProto.Tok_PageId.SQLToken, '` = se.`', TSentenceBase.Tok_PageId.SQLToken, '`',
     '   and se.`', TSentenceBase.Tok_Status.SQLToken, '` in (:ASentenceStatus1, :ASentenceStatus2, :ASentenceStatus3)',
     ' left join `', TProto.SQLToken, '` pr2 on pr.`', TProto.Tok_Id.SQLToken, '` = pr2.`', TProto.Tok_ParentId.SQLToken, '`',
     '   and pr.`', TProto.Tok_Name.SQLToken, '` <> pr2.`', TProto.Tok_Name.SQLToken, '`',
     ' left join `', TSentenceBase.SQLToken, '` se2 on pr.`', TProto.Tok_Id.SQLToken, '` = se2.`', TSentenceBase.Tok_ProtoId.SQLToken, '`',
-    ' where pr2.`', TProto.Tok_Id.SQLToken, '` is not null or se2.`', TSentenceBase.Tok_Id.SQLToken, '` is not null;'
+    ' where pr2.`', TProto.Tok_Id.SQLToken, '` is not null or se2.`', TSentenceBase.Tok_Id.SQLToken, '` is not null',
+    ' union',
+    ' select distinct',
+    ' `', TSentenceBase.Tok_Id.SQLToken, '`, `', TSentenceBase.Tok_Name.SQLToken,'`, ''stSentence''',
+    ' from `', TSentenceBase.SQLToken, '`',
+    ' where `', TSentenceBase.Tok_Status.SQLToken, '` in (:ASentenceStatus1, :ASentenceStatus2, :ASentenceStatus3)'
   ]);
 end;
 

@@ -3,7 +3,7 @@ unit SplitGuess;
 interface
 
 uses
-  Entity, EntityList, TypesConsts;
+  Entity, EntityList, TypesConsts, SkyLists;
 
 type
   TSplitGuess = class(TEntity)
@@ -16,6 +16,7 @@ type
     FMatchScore: Double;
     FMatchId: TId;
     FMatchText: string;
+    FSubstitutions: TSkyStringStringList;
   published
     property Sentence: string read FSentence write FSentence;
     property Pos: string read FPos write FPos;
@@ -26,6 +27,7 @@ type
     property MatchScore: Double read FMatchScore write FMatchScore;
     property SplitStatus: Boolean read FSplitStatus write FSplitStatus;
     property Splits: TEntityList read FSplits write FSplits;
+    property Substitutions: TSkyStringStringList read FSubstitutions write FSubstitutions;
   end;
 
 implementation
