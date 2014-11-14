@@ -23,6 +23,11 @@ type
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
 
+  TApiCommandSentenceMatch = class(TApiCommand)
+  protected
+    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
+  end;
+
 implementation
 
 uses
@@ -70,9 +75,17 @@ begin
   Result := TApiResponseGenerateProtoGuess.Create(Core.ApiGenerateProtoGuess(ARequest as TApiRequestGenerateProtoGuess));
 end;
 
+{ TApiCommandSentenceMatch }
+
+class function TApiCommandSentenceMatch.DoExecute(ARequest: TRequest): TGenericResponse;
+begin
+  Result := TApiResponseSentenceMatch.Create(Core.ApiSentenceMatch(ARequest as TApiRequestSentenceMatch));
+end;
+
 initialization
   // please keep these sorted
   TApiCommandGenerateProtoGuess.RegisterClass(TApiRequestGenerateProtoGuess);
   TApiCommandGenerateRep.RegisterClass(TApiRequestGenerateRep);
+  TApiCommandSentenceMatch.RegisterClass(TApiRequestSentenceMatch);
 
 end.

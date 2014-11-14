@@ -130,6 +130,8 @@
 			<DCCReference Include="Api\Entity\ApiGeneratedSplitFull.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SplitGuessAlgorithm.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Separator.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\ProtoOrSentence.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

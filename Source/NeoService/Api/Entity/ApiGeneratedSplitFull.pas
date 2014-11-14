@@ -3,7 +3,7 @@ unit ApiGeneratedSplitFull;
 interface
 
 uses
-  ApiGeneratedSplit, SplitGuess;
+  ApiGeneratedSplit, SplitGuess, SkyLists;
 
 type
   TApiGeneratedSplitFull = class(TApiGeneratedSplit)
@@ -12,6 +12,7 @@ type
     FMatchPos: string;
     FPos: string;
     FSplitMatchScore: Double;
+    FSubstitutions: TSkyStringStringList;
   public
     class function CreateFromSplitGuess(ASplitGuess: TSplitGuess): TApiGeneratedSplitFull; reintroduce;
   published
@@ -22,6 +23,7 @@ type
     property MatchScore: Double read FSplitMatchScore write FSplitMatchScore;
     property SplitStatus;
     property Splits;
+    property Substitutions: TSkyStringStringList read FSubstitutions write FSubstitutions;
   end;
 
 implementation
@@ -47,6 +49,7 @@ begin
   if ASplitGuess.Splits <> nil then
     for I := 0 to ASplitGuess.Splits.Count - 1 do
       Result.Splits.Add(CreateFromSplitGuess(ASplitGuess.Splits[I] as TSplitGuess));
+  Result.Substitutions.CopyFrom(ASplitGuess.Substitutions);
 end;
 
 end.

@@ -68,6 +68,11 @@ type
     class function DoExecute(ARequest: TRequest): TGenericResponse; override;
   end;
 
+  TCommandPageAdd = class(TClientCommand)
+  protected
+    class function DoExecute(ARequest: TRequest): TGenericResponse; override;
+  end;
+
 implementation
 
 uses
@@ -219,12 +224,24 @@ begin
   Result := nil;
 end;
 
+{ TCommandPageAdd }
+
+class function TCommandPageAdd.DoExecute(ARequest: TRequest): TGenericResponse;
+var
+  TheRequest: TRequestPageAdd;
+begin
+  TheRequest := ARequest as TRequestPageAdd;
+  Core.PageAdd(TheRequest.CategoryId, TheRequest.Title, TheRequest.Body);
+  Result := nil;
+end;
+
 initialization
   // please keep these sorted
   TCommandGuessRepsForSentenceId.RegisterClass(TRequestGuessRepsForSentenceId);
   TCommandGetPosForPage.RegisterClass(TRequestGetPosForPage);
   TCommandGetPosForSentences.RegisterClass(TRequestGetPosForSentences);
   TCommandGetFullSentencesForPageId.RegisterClass(TRequestGetFullSentencesForPageId);
+  TCommandPageAdd.RegisterClass(TRequestPageAdd);
   TCommandPageEdit.RegisterClass(TRequestPageEdit);
   TCommandPredictAfterSplit.RegisterClass(TRequestPredictAfterSplit);
   TCommandSearch.RegisterClass(TRequestSearch);

@@ -69,7 +69,9 @@ uses
   ApiGeneratedSplit in 'Api\Entity\ApiGeneratedSplit.pas',
   ApiGeneratedSplitFull in 'Api\Entity\ApiGeneratedSplitFull.pas',
   SplitGuessAlgorithm in '..\NeoDelphiShared\Lib\NeoAi\Classes\SplitGuessAlgorithm.pas',
-  SplitGuess in '..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas';
+  SplitGuess in '..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas',
+  Separator in '..\NeoDelphiShared\Lib\NeoAi\Entity\Separator.pas',
+  ProtoOrSentence in '..\NeoDelphiShared\Lib\NeoAi\Entity\ProtoOrSentence.pas';
 
 {$R *.res}
 

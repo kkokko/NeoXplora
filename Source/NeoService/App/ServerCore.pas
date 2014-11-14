@@ -61,12 +61,14 @@ type
     // api commands - please keep sorted
     function ApiGenerateProtoGuess(ARequest: TApiRequestGenerateProtoGuess): TApiGeneratedSplit;
     procedure ApiGenerateRep(const ASentenceText, AnApiKey: string; BOutputSentence: Boolean; out ARep, ASentence: string);
+    function ApiSentenceMatch(ARequest: TApiRequestSentenceMatch): TApiGeneratedSplit;
 
     // user commands - please keep sorted
     function GetFullSentencesForPageId(APageId: TId): TEntities;
     function GetPosForPage(const APage: string; AnUseModifiedPos: Boolean): TObjects;
     function GetPosForSentences(SomeSentences: TEntities; AnUseModifiedPos: Boolean): TEntities;
     function GuessRepsForSentenceId(ASentenceId: TId; AGuessCRep: Boolean = False): TGuessObject;
+    procedure PageAdd(ACategoryId: TId; const ATitle, ABody: string);
     procedure PageEdit(APageId, ACategoryId: TId; const ATitle, ABody: string);
     procedure PredictAfterSplit(SomeSentences: TEntities);
     procedure Search(const ASearchString: string; var AnOffset: Integer; out SomePages: TEntities; out APageCount: Integer);
@@ -111,6 +113,7 @@ begin
   TheSplitGuess := nil;
   TheSplitAlgorithm := TSplitGuessAlgorithm.Create(FHypernym, FPosTagger);
   try
+    TheSplitAlgorithm.LoadProtosFromDatabase;
     TheSplitAlgorithm.SepWeight := ARequest.SepWeight;
     TheSplitAlgorithm.SplitThreshold := ARequest.SplitThreshold;
     TheSplitAlgorithm.UseExact := ARequest.UseExact;
@@ -187,6 +190,25 @@ begin
   finally
     TheGuessObject.Free;
     TheSplitter.Free;
+  end;
+end;
+
+function TServerCore.ApiSentenceMatch(ARequest: TApiRequestSentenceMatch): TApiGeneratedSplit;
+var
+  TheSplitAlgorithm: TSplitGuessAlgorithm;
+  TheSplitGuess: TSplitGuess;
+begin
+  TheSplitGuess := nil;
+  TheSplitAlgorithm := TSplitGuessAlgorithm.Create(FHypernym, FPosTagger);
+  try
+    TheSplitAlgorithm.SepWeight := ARequest.SepWeight;
+    TheSplitAlgorithm.SplitThreshold := 0;
+    TheSplitAlgorithm.UseExact := True;
+    TheSplitGuess := TheSplitAlgorithm.GetSentenceMatch(ARequest.Sentence1Text, ARequest.Sentence2Text);
+    Result := TApiGeneratedSplitFull.CreateFromSplitGuess(TheSplitGuess);
+  finally
+    TheSplitAlgorithm.Free;
+    TheSplitGuess.Free;
   end;
 end;
 
@@ -726,6 +748,22 @@ begin
     end;
   finally
     TheIRepList.Free;
+  end;
+end;
+
+procedure TServerCore.PageAdd(ACategoryId: TId; const ATitle, ABody: string);
+var
+  ThePage: TPageBase;
+begin
+  ThePage := TPageBase.Create;
+  try
+    ThePage.CategoryId := ACategoryId;
+    ThePage.Name := ATitle;
+    ThePage.Body := ABody;
+    ThePage.Source := 'http://neoxplora.com';
+    App.SQLConnection.InsertEntity(ThePage);
+  finally
+    ThePage.Free;
   end;
 end;
 

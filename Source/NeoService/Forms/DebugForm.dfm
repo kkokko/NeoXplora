@@ -57,18 +57,16 @@ object frmDebug: TfrmDebug
     Height = 210
     Lines.Strings = (
       '!api.xml.php'
-      '!<ApiRequestGenerateProtoGuess>'
+      '!<ApiRequestSentenceMatch>'
       '!  <ApiKey></ApiKey>'
       
-        '!  <SentenceText>A man wearing a heavy army jacket, a pullover r' +
-        'ed cap, and dark sunglasses walked into the First American Bank ' +
-        'at the corner of Maple and Main streets in downtown Short Beach.' +
-        '</SentenceText>'
-      '!  <SplitThreshold>0.6</SplitThreshold>'
+        '!  <Sentence1Text>The jet flew away before the soldiers could ge' +
+        't a lock</Sentence1Text>'
+      
+        '!  <Sentence2Text>He didn'#39't even apply his brakes before he cras' +
+        'hed into the support</Sentence2Text>'
       '!  <SepWeight>10</SepWeight>'
-      '!  <UseExact>True</UseExact>'
-      '!  <FullDetails>True</FullDetails>'
-      '!</ApiRequestGenerateProtoGuess>')
+      '!</ApiRequestSentenceMatch>')
     ScrollBars = ssBoth
     TabOrder = 2
     WordWrap = False

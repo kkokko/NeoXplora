@@ -60,6 +60,31 @@ type
   end;
 
 {$EndRegion}
+{$Region 'TApiRequestSentenceMatch'}
+  TApiRequestSentenceMatch = class(TRequest)
+  private
+    FApiKey: string;
+    FSentence1Text: string;
+    FSentence2Text: string;
+    FSepWeight: Integer;
+  published
+    property ApiKey: string read FApiKey write FApiKey;
+    property Sentence1Text: string read FSentence1Text write FSentence1Text;
+    property Sentence2Text: string read FSentence2Text write FSentence2Text;
+    property SepWeight: Integer read FSepWeight write FSepWeight;
+  end;
+  TApiResponseSentenceMatch = class(TResponse)
+  private
+    FDataSimple: TApiGeneratedSplit;
+    FDataFull: TApiGeneratedSplitFull;
+  public
+    constructor Create(AData: TApiGeneratedSplit); reintroduce;
+  published
+    property DataSimple: TApiGeneratedSplit read FDataSimple write FDataSimple;
+    property DataFull: TApiGeneratedSplitFull read FDataFull write FDataFull;
+  end;
+
+{$EndRegion}
 
 implementation
 
@@ -86,14 +111,27 @@ begin
     FDataSimple := AData;
 end;
 
+{ TApiResponseSentenceMatch }
+
+constructor TApiResponseSentenceMatch.Create(AData: TApiGeneratedSplit);
+begin
+  inherited Create;
+  if AData is TApiGeneratedSplitFull then
+    FDataFull := AData as TApiGeneratedSplitFull
+  else
+    FDataSimple := AData;
+end;
+
 initialization
   // please keep these sorted
   TEntityManager.RegisterEntityClasses([
     TApiRequestGenerateProtoGuess,
     TApiRequestGenerateRep,
+    TApiRequestSentenceMatch,
 
     TApiResponseGenerateProtoGuess,
-    TApiResponseGenerateRep
+    TApiResponseGenerateRep,
+    TApiResponseSentenceMatch
   ]);
 
 end.
