@@ -35,6 +35,9 @@
           <a class="item <?php if($this->requestName == "GenerateProtoGuess") { echo 'active'; } ?>" href="api.php?name=GenerateProtoGuess">
             Guess Proto Split
           </a>
+          <a class="item <?php if($this->requestName == "SentenceMatch") { echo 'active'; } ?>" href="api.php?name=SentenceMatch">
+            Sentence Match
+          </a>
         </div>
       </div>
       <div class="eight wide middle column">

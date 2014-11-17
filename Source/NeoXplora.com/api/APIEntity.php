@@ -11,6 +11,7 @@ class TAPIEntity {
   
   public function __construct($data = null) {
     $this->readValuesIntoProperties($this->properties, $data);
+    //var_dump($this->properties["DataFull"]["value"]["ApiGeneratedSplitFull"]["value"]["Substitutions"]["value"]);
   }
   
   public function &__get($key) {
@@ -85,8 +86,20 @@ class TAPIEntity {
           }
         }
         return null;
+        break;
+      case 'array':
+        if($theValue !== null && $theValue !== false) {
+          $result = array();
+          foreach($theValue AS $anElement) {
+            $theObject = $this->cloneProperties($properties[$key]['template']);
+            $this->readValuesIntoProperties($theObject, $anElement);
+            $result[] = $theObject;
+          }
+          return $result;
+        }
+        return null;
+        break;
       case 'object':
-        
         if($theValue !== null && $theValue !== false) {
           $theObject = $this->cloneProperties($properties[$key]['template']);
           $this->readValuesIntoProperties($theObject, $theValue);
@@ -95,7 +108,6 @@ class TAPIEntity {
         return null;
         break;
       default:
-        
     }
   }
 
@@ -126,8 +138,11 @@ class TAPIEntity {
     return $this->propertiesToXML($this->properties, $className, 0);
   }
   
-  private function propertiesToXML($someProperties, $aWrapper, $aDepth) {
-    $xml = "\r\n";
+  private function propertiesToXML($someProperties, $aWrapper, $aDepth, $aNewLine = true) {
+    $xml = "";
+    if($aNewLine) {
+      $xml = "\r\n";
+    }
     if($aWrapper !== '') {
       $xml .= str_repeat(" ", $aDepth * 2);
       $xml .= "<" . $aWrapper . ">";
@@ -152,8 +167,10 @@ class TAPIEntity {
   
   private function getPropertyXML($aPropertyKey, $aPropertyValue, $depth) {
     $xml = '';
-    $xml .= str_repeat(" ", $depth * 2);
-    $xml .= "<" . $aPropertyKey . ">";
+    if($aPropertyValue['type'] != "array") {
+      $xml .= str_repeat(" ", $depth * 2);
+      $xml .= "<" . $aPropertyKey . ">";
+    }
     switch($aPropertyValue['type']) {
       case "text":
       case "numeric":
@@ -170,6 +187,13 @@ class TAPIEntity {
         $xml .= "\r\n";
         $xml .= str_repeat(" ", $depth * 2);
         break;
+      case "array":
+        $k = 0;
+        foreach($aPropertyValue['value'] AS $anElement) {
+          $xml .= $this->propertiesToXML($anElement, $aPropertyKey, $depth, ($k++ !== 0));
+        }
+        $xml .= str_repeat(" ", $depth * 2);
+        break;
       case "object":
         $xml .= $this->propertiesToXML($aPropertyValue['value'], '', $depth);
         $xml .= str_repeat(" ", $depth * 2);
@@ -177,7 +201,9 @@ class TAPIEntity {
       default:
         $xml .= $this->propertyToXML($aPropertyKey, $aPropertyValue['value'], $depth + 1);
     }
-    $xml .= "</" . $aPropertyKey . ">";
+    if($aPropertyValue['type'] != "array") {
+      $xml .= "</" . $aPropertyKey . ">";
+    }
     $xml .= "\r\n";
     return $xml;
   }
@@ -236,6 +262,11 @@ class TAPIEntity {
       case "recursive":
         foreach($aPropertyValue['value'] AS $anElement) {
           $text .= $this->propertiesToText($anElement, $aPropertyValue['wrapper'], $depth + 1);
+        }
+        break;
+      case "array":
+        foreach($aPropertyValue['value'] AS $anElement) {
+          $text .= $this->propertiesToText($anElement, $aPropertyKey, $depth);
         }
         break;
       case "object":
@@ -307,7 +338,12 @@ class TAPIEntity {
         break;
       case 'recursive':
         foreach($aPropertyValue['value'] AS $aPropertyList) {
-          $html .= $this->propertiesToHTML($aPropertyList, $aPropertyValue["friendly_wrapper"]);
+          $html .= $this->propertiesToHTML($aPropertyList, $aPropertyValue["name"]);
+        }
+        break;
+      case 'array':
+        foreach($aPropertyValue['value'] AS $aPropertyList) {
+          $html .= $this->propertiesToHTML($aPropertyList, $aPropertyValue["name"]);
         }
         break;
       default:
