@@ -20,7 +20,10 @@ uses
   StringExpression in '..\NeoDelphiShared\Lib\NeoAi\Classes\StringExpression.pas',
   AppExceptionClasses in '..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas',
   SentenceSplitter in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas',
-   SentenceSplitterTest in 'Includes\SentenceSplitterTest.pas';
+  SentenceSplitterTest in 'Includes\SentenceSplitterTest.pas',
+  SplitterComponentTest in 'Includes\SplitterComponentTest.pas',
+  SplitterComponent in '..\NeoDelphiShared\Lib\NeoAi\Classes\SplitterComponent.pas';
+
 //  RepSerializeTest in 'Includes\RepSerializeTest.pas'
 {$R *.res}
 

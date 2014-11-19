@@ -3,8 +3,8 @@ unit SplitGuessAlgorithm;
 interface
 
 uses
-  SplitGuess, SentenceSplitter, Entity, SentenceList, Hypernym, PosTagger, GuessObject, SentenceAlgorithm, SkyIdList,
-  TypesConsts;
+  SplitGuess, Entity, SentenceList, Hypernym, PosTagger, GuessObject, SentenceAlgorithm, SkyIdList,
+  TypesConsts, SplitterComponent, SkyLists;
 
 type
   TSplitGuessAlgorithm = class
@@ -17,7 +17,8 @@ type
 
     FPosTagger: TPosTagger;
     FSentenceList: TSentenceList;
-    FSplitter: TSentenceSplitter;
+    FSplitter: TSplitterComponent;
+    FWordList: TSkyStringStringList;
     FSentenceAlgorithm: TSentenceAlgorithm;
     FGuessObject: TGuessObject;
 
@@ -39,7 +40,7 @@ type
 implementation
 
 uses
-  AppSQLServerQuery, ProtoOrSentence, SentenceListElement, Split, SkyLists, TypesFunctions, SysUtils, EntityList;
+  AppSQLServerQuery, ProtoOrSentence, SentenceListElement, Split, TypesFunctions, SysUtils, EntityList;
 
 { TSplitGuessAlgorithm }
 
@@ -55,9 +56,12 @@ begin
     for I := 0 to High(TheProtos) do
     begin
       TheProto := TheProtos[I] as TProtoOrSentence;
-      FSplitter.SentenceSplitWords(TheProto.Name);
-      ThePos := FPosTagger.GetTagsForWords(FSplitter, True);
-      FSentenceList.AddSentence(FSplitter.WordList, TheProto.Id, TheProto.Name, '', '', ThePos);
+      FSplitter.SentenceSplitWords(TheProto.Name, wctNoSpaces, FWordList);
+      ThePos := FPosTagger.GetTagsForWords(FWordList, True);
+      if TheProto.SentenceType = TProtoOrSentence.TSentenceType.stSentence then
+        FSentenceList.AddSentence(FWordList, -TheProto.Id, TheProto.Name, '', '', ThePos)
+      else
+        FSentenceList.AddSentence(FWordList, TheProto.Id, TheProto.Name, '', '', ThePos);
     end;
   finally
     TEntity.FreeEntities(TheProtos);
@@ -66,7 +70,8 @@ end;
 
 constructor TSplitGuessAlgorithm.Create(AHypernym: THypernym; APosTagger: TPosTagger);
 begin
-  FSplitter := TSentenceSplitter.Create;
+  FSplitter := TSplitterComponent.Create;
+  FWordList := TSkyStringStringList.Create;
   FPosTagger := APosTagger;
   FSentenceList := TSentenceList.Create;
   FSentenceList.Hypernym := AHypernym;
@@ -79,6 +84,7 @@ end;
 destructor TSplitGuessAlgorithm.Destroy;
 begin
   FSplitter.Free;
+  FWordList.Free;
   FSentenceList.Free;
   FGuessObject.Free;
   FSentenceAlgorithm.Free;
@@ -101,9 +107,9 @@ begin
   TheMaxIterations := AMaxIterations;
   if (AMaxIterations = 0) or (TheMaxIterations > CONST_InfiniteMaxIterationsActual) then
     TheMaxIterations := CONST_InfiniteMaxIterationsActual;
-  FSplitter.SentenceSplitWords(ASentenceText);
-  ThePos := FPosTagger.GetTagsForString(ASentenceText);
-  FSentenceList.GetRepGuess(FSplitter.WordList, ASentenceText, ThePos, 1, False, FGuessObject, True, FUseExact);
+  FSplitter.SentenceSplitWords(ASentenceText, wctNoSpaces, FWordList);
+  ThePos := FPosTagger.GetTagsForWords(FWordList, True);
+  FSentenceList.GetRepGuess(FWordList, ASentenceText, ThePos, 1, False, FGuessObject, True, FUseExact);
 
   Result := TSplitGuess.Create;
   try
@@ -114,27 +120,26 @@ begin
       else
         TheSplits := TAppSQLServerQuery.GetSplitsForProtoId(FGuessObject.GuessDId);
       try
-        FSentenceAlgorithm.Element1 := TSentenceListElement.Create(FSplitter.WordList, IdNil, ASentenceText, '', '', ThePos);
+        FSentenceAlgorithm.Element1 := TSentenceListElement.Create(FWordList, IdNil, ASentenceText, '', '', ThePos);
+        FSplitter.SentenceSplitWords(FGuessObject.MatchSentenceD, wctNoSpaces, FWordList);
 
         Result.Sentence := ASentenceText;
         // Result.Pos := .. see below
         Result.MatchText := FGuessObject.MatchSentenceD;
         Result.MatchId :=  FGuessObject.GuessDId;
-        Result.MatchPos := FPosTagger.GetTagsForString(FGuessObject.MatchSentenceD);
         Result.MatchScore := RoundDouble(FGuessObject.MatchScore, 4);
         Result.SplitStatus := FGuessObject.MatchScore >= FSplitThreshold;
         ThePerformSplit := Result.SplitStatus and (TheMaxIterations > 1);
 
-        FSplitter.SentenceSplitWords(FGuessObject.MatchSentenceD);
-        ThePos := FPosTagger.GetTagsForString(FGuessObject.MatchSentenceD);
-        FSentenceAlgorithm.Element2 := TSentenceListElement.Create(FSplitter.WordList, IdNil, FGuessObject.MatchSentenceD, '', '', ThePos);
+        ThePos := FPosTagger.GetTagsForWords(FWordList);
+        FSentenceAlgorithm.Element2 := TSentenceListElement.Create(FWordList, IdNil, FGuessObject.MatchSentenceD, '', '', ThePos);
         FSentenceAlgorithm.DoRunHybridSemMatch;
         FSentenceAlgorithm.AddMissingInWordsToOutList;
         for I := 0 to FSentenceAlgorithm.AlignInList.Count - 1 do
         begin
-          if FSentenceAlgorithm.AlignOutList[I] = '-' then
+          if FSentenceAlgorithm.AlignOutList[I] = #0 then
             Continue;
-          if FSentenceAlgorithm.AlignInList[I] = '-' then
+          if FSentenceAlgorithm.AlignInList[I] = #0 then
             Result.Substitutions.Add(FSentenceAlgorithm.AlignOutList[I], '-NULL-')
           else
             Result.Substitutions.Add(FSentenceAlgorithm.AlignOutList[I], FSentenceAlgorithm.AlignInList[I]);
@@ -157,10 +162,8 @@ begin
             // guess - match
             TheChildGuess := TSplitGuess.Create;
             TheChildGuess.Sentence := TheAdjustedSentence;
-            TheChildGuess.Pos := FPosTagger.GetTagsForString(TheChildGuess.Pos);
             TheChildGuess.MatchText := TheSplit.Name;
             TheChildGuess.MatchId := TheSplit.Id;
-            TheChildGuess.MatchPos := FPosTagger.GetTagsForString(TheChildGuess.MatchText);
             TheChildGuess.MatchScore := 0;
             TheChildGuess.SplitStatus := False;
             Result.Splits.Add(TheChildGuess);
@@ -171,8 +174,7 @@ begin
         FSentenceAlgorithm.Element1.Free;
         FSentenceAlgorithm.Element2.Free;
       end;
-      FSplitter.SentenceSplitWords(TheResultSentence);
-      Result.Pos:= FPosTagger.GetTagsForWords(FSplitter, True);
+      FSplitter.SentenceSplitWords(TheResultSentence, wctNoSpaces, FWordList);
 
       for I := 0 to TheSplitGuesses.Count - 1 do
       begin
@@ -195,9 +197,9 @@ function TSplitGuessAlgorithm.GetSentenceMatch(const ASentence1Text, ASentence2T
 var
   ThePos: string;
 begin
-  FSplitter.SentenceSplitWords(ASentence2Text);
-  ThePos := FPosTagger.GetTagsForWords(FSplitter, True);
-  FSentenceList.AddSentence(FSplitter.WordList, -1, ASentence2Text, '', '', ThePos);
+  FSplitter.SentenceSplitWords(ASentence2Text, wctNoSpaces, FWordList);
+  ThePos := FPosTagger.GetTagsForWords(FWordList, True);
+  FSentenceList.AddSentence(FWordList, -1, ASentence2Text, '', '', ThePos);
   Result := GenerateProtoGuess(ASentence1Text, 1);
 end;
 

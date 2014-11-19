@@ -23,18 +23,8 @@ class TResponseSentenceMatch extends TResponse {
               "default" => "",
               "type" => "text"
             ),
-            "Pos" => array(
-              "name" => "Generated POS",
-              "default" => "",
-              "type" => "text"
-            ),
             "MatchSentence" => array(
               "name" => "Matched Sentence",
-              "default" => "",
-              "type" => "text"
-            ),
-            "MatchPos" => array(
-              "name" => "Matched Pos",
               "default" => "",
               "type" => "text"
             ),

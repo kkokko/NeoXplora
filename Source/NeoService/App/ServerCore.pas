@@ -88,9 +88,10 @@ implementation
 
 uses
   SysUtils, AppUnit, AppSQLServerQuery, BaseConnection, EntityWithName, TypesFunctions, SentenceBase,
-  SentenceSplitter, CRep, RepDecoder, SearchPage, RepGroup, IRepRuleGroup, LoggerUnit, IRepRule, IRepRuleValue,
+  CRep, RepDecoder, SearchPage, RepGroup, IRepRuleGroup, LoggerUnit, IRepRule, IRepRuleValue,
   IRepRuleCondition, CRepRule, CRepRuleCondition, CRepRuleGroup, AppConsts, Proto, SentenceAlgorithm,
-  SentenceListElement, Split, PageBase, OrderInPage, BaseQuery, CRepHighlight, SplitGuess, ApiGeneratedSplitFull;
+  SentenceListElement, Split, PageBase, OrderInPage, BaseQuery, CRepHighlight, SplitGuess, ApiGeneratedSplitFull,
+  SplitterComponent;
 
 var
   _Core: TServerCore;
@@ -133,30 +134,33 @@ var
   TheSentenceBase: TSentenceBase;
   TheSentenceList: TSentenceList;
   TheSentencePos: string;
-  TheSplitter: TSentenceSplitter;
+  TheSplitter: TSplitterComponent;
   TheSentences: TEntities;
+  TheWordList: TSkyStringStringList;
   I: Integer;
 begin
   TheSplitter := nil;
+  TheWordList := nil;
   TheSentenceList := TSentenceList.Create;
   try
-    TheSplitter := TSentenceSplitter.Create;
+    TheSplitter := TSplitterComponent.Create;
+    TheWordList:= TSkyStringStringList.Create;
     TheSentenceList.Hypernym := FHypernym;
-    TheSplitter.SentenceSplitWords(ASentenceText);
     TheSentences := TAppSQLServerQuery.GetSplitSentences;
     for I := 0 to High(TheSentences) do
     begin
       TheSentenceBase := TheSentences[I] as TSentenceBase;
-      TheSplitter.SentenceSplitWords(TheSentenceBase.Name);
-      TheSentencePos := FPosTagger.GetTagsForWords(TheSplitter, True);
-      TheSentenceList.AddSentence(TheSplitter.WordList, TheSentenceBase.Id, TheSentenceBase.Name,
+      TheSplitter.SentenceSplitWords(TheSentenceBase.Name, wctNoSpaces, TheWordList);
+      TheSentencePos := FPosTagger.GetTagsForWords(TheWordList, True);
+      TheSentenceList.AddSentence(TheWordList, TheSentenceBase.Id, TheSentenceBase.Name,
         TheSentenceBase.Rep, TheSentenceBase.SRep, TheSentencePos);
     end;
-    TheSentenceList.GetRepGuess(AWordList, ASentenceText,
-      FPosTagger.GetTagsForString(ASentenceText), 1, False, AGuessObject, True);
+    TheSentenceList.GetRepGuess(AWordList, ASentenceText, FPosTagger.GetTagsForWords(AWordList), 1, False,
+      AGuessObject, True);
   finally
     TheSentenceList.Free;
     TheSplitter.Free;
+    TheWordList.Free;
     TEntity.FreeEntities(TheSentences);
   end;
 end;
@@ -164,30 +168,34 @@ end;
 procedure TServerCore.ApiGenerateRep(const ASentenceText, AnApiKey: string; BOutputSentence: Boolean; out ARep, ASentence: string);
 var
   TheGuessObject: TGuessObject;
-  TheSplitter: TSentenceSplitter;
+  TheSplitter: TSplitterComponent;
+  TheWordList: TSkyStringStringList;
 begin
   TheGuessObject := nil;
-  TheSplitter := TSentenceSplitter.Create;
+  TheWordList := nil;
+  TheSplitter := TSplitterComponent.Create;
   try
-    TheSplitter.SentenceSplitWords(ASentenceText);
+    TheWordList := TSkyStringStringList.Create;
+    TheSplitter.SentenceSplitWords(ASentenceText, wctNoSpaces, TheWordList);
     TheGuessObject := TGuessObject.Create;
     if ConstUseCacheForRepGuess then
     begin
       SentenceLockAquire(ltRead);
       try
-        FSentenceList.GetRepGuess(TheSplitter.WordList, ASentenceText,
-          FPosTagger.GetTagsForString(ASentenceText), 1, False, TheGuessObject, True);
+        FSentenceList.GetRepGuess(TheWordList, ASentenceText, FPosTagger.GetTagsForWords(TheWordList), 1,
+          False, TheGuessObject, True);
       finally
         SentenceLockRelease(ltRead);
       end;
     end else
-      GetCurrentRepGuess(TheSplitter.WordList, ASentenceText, TheGuessObject);
+      GetCurrentRepGuess(TheWordList, ASentenceText, TheGuessObject);
     if BOutputSentence then
       ASentence := TheGuessObject.MatchSentenceD
     else
       ASentence := '';
     ARep := TheGuessObject.RepGuessD;
   finally
+    TheWordList.Free;
     TheGuessObject.Free;
     TheSplitter.Free;
   end;
@@ -263,15 +271,18 @@ var
   TheHyperNyms, TheSentences: TEntities;
   TheSentenceBase: TSentenceBase;
   TheSentencePos: string;
-  TheSplitter: TSentenceSplitter;
+  TheSplitter: TSplitterComponent;
+  TheWordList: TSkyStringStringList;
   I: Integer;
 begin
   TheSplitter := nil;
   TheSentences := nil;
+  TheWordList := nil;
   TheHyperNyms := TAppSQLServerQuery.GetHypernyms;
   try
     TheSentences := TAppSQLServerQuery.GetSplitSentences;
-    TheSplitter := TSentenceSplitter.Create;
+    TheSplitter := TSplitterComponent.Create;
+    TheWordList := TSkyStringStringList.Create;
     SentenceLockAquire(ltWrite);
     try
       FHypernym.Clear;
@@ -280,9 +291,9 @@ begin
       for I := 0 to High(TheSentences) do
       begin
         TheSentenceBase := TheSentences[I] as TSentenceBase;
-        TheSplitter.SentenceSplitWords(TheSentenceBase.Name);
-        TheSentencePos := FPosTagger.GetTagsForWords(TheSplitter, True);
-        FSentenceList.AddSentence(TheSplitter.WordList, TheSentenceBase.Id, TheSentenceBase.Name,
+        TheSplitter.SentenceSplitWords(TheSentenceBase.Name, wctNoSpaces, TheWordList);
+        TheSentencePos := FPosTagger.GetTagsForWords(TheWordList, True);
+        FSentenceList.AddSentence(TheWordList, TheSentenceBase.Id, TheSentenceBase.Name,
           TheSentenceBase.Rep, TheSentenceBase.SRep, TheSentencePos);
       end;
     finally
@@ -292,6 +303,7 @@ begin
     TheSplitter.Free;
     TEntity.FreeEntities(TheSentences);
     TEntity.FreeEntities(TheHyperNyms);
+    TheWordList.Free;
   end;
 end;
 
@@ -335,24 +347,28 @@ end;
 function TServerCore.GetFullSentencesForPageId(APageId: TId): TEntities;
 var
   TheSentence: TSentenceWithGuesses;
-  TheSplitter: TSentenceSplitter;
+  TheSplitter: TSplitterComponent;
+  TheWordList: TSkyStringStringList;
   I: Integer;
 begin
   Result := TAppSQLServerQuery.GetFullSentencesForPageId(APageId);
   try
     TheSplitter := nil;
+    TheWordList := nil;
     SentenceLockAquire(ltRead);
     try
-      TheSplitter := TSentenceSplitter.Create;
+      TheSplitter := TSplitterComponent.Create;
+      TheWordList := TSkyStringStringList.Create;
       for I := 0 to High(Result) do
       begin
         TheSentence := Result[I] as TSentenceWithGuesses;
-        TheSplitter.SentenceSplitWords(TheSentence.Name);
-        FSentenceList.RecalculateGuesses(TheSplitter.WordList, TheSentence);
+        TheSplitter.SentenceSplitWords(TheSentence.Name, wctNoSpaces, TheWordList);
+        FSentenceList.RecalculateGuesses(TheWordList, TheSentence);
       end;
     finally
       SentenceLockRelease(ltRead);
       TheSplitter.Free;
+      TheWordList.Free;
     end;
   except
     TEntity.FreeEntities(Result);
@@ -362,51 +378,57 @@ end;
 
 function TServerCore.GetPosForPage(const APage: string; AnUseModifiedPos: Boolean): TObjects;
 var
-  TheCount: Integer;
-  TheSentences: TSkyStringList;
-  TheSentenceSplitter: TSentenceSplitter;
-  TheWordsSplitter: TSentenceSplitter;
+  TheCursor: TSplitterComponent.PSentenceChain;
+  TheSentenceChain: TSplitterComponent.TSentenceChainWithInfoType;
+  TheSplitter: TSplitterComponent;
+  TheWordList: TSkyStringStringList;
   I: Integer;
 begin
-  TheSentences := nil;
-  TheWordsSplitter := nil;
-  TheSentenceSplitter := TSentenceSplitter.Create;
+  TheSentenceChain.Chain := nil;
+  TheSplitter := TSplitterComponent.Create;
   try
-    TheWordsSplitter := TSentenceSplitter.Create;
-    TheSentenceSplitter.PageSplitProtos(APage);
-    TheCount := TheSentenceSplitter.WordList.Count;
-    SetLength(Result, TheCount);
-    FillMemory(Result, TheCount * SizeOf(TObject), 0);
-    try
-      for I := 0 to TheCount - 1 do
-      begin
-        TheWordsSplitter.SentenceSplitWords(TheSentenceSplitter.WordList[I]);
-        FPosTagger.GetTagsForWords(TheWordsSplitter, AnUseModifiedPos);
-        Result[I] := TheWordsSplitter.WordList.CreateACopy;
-      end;
-    except
-      for I := 0 to TheCount - 1 do
-        Result[I].Free;
-      raise;
+    TheSplitter.PageSplitProtos(APage);
+    TheSentenceChain := TheSplitter.NewSentenceChain(wctNoSpaces);
+    SetLength(Result, TheSentenceChain.Length);
+    TheCursor := TheSentenceChain.Chain;
+    for I := 0 to TheSentenceChain.Length - 1 do
+    begin
+      TheWordList := TSkyStringStringList.Create;
+      Result[I] := TheWordList;
+      TheSplitter.WordChainToStringStringList(TheCursor^.Words.Chain, TheWordList);
+      TheCursor := TheCursor^.Next;
     end;
   finally
-    TheSentenceSplitter.Free;
-    TheWordsSplitter.Free;
-    TheSentences.Free;
+    if TheSentenceChain.Chain <> nil then
+      TheSplitter.FreeSentenceChain(TheSentenceChain.Chain);
+    TheSplitter.Free;
   end;
 end;
 
 function TServerCore.GetPosForSentences(SomeSentences: TEntities; AnUseModifiedPos: Boolean): TEntities;
 var
+  TheSplitter: TSplitterComponent;
+  TheWordList: TSkyStringStringList;
   I: Integer;
 begin
-  Result := TEntity.CreateAndCopyEntities(SomeSentences);
+  TheWordList := nil;
+  TheSplitter := TSplitterComponent.Create;
   try
-    for I := 0 to High(Result) do
-      Result[I].Name := FPosTagger.GetTagsForString(Result[I].Name, AnUseModifiedPos);
-  except
-    TEntity.FreeEntities(Result);
-    raise;
+    TheWordList := TSkyStringStringList.Create;
+    Result := TEntity.CreateAndCopyEntities(SomeSentences);
+    try
+      for I := 0 to High(Result) do
+      begin
+        TheSplitter.SentenceSplitWords(Result[I].Name, wctNoSpaces, TheWordList);
+        Result[I].Name := FPosTagger.GetTagsForWords(TheWordList, AnUseModifiedPos);
+      end;
+    except
+      TEntity.FreeEntities(Result);
+      raise;
+    end;
+  finally
+    TheSplitter.Free;
+    TheWordList.Free;
   end;
 end;
 
@@ -472,13 +494,16 @@ end;
 function TServerCore.GuessRepsForSentenceId(ASentenceId: TId; AGuessCRep: Boolean): TGuessObject;
 var
   TheSentence: TSentenceBase;
-  TheSplitter: TSentenceSplitter;
+  TheSplitter: TSplitterComponent;
+  TheWordList: TSkyStringStringList;
 begin
   TheSplitter := nil;
+  TheWordList := nil;
   TheSentence := TAppSQLServerQuery.GetSentenceBaseById(ASentenceId);
   try
-    TheSplitter := TSentenceSplitter.Create;
-    TheSplitter.SentenceSplitWords(TheSentence.Name);
+    TheSplitter := TSplitterComponent.Create;
+    TheWordList := TSkyStringStringList.Create;
+    TheSplitter.SentenceSplitWords(TheSentence.Name, wctNoSpaces, TheWordList);
     Result := TGuessObject.Create;
     try
       Result.Id := ASentenceId;
@@ -486,13 +511,12 @@ begin
       begin
         SentenceLockAquire(ltRead);
         try
-          FSentenceList.GetRepGuess(TheSplitter.WordList, TheSentence.Name,
-            FPosTagger.GetTagsForString(TheSentence.Name), 1, False, Result);
+          FSentenceList.GetRepGuess(TheWordList, TheSentence.Name, FPosTagger.GetTagsForWords(TheWordList), 1, False, Result);
         finally
           SentenceLockRelease(ltRead);
         end;
       end else
-        GetCurrentRepGuess(TheSplitter.WordList, TheSentence.Name, Result);
+        GetCurrentRepGuess(TheWordList, TheSentence.Name, Result);
       App.SQLConnection.UpdateEntity(Result);
     except
       Result.Free;
@@ -501,6 +525,7 @@ begin
   finally
     TheSplitter.Free;
     TheSentence.Free;
+    TheWordList.Free;
   end;
 end;
 
@@ -769,20 +794,25 @@ end;
 
 procedure TServerCore.PageEdit(APageId, ACategoryId: TId; const ATitle, ABody: string);
 var
+  TheCursor: TSplitterComponent.PSentenceChain;
   TheOrderInPage: TOrderInPage;
   ThePage: TPageBase;
   TheProto: TProto;
   TheSentence:TSentenceBase;
-  TheSplitter: TSentenceSplitter;
+  TheSentenceChain: TSplitterComponent.TSentenceChainWithInfoType;
+  TheSplitter: TSplitterComponent;
   I: Integer;
 begin
   ThePage := nil;
   TheProto := nil;
   TheSentence := nil;
-  TheSplitter := TSentenceSplitter.Create;
+  TheSentenceChain.Chain := nil;
+  TheSplitter := TSplitterComponent.Create;
   try
     TheSplitter.PageSplitProtos(ABody);
-    if TheSplitter.WordList.Count = 0 then
+    TheSentenceChain := TheSplitter.NewSentenceChain(wctAll);
+
+    if TheSentenceChain.Length = 0 then
       raise Exception.Create('Page body must contain at least one sentence');
 
     ThePage := App.SQLConnection.SelectById(TPageBase, APageId) as TPageBase;
@@ -804,9 +834,10 @@ begin
     TheOrderInPage.PageId := APageId;
     TheOrderInPage.Order := 0;
 
-    for I := 0 to TheSplitter.WordList.Count - 1 do
+    TheCursor := TheSentenceChain.Chain;
+    for I := 0 to TheSentenceChain.Length - 1 do
     begin
-      TheProto.Name := TheSplitter.WordList[I];
+      TheProto.Name := TheSplitter.WordChainAsString(TheCursor.Words.Chain);
       TheProto.Order := I + 1;
 
       TheOrderInPage.Order := TheOrderInPage.Order + 1;
@@ -828,8 +859,11 @@ begin
       TheOrderInPage.ProtoId := IdNil;
       TheOrderInPage.Indentation := 1;
       App.SQLConnection.InsertEntity(TheOrderInPage);
+      TheCursor := TheCursor^.Next;
     end;
   finally
+    if TheSentenceChain.Chain <> nil then
+      TheSplitter.FreeSentenceChain(TheSentenceChain.Chain);
     TheSplitter.Free;
     ThePage.Free;
     TheProto.Free;
@@ -906,27 +940,34 @@ end;
 
 function TServerCore.SplitSentence(ASentenceId: TId; const ANewText: string; BCanCreateProto: Boolean): TEntities;
 var
+  TheCursor: TSplitterComponent.PSentenceChain;
   TheNewSentence: TSentenceBase;
   TheOrderInPage: TOrderInPage;
   TheProto: TProto;
   TheSentence: TSentenceBase;
-  TheSplitter: TSentenceSplitter;
+  TheSentenceChain: TSplitterComponent.TSentenceChainWithInfoType;
+  TheSplitter: TSplitterComponent;
+  TheString: string;
   TheResults: TEntityList;
-  TheWordsSplitter: TSentenceSplitter;
+  TheWordList: TSkyStringStringList;
+  TheWordSplitter: TSplitterComponent;
   I: Integer;
 begin
   TheSplitter := nil;
   TheOrderInPage := nil;
+  TheSentenceChain.Chain := nil;
   TheSentence := App.SQLConnection.SelectById(TSentenceBase, ASentenceId) as TSentenceBase;
   try
-    TheSplitter := TSentenceSplitter.Create;
+    TheSplitter := TSplitterComponent.Create;
     TheSplitter.PageSplitProtos(ANewText);
+    TheSentenceChain := TheSplitter.NewSentenceChain(wctAll);
+    TheCursor := TheSentenceChain.Chain;
 
     TBaseQuery.DeleteOneToMany(App.SQLConnection, TCRep, TCRep.Tok_PageId.PropertyName, TheSentence.PageId);
     TBaseQuery.DeleteOneToMany(App.SQLConnection, TCRepHighlight, TCRepHighlight.Tok_PageId.PropertyName, TheSentence.PageId);
 
     // Delete from CREp, CRepHighlight
-    case TheSplitter.WordList.Count of
+    case TheSentenceChain.Length of
       0: begin
         if TAppSQLServerQuery.GetProtoChildCount(TheSentence.ProtoId) = 1 then
         begin
@@ -956,9 +997,10 @@ begin
         Result := nil;
       end;
       1: begin
-        if (Trim(TheSentence.Name) <> Trim(TheSplitter.WordList[0])) and (TheSentence.Status > ssTrainedSplit) then
+        TheString := TheSplitter.WordChainAsString(TheCursor.Words.Chain);
+        if (Trim(TheSentence.Name) <> TheString) and (TheSentence.Status > ssTrainedSplit) then
           TheSentence.Status := ssTrainedSplit;
-        TheSentence.Name := TheSplitter.WordList[0];
+        TheSentence.Name := TheString;
         App.SQLConnection.UpdateEntity(TheSentence);
         Result := TEntityWithName.Create(TheSentence.Id, TheSentence.Name).GetAsArray;
       end;
@@ -968,9 +1010,9 @@ begin
         App.SQLConnection.DeleteEntity(TheOrderInPage);
 
         if BCanCreateProto then
-          TAppSQLServerQuery.IncreasePageOrderForPageId(TheSentence.PageId, TheOrderInPage.Order, TheSplitter.WordList.Count)
+          TAppSQLServerQuery.IncreasePageOrderForPageId(TheSentence.PageId, TheOrderInPage.Order, TheSentenceChain.Length)
         else
-          TAppSQLServerQuery.IncreasePageOrderForPageId(TheSentence.PageId, TheOrderInPage.Order, TheSplitter.WordList.Count - 1);
+          TAppSQLServerQuery.IncreasePageOrderForPageId(TheSentence.PageId, TheOrderInPage.Order, TheSentenceChain.Length - 1);
 
         if BCanCreateProto then
         begin
@@ -994,23 +1036,28 @@ begin
           end;
         end else
         begin
-          TAppSQLServerQuery.UpdateSentenceOrderForPage(TheSentence.PageId, TheSentence.Order, TheSplitter.WordList.Count - 1);
-          TAppSQLServerQuery.UpdateProtoOrderForPage(TheSentence.PageId, TheSentence.Order, TheSplitter.WordList.Count - 1);
+          TAppSQLServerQuery.UpdateSentenceOrderForPage(TheSentence.PageId, TheSentence.Order, TheSentenceChain.Length - 1);
+          TAppSQLServerQuery.UpdateProtoOrderForPage(TheSentence.PageId, TheSentence.Order, TheSentenceChain.Length - 1);
         end;
 
         TheResults := nil;
-        TheWordsSplitter := TSentenceSplitter.Create;
+        TheWordList := nil;
+
+        TheWordSplitter := TSplitterComponent.Create;
         try
+          TheWordList := TSkyStringStringList.Create;
           TheResults := TEntityList.Create(False, True);
-          for I := 0 to TheSplitter.WordList.Count - 1 do
+          for I := 0 to TheSentenceChain.Length - 1 do
           begin
             TheNewSentence := TheSentence.CreateACopy as TSentenceBase;
             try
-              TheNewSentence.Name := TheSplitter.WordList[I];
+              TheString := TheSplitter.WordChainAsString(TheCursor^.Words.Chain);
+              TheString[1] := UpperCase(TheString[1])[1];
+              TheNewSentence.Name := TheString;
               if TheNewSentence.Status > ssTrainedSplit then
                 TheNewSentence.Status := ssTrainedSplit;
-              TheWordsSplitter.SentenceSplitWords(TheNewSentence.Name);
-              TheNewSentence.Pos := FPosTagger.GetTagsForWords(TheWordsSplitter, True);
+              TheWordSplitter.SentenceSplitWords(TheNewSentence.Name, wctAll, TheWordList);
+              TheNewSentence.Pos := FPosTagger.GetTagsForWords(TheWordList, True);
               TheNewSentence.Id := App.SQLConnection.InsertEntity(TheNewSentence);
               TheResults.Add(TEntityWithName.Create(TheNewSentence.Id, TheNewSentence.Name));
               TheOrderInPage.SentenceId := TheNewSentence.Id;
@@ -1020,6 +1067,7 @@ begin
               TheNewSentence.Free;
             end;
             TheSentence.Order := TheSentence.Order + 1;
+            TheCursor := TheCursor^.Next;
           end;
           Result := TheResults.GetAllEntities;
           // if there was an exception before this points the results
@@ -1027,12 +1075,15 @@ begin
           TheResults.OwnsItems := False;
         finally
           TheResults.Free;
-          TheWordsSplitter.Free;
+          TheWordSplitter.Free;
+          TheWordList.Free;
         end;
       end;
     end;
   finally
     TheSentence.Free;
+    if TheSentenceChain.Chain <> nil then
+      TheSplitter.FreeSentenceChain(TheSentenceChain.Chain);
     TheSplitter.Free;
     TheOrderInPage.Free;
   end;

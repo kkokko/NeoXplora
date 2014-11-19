@@ -85,7 +85,6 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceListElement.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\Hypernym.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas"/>
-			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas"/>
@@ -132,6 +131,7 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\Separator.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Entity\ProtoOrSentence.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SplitterComponent.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

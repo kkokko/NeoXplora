@@ -25,7 +25,6 @@ uses
   SentenceListElement in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceListElement.pas',
   Hypernym in '..\NeoDelphiShared\Lib\NeoAi\Classes\Hypernym.pas',
   SentenceBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceBase.pas',
-  SentenceSplitter in '..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas',
   GuessObject in '..\NeoDelphiShared\Lib\NeoAi\Entity\GuessObject.pas',
   PageBase in '..\NeoDelphiShared\Lib\NeoAi\Entity\PageBase.pas',
   SentenceWithGuesses in '..\NeoDelphiShared\Lib\NeoAi\Entity\SentenceWithGuesses.pas',
@@ -71,7 +70,8 @@ uses
   SplitGuessAlgorithm in '..\NeoDelphiShared\Lib\NeoAi\Classes\SplitGuessAlgorithm.pas',
   SplitGuess in '..\NeoDelphiShared\Lib\NeoAi\Entity\SplitGuess.pas',
   Separator in '..\NeoDelphiShared\Lib\NeoAi\Entity\Separator.pas',
-  ProtoOrSentence in '..\NeoDelphiShared\Lib\NeoAi\Entity\ProtoOrSentence.pas';
+  ProtoOrSentence in '..\NeoDelphiShared\Lib\NeoAi\Entity\ProtoOrSentence.pas',
+  SplitterComponent in '..\NeoDelphiShared\Lib\NeoAi\Classes\SplitterComponent.pas';
 
 {$R *.res}
 

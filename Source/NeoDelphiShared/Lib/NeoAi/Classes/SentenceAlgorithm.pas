@@ -76,7 +76,7 @@ type
 implementation
 
 uses
-  Math, AppConsts, AppUnit, Separator, Entity;
+  Math, AppConsts, AppUnit, Separator, Entity, LoggerUnit, SplitterComponent;
 
 { TSentenceAlgorithm }
 
@@ -120,7 +120,7 @@ var
 begin
   for I := 0 to FAlignOutList.Count - 1 do
   begin
-    if FAlignOutList[I] <> '-' then
+    if FAlignOutList[I] <> #0 then
       Continue;
     if FindOutListWordAttachPosition(I, +1, TheIndex) then // search to the right
       FAlignInList[I + 1] := FAlignInList[I] + ' ' + FAlignInList[I + 1]
@@ -169,6 +169,7 @@ var
   TheCountX, TheCountY: Integer;
   TheCheckI, TheCheckJ: Boolean;
   TheMatchScore: Double;
+//  TheLogLine: string;
   I, J: Integer;
 begin
   // clear the results
@@ -252,8 +253,33 @@ begin
         TheMaxScore := TheScore[I, J];
       end;
     end; // J
-
   end;
+
+  {TheLogLine := '';
+  for I := 0 to Element1.SentenceWords.Count - 1 do
+    TheLogLine := TheLogLine + Element1.SentenceWords[I] + '\t';
+  TheLogLine := TheLogLine + ReturnLf;
+  for I := 0 to Element2.SentenceWords.Count - 1 do
+    TheLogLine := TheLogLine + Element2.SentenceWords[I] + '\t';
+  TheLogLine := TheLogLine + ReturnLf;
+
+  for I := 1 to TheCountX do
+  begin
+    for J := 1 to TheCountY do
+      case TheDirection[I, J] of
+        diLeft:
+          TheLogLine := TheLogLine + 'LE, ';
+        diUp:
+          TheLogLine := TheLogLine + 'UP, ';
+        diDiagonal:
+          TheLogLine := TheLogLine + 'DI, ';
+        else
+          TheLogLine := TheLogLine + 'NO, ';
+      end;
+      TheLogLine := TheLogLine + ReturnLf;
+  end;
+
+  TLogger.Info(nil, [TheLogLine]);}
 
   if Element2.SentenceWords.Count = 0 then
     Result := 0
@@ -268,14 +294,14 @@ begin
         if (TheMaxI >= 3) and (TheMaxI <= TheCountX - 2) then
         begin
           FAlignInList.Insert(0, Element1.SentenceWords[TheMaxI - 3]);
-          FAlignOutList.InsertItem(0, '-', nil);
+          FAlignOutList.InsertItem(0, #0, nil);
         end;
         Dec(TheMaxI);
       end;
       diLeft: begin
         if (TheMaxJ >= 3) and (TheMaxJ <= TheCountY - 2) then
         begin
-          FAlignInList.Insert(0, '-');
+          FAlignInList.Insert(0, #0);
           FAlignOutList.InsertItem(0, Element2.SentenceWords[TheMaxJ - 3], nil);
         end;
         Dec(TheMaxJ);
@@ -330,7 +356,7 @@ begin
   TheIndex := AStartPotision + ADirection;
   while (TheIndex >= 0) and (TheIndex < FAlignOutList.Count) do
   begin
-    if (FAlignOutList[TheIndex] <> '-') and (FAlignOutList[TheIndex] <> '-') then
+    if (FAlignOutList[TheIndex] <> #0) and (FAlignOutList[TheIndex] <> #0) then
     begin
       AnIndex := TheIndex;
       Exit;
@@ -342,69 +368,59 @@ end;
 
 function TSentenceAlgorithm.GetAdjustedRep(const ARep: string): string;
 var
-  TheLastSep: Char;
+  TheCursor, TheLastCursor: TSplitterComponent.PWordChain;
   TheListIndex: Integer;
   TheNewIndex: Integer;
-  TheSep: Char;
-  TheWordIndex: Integer;
+  TheSplitter: TSplitterComponent;
   TheWord: string;
 begin
   Result := '';
-  TheLastSep := #0;
-  TheWordIndex := 1;
-  while TheWordIndex <= Length(ARep) do
-  begin
-    // find the word start
-    while TheWordIndex <= Length(ARep) do
-    begin
-      if not CharInSet(ARep[TheWordIndex], ConstSplitChars) then
-        Break;
-      TheSep := ARep[TheWordIndex];
-      if (TheLastSep <> ' ') or (TheSep <> ' ') then
-        Result := Result + ARep[TheWordIndex];
-      TheLastSep := TheSep;
-      Inc(TheWordIndex);
-    end;
-    if TheWordIndex > Length(ARep) then
-      Exit;
+  // Chain + Replace
+  TheSplitter := TSplitterComponent.Create;
+  try
+    TheSplitter.SentenceSplitWords(ARep);
+    TheCursor := TheSplitter.NewWordChain(wctAll).Chain;
+    TheLastCursor := TheCursor;
 
-    // read the word
-    TheWord := '';
-    while TheWordIndex <= Length(ARep) do
+    while TheCursor <> nil do
     begin
-      if CharInSet(ARep[TheWordIndex], ConstSplitChars) then
-        Break;
-      TheWord := TheWord + ARep[TheWordIndex];
-      Inc(TheWordIndex);
-    end;
-
-    // replace the word if found
-    TheListIndex := FAlignOutList.IndexOf(TheWord);
-    if TheListIndex <> -1 then
-    begin
-      TheNewIndex := TheListIndex;
-      while (FAlignOutList.Objects[TheListIndex] <> nil) and (TheNewIndex <> - 1) do
+      TheWord := TheSplitter.WordChainLinkAsString(TheCursor);
+      TheListIndex := FAlignOutList.IndexOf(TheWord);
+      if TheListIndex <> -1 then
       begin
-        TheNewIndex := FAlignOutList.IndexOf(TheWord, TheNewIndex + 1);
-        if TheNewIndex <> -1 then
-          TheListIndex := TheNewIndex;
+        TheNewIndex := TheListIndex;
+        while (FAlignOutList.Objects[TheListIndex] <> nil) and (TheNewIndex <> - 1) do
+        begin
+          TheNewIndex := FAlignOutList.IndexOf(TheWord, TheNewIndex + 1);
+          if TheNewIndex <> -1 then
+            TheListIndex := TheNewIndex;
+        end;
+        FAlignOutList.Objects[TheListIndex] := Pointer(1);
       end;
-      FAlignOutList.Objects[TheListIndex] := Pointer(1);
-    end;
-
-    if (TheListIndex <> -1) and (AnsiCompareText(FAlignInList[TheListIndex], TheWord) <> 0) then
-      if (FAlignInList[TheListIndex] <> '-') then
+      if (TheListIndex <> -1) and (AnsiCompareText(FAlignInList[TheListIndex], TheWord) <> 0) then
+        if (FAlignInList[TheListIndex] <> #0) then
+          TheSplitter.ReplaceWordInLink(TheCursor, FAlignInList[TheListIndex])
+        else
+          TheSplitter.RemoveWordInLink(TheCursor);
+      if TheCursor <> nil then
       begin
-        Result := Result + FAlignInList[TheListIndex];
-        TheLastSep := #0;
-      end
-      else
-        Continue
-    else
-    begin
-      Result := Result + TheWord;
-      TheLastSep := #0;
+        TheLastCursor := TheCursor;
+        TheCursor := TheCursor^.Next;
+      end;
     end;
+    TheCursor := TheLastCursor;
+    if TheCursor <> nil then
+      while TheCursor^.Previous <> nil do
+        TheCursor := TheCursor^.Previous;
+    Result := TheSplitter.WordChainAsString(TheCursor);
+  finally
+    if TheCursor <> nil then
+    begin
+      while TheCursor^.Previous <> nil do
+        TheCursor := TheCursor^.Previous;
+      TheSplitter.FreeWordChain(TheCursor);
+    end;
+    TheSplitter.Free;
   end;
 end;
 
@@ -413,6 +429,7 @@ var
   TheWords: TEntities;
   I: Integer;
 begin
+  FWeightMax := ConstWeightMatch;
   FAlignOutList := TSkyStringList.Create;
   FAlignInList := TStringList.Create;
   FComparisonLog := TStringList.Create;

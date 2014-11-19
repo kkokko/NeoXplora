@@ -224,7 +224,7 @@ begin
         end;
         if TheReplaceText = '' then
           TheReplaceText := StringReplace(TheSearchText, '.', '%&^', [rfReplaceAll]);
-        TheBuilder._Replace(TheIndex, TheSearchText, TheReplaceText);
+        TheBuilder.DoReplace(TheIndex, TheSearchText, TheReplaceText);
         Inc(TheIndex);
       end;
     end;

@@ -102,7 +102,8 @@ begin
         TheTranslationPath := App.Settings.AppFolder + 'Translations\';
       TLanguages.Instance.LoadFromPath(TheTranslationPath);
       glbLanguage := 0;
-      Core.ReloadSentences;
+      if ConstUseCache then
+        Core.ReloadSentences;
       App.WebInterfaceHandler.BringOnline;
       TheStartSuccessFull := True;
       if ConstUseCache then

@@ -60,9 +60,10 @@
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Misc\AppExceptionClasses.pas"/>
 			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SentenceSplitter.pas"/>
 			<DCCReference Include="Includes\SentenceSplitterTest.pas">
-				<Form>/  RepSerializeTest in &apos;Includes\RepSerializeTest.pas&apos;
-</Form>
+				<Form>/  RepSerializeTest in &apos;Includes\RepSerializeTest.pas&apos;</Form>
 			</DCCReference>
+			<DCCReference Include="Includes\SplitterComponentTest.pas"/>
+			<DCCReference Include="..\NeoDelphiShared\Lib\NeoAi\Classes\SplitterComponent.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

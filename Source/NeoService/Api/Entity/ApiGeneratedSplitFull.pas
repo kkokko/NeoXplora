@@ -9,17 +9,13 @@ type
   TApiGeneratedSplitFull = class(TApiGeneratedSplit)
   private
     FMatchedSplit: string;
-    FMatchPos: string;
-    FPos: string;
     FSplitMatchScore: Double;
     FSubstitutions: TSkyStringStringList;
   public
     class function CreateFromSplitGuess(ASplitGuess: TSplitGuess): TApiGeneratedSplitFull; reintroduce;
   published
     property Sentence;
-    property Pos: string read FPos write FPos;
     property MatchSentence: string read FMatchedSplit write FMatchedSplit;
-    property MatchPos: string read FMatchPos write FMatchPos;
     property MatchScore: Double read FSplitMatchScore write FSplitMatchScore;
     property SplitStatus;
     property Splits;
@@ -41,9 +37,7 @@ begin
   end;
   Result := TApiGeneratedSplitFull.Create;
   Result.Sentence := ASplitGuess.Sentence;
-  Result.Pos := ASplitGuess.Pos;
   Result.MatchSentence := ASplitGuess.MatchText;
-  Result.MatchPos := ASplitGuess.MatchPos;
   Result.MatchScore := ASplitGuess.MatchScore;
   Result.SplitStatus := ASplitGuess.SplitStatus;
   if ASplitGuess.Splits <> nil then

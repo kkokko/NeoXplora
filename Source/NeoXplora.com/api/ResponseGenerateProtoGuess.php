@@ -54,11 +54,6 @@ class TResponseGenerateProtoGuess extends TResponse {
               "default" => "",
               "type" => "text"
             ),
-            "Pos" => array(
-              "name" => "Generated POS",
-              "default" => "",
-              "type" => "text"
-            ),
             "MatchSentence" => array(
               "name" => "Matched Sentence",
               "default" => "",

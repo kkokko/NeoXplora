@@ -3,7 +3,7 @@ unit PosTagger;
 interface
 
 uses
-  SentenceSplitter, SkyLists;
+  SkyLists;
 
 type
   TPosTagger = class
@@ -13,8 +13,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    function GetTagsForString(const AString: string; AnUseModifiedPos: Boolean = False): string;
-    function GetTagsForWords(ASentenceSplitter: TSentenceSplitter; AnUseModifiedPos: Boolean = False): string;
+    function GetTagsForWords(AWordList: TSkyStringStringList; AnUseModifiedPos: Boolean = False): string;
 
     property Words: TSkyStringStringList read FWords write FWords;
   end;
@@ -22,7 +21,7 @@ type
 implementation
 
 uses
-  SysUtils, LexiconLine, AppUnit, Entity;
+  SysUtils, LexiconLine, AppUnit, Entity, SplitterComponent;
 
 { TPosTagger }
 
@@ -54,20 +53,7 @@ begin
   inherited Destroy;
 end;
 
-function TPosTagger.GetTagsForString(const AString: string; AnUseModifiedPos: Boolean): string;
-var
-  TheSentenceSplitter: TSentenceSplitter;
-begin
-  TheSentenceSplitter := TSentenceSplitter.Create;
-  try
-    TheSentenceSplitter.SentenceSplitWords(AString);
-    Result := GetTagsForWords(TheSentenceSplitter, AnUseModifiedPos);
-  finally
-    TheSentenceSplitter.Free;
-  end;
-end;
-
-function TPosTagger.GetTagsForWords(ASentenceSplitter: TSentenceSplitter; AnUseModifiedPos: Boolean): string;
+function TPosTagger.GetTagsForWords(AWordList: TSkyStringStringList; AnUseModifiedPos: Boolean): string;
 var
   TheMofiedNoun: Boolean;
   TheLastWord: string;
@@ -82,9 +68,14 @@ begin
   TheLastWord := '';
   //connecting to the SQLite database that contains the lexicon
   TheIndex := 0;
-  while TheIndex < ASentenceSplitter.WordList.Count do
+  while TheIndex < AWordList.Count do
   begin
-    TheWord := ASentenceSplitter.WordList[TheIndex];
+    TheWord := AWordList[TheIndex];
+    if TheWord = ' ' then
+    begin
+      Inc(TheIndex);
+      Continue;
+    end;
 
     //get the possible parts of speech for that word from the SQLite database
     ThePossiblePOS := FWords.ObjectOfValueDefault[TheWord, ''];
@@ -153,7 +144,7 @@ begin
     TheLastTag := TheTag;
     TheLastWord := TheWord;
     Result := Result + TheTag + ' ';
-    ASentenceSplitter.WordList.Objects[TheIndex] := TheTag;
+    AWordList.Objects[TheIndex] := TheTag;
     Inc(TheIndex);
   end;
   Result := Trim(Result);
