@@ -99,7 +99,7 @@ class TTrainInterpreter extends TTrain {
           "id" => $sentence_data[Entity\TSentence::$tok_id],
           "name" =>  $sentence_data[Entity\TSentence::$tok_name],
           "representation" => $sentence_data[Entity\TSentence::$tok_rep],
-          "guess" => $request->GetProperty("RepGuessA")
+          "guess" => $request->GetProperty("RepGuessD")
         );
         
         $this->template->load("table", "train/interpreter");
