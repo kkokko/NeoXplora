@@ -19,9 +19,14 @@ class TRequestGenerateRep extends TRequest {
     ),
     "OutputSentence" => array(
       "name" => "Output Sentence",
-      "default" => null,
+      "default" => "false",
       "type" => "bool"
-    )
+    ),
+    "UseExact" => array(
+      "name" => "Use Exact",
+      "default" => "true",
+      "type" => "bool"
+    ),
   );
   
 }
