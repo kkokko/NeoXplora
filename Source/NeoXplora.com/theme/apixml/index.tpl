@@ -38,6 +38,9 @@
           <a class="item <?php if($this->requestName == "SentenceMatch") { echo 'active'; } ?>" href="api.php?name=SentenceMatch">
             Sentence Match
           </a>
+          <a class="item <?php if($this->requestName == "SplitPage") { echo 'active'; } ?>" href="api.php?name=SplitPage">
+            Split Page
+          </a>
         </div>
       </div>
       <div class="eight wide middle column">
